@@ -1,0 +1,73 @@
+﻿@using CMS.ViewModel;
+@{
+    var listMenu = new List<MenuViewModel>();
+    if (ViewBag.PatialMenus != null) { listMenu = ViewBag.PatialMenus; }
+}
+@if (listMenu != null && listMenu.Count > 0)
+{
+    @RenderMenu(listMenu)
+}
+@helper RenderMenu(List<MenuViewModel> listMenu)
+{
+    <ul class="nav nav-list">
+        @foreach (var menuItem in listMenu)
+        {
+            if (menuItem.ParentId == 0)
+            {
+                <li class="@menuItem.ClassSubMenu">
+                    @if (listMenu.Where(m => m.ParentId == menuItem.Id).ToList().Count == 0)
+                    {
+                        <a href="@menuItem.Url">
+                            <i class="menu-icon @menuItem.CssClass"></i>
+                            <span class="menu-text"> @menuItem.Name</span>
+                        </a>
+                        <b class="arrow"></b>
+                    }
+                    else
+                    {
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon @menuItem.CssClass"></i>
+                            <span class="menu-text"> @menuItem.Name </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+                        <b class="arrow"></b>
+                        @RenderSubMenu(listMenu, menuItem.Id)
+                    }
+                </li>
+            }
+        }
+    </ul>
+}
+
+@helper RenderSubMenu(List<MenuViewModel> listMenu, int parentId)
+{
+    <ul class="submenu">
+        @foreach (var menuItem in listMenu)
+        {
+            if (menuItem.ParentId == parentId)
+            {
+                var countChild = listMenu.Where(m => m.ParentId == menuItem.Id).ToList().Count;
+                <li class="@menuItem.ClassSubMenu">
+                    @if (countChild == 0)
+                    {
+                        <a href="@menuItem.Url">
+                            <i class="menu-icon @menuItem.CssClass"></i>
+                            <span class="menu-text"> @menuItem.Name</span>
+                        </a>
+                        <b class="arrow"></b>
+                    }
+                    else
+                    {
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon @menuItem.CssClass"></i>
+                            <span class="menu-text"> @menuItem.Name </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+                        <b class="arrow"></b>
+                        @RenderSubMenu(listMenu, menuItem.Id)
+                    } 
+                </li>
+            }
+        }
+    </ul>
+}

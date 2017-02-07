@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.ListMenu = true;
+}
+@if (ViewBag.BreadScrumb != "")
+{
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+            @Html.Raw(ViewBag.BreadScrumb)
+    </ul>
+</div>
+}

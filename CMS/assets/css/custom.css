@@ -1,0 +1,36 @@
+﻿.help-block {
+  right: 0;
+  bottom: -20px;
+  margin: 0;
+  color: inherit;
+  opacity: .7;
+  font-size: 12px;
+}
+.form-horizontal .help-block {
+  bottom: -20px;
+  right: 10px;
+}
+span.help-block {
+  right: auto;
+}
+.form-horizontal span.help-block {
+  right: auto;
+}
+.form-inverse .has-warning .help-block {
+  color: #e69c2e;
+  opacity: 1;
+}
+.has-error .help-block {
+  color: #f44336 !important;
+  opacity: 1;
+}
+.has-success .help-block {
+  color: #4caf50 !important;
+  opacity: 1;
+}
+.menu-icon.fa-home{
+    font-size:23px !important;
+}
+.scroll-div{
+    overflow-x:auto;
+}

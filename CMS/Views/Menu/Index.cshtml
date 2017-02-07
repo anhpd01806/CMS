@@ -1,0 +1,280 @@
+﻿@model CMS.ViewModel.MenuOperationViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/assets/css/font-awesome/font-awesome.min.css" rel="stylesheet" />
+<link href="~/assets/css/ace.min.css" rel="stylesheet" />
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/jquery.nestable.min.js"></script>
+<link href="~/assets/css/custom.css" rel="stylesheet" />
+@section featured{
+    @using (Html.BeginForm())
+    {
+
+        <div class="page-content">
+            <div class="page-content-area">
+                <div class="page-header">
+                    <h1 class="page-title">@ViewBag.TitleForm</h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger message-box ">
+                                <strong>Lỗi:</strong> @TempData["Error"].ToString()
+                            </div>
+                        }
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success message-box ">
+                                <strong>Thông báo:</strong> @TempData["Success"].ToString()
+                            </div>
+                        }
+                        <div class="dd" id="nestable">
+                            <ol class="dd-list">
+                                @if (Model.MenuList != null && Model.OperationList != null)
+                                {
+                                    @RenderMenuParent()
+                                }
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+@helper RenderMenuParent()
+{
+var listMenu = Model.MenuList;
+var listOperation = Model.OperationList;
+foreach (var menuItem in listMenu.Where(menuItem => menuItem.ParentId == 0))
+{
+
+    var id = menuItem.Id;
+    var listMenuChild = listMenu.Where(m => m.ParentId == id).ToList();
+    var listOperationMenu = listOperation.Where(op => op.MenuId == id).ToList();
+        <li class="dd-item" data-id="@menuItem.Id">
+            <div class="dd-handle">
+                @menuItem.Name
+
+                <div class="pull-right action-buttons">
+                    @if (listOperationMenu.Count == 0 && listMenuChild.Count == 0)
+        {
+                        <a class="blue" href="#" title="Thêm" data-toggle="dropdown">
+                            <i class="ace-icon fa fa-plus-square bigger-130"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-light-blue dropdown-caret dropdown-closer">
+                            <li>
+                                <a href="~/Menu/Create/@menuItem.Id">Thêm chức năng</a>
+                            </li>
+
+                            <li>
+                                <a href="~/Menu/CreateOperation/@menuItem.Id">Thêm operation</a>
+                            </li>
+                        </ul>
+                    }
+                    else if (listOperationMenu.Count > 0)
+                    {
+                        <a class="blue" href="~/Menu/CreateOperation/@menuItem.Id" title="Thêm operation">
+                            <i class="ace-icon fa fa-plus-square bigger-130"></i>
+                        </a>
+                    }
+                    else if (listMenuChild.Count > 0)
+                    {
+                        <a class="blue" href="~/Menu/Create/@menuItem.Id" title="Thêm chức năng">
+                            <i class="ace-icon fa fa-plus-square bigger-130"></i>
+                        </a>
+
+                    }
+
+                    <a class="blue" href="/Menu/Edit/@menuItem.Id" title="Sửa">
+                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                    </a>
+
+                    <a class="red" href="#" title="Xóa chức năng" data-toggle="modal" data-target="#confirm-delete" onclick="ConfirmDeleteMenu(@menuItem.Id);">
+                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                    </a>
+                </div>
+            </div>
+
+            @if (listOperationMenu.Count > 0)
+            {
+                @RenderOperation(listOperationMenu, @menuItem.Id)
+            }
+            else if (listMenuChild.Count > 0)
+            {
+                @RenderMenuChild(listMenu, listMenuChild, listOperation)
+            }
+
+
+
+
+        </li>
+}
+}
+@helper RenderMenuChild(List<CMS.Data.Menus> allMenus, List<CMS.Data.Menus> listMenuChild, List<CMS.Data.Operation> listOperation)
+{
+if (listMenuChild.Count <= 0)
+{
+    return;
+}
+    <ol class="dd-list">
+        @foreach (var menuItem in listMenuChild)
+        {
+            var listChildOfMenu = allMenus.Where(m => m.ParentId == menuItem.Id).ToList();
+            var listChildOfOperation = listOperation.Where(op => op.MenuId == menuItem.Id).ToList();
+            <li class="dd-item">
+                <div class="dd-handle">
+                    @menuItem.Name
+                    <div class="pull-right action-buttons">
+
+
+                        @if (listChildOfOperation.Count == 0 && listChildOfMenu.Count == 0)
+                        {
+                            <a class="blue dropdown-toggle" href="#" title="Thêm" data-toggle="dropdown">
+                                <i class="ace-icon fa fa-plus-square bigger-130"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right dropdown-light-blue dropdown-caret dropdown-closer">
+                                <li>
+                                    <a href="~/Menu/Create/@menuItem.Id">Thêm chức năng</a>
+                                </li>
+
+                                <li>
+                                    <a href="~/Menu/CreateOperation/@menuItem.Id">Thêm operation</a>
+                                </li>
+                            </ul>
+                        }
+                        else if (listChildOfOperation.Count > 0)
+                        {
+                            <a class="blue" href="~/Menu/CreateOperation/@menuItem.Id" title="Thêm operation">
+                                <i class="ace-icon fa fa-plus-square bigger-130"></i>
+                            </a>
+                        }
+                        else if (listChildOfMenu.Count > 0)
+                        {
+                            <a class="blue" href="~/Menu/Create/@menuItem.Id" title="Thêm chức năng">
+                                <i class="ace-icon fa fa-plus-square bigger-130"></i>
+                            </a>
+
+                        }
+
+
+                        <a class="blue" href="/Menu/Edit/@menuItem.Id" title="Sửa">
+                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                        </a>
+
+                        <a class="red" href="#" title="Xóa chức năng" data-toggle="modal" data-target="#confirm-delete" onclick="ConfirmDeleteMenu(@menuItem.Id);">
+                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                @{
+                    if (listChildOfMenu.Count != 0)
+                    {
+                        @RenderMenuChild(allMenus, listChildOfMenu, listOperation)
+                    }
+
+                    if (listChildOfOperation.Count > 0)
+                    {
+                        @RenderOperation(listChildOfOperation, menuItem.Id)
+                    }
+                }
+
+
+            </li>
+
+                    }
+    </ol>
+}
+@helper RenderOperation(List<CMS.Data.Operation> listOperationChild, int menuId)
+{
+    <ol class="dd-list">
+        @foreach (var operation in listOperationChild)
+        {
+            <li class="dd-item">
+                <div class="dd-handle operation">
+                    @operation.Name
+                    <div class="pull-right action-buttons">
+                        <a class="blue" href="/Menu/EditOperation/@operation.Id" title="Sửa">
+                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                        </a>
+
+                        <a class="red" href="#" title="Xóa operation" data-toggle="modal" data-target="#confirm-delete" onclick="ConfirmDeleteOperation(@operation.Id);">
+                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                        </a>
+                    </div>
+                </div>
+            </li>
+        }
+    </ol>
+}
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Xác nhận xóa dữ liệu</h4>
+            </div>
+            <div class="modal-body">
+                <p>Dữ liệu bị xóa không thể phục hồi</p>
+                <p>Bạn có chắc chắn muốn xóa?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger btn-ok">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    .operation {
+        background-color: cornsilk;
+    }
+
+        .operation:hover {
+            background-color: cornsilk;
+        }
+</style>
+<script type="text/javascript">
+    function ShowAddForm() {
+        $("#context-menu").css({
+            display: "block",
+            left: (100),
+            top: (200)
+        });
+    }
+
+    function ConfirmDeleteOperation(operationId) {
+        $("#confirm-delete").attr("name", operationId);
+        $("#confirm-delete").addClass("delete-operation");
+    }
+
+    function ConfirmDeleteMenu(menuId) {
+        $("#confirm-delete").attr("name", menuId);
+        $("#confirm-delete").addClass("delete-menu");
+    }
+    $(function () {
+        $('#confirm-delete').on('click', '.btn-ok', function () {
+            var id = $('#confirm-delete').attr("name");
+            if ($("#confirm-delete").hasClass("delete-menu")) {
+                document.location.href = '/menu/delete/' + id;
+            } else if ($("#confirm-delete").hasClass("delete-operation")) {
+                document.location.href = '/menu/removeoperation/' + id;
+            }
+        });
+    });
+    jQuery(function ($) {
+
+
+        $('.dd-handle a').on('mousedown', function (e) {
+            e.stopPropagation();
+        });
+
+        //$('[data-rel="tooltip"]').tooltip();
+
+    });
+
+</script>

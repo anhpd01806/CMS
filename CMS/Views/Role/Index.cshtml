@@ -1,0 +1,150 @@
+﻿@model CMS.ViewModel.RoleViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#datatable1').DataTable({
+                "displayLength": 50,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Vietnamese.json"
+                },
+                "aoColumns": [
+                 null, null,
+                 { "bSortable": false }
+                ]
+
+            });
+            $('.delete').click(function (e) {
+                e.preventDefault();
+                $(".delete-selected").removeClass("delete-selected");
+                $(this).addClass("delete-selected");
+            });
+            $('#submitDelete').click(function () {
+                var id = $('.delete-selected').data("id");
+                document.location.href = '/Role/Delete/' + id;
+            });
+        });
+
+    </script>
+}
+@section menu{
+
+}
+@section featured{
+
+    <div class="page-content">
+        <div class="page-content-area">
+            <div class="row">
+                <div class="col-xs-12">
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger message-box ">
+                            <strong>Lỗi:</strong> @TempData["Error"].ToString()
+                        </div>
+                    }
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success message-box ">
+                            <strong>Thông báo:</strong> @TempData["Success"].ToString()
+                        </div>
+                    }
+                    <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
+                    <div class="table-header">
+                        Danh sách nhóm quyền
+                        <div class="widget-toolbar">
+                            <div class="widget-menu">
+                                <a class="white" href="/Role/Create" title="Thêm nhóm đối tác">
+                                    <i class="ace-icon fa fa-plus-square bigger-130"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <table id="datatable1" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="col-md-1 text-center">STT</th>
+                                <th>Tên nhóm đối tác</th>
+                                <th class="col-md-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 0;
+                            }
+                            @if (Model.RoleList.Count > 0)
+                            {
+                                foreach (var role in Model.RoleList)
+                                {
+                                    counter = counter + 1;
+                                    <tr>
+                                        <td class="text-center">@counter</td>
+                                        <td>@Html.DisplayFor(modelItem => role.Name)</td>
+                                        <td class="text-center">
+                                            <div class="hidden-sm hidden-xs action-buttons">
+                                                <a class="green" href="/Role/Edit/@role.Id">
+                                                    <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                                </a>
+
+                                                <a class="red delete" href="#" data-toggle="modal" data-target="#confirm-delete" data-id="@role.Id">
+                                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                </a>
+                                            </div>
+
+                                            <div class="hidden-md hidden-lg">
+                                                <div class="inline position-relative">
+                                                    <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                                                        <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                                                    </button>
+
+                                                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                        <li>
+                                                            <a href="/Role/Edit/@role.Id" class="tooltip-success" data-rel="tooltip" title="Sửa">
+                                                                <span class="green">
+                                                                    <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+
+                                                        <li>
+                                                            <a href="#" class="tooltip-error" data-rel="tooltip" title="Xóa" data-toggle="modal" data-target="#confirm-delete" data-id="@role.Id">
+                                                                <span class="red">
+                                                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Xác nhận xóa dữ liệu</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Dữ liệu nhóm đối tác bị xóa không thể phục hồi</p>
+                    <p>Bạn có chắc chắn xóa nhóm đối tác ngày</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger btn-ok" id="submitDelete">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

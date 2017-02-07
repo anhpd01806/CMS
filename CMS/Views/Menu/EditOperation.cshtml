@@ -1,0 +1,78 @@
+﻿@model CMS.ViewModel.OperationViewModel
+@{
+    ViewBag.Title = "Cập nhật action";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured
+{
+    @using (Html.BeginForm("EditOperation", "Menu", FormMethod.Post))
+    {
+
+        @Html.ValidationSummary(true)
+        <div class="page-content">
+            <div class="page-content-area">
+                <div class="page-header">
+                    <h1 class="page-title">@ViewBag.TitleForm</h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger message-box ">
+                                <strong>Lỗi:</strong> @TempData["Error"].ToString()
+                            </div>
+                        }
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success message-box ">
+                                <strong>Thông báo:</strong> @TempData["Success"].ToString()
+                            </div>
+                        }
+                        <div class="form col-md-6" role="form">
+                            @Html.HiddenFor(m => m.Id)
+                            <div class="form-group">
+                                <label>Mô tả</label>
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Name)
+                            </div>
+                            <div class="form-group">
+                                <label>Controller</label>
+                                @Html.TextBoxFor(m => m.Controller, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <label>Action</label>
+                                @Html.TextBoxFor(m => m.Action, new { @class = "form-control" })
+                            </div>
+                            @if (ViewBag.Menus != null)
+                            {
+                                <div class="form-group">
+                                    <label>Thuộc chức năng</label>
+                                    @Html.DropDownListFor(m => m.MenuId, ViewBag.Menus as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label>Thứ tự</label>
+                                @Html.TextBoxFor(m => m.Order, new { @class = "form-control" })
+                            </div>
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-info" type="submit">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                        Cập nhật
+                                    </button>
+
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn" type="reset">
+                                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                                        Hủy bỏ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+

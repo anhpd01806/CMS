@@ -1,0 +1,54 @@
+﻿@model CMS.ViewModel.RoleViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured
+{
+
+    @using (Html.BeginForm("Create", "Role", FormMethod.Post))
+    {
+        <div class="page-content">
+            <div class="page-content-area">
+                <div class="row">
+                    <div class="col-xs-12">
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger message-box ">
+                                <strong>Lỗi:</strong> @TempData["Error"].ToString()
+                            </div>
+                        }
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success message-box ">
+                                <strong>Thông báo:</strong> @TempData["Success"].ToString()
+                            </div>
+                        }
+                        <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
+                        <div class="form col-md-6" role="form">
+                            <div class="form-group">
+                                <label>Tên nhóm quyền</label>
+                                @Html.TextBoxFor(m=>m.Name, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Name)
+                            </div>
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-info" type="submit">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                        Thêm mới
+                                    </button>
+
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn" type="reset" id="cancel">
+                                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                                        Hủy bỏ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+

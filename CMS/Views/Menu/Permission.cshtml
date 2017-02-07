@@ -1,0 +1,138 @@
+﻿@model CMS.ViewModel.PermissionViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/assets/css/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/jquery-ui.min.js"></script>
+@section featured
+{
+    @using (Html.BeginForm("RolePermission", "Menu", FormMethod.Post))
+    {
+
+        <div class="page-content">
+            <div class="page-content-area">
+                <div class="page-header">
+                    <h1 class="page-title">@ViewBag.TitleForm</h1>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger message-box ">
+                                <strong>Lỗi:</strong> @TempData["Error"].ToString()
+                            </div>
+                        }
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success message-box ">
+                                <strong>Thông báo:</strong> @TempData["Success"].ToString()
+                            </div>
+                        }
+                        <div class="col-md-4 form row" role="form">
+                            <div class="form-group">
+                                <label>Nhóm quyền</label>
+
+                                @Html.DropDownListFor(m => m.RoleId, Model.Roles, new
+                           {
+                               @class = "form-control",
+                               id = "ddlDoiTac",
+                               @onchange = "GroupPermission(this.value)"
+                           })
+                            </div>
+
+                        </div>
+                        <div id="accordion" class="accordion-style col-md-9">
+                            @{
+                                int i;
+                                for (i = 0; i < Model.MenuView.Count; i++)
+                                {
+                                    <div class="group">
+                                        <h3 class="accordion-header">@Model.MenuView[i].Name</h3>
+                                        <div style="padding:0">
+
+                                            @RenderOperation(Model.MenuView[i].Operation)
+
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                }
+}
+@helper RenderOperation(List<CMS.ViewModel.OperationViewModel> listOperationChild)
+{
+
+foreach (var operation in listOperationChild)
+{
+        <div class="col-md-3" style="margin-top:5px">
+            <label>
+                @Html.HiddenFor(model => operation.Id)
+                <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" checked="@operation.IsSelected" id="@operation.Id" onclick="ChangePermissionAction(@operation.Id)">
+                <span class="lbl">@operation.Name</span>
+            </label>
+        </div>
+}
+
+}
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $("li.menu-action").hover(function () {
+    //        $(".action-selected").addClass('action-no-selected').removeClass('action-selected');
+    //        $(this).find(".action-no-selected").addClass('action-selected').removeClass('action-no-selected');
+    //    });
+    //});
+    function ChangePermissionAction(operationId) {
+        var roleId = $("#ddlDoiTac").val();
+        if ($("#" + operationId).is(':checked')) {
+            AddPermissionAction(operationId, roleId);
+        }
+        else {
+            RemovePermissionAction(operationId, roleId);
+        }
+    }
+    function RemovePermissionAction(operationid, roleid) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("RemovePermission", "Menu")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ operationid: operationid, roleid: roleid }),
+            dataType: "json",
+            success: function () { }
+        });
+    }
+    function AddPermissionAction(operationid, roleid) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddPermission","Menu")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ operationid: operationid, roleid: roleid }),
+            dataType: "json",
+            success: function () { }
+        });
+    }
+    function GroupPermission(roleId) {
+        window.location.href = "/Menu/RolePermission/" + roleId;
+    }
+
+    jQuery(function ($) {
+        $("#accordion").accordion({
+            collapsible: true,
+            heightStyle: "content",
+            animate: 250,
+            header: ".accordion-header"
+        }).sortable({
+            axis: "y",
+            handle: ".accordion-header",
+            stop: function (event, ui) {
+                // IE doesn't register the blur when sorting
+                // so trigger focusout handlers to remove .ui-state-focus
+                ui.item.children(".accordion-header").triggerHandler("focusout");
+            }
+        });
+    });
+</script>
