@@ -2792,6 +2792,8 @@
     <Content Include="Views\Page\Index.cshtml" />
     <Content Include="Views\Page\ForgotPassword.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -25,5 +25,7 @@ namespace CMS.Helper
         public const string ERROR_DELETE = "Xóa thất bại. Vui lòng kiểm tra lại";
 
         public const string ERROR_COMMON = "Xử lý thất bại. vui lòng thử lại.";
+
+        public const string SUCCESS_RESETPASSWORD = "Đã reset password về mặc định 123456";
     }
 }

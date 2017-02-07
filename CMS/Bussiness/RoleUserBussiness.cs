@@ -13,5 +13,13 @@ namespace CMS.Bussiness
         {
             return db.Role_Users.ToList();
         }
+
+        public void Insert(Role_User roleUser)
+        {
+            if (roleUser != null)
+            {
+                var rs = db.ExecuteCommand(@"INSERT INTO Role_User VALUES (" + roleUser.RoleId + "," + roleUser.UserId + ")");
+            }
+        }
     }
 }

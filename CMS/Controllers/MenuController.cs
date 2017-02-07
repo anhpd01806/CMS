@@ -113,9 +113,10 @@ namespace CMS.Controllers
                     // update cache when operation changed
                     new CacheBussiness().UpdateCacheOperation();
                     TempData["Success"] = Messages_Contants.SUCCESS_INSERT;
+                    ModelState.Clear();
                     model = new MenuOperationViewModel();
                     model.SelectListItem = new MenuBussiness().GetSelectChildMenus().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
-                    model.Operation = new OperationViewModel { MenuId = id };
+                    model.Operation = new OperationViewModel { MenuId = id};
                 }
             }
             catch (Exception ex)

@@ -26,7 +26,7 @@ namespace CMS.Bussiness
             }
 
         }
-
+        
         public Role GetById(int? id)
         {
             return db.Roles.FirstOrDefault(r => r.Id == id);

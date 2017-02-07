@@ -32,7 +32,7 @@ namespace CMS.Controllers
                 if (username.Split(',')[0].Trim().ToLower() == "true")
                 {
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
-                    Session.Add("SS-USERNAME", username.Split(',')[2].Trim());
+                    Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
                     return RedirectToAction("Index", "Home");
                 }
                 AccountViewModel model = new AccountViewModel();
@@ -59,20 +59,21 @@ namespace CMS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = db.Users.FirstOrDefault(x => x.UserName.Equals(model.UserName) && x.Password.Equals(Helpers.md5(model.UserName.Trim() + "ozo" + model.Password.Trim())));
+                    var user = db.Users.FirstOrDefault(x => x.UserName.Equals(model.UserName) && x.Password.Equals(Helpers.md5(model.UserName.Trim() + "ozo" + model.Password.Trim()))
+                                                        && x.IsDeleted == false && x.IsMember == true);
                     if (user != null)
                     {
                         Session.Add("SS-USER", user);
                         Session.Add("SS-USERID", user.Id);
                         // set cookies for user
                         HttpCookie rememberCookie = new HttpCookie("rememberCookies");
-                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + user.FullName;
+                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName);
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
 
                         return RedirectToAction("Index", "Home");
                     }
-                    ModelState.AddModelError("CredentialError", "Mật khẩu không đúng");
+                    ModelState.AddModelError("CredentialError", "Mật khẩu không đúng hoặc bạn chưa có quyền đăng nhập. vui lòng liên hệ sđt xxx.xxx");
                     return View("Login");
                 }
                 return View(model);

@@ -50,8 +50,7 @@ namespace CMS.Bussiness
         {
             if (roleAccess != null)
             {
-                db.Role_Accesses.DeleteOnSubmit(roleAccess);
-                db.SubmitChanges();
+                var rs = db.ExecuteCommand(@"DELETE Role_Access WHERE RoleId = " + roleAccess.RoleId + " and OperationId = " + roleAccess.OperationId);
             }
         }
 
@@ -59,7 +58,7 @@ namespace CMS.Bussiness
         {
             if (roleAccess != null)
             {
-                var role = db.ExecuteCommand(@"INSERT INTO Role_Access VALUES (" + roleAccess.RoleId + "," + roleAccess.OperationId + ")");
+                var rs = db.ExecuteCommand(@"INSERT INTO Role_Access VALUES (" + roleAccess.RoleId + "," + roleAccess.OperationId + ")");
             }
         }
 

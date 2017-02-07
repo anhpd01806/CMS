@@ -13,7 +13,13 @@ namespace CMS.ViewModel
 
         [Required(ErrorMessage = "Không được để trống")]
         public string Name { get; set; }
-        public bool IsChecked { get; set; }
         public List<Role> RoleList { get; set; }
+    }
+
+    public class RoleModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool IsChecked { get; set; }
     }
 }
