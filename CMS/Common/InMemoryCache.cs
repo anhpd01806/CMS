@@ -9,7 +9,7 @@ namespace CMS.Common
             if (item == null)
             {
                 item = getItemCallback();
-                System.Runtime.Caching.MemoryCache.Default.Add(cacheKey, item, DateTime.Now.AddMinutes(5));
+                System.Runtime.Caching.MemoryCache.Default.Add(cacheKey, item, DateTime.Now.AddMinutes(30));
             }
             return item;
         }

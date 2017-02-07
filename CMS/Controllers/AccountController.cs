@@ -32,6 +32,7 @@ namespace CMS.Controllers
                 if (username.Split(',')[0].Trim().ToLower() == "true")
                 {
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
+                    Session.Add("SS-USERNAME", username.Split(',')[2].Trim());
                     return RedirectToAction("Index", "Home");
                 }
                 AccountViewModel model = new AccountViewModel();
@@ -65,7 +66,7 @@ namespace CMS.Controllers
                         Session.Add("SS-USERID", user.Id);
                         // set cookies for user
                         HttpCookie rememberCookie = new HttpCookie("rememberCookies");
-                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id;
+                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + user.FullName;
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
 

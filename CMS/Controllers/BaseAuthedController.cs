@@ -46,7 +46,7 @@ namespace WebBackendPlus.Controllers
             ViewBag.BreadScrumb = GetBreadCrumb(controller, action, ref titleForm);
             ViewBag.TitleForm = titleForm;
             var userInfo = (User)Session["SS-USER"];
-            ViewBag.FullName = userInfo.UserName;
+            ViewBag.FullName = Session["SS-FULLNAME"] != null? Session["SS-FULLNAME"] : userInfo.FullName != null ? userInfo.FullName : userInfo.UserName;
         }
 
         /// <summary>
