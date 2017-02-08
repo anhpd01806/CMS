@@ -1,0 +1,107 @@
+﻿@model CMS.ViewModel.UserModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured
+{
+    @using (Html.BeginForm("UserInformation", "User", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+        <div class="breadcrumbs" id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li><i class="ace-icon fa fa-users"></i> <a href="#">Quản lý người dùng</a></li>
+                <li><a href="/User/Index">Người dùng</a></li>
+                <li class="active">Thông tin cá nhân</li>
+            </ul>
+        </div>
+        <div class="page-content">
+            <div class="page-content-area">
+                <div class="row">
+                    <div class="col-xs-12">
+                        @Html.HiddenFor(m => m.Id)
+                        <h3 class="header smaller lighter blue">Thông tin cá nhân</h3>
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger message-box ">
+                                <strong>Lỗi:</strong> @TempData["Error"].ToString()
+                            </div>
+                        }
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success message-box ">
+                                <strong>Thông báo:</strong> @TempData["Success"].ToString()
+                            </div>
+                        }
+                        <div class="widget-body">
+                            <div class="widget-main padding-24">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="profile-user-info profile-user-info-striped">
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name">Tài khoản đăng nhập:</div>
+
+                                                <div class="profile-info-value">
+                                                    @Model.UserName
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Họ tên: </div>
+
+                                                <div class="profile-info-value">
+                                                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.FullName)
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name">
+                                                   Giới tính:
+                                                </div>
+
+                                                <div class="profile-info-value">
+                                                    <div class="col-sm-6">
+                                                        <label>Nam:</label>
+                                                        @Html.RadioButtonFor(m => m.Sex, true)
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label>Nữ: </label>
+                                                        @Html.RadioButtonFor(m => m.Sex, false)
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Điện thoại: </div>
+
+                                                <div class="profile-info-value">
+                                                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.Phone)
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Email: </div>
+
+                                                <div class="profile-info-value">
+                                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.Email)
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- /.col -->
+                                </div><!-- /.row -->
+                            </div>
+                        </div>
+                        <div class="col-md-12 footer-button">
+                            <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+

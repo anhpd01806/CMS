@@ -2755,8 +2755,10 @@
     <Compile Include="Common\InMemoryCache.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseAuthedController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\NoticeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -2796,6 +2798,9 @@
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Customer\Index.cshtml" />
+    <Content Include="Views\Notice\Index.cshtml" />
+    <Content Include="Views\User\UserInformation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

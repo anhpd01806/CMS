@@ -1,0 +1,95 @@
+﻿@model CMS.ViewModel.UserModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured
+{
+    @using (Html.BeginForm("Index", "Customer", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+        <div class="breadcrumbs" id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li><i class="ace-icon fa fa-users"></i> <a href="#">Quản lý người dùng</a></li>
+                <li><a href="/User/Index">Người dùng</a></li>
+                <li class="active">Thông tin khách hàng đăng ký mới</li>
+            </ul>
+        </div>
+        <div class="page-content">
+            <div class="page-content-area">
+                <div class="row">
+                    <div class="col-xs-12">
+                        @Html.HiddenFor(m => m.Id)
+                        <h3 class="header smaller lighter blue">Khách hàng đăng ký mới</h3>
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger message-box ">
+                                <strong>Lỗi:</strong> @TempData["Error"].ToString()
+                            </div>
+                        }
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success message-box ">
+                                <strong>Thông báo:</strong> @TempData["Success"].ToString()
+                            </div>
+                        }
+                        <div class="widget-body">
+                            <div class="widget-main padding-24">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-xs-11 label label-lg label-info arrowed-in arrowed-right">
+                                                <b>Thông tin khách hàng</b>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <ul class="list-unstyled spaced">
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>Họ tên: <b class="blue">@Model.FullName</b>
+                                                </li>
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>Tài khoản đăng nhập:<b class="blue"> @Model.UserName</b>
+                                                </li>
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>Giới tính:<b class="blue">
+                                                        @if (Model.Sex == true)
+                                                        { <label>Nam</label> }
+                                                        else
+                                                        {  <label>Nữ</label>}
+                                                    </b>
+                                                </li>
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>
+                                                    Điện thoại:
+                                                    <b class="blue">@Model.Phone</b>
+                                                </li>
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>
+                                                    Email:
+                                                    <b class="blue">@Model.Email</b>
+                                                </li>
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>
+                                                    Quản lý bởi
+                                                    <b class="blue">@Html.DropDownListFor(m => m.ManagerBy, Model.ManagerList, new { @class = "form-control" })</b>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div><!-- /.col -->
+                                </div><!-- /.row -->
+                            </div>
+                        </div>
+                        <div class="col-md-12 footer-button">
+                            <button type="submit" class="btn btn-primary">Xác nhận</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+

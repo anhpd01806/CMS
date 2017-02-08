@@ -168,6 +168,30 @@ namespace CMS.Controllers
             }
             return View(new ChangePasswordViewModel());
         }
+
+        public ActionResult UserInformation()
+        {
+            var userId = int.Parse(Session["SS-USERID"].ToString());
+            
+            UserModel model = new UserModel();
+            var user = new UserBussiness().GetUserById(userId);
+            model.UserName = user.UserName;
+            model.FullName = user.FullName;
+            model.Sex = user.Sex ?? false;
+            model.Phone = user.Phone;
+            model.Email = user.Email;
+            model.Id = user.Id;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UserInformation(UserModel model)
+        {
+            new UserBussiness().UpdateProfile(model);
+            TempData["Success"] = Messages_Contants.SUCCESS_UPDATE;
+            return RedirectToAction("UserInformation", "User");
+        }
+
         private string GetNameRole(List<Role> role, List<Role_User> roleUser, int userId)
         {
             var rs = (from r in role

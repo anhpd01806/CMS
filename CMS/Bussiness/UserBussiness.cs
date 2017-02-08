@@ -1,5 +1,6 @@
 ﻿using CMS.Data;
 using CMS.Helper;
+using CMS.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,24 @@ namespace CMS.Bussiness
             user.Password = Helpers.md5(user.UserName.Trim() + "ozo" + password.Trim());
             db.SubmitChanges();
             return true;
+        }
+
+        public void UpdateCustomer(UserModel model)
+        {
+            var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
+            user.IsMember = true;
+            user.ManagerBy = int.Parse(model.ManagerBy);
+            db.SubmitChanges();
+        }
+
+        public void UpdateProfile(UserModel model)
+        {
+            var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
+            user.FullName = model.FullName;
+            user.Sex = model.Sex;
+            user.Phone = model.Phone;
+            user.Email = model.Email;
+            db.SubmitChanges();
         }
     }
 }
