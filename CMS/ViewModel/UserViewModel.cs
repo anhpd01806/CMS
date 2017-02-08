@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using System.Web.Mvc;
 
 namespace CMS.ViewModel
@@ -18,7 +19,7 @@ namespace CMS.ViewModel
         public string FullName { get; set; }
 
         [Required(ErrorMessage = "Không được để trống")]
-        [Remote("doesUserNameExist", "User", ErrorMessage = "Tài khoản đã được đăng ký. vui lòng chọn tài khoản khác")]
+        [Remote("doesUserNameNotExist", "Account", ErrorMessage = "Tài khoản đã được đăng ký. vui lòng chọn tài khoản khác")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Không được để trống")]
@@ -29,6 +30,7 @@ namespace CMS.ViewModel
         [System.Web.Mvc.Compare("PassWord", ErrorMessage = "Mật khẩu xác nhận không khớp.")]
         public string ConfirmPassWord { get; set; }
 
+        [Required(ErrorMessage = "Không được để trống")]
         public string Phone { get; set; }
 
         [EmailAddress(ErrorMessage = "Vui lòng nhập đúng định dạng email")]
@@ -60,5 +62,15 @@ namespace CMS.ViewModel
         [System.Web.Mvc.Compare("NewPassword", ErrorMessage = "Mật khẩu mới và mật khẩu xác nhận không trùng khớp.")]
         public string ConfirmPassword { get; set; }
 
+    }
+
+    [DataContract]
+    public class RecaptchaResult
+    {
+        [DataMember(Name = "success")]
+        public bool Success { get; set; }
+
+        [DataMember(Name = "error-codes")]
+        public string[] ErrorCodes { get; set; }
     }
 }

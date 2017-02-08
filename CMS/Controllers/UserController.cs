@@ -176,37 +176,6 @@ namespace CMS.Controllers
                       select r.Name).ToArray();
             return String.Join(", ", rs);
         }
-
-        #region Check user exist
-        [AllowAnonymous]
-        //[HttpPost]
-        public JsonResult doesUserNameExist(string UserName)
-        {
-            bool ifUserExists = false;
-            try
-            {
-                ifUserExists = IsUserExists(UserName) ? false : true;
-                return Json(!ifUserExists, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        private bool IsUserExists(string UserName)
-        {
-            CmsDataDataContext db = new CmsDataDataContext();
-            var user = db.Users.FirstOrDefault(x => x.UserName.Equals(UserName));
-            if (user == null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        #endregion
+        
     }
 }

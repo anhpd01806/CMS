@@ -7,18 +7,18 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $('#datatable1').DataTable({
-                bAutoWidth: false,
-                "aoColumns": [
-                  null,
-                  null, null, null, null, null, null,
-                  { "bSortable": false }
-                ],
-                "displayLength": 50,
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Vietnamese.json"
-                }
-            });
+            //$('#datatable1').DataTable({
+            //    bAutoWidth: false,
+            //    "aoColumns": [
+            //      null,
+            //      null, null, null, null, null, null,
+            //      { "bSortable": false }
+            //    ],
+            //    "displayLength": 50,
+            //    "language": {
+            //        "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Vietnamese.json"
+            //    }
+            //});
             $('.delete').click(function (e) {
                 e.preventDefault();
                 $(".delete-selected").removeClass("delete-selected");
@@ -63,74 +63,127 @@
                             </div>
                         </div>
                     </div>
-                    <table id="datatable1" class="table table-striped table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Tên người dùng</th>
-                                <th>Tên đăng nhập</th>
-                                <th>Số điện thoại</th>
-                                <th>Email</th>
-                                <th>Trạng thái</th>
-                                <th>Quản lý bởi</th>
-                                <th>Nhóm quyền</th>
-                                <th class="text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.UserList.Count > 0)
-                            {
-                                foreach (var u in Model.UserList)
+                    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline no-footer">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="dataTables_length" id="datatable1_length">
+                                    <label>
+                                        Xem <select name="datatable1_length" aria-controls="datatable1" class="form-control input-sm">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> mục
+                                    </label>
+                                </div>
+                            </div><div class="col-xs-6"><div id="datatable1_filter" class="dataTables_filter"><label>Tìm:<input type="search" class="form-control input-sm" aria-controls="datatable1"></label></div></div>
+                        </div>
+                        <table id="datatable1" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tên người dùng</th>
+                                    <th>Tên đăng nhập</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Email</th>
+                                    <th>Trạng thái</th>
+                                    <th>Quản lý bởi</th>
+                                    <th>Nhóm quyền</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.UserList.Count > 0)
                                 {
-                                    <tr>
-                                        <td>@Html.DisplayFor(m => u.FullName)</td>
-                                        <td>@Html.DisplayFor(m => u.UserName)</td>
-                                        <td>@Html.DisplayFor(m => u.Phone)</td>
-                                        <td>@Html.DisplayFor(m => u.Email)</td>
-                                        <td>@Html.Raw(u.IsMember == true ? "Kích hoạt" : "Chưa được duyệt")</td>
-                                        <td>@Html.DisplayFor(m => u.ManagerBy)</td>
-                                        <td>@Html.DisplayFor(m => u.RoleName)</td>
-                                        <td class="text-center">
-                                            <div class="hidden-sm hidden-xs action-buttons">
-                                                <a class="green" href="/User/ResertPassword/@u.Id">
-                                                    <i class="fa fa-refresh"></i>
-                                                </a>
+                                    foreach (var u in Model.UserList)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(m => u.FullName)</td>
+                                            <td>@Html.DisplayFor(m => u.UserName)</td>
+                                            <td>@Html.DisplayFor(m => u.Phone)</td>
+                                            <td>@Html.DisplayFor(m => u.Email)</td>
+                                            <td>@Html.Raw(u.IsMember == true ? "Kích hoạt" : "Chưa được duyệt")</td>
+                                            <td>@Html.DisplayFor(m => u.ManagerBy)</td>
+                                            <td>@Html.DisplayFor(m => u.RoleName)</td>
+                                            <td class="text-center">
+                                                <div class="hidden-sm hidden-xs action-buttons">
+                                                    <a class="green" href="/User/ResertPassword/@u.Id">
+                                                        <i class="fa fa-refresh"></i>
+                                                    </a>
 
-                                                <a class="red delete" href="#" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
-                                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                                                </a>
-                                            </div>
-
-                                            <div class="hidden-md hidden-lg">
-                                                <div class="inline position-relative">
-                                                    <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                                                        <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                                                    </button>
-
-                                                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                                        <li>
-                                                            <a href="/User/ResertPassword/@u.Id" class="tooltip-success" data-rel="tooltip" title="Khôi phục mật khẩu">
-                                                                <span class="green">
-                                                                    <i class="fa fa-refresh"></i>
-                                                                </span>
-                                                            </a>
-                                                        </li>
-
-                                                        <li>
-                                                            <a href="#" class="tooltip-error" data-rel="tooltip" title="Xóa" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
-                                                                <span class="red">
-                                                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                                                </span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
+                                                    <a class="red delete" href="#" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
+                                                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                    </a>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+
+                                                <div class="hidden-md hidden-lg">
+                                                    <div class="inline position-relative">
+                                                        <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                                                            <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                                                        </button>
+
+                                                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                            <li>
+                                                                <a href="/User/ResertPassword/@u.Id" class="tooltip-success" data-rel="tooltip" title="Khôi phục mật khẩu">
+                                                                    <span class="green">
+                                                                        <i class="fa fa-refresh"></i>
+                                                                    </span>
+                                                                </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a href="#" class="tooltip-error" data-rel="tooltip" title="Xóa" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
+                                                                    <span class="red">
+                                                                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                                    </span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
-                            }
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="dataTables_info" id="datatable1_info" role="status" aria-live="polite">Đang xem 1 đến 2 trong tổng số 2 mục</div>
+                            </div><div class="col-xs-6">
+                                <div class="dataTables_paginate paging_simple_numbers" id="datatable1_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button previous disabled" aria-controls="datatable1" tabindex="0" id="datatable1_previous">
+                                            <a href="#">Previous</a>
+                                        </li>
+                                        <li class="paginate_button active" aria-controls="datatable1" tabindex="0">
+                                            <a href="#">1</a>
+                                        </li>
+                                        <li class="paginate_button " aria-controls="datatable1" tabindex="0">
+                                            <a href="#">2</a>
+                                        </li>
+                                        <li class="paginate_button " aria-controls="datatable1" tabindex="0">
+                                            <a href="#">3</a>
+                                        </li>
+                                        <li class="paginate_button " aria-controls="datatable1" tabindex="0">
+                                            <a href="#">4</a>
+                                        </li>
+                                        <li class="paginate_button " aria-controls="datatable1" tabindex="0">
+                                            <a href="#">5</a>
+                                        </li>
+                                        <li class="paginate_button disabled" aria-controls="datatable1" tabindex="0" id="datatable1_ellipsis">
+                                            <a href="#">…</a>
+                                        </li>
+                                        <li class="paginate_button " aria-controls="datatable1" tabindex="0">
+                                            <a href="#">12</a>
+                                        </li>
+                                        <li class="paginate_button next" aria-controls="datatable1" tabindex="0" id="datatable1_next">
+                                            <a href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

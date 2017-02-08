@@ -1,8 +1,13 @@
-﻿using CMS.Data;
+﻿using CMS.Bussiness;
+using CMS.Data;
 using CMS.Helper;
 using CMS.ViewModel;
 using System;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -98,6 +103,53 @@ namespace CMS.Controllers
             Session.Abandon();
             return RedirectToAction("Login", "Account");
         }
+
+        public ActionResult Create()
+        {
+            UserModel model = new UserModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Create(UserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+                const string secret = "6LdaxRQUAAAAAA7SMaIDY7I_HKyDKD2_dUJX5RO4";
+                var response = Request["g-recaptcha-response"];
+                var remoteIp = Request.ServerVariables["REMOTE_ADDR"];
+
+                var myParameters = String.Format("secret={0}&response={1}&remoteip={2}", secret, response, remoteIp);
+
+                using (var wc = new WebClient())
+                {
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    var json = wc.UploadString(verifyUrl, myParameters);
+                    var js = new DataContractJsonSerializer(typeof(RecaptchaResult));
+                    var ms = new MemoryStream(Encoding.ASCII.GetBytes(json));
+                    var result = js.ReadObject(ms) as RecaptchaResult;
+                    if (result != null && result.Success) // SUCCESS!!!
+                    {
+                        var u = new User
+                        {
+                            UserName = model.UserName,
+                            FullName = model.FullName,
+                            Password = Helpers.md5(model.UserName.Trim() + "ozo" + model.PassWord.Trim()),
+                            Sex = model.Sex,
+                            Phone = model.Phone,
+                            Email = model.Email,
+                            IsDeleted = false,
+                            IsMember = false
+                        };
+                        new UserBussiness().Insert(u);
+                        TempData["Success"] = "Tài khoản đã được khởi tạo. Quản trị viên sẽ liên lạc với bạn ngay khi duyệt tài khoản.";
+                    }
+                }
+                return RedirectToAction("Login", "Account");
+            }
+            return View(model);
+        }
         #region Check user exist
         [AllowAnonymous]
         //[HttpPost]
@@ -107,6 +159,22 @@ namespace CMS.Controllers
             try
             {
                 ifUserExists = IsUserExists(UserName) ? false : true;
+                return Json(!ifUserExists, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [AllowAnonymous]
+        //[HttpPost]
+        public JsonResult doesUserNameNotExist(string UserName)
+        {
+            bool ifUserExists = false;
+            try
+            {
+                ifUserExists = IsUserExists(UserName) ? true : false;
                 return Json(!ifUserExists, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
