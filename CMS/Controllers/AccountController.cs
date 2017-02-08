@@ -142,8 +142,23 @@ namespace CMS.Controllers
                             IsDeleted = false,
                             IsMember = false
                         };
-                        new UserBussiness().Insert(u);
-                        TempData["Success"] = "Tài khoản đã được khởi tạo. Quản trị viên sẽ liên lạc với bạn ngay khi duyệt tài khoản.";
+                        var userId = new UserBussiness().Insert(u);
+                        var roleUser = new Role_User
+                        {
+                            UserId = userId,
+                            RoleId = 2 // roleId = 2: tài khoản khách hàng
+                        };
+                        // Insert User to Roles
+                        try
+                        {
+                            new RoleUserBussiness().Insert(roleUser);
+                            TempData["Success"] = "Tài khoản đã được khởi tạo. Quản trị viên sẽ liên lạc với bạn ngay khi duyệt tài khoản.";
+                        }
+                        catch (Exception ex)
+                        {
+                            TempData["Error"] = Messages_Contants.ERROR_COMMON;
+
+                        }
                     }
                 }
                 return RedirectToAction("Login", "Account");
