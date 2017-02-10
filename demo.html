@@ -2,8 +2,10 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script>
+		// list user
 		var users = [];
 		for(i=0;i<10;i++){
+			//add user to list
 			var user = {};
 			user.id = i;
 			user.name = 'name' + i ;
@@ -11,12 +13,15 @@
 		}
 		$(document).ready(function(){
 			$('#btn-find-user').click(function(){
+				// get user id
 				var userId = $('#user-id').val();
+				// find user by id
 				var user = $.grep(users,function(value){
 					return value.id === parseInt(userId);
 				})
 				debugger;
 				if(!user.length === 0){
+					//alert user name
 					alert(user[0].name);
 				}
 				else{
