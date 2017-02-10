@@ -8,4 +8,4 @@ Data Source=115.146.127.104;
 User ID=cms_user;Password=hungthinh
 
 google driver: https://drive.google.com/drive/folders/0B4l6OOKOwcQrYjk0dnZQbmJNOE0
-HAIHT comment
+HAIHT comment test commit bằng svn
