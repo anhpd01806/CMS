@@ -1,0 +1,34 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script>
+		var users = [];
+		for(i=0;i<10;i++){
+			var user = {};
+			user.id = i;
+			user.name = 'name' + i ;
+			users.push(user);
+		}
+		$(document).ready(function(){
+			$('#btn-find-user').click(function(){
+				var userId = $('#user-id').val();
+				var user = $.grep(users,function(value){
+					return value.id === parseInt(userId);
+				})
+				debugger;
+				if(!user.length === 0){
+					alert(user[0].name);
+				}
+				else{
+					alert('do not exist user');
+				}
+			});
+		})
+	</script>
+</head>
+<body>
+	<h1>Demo</h1>
+	<input type='text' id='user-id'> 
+	<button value='Find user' id='btn-find-user'>Find user</button>
+</body>
+</html>
