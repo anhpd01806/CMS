@@ -195,6 +195,9 @@ namespace CMS.Data
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertNotify(Notify instance);
+    partial void UpdateNotify(Notify instance);
+    partial void DeleteNotify(Notify instance);
     #endregion
 		
 		public CmsDataDataContext() : 
@@ -680,6 +683,14 @@ namespace CMS.Data
 			get
 			{
 				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Notify> Notifies
+		{
+			get
+			{
+				return this.GetTable<Notify>();
 			}
 		}
 	}
@@ -13783,6 +13794,308 @@ namespace CMS.Data
 					this._Sex = value;
 					this.SendPropertyChanged("Sex");
 					this.OnSexChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Notify")]
+	public partial class Notify : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Nullable<int> _Userid;
+		
+		private System.Nullable<int> _Newsid;
+		
+		private System.Nullable<System.DateTime> _DateSend;
+		
+		private System.Nullable<System.DateTime> _UserName;
+		
+		private System.Nullable<System.DateTime> _Title;
+		
+		private System.Nullable<int> _Type;
+		
+		private System.Nullable<bool> _Accepted;
+		
+		private System.Nullable<bool> _ViewFlag;
+		
+		private System.Nullable<int> _SendTo;
+		
+		private System.Nullable<bool> _SendFlag;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnUseridChanging(System.Nullable<int> value);
+    partial void OnUseridChanged();
+    partial void OnNewsidChanging(System.Nullable<int> value);
+    partial void OnNewsidChanged();
+    partial void OnDateSendChanging(System.Nullable<System.DateTime> value);
+    partial void OnDateSendChanged();
+    partial void OnUserNameChanging(System.Nullable<System.DateTime> value);
+    partial void OnUserNameChanged();
+    partial void OnTitleChanging(System.Nullable<System.DateTime> value);
+    partial void OnTitleChanged();
+    partial void OnTypeChanging(System.Nullable<int> value);
+    partial void OnTypeChanged();
+    partial void OnAcceptedChanging(System.Nullable<bool> value);
+    partial void OnAcceptedChanged();
+    partial void OnViewFlagChanging(System.Nullable<bool> value);
+    partial void OnViewFlagChanged();
+    partial void OnSendToChanging(System.Nullable<int> value);
+    partial void OnSendToChanged();
+    partial void OnSendFlagChanging(System.Nullable<bool> value);
+    partial void OnSendFlagChanged();
+    #endregion
+		
+		public Notify()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Userid", DbType="Int")]
+		public System.Nullable<int> Userid
+		{
+			get
+			{
+				return this._Userid;
+			}
+			set
+			{
+				if ((this._Userid != value))
+				{
+					this.OnUseridChanging(value);
+					this.SendPropertyChanging();
+					this._Userid = value;
+					this.SendPropertyChanged("Userid");
+					this.OnUseridChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Newsid", DbType="Int")]
+		public System.Nullable<int> Newsid
+		{
+			get
+			{
+				return this._Newsid;
+			}
+			set
+			{
+				if ((this._Newsid != value))
+				{
+					this.OnNewsidChanging(value);
+					this.SendPropertyChanging();
+					this._Newsid = value;
+					this.SendPropertyChanged("Newsid");
+					this.OnNewsidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateSend", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DateSend
+		{
+			get
+			{
+				return this._DateSend;
+			}
+			set
+			{
+				if ((this._DateSend != value))
+				{
+					this.OnDateSendChanging(value);
+					this.SendPropertyChanging();
+					this._DateSend = value;
+					this.SendPropertyChanged("DateSend");
+					this.OnDateSendChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="DateTime")]
+		public System.Nullable<System.DateTime> UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="Int")]
+		public System.Nullable<int> Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Accepted", DbType="Bit")]
+		public System.Nullable<bool> Accepted
+		{
+			get
+			{
+				return this._Accepted;
+			}
+			set
+			{
+				if ((this._Accepted != value))
+				{
+					this.OnAcceptedChanging(value);
+					this.SendPropertyChanging();
+					this._Accepted = value;
+					this.SendPropertyChanged("Accepted");
+					this.OnAcceptedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ViewFlag", DbType="Bit")]
+		public System.Nullable<bool> ViewFlag
+		{
+			get
+			{
+				return this._ViewFlag;
+			}
+			set
+			{
+				if ((this._ViewFlag != value))
+				{
+					this.OnViewFlagChanging(value);
+					this.SendPropertyChanging();
+					this._ViewFlag = value;
+					this.SendPropertyChanged("ViewFlag");
+					this.OnViewFlagChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendTo", DbType="Int")]
+		public System.Nullable<int> SendTo
+		{
+			get
+			{
+				return this._SendTo;
+			}
+			set
+			{
+				if ((this._SendTo != value))
+				{
+					this.OnSendToChanging(value);
+					this.SendPropertyChanging();
+					this._SendTo = value;
+					this.SendPropertyChanged("SendTo");
+					this.OnSendToChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendFlag", DbType="Bit")]
+		public System.Nullable<bool> SendFlag
+		{
+			get
+			{
+				return this._SendFlag;
+			}
+			set
+			{
+				if ((this._SendFlag != value))
+				{
+					this.OnSendFlagChanging(value);
+					this.SendPropertyChanging();
+					this._SendFlag = value;
+					this.SendPropertyChanged("SendFlag");
+					this.OnSendFlagChanged();
 				}
 			}
 		}
