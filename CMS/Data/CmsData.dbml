@@ -130,8 +130,6 @@
       <Association Name="Customer_ActivityLog" Member="ActivityLogs" ThisKey="Id" OtherKey="CustomerId" Type="ActivityLog" />
       <Association Name="Customer_CustomerAddress" Member="CustomerAddresses" ThisKey="Id" OtherKey="Customer_Id" Type="CustomerAddress" />
       <Association Name="Customer_Log" Member="Logs" ThisKey="Id" OtherKey="CustomerId" Type="Log" />
-      <Association Name="Customer_PaymentHistory" Member="PaymentHistories" ThisKey="Id" OtherKey="CashierId" Type="PaymentHistory" />
-      <Association Name="Customer_PaymentHistory1" Member="PaymentHistories1" ThisKey="Id" OtherKey="CustomerId" Type="PaymentHistory" />
       <Association Name="Customer_PrivateMessage" Member="PrivateMessages" ThisKey="Id" OtherKey="FromCustomerId" Type="PrivateMessage" />
       <Association Name="Customer_PrivateMessage1" Member="PrivateMessages1" ThisKey="Id" OtherKey="ToCustomerId" Type="PrivateMessage" />
     </Type>
@@ -364,25 +362,6 @@
       <Column Name="Orders" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Controller" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
       <Column Name="Action" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.PaymentHistory" Member="PaymentHistories">
-    <Type Name="PaymentHistory">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="PaymentMethodId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="CashierId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Notes" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
-      <Column Name="PaymentStatusId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Num" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ExtendTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Customer_PaymentHistory" Member="Customer" ThisKey="CashierId" OtherKey="Id" Type="Customer" IsForeignKey="true" />
-      <Association Name="Customer_PaymentHistory1" Member="Customer1" ThisKey="CustomerId" OtherKey="Id" Type="Customer" IsForeignKey="true" />
-      <Association Name="PaymentMethod_PaymentHistory" Member="PaymentMethod" ThisKey="PaymentMethodId" OtherKey="Id" Type="PaymentMethod" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.PaymentMethod" Member="PaymentMethods">
@@ -687,6 +666,26 @@
       <Column Name="ViewFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="SendTo" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SendFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentAccepted" Member="PaymentAccepteds">
+    <Type Name="PaymentAccepted">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AmountTotal" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentHistory" Member="PaymentHistories">
+    <Type Name="PaymentHistory">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PaymentMethodId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="PaymentMethod_PaymentHistory" Member="PaymentMethod" ThisKey="PaymentMethodId" OtherKey="Id" Type="PaymentMethod" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

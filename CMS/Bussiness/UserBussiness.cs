@@ -15,12 +15,17 @@ namespace CMS.Bussiness
 
         public List<User> GetAllUser()
         {
-            return db.Users.Where(x=>x.IsDeleted == false).OrderBy(m => m.Id).ToList();
+            return db.Users.Where(x => x.IsDeleted == false).OrderBy(m => m.Id).ToList();
         }
 
         public User GetUserById(int id)
         {
-            return db.Users.FirstOrDefault(x=>x.Id == id);
+            return db.Users.FirstOrDefault(x => x.Id == id);
+        }
+
+        public int GetUserByName(string name)
+        {
+            return db.Users.FirstOrDefault(x => x.UserName == name).Id;
         }
 
         /// <summary>
@@ -61,7 +66,7 @@ namespace CMS.Bussiness
             db.SubmitChanges();
         }
 
-        public Boolean ChangePassword(int id,string password,string oldPassword)
+        public Boolean ChangePassword(int id, string password, string oldPassword)
         {
             var user = db.Users.FirstOrDefault(x => x.Id == id);
             if (user.Password != Helpers.md5(user.UserName.Trim() + "ozo" + oldPassword.Trim())) return false;

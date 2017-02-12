@@ -2750,6 +2750,7 @@
     <Compile Include="Bussiness\DistrictBussiness.cs" />
     <Compile Include="Bussiness\MenuBussiness.cs" />
     <Compile Include="Bussiness\OperationBussiness.cs" />
+    <Compile Include="Bussiness\PaymentBussiness.cs" />
     <Compile Include="Bussiness\ProviceBussiness.cs" />
     <Compile Include="Bussiness\RoleAccessBussiness.cs" />
     <Compile Include="Bussiness\RoleBussiness.cs" />
@@ -2765,6 +2766,7 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\NoticeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ProviceController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -2784,6 +2786,7 @@
     <Compile Include="ViewModel\DistrictViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="ViewModel\OperationViewModel.cs" />
+    <Compile Include="ViewModel\PaymentViewModel.cs" />
     <Compile Include="ViewModel\ProvinceViewModel.cs" />
     <Compile Include="ViewModel\RoleViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
@@ -2819,6 +2822,7 @@
     <Content Include="Views\Provice\Index.cshtml" />
     <Content Include="Views\Provice\Create.cshtml" />
     <Content Include="Views\Provice\Edit.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

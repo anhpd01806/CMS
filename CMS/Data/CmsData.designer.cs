@@ -114,9 +114,6 @@ namespace CMS.Data
     partial void InsertOperation(Operation instance);
     partial void UpdateOperation(Operation instance);
     partial void DeleteOperation(Operation instance);
-    partial void InsertPaymentHistory(PaymentHistory instance);
-    partial void UpdatePaymentHistory(PaymentHistory instance);
-    partial void DeletePaymentHistory(PaymentHistory instance);
     partial void InsertPaymentMethod(PaymentMethod instance);
     partial void UpdatePaymentMethod(PaymentMethod instance);
     partial void DeletePaymentMethod(PaymentMethod instance);
@@ -198,6 +195,12 @@ namespace CMS.Data
     partial void InsertNotify(Notify instance);
     partial void UpdateNotify(Notify instance);
     partial void DeleteNotify(Notify instance);
+    partial void InsertPaymentAccepted(PaymentAccepted instance);
+    partial void UpdatePaymentAccepted(PaymentAccepted instance);
+    partial void DeletePaymentAccepted(PaymentAccepted instance);
+    partial void InsertPaymentHistory(PaymentHistory instance);
+    partial void UpdatePaymentHistory(PaymentHistory instance);
+    partial void DeletePaymentHistory(PaymentHistory instance);
     #endregion
 		
 		public CmsDataDataContext() : 
@@ -454,14 +457,6 @@ namespace CMS.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<PaymentHistory> PaymentHistories
-		{
-			get
-			{
-				return this.GetTable<PaymentHistory>();
-			}
-		}
-		
 		public System.Data.Linq.Table<PaymentMethod> PaymentMethods
 		{
 			get
@@ -691,6 +686,22 @@ namespace CMS.Data
 			get
 			{
 				return this.GetTable<Notify>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PaymentAccepted> PaymentAccepteds
+		{
+			get
+			{
+				return this.GetTable<PaymentAccepted>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PaymentHistory> PaymentHistories
+		{
+			get
+			{
+				return this.GetTable<PaymentHistory>();
 			}
 		}
 	}
@@ -2765,10 +2776,6 @@ namespace CMS.Data
 		
 		private EntitySet<Log> _Logs;
 		
-		private EntitySet<PaymentHistory> _PaymentHistories;
-		
-		private EntitySet<PaymentHistory> _PaymentHistories1;
-		
 		private EntitySet<PrivateMessage> _PrivateMessages;
 		
 		private EntitySet<PrivateMessage> _PrivateMessages1;
@@ -2834,8 +2841,6 @@ namespace CMS.Data
 			this._ActivityLogs = new EntitySet<ActivityLog>(new Action<ActivityLog>(this.attach_ActivityLogs), new Action<ActivityLog>(this.detach_ActivityLogs));
 			this._CustomerAddresses = new EntitySet<CustomerAddress>(new Action<CustomerAddress>(this.attach_CustomerAddresses), new Action<CustomerAddress>(this.detach_CustomerAddresses));
 			this._Logs = new EntitySet<Log>(new Action<Log>(this.attach_Logs), new Action<Log>(this.detach_Logs));
-			this._PaymentHistories = new EntitySet<PaymentHistory>(new Action<PaymentHistory>(this.attach_PaymentHistories), new Action<PaymentHistory>(this.detach_PaymentHistories));
-			this._PaymentHistories1 = new EntitySet<PaymentHistory>(new Action<PaymentHistory>(this.attach_PaymentHistories1), new Action<PaymentHistory>(this.detach_PaymentHistories1));
 			this._PrivateMessages = new EntitySet<PrivateMessage>(new Action<PrivateMessage>(this.attach_PrivateMessages), new Action<PrivateMessage>(this.detach_PrivateMessages));
 			this._PrivateMessages1 = new EntitySet<PrivateMessage>(new Action<PrivateMessage>(this.attach_PrivateMessages1), new Action<PrivateMessage>(this.detach_PrivateMessages1));
 			OnCreated();
@@ -3380,32 +3385,6 @@ namespace CMS.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_PaymentHistory", Storage="_PaymentHistories", ThisKey="Id", OtherKey="CashierId")]
-		public EntitySet<PaymentHistory> PaymentHistories
-		{
-			get
-			{
-				return this._PaymentHistories;
-			}
-			set
-			{
-				this._PaymentHistories.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_PaymentHistory1", Storage="_PaymentHistories1", ThisKey="Id", OtherKey="CustomerId")]
-		public EntitySet<PaymentHistory> PaymentHistories1
-		{
-			get
-			{
-				return this._PaymentHistories1;
-			}
-			set
-			{
-				this._PaymentHistories1.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_PrivateMessage", Storage="_PrivateMessages", ThisKey="Id", OtherKey="FromCustomerId")]
 		public EntitySet<PrivateMessage> PrivateMessages
 		{
@@ -3486,30 +3465,6 @@ namespace CMS.Data
 		{
 			this.SendPropertyChanging();
 			entity.Customer = null;
-		}
-		
-		private void attach_PaymentHistories(PaymentHistory entity)
-		{
-			this.SendPropertyChanging();
-			entity.Customer = this;
-		}
-		
-		private void detach_PaymentHistories(PaymentHistory entity)
-		{
-			this.SendPropertyChanging();
-			entity.Customer = null;
-		}
-		
-		private void attach_PaymentHistories1(PaymentHistory entity)
-		{
-			this.SendPropertyChanging();
-			entity.Customer1 = this;
-		}
-		
-		private void detach_PaymentHistories1(PaymentHistory entity)
-		{
-			this.SendPropertyChanging();
-			entity.Customer1 = null;
 		}
 		
 		private void attach_PrivateMessages(PrivateMessage entity)
@@ -8010,455 +7965,6 @@ namespace CMS.Data
 					this._Action = value;
 					this.SendPropertyChanged("Action");
 					this.OnActionChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PaymentHistory")]
-	public partial class PaymentHistory : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _CustomerId;
-		
-		private int _PaymentMethodId;
-		
-		private System.DateTime _CreatedDate;
-		
-		private decimal _Amount;
-		
-		private System.Nullable<int> _CashierId;
-		
-		private System.DateTime _StartDate;
-		
-		private System.DateTime _EndDate;
-		
-		private string _Notes;
-		
-		private int _PaymentStatusId;
-		
-		private System.Nullable<int> _Num;
-		
-		private int _ExtendTypeId;
-		
-		private EntityRef<Customer> _Customer;
-		
-		private EntityRef<Customer> _Customer1;
-		
-		private EntityRef<PaymentMethod> _PaymentMethod;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnCustomerIdChanging(int value);
-    partial void OnCustomerIdChanged();
-    partial void OnPaymentMethodIdChanging(int value);
-    partial void OnPaymentMethodIdChanged();
-    partial void OnCreatedDateChanging(System.DateTime value);
-    partial void OnCreatedDateChanged();
-    partial void OnAmountChanging(decimal value);
-    partial void OnAmountChanged();
-    partial void OnCashierIdChanging(System.Nullable<int> value);
-    partial void OnCashierIdChanged();
-    partial void OnStartDateChanging(System.DateTime value);
-    partial void OnStartDateChanged();
-    partial void OnEndDateChanging(System.DateTime value);
-    partial void OnEndDateChanged();
-    partial void OnNotesChanging(string value);
-    partial void OnNotesChanged();
-    partial void OnPaymentStatusIdChanging(int value);
-    partial void OnPaymentStatusIdChanged();
-    partial void OnNumChanging(System.Nullable<int> value);
-    partial void OnNumChanged();
-    partial void OnExtendTypeIdChanging(int value);
-    partial void OnExtendTypeIdChanged();
-    #endregion
-		
-		public PaymentHistory()
-		{
-			this._Customer = default(EntityRef<Customer>);
-			this._Customer1 = default(EntityRef<Customer>);
-			this._PaymentMethod = default(EntityRef<PaymentMethod>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerId", DbType="Int NOT NULL")]
-		public int CustomerId
-		{
-			get
-			{
-				return this._CustomerId;
-			}
-			set
-			{
-				if ((this._CustomerId != value))
-				{
-					if (this._Customer1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCustomerIdChanging(value);
-					this.SendPropertyChanging();
-					this._CustomerId = value;
-					this.SendPropertyChanged("CustomerId");
-					this.OnCustomerIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMethodId", DbType="Int NOT NULL")]
-		public int PaymentMethodId
-		{
-			get
-			{
-				return this._PaymentMethodId;
-			}
-			set
-			{
-				if ((this._PaymentMethodId != value))
-				{
-					if (this._PaymentMethod.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPaymentMethodIdChanging(value);
-					this.SendPropertyChanging();
-					this._PaymentMethodId = value;
-					this.SendPropertyChanged("PaymentMethodId");
-					this.OnPaymentMethodIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedDate
-		{
-			get
-			{
-				return this._CreatedDate;
-			}
-			set
-			{
-				if ((this._CreatedDate != value))
-				{
-					this.OnCreatedDateChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedDate = value;
-					this.SendPropertyChanged("CreatedDate");
-					this.OnCreatedDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Amount
-		{
-			get
-			{
-				return this._Amount;
-			}
-			set
-			{
-				if ((this._Amount != value))
-				{
-					this.OnAmountChanging(value);
-					this.SendPropertyChanging();
-					this._Amount = value;
-					this.SendPropertyChanged("Amount");
-					this.OnAmountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CashierId", DbType="Int")]
-		public System.Nullable<int> CashierId
-		{
-			get
-			{
-				return this._CashierId;
-			}
-			set
-			{
-				if ((this._CashierId != value))
-				{
-					if (this._Customer.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCashierIdChanging(value);
-					this.SendPropertyChanging();
-					this._CashierId = value;
-					this.SendPropertyChanged("CashierId");
-					this.OnCashierIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartDate", DbType="DateTime NOT NULL")]
-		public System.DateTime StartDate
-		{
-			get
-			{
-				return this._StartDate;
-			}
-			set
-			{
-				if ((this._StartDate != value))
-				{
-					this.OnStartDateChanging(value);
-					this.SendPropertyChanging();
-					this._StartDate = value;
-					this.SendPropertyChanged("StartDate");
-					this.OnStartDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndDate", DbType="DateTime NOT NULL")]
-		public System.DateTime EndDate
-		{
-			get
-			{
-				return this._EndDate;
-			}
-			set
-			{
-				if ((this._EndDate != value))
-				{
-					this.OnEndDateChanging(value);
-					this.SendPropertyChanging();
-					this._EndDate = value;
-					this.SendPropertyChanged("EndDate");
-					this.OnEndDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="NVarChar(500)")]
-		public string Notes
-		{
-			get
-			{
-				return this._Notes;
-			}
-			set
-			{
-				if ((this._Notes != value))
-				{
-					this.OnNotesChanging(value);
-					this.SendPropertyChanging();
-					this._Notes = value;
-					this.SendPropertyChanged("Notes");
-					this.OnNotesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentStatusId", DbType="Int NOT NULL")]
-		public int PaymentStatusId
-		{
-			get
-			{
-				return this._PaymentStatusId;
-			}
-			set
-			{
-				if ((this._PaymentStatusId != value))
-				{
-					this.OnPaymentStatusIdChanging(value);
-					this.SendPropertyChanging();
-					this._PaymentStatusId = value;
-					this.SendPropertyChanged("PaymentStatusId");
-					this.OnPaymentStatusIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Num", DbType="Int")]
-		public System.Nullable<int> Num
-		{
-			get
-			{
-				return this._Num;
-			}
-			set
-			{
-				if ((this._Num != value))
-				{
-					this.OnNumChanging(value);
-					this.SendPropertyChanging();
-					this._Num = value;
-					this.SendPropertyChanged("Num");
-					this.OnNumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExtendTypeId", DbType="Int NOT NULL")]
-		public int ExtendTypeId
-		{
-			get
-			{
-				return this._ExtendTypeId;
-			}
-			set
-			{
-				if ((this._ExtendTypeId != value))
-				{
-					this.OnExtendTypeIdChanging(value);
-					this.SendPropertyChanging();
-					this._ExtendTypeId = value;
-					this.SendPropertyChanged("ExtendTypeId");
-					this.OnExtendTypeIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_PaymentHistory", Storage="_Customer", ThisKey="CashierId", OtherKey="Id", IsForeignKey=true)]
-		public Customer Customer
-		{
-			get
-			{
-				return this._Customer.Entity;
-			}
-			set
-			{
-				Customer previousValue = this._Customer.Entity;
-				if (((previousValue != value) 
-							|| (this._Customer.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Customer.Entity = null;
-						previousValue.PaymentHistories.Remove(this);
-					}
-					this._Customer.Entity = value;
-					if ((value != null))
-					{
-						value.PaymentHistories.Add(this);
-						this._CashierId = value.Id;
-					}
-					else
-					{
-						this._CashierId = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Customer");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_PaymentHistory1", Storage="_Customer1", ThisKey="CustomerId", OtherKey="Id", IsForeignKey=true)]
-		public Customer Customer1
-		{
-			get
-			{
-				return this._Customer1.Entity;
-			}
-			set
-			{
-				Customer previousValue = this._Customer1.Entity;
-				if (((previousValue != value) 
-							|| (this._Customer1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Customer1.Entity = null;
-						previousValue.PaymentHistories1.Remove(this);
-					}
-					this._Customer1.Entity = value;
-					if ((value != null))
-					{
-						value.PaymentHistories1.Add(this);
-						this._CustomerId = value.Id;
-					}
-					else
-					{
-						this._CustomerId = default(int);
-					}
-					this.SendPropertyChanged("Customer1");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentMethod_PaymentHistory", Storage="_PaymentMethod", ThisKey="PaymentMethodId", OtherKey="Id", IsForeignKey=true)]
-		public PaymentMethod PaymentMethod
-		{
-			get
-			{
-				return this._PaymentMethod.Entity;
-			}
-			set
-			{
-				PaymentMethod previousValue = this._PaymentMethod.Entity;
-				if (((previousValue != value) 
-							|| (this._PaymentMethod.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PaymentMethod.Entity = null;
-						previousValue.PaymentHistories.Remove(this);
-					}
-					this._PaymentMethod.Entity = value;
-					if ((value != null))
-					{
-						value.PaymentHistories.Add(this);
-						this._PaymentMethodId = value.Id;
-					}
-					else
-					{
-						this._PaymentMethodId = default(int);
-					}
-					this.SendPropertyChanged("PaymentMethod");
 				}
 			}
 		}
@@ -14096,6 +13602,387 @@ namespace CMS.Data
 					this._SendFlag = value;
 					this.SendPropertyChanged("SendFlag");
 					this.OnSendFlagChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PaymentAccepted")]
+	public partial class PaymentAccepted : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _UserId;
+		
+		private long _AmountTotal;
+		
+		private System.DateTime _StartDate;
+		
+		private System.DateTime _EndDate;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnAmountTotalChanging(long value);
+    partial void OnAmountTotalChanged();
+    partial void OnStartDateChanging(System.DateTime value);
+    partial void OnStartDateChanged();
+    partial void OnEndDateChanging(System.DateTime value);
+    partial void OnEndDateChanged();
+    #endregion
+		
+		public PaymentAccepted()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int NOT NULL")]
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AmountTotal", DbType="BigInt NOT NULL")]
+		public long AmountTotal
+		{
+			get
+			{
+				return this._AmountTotal;
+			}
+			set
+			{
+				if ((this._AmountTotal != value))
+				{
+					this.OnAmountTotalChanging(value);
+					this.SendPropertyChanging();
+					this._AmountTotal = value;
+					this.SendPropertyChanged("AmountTotal");
+					this.OnAmountTotalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartDate", DbType="DateTime NOT NULL")]
+		public System.DateTime StartDate
+		{
+			get
+			{
+				return this._StartDate;
+			}
+			set
+			{
+				if ((this._StartDate != value))
+				{
+					this.OnStartDateChanging(value);
+					this.SendPropertyChanging();
+					this._StartDate = value;
+					this.SendPropertyChanged("StartDate");
+					this.OnStartDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndDate", DbType="DateTime NOT NULL")]
+		public System.DateTime EndDate
+		{
+			get
+			{
+				return this._EndDate;
+			}
+			set
+			{
+				if ((this._EndDate != value))
+				{
+					this.OnEndDateChanging(value);
+					this.SendPropertyChanging();
+					this._EndDate = value;
+					this.SendPropertyChanged("EndDate");
+					this.OnEndDateChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PaymentHistory")]
+	public partial class PaymentHistory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _PaymentMethodId;
+		
+		private System.DateTime _CreatedDate;
+		
+		private System.Nullable<long> _Amount;
+		
+		private string _Notes;
+		
+		private int _UserId;
+		
+		private EntityRef<PaymentMethod> _PaymentMethod;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnPaymentMethodIdChanging(int value);
+    partial void OnPaymentMethodIdChanged();
+    partial void OnCreatedDateChanging(System.DateTime value);
+    partial void OnCreatedDateChanged();
+    partial void OnAmountChanging(System.Nullable<long> value);
+    partial void OnAmountChanged();
+    partial void OnNotesChanging(string value);
+    partial void OnNotesChanged();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    #endregion
+		
+		public PaymentHistory()
+		{
+			this._PaymentMethod = default(EntityRef<PaymentMethod>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMethodId", DbType="Int NOT NULL")]
+		public int PaymentMethodId
+		{
+			get
+			{
+				return this._PaymentMethodId;
+			}
+			set
+			{
+				if ((this._PaymentMethodId != value))
+				{
+					if (this._PaymentMethod.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPaymentMethodIdChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentMethodId = value;
+					this.SendPropertyChanged("PaymentMethodId");
+					this.OnPaymentMethodIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedDate
+		{
+			get
+			{
+				return this._CreatedDate;
+			}
+			set
+			{
+				if ((this._CreatedDate != value))
+				{
+					this.OnCreatedDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedDate = value;
+					this.SendPropertyChanged("CreatedDate");
+					this.OnCreatedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="BigInt")]
+		public System.Nullable<long> Amount
+		{
+			get
+			{
+				return this._Amount;
+			}
+			set
+			{
+				if ((this._Amount != value))
+				{
+					this.OnAmountChanging(value);
+					this.SendPropertyChanging();
+					this._Amount = value;
+					this.SendPropertyChanged("Amount");
+					this.OnAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="NVarChar(500)")]
+		public string Notes
+		{
+			get
+			{
+				return this._Notes;
+			}
+			set
+			{
+				if ((this._Notes != value))
+				{
+					this.OnNotesChanging(value);
+					this.SendPropertyChanging();
+					this._Notes = value;
+					this.SendPropertyChanged("Notes");
+					this.OnNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int NOT NULL")]
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentMethod_PaymentHistory", Storage="_PaymentMethod", ThisKey="PaymentMethodId", OtherKey="Id", IsForeignKey=true)]
+		public PaymentMethod PaymentMethod
+		{
+			get
+			{
+				return this._PaymentMethod.Entity;
+			}
+			set
+			{
+				PaymentMethod previousValue = this._PaymentMethod.Entity;
+				if (((previousValue != value) 
+							|| (this._PaymentMethod.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PaymentMethod.Entity = null;
+						previousValue.PaymentHistories.Remove(this);
+					}
+					this._PaymentMethod.Entity = value;
+					if ((value != null))
+					{
+						value.PaymentHistories.Add(this);
+						this._PaymentMethodId = value.Id;
+					}
+					else
+					{
+						this._PaymentMethodId = default(int);
+					}
+					this.SendPropertyChanged("PaymentMethod");
 				}
 			}
 		}
