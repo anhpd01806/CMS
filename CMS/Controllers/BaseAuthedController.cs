@@ -3,6 +3,7 @@ using CMS.Data;
 using CMS.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -161,7 +162,7 @@ namespace WebBackendPlus.Controllers
         /// <param name="action"></param>
         /// <param name="titleForm"></param>
         /// <returns></returns>
-        protected string GetBreadCrumb(string controller, string action, ref string titleForm)
+        public string GetBreadCrumb(string controller, string action, ref string titleForm)
         {
             try
             {
@@ -243,7 +244,7 @@ namespace WebBackendPlus.Controllers
         /// <param name="urlCurrent"></param>
         /// <param name="controller"></param>
         /// <param name="action"></param>
-        protected void GetInfoAuth(string urlCurrent, ref string controller, ref string action)
+        public void GetInfoAuth(string urlCurrent, ref string controller, ref string action)
         {
             string[] array = urlCurrent.Split('/');
 
@@ -264,6 +265,38 @@ namespace WebBackendPlus.Controllers
                     controller = array[1];
                     action = "Index";
                 }
+            }
+        }
+
+        public string RenderPartialViewToString()
+        {
+            return RenderPartialViewToString(null, null);
+        }
+
+        public string RenderPartialViewToString(string viewName)
+        {
+            return RenderPartialViewToString(viewName, null);
+        }
+
+        public string RenderPartialViewToString(object model)
+        {
+            return RenderPartialViewToString(null, model);
+        }
+
+        public string RenderPartialViewToString(string viewName, object model)
+        {
+            if (string.IsNullOrEmpty(viewName))
+                viewName = ControllerContext.RouteData.GetRequiredString("action");
+
+            ViewData.Model = model;
+
+            using (StringWriter sw = new StringWriter())
+            {
+                ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+
+                return sw.GetStringBuilder().ToString();
             }
         }
     }
