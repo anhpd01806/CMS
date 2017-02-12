@@ -1,0 +1,114 @@
+﻿.dataTables_wrapper .row-fluid:last-child {
+    border-top: 1px solid #DDD;
+    padding: 12px 0 6px;
+    background-color: #eff3f8;
+    border-bottom: 1px solid #DDD;
+}
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form-horizontal .control-label {
+    float: left;
+    width: 130px;
+    padding-top: 5px;
+    text-align: right;
+}
+
+label, .lbl {
+    vertical-align: middle;
+}
+
+.form-horizontal .control-group {
+    margin-bottom: 20px;
+}
+
+.form-horizontal .controls {
+    margin-left: 140px;
+}
+
+.form-horizontal .form-actions {
+    padding-left: 140px;
+}
+
+.form-horizontal .control-group:before, .form-horizontal .control-group:after {
+    display: table;
+    line-height: 0;
+    content: "";
+}
+
+.form-horizontal .control-group:after {
+    clear: both;
+}
+
+.form-horizontal .control-group:before, .form-horizontal .control-group:after {
+    display: table;
+    line-height: 0;
+    content: "";
+}
+
+.td-medium {
+    min-width: 100px;
+    text-align: center;
+}
+
+.td-small {
+    min-width: 85px;
+    text-align: left;
+}
+
+.td-actions {
+    width: 130px;
+    text-align: center;
+}
+
+.custom-table {
+    margin-bottom: 0;
+}
+
+.customheader {
+    padding: 5px 15px;
+    margin-top: 10px;
+}
+
+    .customheader h3 {
+        display: inline;
+        font-size: 16px;
+        font-weight: bold;
+        vertical-align: middle;
+    }
+
+@media (min-width: 768px) {
+    .custommodal {
+        width: 800px;
+        margin: 30px auto;
+    }
+}
+
+.btn-modal {
+    text-align: left;
+}
+.mCustomScrollbar {
+    max-height: 400px;
+    overflow: hidden;
+    padding-right: 20px;
+}
+.mCustomScrollbar h5 {
+    font-size: 14px;
+}
+.modal-price {
+    color: #3e53a6;
+    font-size: 26px;
+    font-weight: bold;
+    text-align: right;
+}
+.modal-detail-right{
+    padding: 10px 0; 
+}
+.modal-detail-right h5 {
+    padding: 10px 0px;
+    font-size: 14px;
+}
+.input-group[class*=col-]{
+    padding-left: 10px;
+}
