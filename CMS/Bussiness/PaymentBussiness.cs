@@ -31,7 +31,12 @@ namespace CMS.Bussiness
 
         public List<PaymentHistory> GetPaymentHistoryByUserId(int userId)
         {
-            return db.PaymentHistories.Where(x => x.UserId == userId).ToList();
+            return db.PaymentHistories.Where(x => x.UserId == userId && x.CreatedDate <= DateTime.Now && x.CreatedDate >= DateTime.Now.AddDays(-30)).OrderByDescending(x=>x.CreatedDate).ToList();
+        }
+
+        public string GetPaymentMethodById(int id)
+        {
+            return db.PaymentMethods.FirstOrDefault(x => x.Id == id).Name;
         }
     }
 }

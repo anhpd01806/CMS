@@ -19,7 +19,7 @@ namespace CMS.ViewModel
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Không được để trống")]
-        [RegularExpression("([0-9,]+)", ErrorMessage = "Vui lòng nhập số tiền bằng số")]
+        [RegularExpression("(-|)([0-9,]+)", ErrorMessage = "Vui lòng nhập số tiền bằng số")]
         public string Amount { get; set; }
 
         public int PaymentMethodId { get; set; }
@@ -27,9 +27,13 @@ namespace CMS.ViewModel
         public string Note { get; set; }
     }
 
-    //public class PaymentHistory
-    //{
-    //    public int Id { get; set; }
-    //    public int CustomerId { get; set; }
-    //}
+    public class PaymentHistoryModel
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public string DateString { get; set; }
+        public string Amount { get; set; }
+        public string Notes { get; set; }
+        public string PaymentMethod { get; set; }
+    }
 }

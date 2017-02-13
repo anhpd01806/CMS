@@ -13,13 +13,24 @@
             $("#txtUserName").focusout(function () {
                 $.ajax({
                     type: "GET",
-                    url: "Payment/GetHistory",
-                    data: { UserName: "0976244811" },
+                    url: "/Payment/GetHistory",
+                    data: { UserName: $("#txtUserName").val() },
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
                     success: function (result) {
                         debugger;
-                        alert(result.Id)
+                        $("#datatable1 > tbody").html("");
+                        $(function () {
+                            $.each(result, function (i, item) {
+                                $('<tr>').append(
+                                $('<td>').text((i+1)),
+                                $('<td>').text(item.DateString),
+                                $('<td>').text(item.PaymentMethod),
+                                $('<td>').text(item.Amount),
+                                $('<td>').text(item.Notes)).appendTo('#datatable1 > tbody');
+                            });
+                        });
+                        
                     },
                     error: function (response) {
                         debugger;
@@ -46,7 +57,7 @@
         });
 
         $(function ($) {
-            $('#txtNumber').autoNumeric('init', { lZero: 'deny', aSep: ',', mDec: 0 });
+            $('#txtNumber').autoNumeric('init', { lZero: 'deny', aSep: ',', mDec: 0, vMin:-10000000 });
         });
         $("#txtUserName").focusout(function () {
             alert('oke');
