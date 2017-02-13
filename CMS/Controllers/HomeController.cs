@@ -126,7 +126,8 @@ namespace CMS.Controllers
             try
             {
                 var Id = Convert.ToInt32(Request["Id"]);
-                var news = _bussiness.GetNewsDetail(Id);
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var news = _bussiness.GetNewsDetail(Id, userId);
                 var content = RenderPartialViewToString("~/Views/Home/NewDetail.cshtml", news);
                 return Json(new
                 {

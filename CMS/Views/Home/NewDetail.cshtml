@@ -10,23 +10,35 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-8 mCustomScrollbar">
-                        <h5><strong>Tiêu đề: </strong> @Model.Title</h5>
-                        <h5><strong>Nội dung :</strong></h5>
-                        <p>
-                            @Html.Raw(@Model.Contents)
-                        </p>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#detail" role="tab" data-toggle="tab">Chi tiết bài đăng</a></li>
+                    <li role="presentation"><a href="#image" role="tab" data-toggle="tab">Ảnh chi tiết</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="detail">
+                        <div class="row">
+                            <div class="col-xs-8 mCustomScrollbar">
+                                <h5><strong>Tiêu đề: </strong> @Model.Title</h5>
+                                <h5><strong>Nội dung :</strong></h5>
+                                <p>
+                                    @Html.Raw(@Model.Contents)
+                                </p>
+                            </div>
+                            <div class="col-xs-4 modal-detail-right">
+                                <h5><strong>Giá: </strong> <span class="modal-price"> @Model.PriceText</span></h5>
+                                <h5><strong>Liên hệ: </strong> @Model.Phone</h5>
+                                <h5><strong>Ngày đăng: </strong> @Convert.ToDateTime(Model.CreatedOn).ToString("dd-MM-yyyy")</h5>
+                                <h5><strong>Loại tin: </strong> @Model.StatusName</h5>
+                                <h5><strong>Danh mục: </strong> @Model.CateName</h5>
+                                <h5><strong>Khu vực: </strong> @Model.DistictName</h5>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xs-4 modal-detail-right">
-                        <h5><strong>Giá: </strong> <span class="modal-price"> @Model.PriceText</span></h5>
-                        <h5><strong>Liên hệ: </strong> @Model.Phone</h5>
-                        <h5><strong>Ngày đăng: </strong> @Convert.ToDateTime(Model.CreatedOn).ToString("dd-MM-yyyy")</h5>
-                        <h5><strong>Loại tin: </strong> @Model.StatusName</h5>
-                        <h5><strong>Danh mục: </strong> @Model.CateName</h5>
-                        <h5><strong>Khu vực: </strong> @Model.DistictName</h5>
+                    <div role="tabpanel" class="tab-pane" id="image">
+
                     </div>
                 </div>
+                
             </div>
             <div class="modal-footer">
                 <div class="col-sm-10 btn-modal">

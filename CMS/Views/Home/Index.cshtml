@@ -195,7 +195,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.ListCategory.Any())
+                    @if (Model.ListNew.Any())
                     {
                         foreach (var item in Model.ListNew)
                         {
@@ -229,6 +229,12 @@
                                 </td>
                             </tr>
                         }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+                        </tr>
                     }
                 </tbody>
             </table>

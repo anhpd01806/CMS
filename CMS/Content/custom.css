@@ -89,7 +89,7 @@ label, .lbl {
     text-align: left;
 }
 .mCustomScrollbar {
-    max-height: 400px;
+    max-height: 320px;
     overflow: hidden;
     padding-right: 20px;
 }
