@@ -295,6 +295,12 @@ $(function () {
             var url = "/home/exportexcel";
             location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize);
         });
+        
+        //Change search filter
+
+        $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo").change(function () {
+            LoadData();
+        });
     });
 
     function LoadData() {
@@ -310,28 +316,43 @@ $(function () {
         var pageIndex = parseInt($('#datatable').attr("data-page"));
         var pageSize = parseInt($(".ddlpage").val());
 
-        var data = {
-            cateId: cateId, districtId: districtId, newTypeId: newTypeId,
-            siteId: siteId, backdate: backdate,
-            minPrice: minPrice, maxPrice: maxPrice,
-            from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
-        };
-        $.LoadingOverlay("show");
-        $.post("/home/loaddata", data, function (resp) {
-            if (resp != null) {
-                $("#listnewstable tbody").html("");
-                $("#listnewstable tbody").html(resp.Content);
-                if (resp.TotalPage > 1) {
-                    $(".page-home").show();
-                    showPagination(resp.TotalPage);
-                } else {
-                    $(".page-home").hide();
-                }
-            }
-            $.LoadingOverlay("hide");
-        });
-    }
+        var datefrom = new Date(from.split('-')[1] + "/" + from.split('-')[0] + "/" + from.split('-')[2]);
+        var dateto = new Date(to.split('-')[1] + "/" + to.split('-')[0] + "/" + to.split('-')[2]);
+        
+        if (datefrom.getTime() > dateto.getTime()) {
+            showmessage("error", "Ngày bắt đầu không được lớn hơn ngày kết thúc!");
+        } else {
 
+            var data = {
+                cateId: cateId,
+                districtId: districtId,
+                newTypeId: newTypeId,
+                siteId: siteId,
+                backdate: backdate,
+                minPrice: minPrice,
+                maxPrice: maxPrice,
+                from: from,
+                to: to,
+                pageIndex: pageIndex,
+                pageSize: pageSize
+            };
+            $.LoadingOverlay("show");
+            $.post("/home/loaddata", data, function(resp) {
+                if (resp != null) {
+                    $("#listnewstable tbody").html("");
+                    $("#listnewstable tbody").html(resp.Content);
+                    if (resp.TotalPage > 1) {
+                        $(".page-home").show();
+                        showPagination(resp.TotalPage);
+                    } else {
+                        $(".page-home").hide();
+                    }
+                }
+                $.LoadingOverlay("hide");
+            });
+        }
+    }
+    
     function showPagination(pagesCounter) {
         $('#pagination').remove();
         $('.homepagging').html('<div class="pagination" id="pagination"></div>');
