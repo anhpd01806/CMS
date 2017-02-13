@@ -279,6 +279,22 @@ $(function () {
             }
             $("#newsdetail").modal("hide");
         });
+
+        $(document).on("click", ".btnexport", function () {
+            var cateId = parseInt($(".cateId").val());
+            var districtId = parseInt($(".districtId").val());
+            var newTypeId = parseInt($(".newTypeId").val());
+            var siteId = parseInt($(".siteId").val());
+            var backdate = parseInt($(".ddlbackdate").val());
+            var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
+            var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+            var from = $(".txtFrom").val();
+            var to = $(".txtTo").val();
+            var pageIndex = parseInt($('#datatable').attr("data-page"));
+            var pageSize = parseInt($(".ddlpage").val());
+            var url = "/home/exportexcel";
+            location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize);
+        });
     });
 
     function LoadData() {

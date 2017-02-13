@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CMS.Models;
 using Elmah;
+using OfficeOpenXml;
 using CMS.Bussiness;
 using WebBackendPlus.Controllers;
 using CMS.ViewModel;
@@ -210,6 +213,97 @@ namespace CMS.Controllers
             }
         }
 
-        
+        public ActionResult ExportExcel(int cateId, int districtId, int newTypeId, int siteId, int backdate, decimal
+                minPrice, decimal maxPrice, string from, string to, int pageIndex, int pageSize)
+        {
+
+            string fileName = string.Format("News_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
+            string filePath = Path.Combine(Request.PhysicalApplicationPath, "File\\ExportImport", fileName);
+            var folder = Request.PhysicalApplicationPath + "File\\ExportImport";
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+            int total = 0;
+            int userId = Convert.ToInt32(Session["SS-USERID"]);
+            var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, ref total);
+            ExportToExcel(filePath, listNews);
+
+            var bytes = System.IO.File.ReadAllBytes(filePath);
+            return File(bytes, "text/xls", fileName);
+        }
+
+        public virtual void ExportToExcel(string filePath, IList<NewsModel> listnews)
+        {
+            var newFile = new FileInfo(filePath);
+
+            // ok, we can run the real code of the sample now
+            using (var xlPackage = new ExcelPackage(newFile))
+            {
+                // uncomment this line if you want the XML written out to the outputDir
+                //xlPackage.DebugMode = true; 
+
+                // get handle to the existing worksheet
+                var worksheet = xlPackage.Workbook.Worksheets.Add("Danh sách tin tức");
+                xlPackage.Workbook.CalcMode = ExcelCalcMode.Manual;
+                //Create Headers and format them
+                var properties = new string[]
+                    {
+                        "STT",
+                        "Tiêu đề",
+                        "Quận huyện",
+                        "Ngày đăng",
+                        "Giá",
+                        "Điện thoại",
+                        "Loại tin"
+                    };
+                for (var i = 0; i < properties.Length; i++)
+                {
+                    worksheet.Cells[1, i + 1].Value = properties[i];
+                    worksheet.Cells[1, i + 1].Style.Font.Bold = true;
+                }
+
+                var row = 2;
+                var dem = 0;
+                foreach (var item in listnews)
+                {
+                    dem++;
+                    int col = 1;
+
+                    worksheet.Cells[row, col].Value = dem;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.Title;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.DistictName;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyy");
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.PriceText;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.Phone;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.StatusName;
+                    col++;
+                    //next row
+                    row++;
+                }
+
+
+                var nameexcel = "Danh sách tin tức" + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff");
+                xlPackage.Workbook.Properties.Title = string.Format("{0}", nameexcel);
+                xlPackage.Workbook.Properties.Author = "Admin-IT";
+                xlPackage.Workbook.Properties.Subject = string.Format("{0} TINTUC", "");
+                xlPackage.Workbook.Properties.Category = "TINTUC";
+
+                xlPackage.Workbook.Properties.Company = "OZO";
+                xlPackage.Save();
+            }
+        }
     }
 }
