@@ -4,10 +4,12 @@
     background-color: #eff3f8;
     border-bottom: 1px solid #DDD;
 }
+
 .row {
     margin-left: 0;
     margin-right: 0;
 }
+
 .form-horizontal .control-label {
     float: left;
     width: 130px;
@@ -88,27 +90,48 @@ label, .lbl {
 .btn-modal {
     text-align: left;
 }
+
 .mCustomScrollbar {
-    max-height: 320px;
+    max-height: 300px;
     overflow: hidden;
     padding-right: 20px;
+    padding-bottom: 10px;
 }
-.mCustomScrollbar h5 {
-    font-size: 14px;
-}
+
+    .mCustomScrollbar h5 {
+        font-size: 14px;
+    }
+
 .modal-price {
     color: #3e53a6;
     font-size: 26px;
     font-weight: bold;
     text-align: right;
 }
-.modal-detail-right{
-    padding: 10px 0; 
+
+.modal-detail-right {
+    padding: 10px 0;
 }
-.modal-detail-right h5 {
-    padding: 10px 0px;
-    font-size: 14px;
-}
-.input-group[class*=col-]{
+
+    .modal-detail-right h5 {
+        padding: 10px 0px;
+        font-size: 14px;
+    }
+
+.input-group[class*=col-] {
     padding-left: 10px;
+}
+
+.content-slider li {
+    background-color: #ed3020;
+    text-align: center;
+    color: #FFF;
+}
+
+.content-slider h3 {
+    margin: 0;
+    padding: 70px 0;
+}
+.slideimage {
+    min-height: 300px;
 }

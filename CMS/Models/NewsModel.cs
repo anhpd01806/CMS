@@ -7,6 +7,11 @@ namespace CMS.Models
 {
     public class NewsModel
     {
+        public NewsModel()
+        {
+            ListImage = new List<ImageModel>();
+        }
+
         public int Id { get; set; }
 
         public int? CategoryId { get; set; }
@@ -70,5 +75,7 @@ namespace CMS.Models
         public string StatusName { get; set; }
 
         public string CateName { get; set; }
+
+        public List<ImageModel> ListImage { get; set; } 
     }
 }

@@ -125,7 +125,7 @@ $(function () {
         });
 
         $("#check-all").checkAll();
-        $(".mCustomScrollbar").mCustomScrollbar();
+        
         $(document).on("click", ".checkboxItem", function () {
             var count = parseInt($('input:checkbox:checked').length);
             if ($(this).prop('checked')) {
@@ -300,6 +300,24 @@ $(function () {
 
         $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo").change(function () {
             LoadData();
+        });
+        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function(e) {
+            $('#image-gallery').lightSlider({
+                gallery: true,
+                item: 1,
+                thumbItem: 9,
+                slideMargin: 0,
+                speed: 500,
+                auto: true,
+                loop: true,
+                onSliderLoad: function() {
+                    $('#image-gallery').removeClass('cS-hidden');
+                }
+            });
+            $(".mCustomScrollbar").mCustomScrollbar();
+        });
+        $(document).on("shown.bs.modal", function() {
+            $(".mCustomScrollbar").mCustomScrollbar();
         });
     });
 
