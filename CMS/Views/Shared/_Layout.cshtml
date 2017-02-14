@@ -232,7 +232,7 @@
             try{ace.settings.check('main-container' , 'fixed')}catch(e){}
         </script>
 
-        <div id="sidebar" class="sidebar                  responsive">
+        <div id="sidebar" class="sidebar responsive display" style="display:none">
             <script type="text/javascript">
                 try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             </script>
@@ -540,6 +540,16 @@
             else $(this).removeClass('dropup');
         });
 
+        //show or hide menu
+        $('#menu-toggler').click(function () {
+            //add class dissplay 
+            //$('#sidebar').prop('class', 'sidebar responsive display');
+           // $('#sidebar').prop('style', 'display:none');
+            $('#sidebar').toggle();
+        });
+       // $('#sidebar').removeAttr('data-sidebar-scroll');
+        //$('#sidebar').removeAttr('data-sidebar');
+        //$('#sidebar').removeAttr('data-sidebar-hover');
     });
 
     </script>

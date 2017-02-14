@@ -1531,7 +1531,7 @@ pre.prettyprint {
     .navbar:not(.navbar-collapse) .ace-nav {
         display: block;
         float: none !important;
-        text-align: center;
+        text-align: right;
         background-color: rgba(0,0,0,.15);
         border: 1px solid rgba(0,0,0,.1);
         border-width: 1px 0 0;
