@@ -2936,6 +2936,7 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CategorySiteModel.cs" />
     <Compile Include="Models\DistrictModel.cs" />
+    <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\NewsModel.cs" />
     <Compile Include="Models\NewsStatusModel.cs" />
     <Compile Include="Models\News_Customer_MappingModel.cs" />
@@ -2988,6 +2989,7 @@
     <Content Include="Views\Home\NewDetail.cshtml" />
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\Payment\RegisterPackage.cshtml" />
+    <Content Include="Views\User\UserDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

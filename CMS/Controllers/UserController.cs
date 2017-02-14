@@ -17,24 +17,37 @@ namespace CMS.Controllers
         public ActionResult Index()
         {
             UserViewModel model = new UserViewModel();
-            var allUser = new UserBussiness().GetAllUser();
-            var allRoles = new RoleBussiness().GetRoles();
-            var allRolesUser = new RoleUserBussiness().GetAllRoleUser();
-            model.UserList = (from a in allUser
-                              select new UserModel
-                              {
-                                  Id = a.Id,
-                                  FullName = a.FullName,
-                                  UserName = a.UserName,
-                                  Phone = a.Phone,
-                                  Email = a.Email,
-                                  IsMember = a.IsMember ?? false,
-                                  ManagerBy = a.ManagerBy != null ? allUser.Where(x => x.Id == a.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "",
-                                  RoleName = GetNameRole(allRoles, allRolesUser, a.Id)
-                              }).ToList();
-
+            //int totalpage = 0;
+            //model.UserList = GetUserList(ref totalpage, 1, 1,"");
+            model.Totalpage = new UserBussiness().GetAllUser().Count;
             return View(model);
         }
+
+        [HttpPost]
+        public JsonResult LoadData(string search, string pageIndex)
+        {
+            try
+            {
+                int totalpage = 0;
+                UserViewModel model = new UserViewModel();
+                model.UserList = GetUserList(ref totalpage, int.Parse(pageIndex), 20, search);
+                var content = RenderPartialViewToString("~/Views/User/UserDetail.cshtml", model.UserList);
+                model.Totalpage = totalpage;
+                return Json(new
+                {
+                    TotalPage = model.Totalpage,
+                    Content = content
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    TotalPage = 0
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         public ActionResult Create()
         {
@@ -155,7 +168,7 @@ namespace CMS.Controllers
             else
             {
                 var userId = int.Parse(Session["SS-USERID"].ToString());
-                var rs = new UserBussiness().ChangePassword(userId, model.NewPassword,model.OldPassword);
+                var rs = new UserBussiness().ChangePassword(userId, model.NewPassword, model.OldPassword);
                 if (rs == true)
                 {
                     HttpCookie rememberCookies = new HttpCookie("rememberCookies");
@@ -172,7 +185,7 @@ namespace CMS.Controllers
         public ActionResult UserInformation()
         {
             var userId = int.Parse(Session["SS-USERID"].ToString());
-            
+
             UserModel model = new UserModel();
             var user = new UserBussiness().GetUserById(userId);
             model.UserName = user.UserName;
@@ -192,6 +205,7 @@ namespace CMS.Controllers
             return RedirectToAction("UserInformation", "User");
         }
 
+        #region Private funtion
         private string GetNameRole(List<Role> role, List<Role_User> roleUser, int userId)
         {
             var rs = (from r in role
@@ -200,6 +214,26 @@ namespace CMS.Controllers
                       select r.Name).ToArray();
             return String.Join(", ", rs);
         }
-        
+
+        private List<UserModel> GetUserList(ref int pageTotal, int pageIndex, int pageSize, string search)
+        {
+            var allUser = new UserBussiness().GetAllUser().Where(x => x.UserName.Contains(search)).ToList();
+            var allRoles = new RoleBussiness().GetRoles();
+            var allRolesUser = new RoleUserBussiness().GetAllRoleUser();
+            pageTotal = (int)Math.Ceiling((double)allUser.Count / (double)pageSize);
+            return (from a in allUser
+                    select new UserModel
+                    {
+                        Id = a.Id,
+                        FullName = a.FullName,
+                        UserName = a.UserName,
+                        Phone = a.Phone,
+                        Email = a.Email,
+                        IsMember = a.IsMember ?? false,
+                        ManagerBy = a.ManagerBy != null ? allUser.Where(x => x.Id == a.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "",
+                        RoleName = GetNameRole(allRoles, allRolesUser, a.Id)
+                    }).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+        }
+        #endregion
     }
 }

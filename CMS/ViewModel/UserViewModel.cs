@@ -9,6 +9,7 @@ namespace CMS.ViewModel
     public class UserViewModel
     {
         public List<UserModel> UserList { get; set; }
+        public int Totalpage { get; set; }
     }
 
     public class UserModel

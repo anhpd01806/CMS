@@ -1,0 +1,50 @@
+﻿@model List<CMS.ViewModel.UserModel>
+
+@if (Model.Count > 0)
+{
+    foreach (var u in Model)
+    {
+        <tr>
+            <td>@u.FullName</td>
+            <td>@u.UserName</td>
+            <td>@u.Phone</td>
+            <td>@u.Email</td>
+            <td>@Html.Raw(u.IsMember == true ? "Kích hoạt" : "Chưa được duyệt")</td>
+            <td>@u.ManagerBy</td>
+            <td>@u.RoleName</td>
+            <td class="text-center">
+                <div class="hidden-sm hidden-xs action-buttons">
+                    <a class="green" href="/User/ResertPassword/@u.Id">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                    <a class="red delete" href="#" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
+                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                    </a>
+                </div>
+                <div class="hidden-md hidden-lg">
+                    <div class="inline position-relative">
+                        <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                            <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                            <li>
+                                <a href="/User/ResertPassword/@u.Id" class="tooltip-success" data-rel="tooltip" title="Khôi phục mật khẩu">
+                                    <span class="green">
+                                        <i class="fa fa-refresh"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="tooltip-error" data-rel="tooltip" title="Xóa" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
+                                    <span class="red">
+                                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+}
