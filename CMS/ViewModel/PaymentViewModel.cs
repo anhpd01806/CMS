@@ -14,6 +14,8 @@ namespace CMS.ViewModel
 
         public List<SelectListItem> PayMethodList { get; set; }
 
+        public List<SelectListItem> PackageList { get; set; }
+
         [Required(ErrorMessage = "Không được để trống")]
         [Remote("doesUserNameExist", "Account", ErrorMessage = "Tài khoản chưa được đăng ký. vui lòng liên hệ admin để được trợ giúp")]
         public string UserName { get; set; }
@@ -25,6 +27,7 @@ namespace CMS.ViewModel
         public int PaymentMethodId { get; set; }
 
         public string Note { get; set; }
+        public long Payment { get; set; }
     }
 
     public class PaymentHistoryModel

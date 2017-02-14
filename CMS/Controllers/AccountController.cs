@@ -38,6 +38,7 @@ namespace CMS.Controllers
                 {
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
+                    CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()));
                     return RedirectToAction("Index", "Home");
                 }
                 AccountViewModel model = new AccountViewModel();
@@ -70,6 +71,7 @@ namespace CMS.Controllers
                     {
                         Session.Add("SS-USER", user);
                         Session.Add("SS-USERID", user.Id);
+                        CheckAcceptedUser(user.Id);
                         // set cookies for user
                         HttpCookie rememberCookie = new HttpCookie("rememberCookies");
                         rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName);
@@ -211,5 +213,11 @@ namespace CMS.Controllers
             }
         }
         #endregion
+
+        //check tai khoan con tien su dung
+        private void CheckAcceptedUser(int userId)
+        {
+          Session["USER-ACCEPTED"] =  db.PaymentAccepteds.Any(x => x.UserId == userId && x.StartDate.Date >= DateTime.Now.Date && DateTime.Now.Date <= x.EndDate.Date);
+        }
     }
 }

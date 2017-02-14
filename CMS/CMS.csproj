@@ -2987,6 +2987,7 @@
     <Content Include="Views\Home\Paging.cshtml" />
     <Content Include="Views\Home\NewDetail.cshtml" />
     <Content Include="Views\Payment\Index.cshtml" />
+    <Content Include="Views\Payment\RegisterPackage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

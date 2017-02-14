@@ -9,10 +9,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $("#txtUserName").focusout(function () {
-                $("#datatable1 > tbody").html("");
-                callAjax(0);
-            });
+            $("#datatable1 > tbody").html("");
+            callAjax(0);
         });
 
         $(function ($) {
@@ -28,7 +26,7 @@
             $.ajax({
                 type: "GET",
                 url: "/Payment/GetHistory",
-                data: { UserName: $("#txtUserName").val(), Page: page },
+                data: { UserName: $("#hdUserName").val(), Page: page },
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -54,7 +52,7 @@
 }
 @section featured
 {
-    @using (Html.BeginForm("Index", "Payment", FormMethod.Post))
+    @using (Html.BeginForm("RegisterPackage", "Payment", FormMethod.Post))
     {
         @Html.ValidationSummary(true)
         <div class="page-content">
@@ -73,30 +71,16 @@
                                 <strong>Thông báo:</strong> @TempData["Success"].ToString()
                             </div>
                         }
+                        <input id="hdUserName" type="hidden" value="@Session["SS-USERNAME"].ToString()" />
                         <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
                         <div class="form col-md-6" role="form">
                             <div class="form-group">
-                                <label>Hình thức thanh toán</label>
-                                @Html.DropDownListFor(m => m.PaymentMethodId, Model.PayMethodList, new { @class = "form-control" })
-                            </div>
-                            <div class="form-group">
-                                <label>Nhập tài khoản</label>
-                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "txtUserName" })
-                                @Html.ValidationMessageFor(m => m.UserName)
-                            </div>
-                            <div class="form-group">
-                                <label>Nhập số tiền</label>
-                                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @id = "txtNumber" })
-                                @Html.ValidationMessageFor(m => m.Amount)
-                            </div>
-                            <div class="form-group">
-                                <label>Ghi chú</label>
-                                @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Note)
+                                <label>Chọn gói cước</label>
+                                @Html.DropDownListFor(m => m.Payment, Model.PackageList, new { @class = "form-control" })
                             </div>
                         </div>
                         <div class="col-md-12 footer-button">
-                            <button type="submit" class="btn btn-primary">Thêm mới</button>
+                            <button type="submit" class="btn btn-primary">Nạp tiền</button>
                         </div>
                     </div>
                 </div>
@@ -126,3 +110,5 @@
         </div>
     }
 }
+
+

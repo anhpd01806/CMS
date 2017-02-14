@@ -9,5 +9,9 @@ namespace CMS.Helper
     public class ConfigWeb
     {
         public static int PageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
+
+        public static string DayPackage = ConfigurationManager.AppSettings["DayPackage"];
+
+        public static string MonthPackage = ConfigurationManager.AppSettings["MonthPackage"];
     }
 }

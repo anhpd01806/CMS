@@ -27,9 +27,10 @@ namespace CMS.Controllers
             {
                 try
                 {
+                    var userId = new UserBussiness().GetUserByName(model.UserName);
                     var paymentHistory = new PaymentHistory
                     {
-                        UserId = new UserBussiness().GetUserByName(model.UserName),
+                        UserId = userId,
                         PaymentMethodId = model.PaymentMethodId,
                         CreatedDate = DateTime.Now,
                         Notes = model.Note,
@@ -38,6 +39,10 @@ namespace CMS.Controllers
 
                     //insert payment history
                     new PaymentBussiness().Insert(paymentHistory);
+
+                    //insert payment accepted
+                    new PaymentBussiness().PaymentAcceptedUpdate(model,userId);
+
                     TempData["Success"] = "Nạp tiền thành công";
                     ModelState.Clear();
                 }
@@ -50,14 +55,39 @@ namespace CMS.Controllers
             model.PayMethodList = new PaymentBussiness().GetPaymentMethod();
             return View(model);
         }
-        
-        [AllowAnonymous]
-        public JsonResult GetHistory(string UserName)
+     
+        public ActionResult RegisterPackage()
+        {
+            int userId = Convert.ToInt32(Session["SS-USERID"]);
+            Session["SS-USERNAME"] = new UserBussiness().GetUserById(userId).UserName;
+            PaymentViewModel model = new PaymentViewModel();
+            model.PackageList = new List<SelectListItem>();
+            model.PackageList.Add(new SelectListItem { Text = "Gói tháng", Value = ConfigWeb.MonthPackage });
+            model.PackageList.Add(new SelectListItem { Text = "Gói ngày", Value = ConfigWeb.DayPackage });
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult RegisterPackage(PaymentViewModel model)
+        {
+            int userId = Convert.ToInt32(Session["SS-USERID"]);
+            var rs = new PaymentBussiness().UpdatePaymentAccepted(model, userId);
+            TempData["Success"] = rs;
+            ModelState.Clear();
+            model = new PaymentViewModel();
+            model.PackageList = new List<SelectListItem>();
+            model.PackageList.Add(new SelectListItem { Text = "Gói tháng", Value = ConfigWeb.MonthPackage });
+            model.PackageList.Add(new SelectListItem { Text = "Gói ngày", Value = ConfigWeb.DayPackage });
+            return View(model);
+        }
+
+        public JsonResult GetHistory(string UserName, string Page)
         {
             try
             {
+                int page = int.Parse(Page);
                 int userID = new UserBussiness().GetUserByName(UserName);
-                var itemList = (from a in new PaymentBussiness().GetPaymentHistoryByUserId(userID)
+                var itemList = (from a in new PaymentBussiness().GetPaymentHistoryByUserId(userID,page)
                                 select new PaymentHistoryModel
                                 {
                                     Id = a.Id,
