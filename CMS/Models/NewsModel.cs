@@ -10,6 +10,7 @@ namespace CMS.Models
         public NewsModel()
         {
             ListImage = new List<ImageModel>();
+            SameNews = new List<NewsModel>();
         }
 
         public int Id { get; set; }
@@ -76,6 +77,10 @@ namespace CMS.Models
 
         public string CateName { get; set; }
 
-        public List<ImageModel> ListImage { get; set; } 
+        public List<ImageModel> ListImage { get; set; }
+
+        public List<NewsModel> SameNews { get; set; }
+
+        public bool? IsReaded { get; set; }
     }
 }

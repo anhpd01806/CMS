@@ -33,11 +33,18 @@
                                 <h5><strong>Khu vực: </strong> @Model.DistictName</h5>
                             </div>
                             <div class="col-xs-12">
-                                <h5><strong>Tin liên quan:</strong></h5>                                
+                                <h5><strong>Tin liên quan:</strong></h5>
+                                @if (Model.SameNews.Any())
+                                {
+                                    foreach (var item in Model.SameNews)
+                                    {
+                                        <a href="javasctipt: ;"><h6>@item.Title</h6></a>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
-                    
+
                     <div role="tabpanel" class="tab-pane" id="image">
                         <div class="row">
                             <div class="col-xs-12 slideimage">

@@ -92,10 +92,9 @@ label, .lbl {
 }
 
 .mCustomScrollbar {
-    max-height: 300px;
+    max-height: 250px;
     overflow: hidden;
     padding-right: 20px;
-    padding-bottom: 10px;
 }
 
     .mCustomScrollbar h5 {
@@ -110,11 +109,11 @@ label, .lbl {
 }
 
 .modal-detail-right {
-    padding: 10px 0;
+    padding: 0;
 }
 
     .modal-detail-right h5 {
-        padding: 10px 0px;
+        padding: 5px 0px;
         font-size: 14px;
     }
 

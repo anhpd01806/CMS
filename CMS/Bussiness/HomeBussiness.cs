@@ -94,28 +94,31 @@ namespace CMS.Bussiness
                                 select (c.NewsId)).ToList();
 
                 var query = from c in db.News
-                            join d in db.Districts on c.DistrictId equals d.Id
-                            join t in db.NewsStatus on c.StatusId equals t.Id
-                            where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                            && !d.IsDeleted && d.Published
-                            && !news_new.Contains(c.Id)
-                            orderby c.StatusId ascending, c.Price descending
-                            select new NewsModel
-                            {
-                                Id = c.Id,
-                                Title = c.Title,
-                                CategoryId = c.CategoryId,
-                                Link = c.Link,
-                                Phone = c.Phone,
-                                Price = c.Price,
-                                PriceText = c.PriceText,
-                                DistrictId = d.Id,
-                                SiteId = c.SiteId,
-                                DistictName = d.Name,
-                                StatusId = t.Id,
-                                StatusName = t.Name,
-                                CreatedOn = c.CreatedOn
-                            };
+                    join d in db.Districts on c.DistrictId equals d.Id
+                    join t in db.NewsStatus on c.StatusId equals t.Id
+                    join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                    from tm in temp.DefaultIfEmpty()
+                    where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                          && !d.IsDeleted && d.Published
+                          && !news_new.Contains(c.Id)
+                    orderby c.StatusId ascending, c.Price descending
+                    select new NewsModel
+                    {
+                        Id = c.Id,
+                        Title = c.Title,
+                        CategoryId = c.CategoryId,
+                        Link = c.Link,
+                        Phone = c.Phone,
+                        Price = c.Price,
+                        PriceText = c.PriceText,
+                        DistrictId = d.Id,
+                        SiteId = c.SiteId,
+                        DistictName = d.Name,
+                        StatusId = t.Id,
+                        StatusName = t.Name,
+                        CreatedOn = c.CreatedOn,
+                        IsReaded = tm.IsReaded
+                    };
 
                 #region check param
                 if (CateId != 0)
@@ -171,11 +174,11 @@ namespace CMS.Bussiness
 
         public NewsModel GetNewsDetail(int Id, int UserId)
         {
-            using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
-            {
-                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
-            }))
-            {
+            //using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            //{
+            //    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+            //}))
+            //{
                 var query = (from c in db.News
                              join d in db.Districts on c.DistrictId equals d.Id
                              join t in db.NewsStatus on c.StatusId equals t.Id
@@ -199,26 +202,38 @@ namespace CMS.Bussiness
                                  CreatedOn = c.CreatedOn,
                                  CategoryId = ct.Id,
                                  CateName = ct.Name,
-                                 ListImage = GetImageByNewsId(c.Id)
+                                 ListImage = GetImageByNewsId(c.Id),
+                                 SameNews = GetSameNewsByNewsId(c.CategoryId.Value, c.DistrictId.Value, UserId)
                              }).FirstOrDefault();
 
                 if (query != null)
                 {
-                    var newItem = new News_Customer_Mapping();
-                    newItem.CustomerId = UserId;
-                    newItem.NewsId =
-                    newItem.NewsId = Id;
-                    newItem.IsSaved = false;
-                    newItem.IsDeleted = false;
-                    newItem.IsReaded = true;
-                    newItem.IsAgency = false;
-                    newItem.IsSpam = false;
-                    newItem.CreateDate = DateTime.Now;                    
-                    SetNewsViewed(newItem, UserId);
+                    
+                    var getnewsave = from c in db.News_Customer_Mappings
+                                 where c.NewsId.Equals(query.Id) && c.IsReaded.Value
+                                 select new
+                                 {
+                                     Id = c.Id
+                                 };
+                    var news = getnewsave.FirstOrDefault();
+                    if (news == null)
+                    {
+                        var newItem = new News_Customer_Mapping();
+                        newItem.CustomerId = UserId;
+                        newItem.NewsId =
+                        newItem.NewsId = Id;
+                        newItem.IsSaved = false;
+                        newItem.IsDeleted = false;
+                        newItem.IsReaded = true;
+                        newItem.IsAgency = false;
+                        newItem.IsSpam = false;
+                        newItem.CreateDate = DateTime.Now;
+                        db.News_Customer_Mappings.InsertOnSubmit(newItem);
+                        db.SubmitChanges();
+                    }
                 }
-
                 return query;
-            }
+            //}
         }
 
         public int SaveNewByUserId(List<News_Customer_Mapping> cusNews, int userId)
@@ -228,7 +243,7 @@ namespace CMS.Bussiness
                 foreach (var item in cusNews)
                 {
                     var query = (from c in db.News_Customer_Mappings
-                                 where c.Id.Equals(item.Id) && c.IsSaved
+                                 where c.NewsId.Equals(item.Id) && c.IsSaved.Value
                                  select new
                                  {
                                      Id = c.Id
@@ -254,7 +269,7 @@ namespace CMS.Bussiness
                 foreach (var item in cusNews)
                 {
                     var query = (from c in db.News_Customer_Mappings
-                                 where c.Id.Equals(item.Id) && c.IsDeleted
+                                 where c.NewsId.Equals(item.Id) && c.IsDeleted.Value
                                  select new
                                  {
                                      Id = c.Id
@@ -273,29 +288,6 @@ namespace CMS.Bussiness
             }
         }
 
-        public int SetNewsViewed(News_Customer_Mapping cusNews, int userId)
-        {
-            try
-            {
-                var query = (from c in db.News_Customer_Mappings
-                             where c.Id.Equals(cusNews.Id) && c.IsReaded
-                             select new
-                             {
-                                 Id = c.Id
-                             }).FirstOrDefault();
-                if (query == null)
-                {
-                    db.News_Customer_Mappings.InsertOnSubmit(cusNews);
-                }
-                db.SubmitChanges();
-                return 1;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
         public List<ImageModel> GetImageByNewsId(int NewsID)
         {
             var query = (from c in db.Images
@@ -304,10 +296,39 @@ namespace CMS.Bussiness
             return query;
         }
 
-        //public List<NewsModel> GetSameNewsByNewsId(int newId)
-        //{
-            
-        //}
+        public List<NewsModel> GetSameNewsByNewsId(int CateId, int DistricId,int UserId)
+        {
+            var news_new = (from c in db.News_Customer_Mappings
+                            where c.CustomerId.Equals(UserId)
+                            select (c.NewsId)).ToList();
+
+            var query = (from c in db.News
+                        join d in db.Districts on c.DistrictId equals d.Id
+                        join t in db.NewsStatus on c.StatusId equals t.Id
+                        where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                        && !d.IsDeleted && d.Published
+                        && !news_new.Contains(c.Id)
+                        && c.CategoryId.Equals(CateId)
+                        && c.DistrictId.Equals(DistricId)
+                        orderby c.StatusId ascending, c.Price descending
+                        select new NewsModel
+                        {
+                            Id = c.Id,
+                            Title = c.Title,
+                            CategoryId = c.CategoryId,
+                            Link = c.Link,
+                            Phone = c.Phone,
+                            Price = c.Price,
+                            PriceText = c.PriceText,
+                            DistrictId = d.Id,
+                            SiteId = c.SiteId,
+                            DistictName = d.Name,
+                            StatusId = t.Id,
+                            StatusName = t.Name,
+                            CreatedOn = c.CreatedOn
+                        }).Skip(0).Take(3).ToList();
+            return query;
+        }
 
         #endregion
 
@@ -322,7 +343,7 @@ namespace CMS.Bussiness
             }))
             {
                 var news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && c.IsSaved
+                                where c.CustomerId.Equals(UserId) && c.IsSaved.Value
                                 select (c.NewsId)).ToList();
 
                 var query = from c in db.News
