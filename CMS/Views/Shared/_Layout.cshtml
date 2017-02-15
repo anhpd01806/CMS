@@ -232,7 +232,7 @@
             try{ace.settings.check('main-container' , 'fixed')}catch(e){}
         </script>
 
-        <div id="sidebar" class="sidebar responsive display" style="display:none">
+        <div id="sidebar" class="sidebar responsive display">
             <script type="text/javascript">
                 try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             </script>
@@ -335,6 +335,9 @@
     <script src="~/assets/js/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/assets/js/jquery-validation/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/assets/js/loadingoverlay.js"></script>
+
+    <!-- Socket js -->
+    <script src="http://localhost:8088/socket.io/socket.io.js"></script>
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">
@@ -542,14 +545,14 @@
 
         //show or hide menu
         $('#menu-toggler').click(function () {
-            //add class dissplay 
-            //$('#sidebar').prop('class', 'sidebar responsive display');
-           // $('#sidebar').prop('style', 'display:none');
             $('#sidebar').toggle();
         });
-       // $('#sidebar').removeAttr('data-sidebar-scroll');
-        //$('#sidebar').removeAttr('data-sidebar');
-        //$('#sidebar').removeAttr('data-sidebar-hover');
+
+        //connect to notify server
+        var userId = "1";
+        var isAddmin = true;
+        var socket = io.connect('http://localhost:8088');
+        socket.emit('join-room', {userId,isAddmin});
     });
 
     </script>
