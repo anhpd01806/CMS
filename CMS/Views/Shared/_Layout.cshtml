@@ -550,9 +550,13 @@
 
         //connect to notify server
         var userId = "1";
-        var isAddmin = true;
+        var isAdmin = true;
         var socket = io.connect('http://localhost:8088');
-        socket.emit('join-room', {userId,isAddmin});
+        socket.emit('join-room', { userId, isAdmin });
+
+        socket.on('show-notify', function (obj) {
+            alert(obj.title);
+        });
     });
 
     </script>
