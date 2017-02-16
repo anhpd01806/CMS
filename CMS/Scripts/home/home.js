@@ -191,49 +191,55 @@ $(function () {
         });
 
         $(document).on("click", ".btnsave", function () {
-            var selected = [];
-            $('.checkboxItem:checked').each(function () {
-                selected.push(parseInt($(this).attr('id')));
-            });
-            if (selected.length == 0) {
-                showmessage("error", "Bạn hãy chọn tin cần lưu!");
-            } else {
-                $.post("/home/usersavenews", { listNewsId: selected }, function (resp) {
-                    if (resp != null) {
-                        if (resp.Status == 1) {
-                            LoadData();
-                            setTimeout(function () {
-                                showmessage("success", "Tin đã được lưu thành công!");
-                            }, 1200);
-                        } else {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
-                        }
-                    };
+            if (!$(this).hasClass("disabled")) {
+                var selected = [];
+                $('.checkboxItem:checked').each(function() {
+                    selected.push(parseInt($(this).attr('id')));
                 });
+                if (selected.length == 0) {
+                    showmessage("error", "Bạn hãy chọn tin cần lưu!");
+                } else {
+                    $.post("/home/usersavenews", { listNewsId: selected }, function(resp) {
+                        if (resp != null) {
+                            if (resp.Status == 1) {
+                                LoadData();
+                                setTimeout(function() {
+                                    showmessage("success", "Tin đã được lưu thành công!");
+                                }, 1200);
+                            } else {
+                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            }
+                        }
+                        ;
+                    });
+                }
             }
         });
 
         $(document).on("click", ".btnhide", function () {
-            var selected = [];
-            $('.checkboxItem:checked').each(function () {
-                selected.push(parseInt($(this).attr('id')));
-            });
-            if (selected.length == 0) {
-                showmessage("error", "Bạn hãy chọn tin cần ẩn!");
-            } else {
-                $.post("/home/userhidenews", { listNewsId: selected }, function (resp) {
-                    if (resp != null) {
-                        if (resp.Status == 1) {
-                            LoadData();
-                            setTimeout(function () {
-                                showmessage("success", "Tin đã được ẩn thành công!");
-                            }, 1200);
-
-                        } else {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
-                        }
-                    };
+            if (!$(this).hasClass("disabled")) {
+                var selected = [];
+                $('.checkboxItem:checked').each(function() {
+                    selected.push(parseInt($(this).attr('id')));
                 });
+                if (selected.length == 0) {
+                    showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+                } else {
+                    $.post("/home/userhidenews", { listNewsId: selected }, function(resp) {
+                        if (resp != null) {
+                            if (resp.Status == 1) {
+                                LoadData();
+                                setTimeout(function() {
+                                    showmessage("success", "Tin đã được ẩn thành công!");
+                                }, 1200);
+
+                            } else {
+                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            }
+                        }
+                        ;
+                    });
+                }
             }
         });
 

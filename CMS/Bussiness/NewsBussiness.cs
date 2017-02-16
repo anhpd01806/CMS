@@ -28,7 +28,7 @@ namespace CMS.Bussiness
             }))
             {
                 var news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && c.IsSaved.Value
+                                where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value
                                 select (c.NewsId)).ToList();
 
                 var query = from c in db.News
@@ -59,7 +59,7 @@ namespace CMS.Bussiness
 
                 if (newsStatus == Convert.ToInt32(CMS.Helper.NewsStatus.IsSave))
                 {
-                    query = query.Where(c => c.CusIsSaved.HasValue && c.CusIsSaved.Value);
+                    query = query.Where(c => c.CusIsSaved.HasValue && c.CusIsSaved.Value && !c.CusIsDeleted.Value);
                 }
                 if (newsStatus == Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete))
                 {
@@ -130,17 +130,24 @@ namespace CMS.Bussiness
                 {
                     var query = (from c in db.News_Customer_Mappings
                                  where c.NewsId.Equals(item.NewsId) && c.IsSaved.Value
-                                 select new
-                                 {
-                                     Id = c.Id
-                                 }).FirstOrDefault();
+                                 select c).ToList();
                     if (query != null)
                     {
-                        db.News_Customer_Mappings.Attach(item);
-                        db.News_Customer_Mappings.DeleteOnSubmit(item);
+                        foreach (var newsCustomerMapping in query)
+                        {
+                            if (newsCustomerMapping.IsDeleted.Value)
+                            {
+                                newsCustomerMapping.IsSaved = false;
+                            }
+                            else
+                            {
+                                db.News_Customer_Mappings.DeleteOnSubmit(newsCustomerMapping);
+                            }
+                        }
+                        db.SubmitChanges();
                     }
                 }
-                db.SubmitChanges();
+                
                 return 1;
             }
             catch

@@ -227,14 +227,7 @@ namespace CMS.Controllers
                     {
                         listItem.Add(new News_Customer_Mapping
                         {
-                            CustomerId = userId,
-                            NewsId = listNewsId[i],
-                            IsSaved = true,
-                            IsDeleted = false,
-                            IsReaded = false,
-                            IsAgency = false,
-                            IsSpam = false,
-                            CreateDate = DateTime.Now
+                            NewsId = listNewsId[i]
                         });
                     }
                     result = _newsbussiness.RemoveSaveNewByUserId(listItem, userId);

@@ -204,19 +204,15 @@ namespace CMS.Bussiness
             if (query != null)
             {
 
-                var getnewsave = from c in db.News_Customer_Mappings
-                                 where c.NewsId.Equals(query.Id) && c.IsReaded.Value
-                                 select new
-                                 {
-                                     Id = c.Id
-                                 };
-                var news = getnewsave.FirstOrDefault();
-                if (news == null)
+                var getnewsave = (from c in db.News_Customer_Mappings
+                                 where c.NewsId.Equals(query.Id) //&& c.IsReaded.Value
+                                 select c).ToList();
+                if (!getnewsave.Any())
                 {
                     var newItem = new News_Customer_Mapping();
                     newItem.CustomerId = UserId;
                     newItem.NewsId =
-                    newItem.NewsId = Id;
+                        newItem.NewsId = Id;
                     newItem.IsSaved = false;
                     newItem.IsDeleted = false;
                     newItem.IsReaded = true;
@@ -224,8 +220,16 @@ namespace CMS.Bussiness
                     newItem.IsSpam = false;
                     newItem.CreateDate = DateTime.Now;
                     db.News_Customer_Mappings.InsertOnSubmit(newItem);
-                    db.SubmitChanges();
+                    
                 }
+                else
+                {
+                    foreach (var newsCustomerMapping in getnewsave)
+                    {
+                        newsCustomerMapping.IsReaded = true;
+                    }
+                }
+                db.SubmitChanges();
             }
             return query;
         }
@@ -263,14 +267,19 @@ namespace CMS.Bussiness
                 foreach (var item in cusNews)
                 {
                     var query = (from c in db.News_Customer_Mappings
-                                 where c.NewsId.Equals(item.NewsId) && c.IsDeleted.Value
-                                 select new
-                                 {
-                                     Id = c.Id
-                                 }).FirstOrDefault();
-                    if (query == null)
+                                 where c.NewsId.Equals(item.NewsId) //&& c.IsDeleted.Value
+                                 select c).ToList();
+                    if (!query.Any())
                     {
                         db.News_Customer_Mappings.InsertOnSubmit(item);
+                    }
+                    else
+                    {
+                        foreach (var newsCustomerMapping in query)
+                        {
+                            newsCustomerMapping.IsDeleted = true;
+                            newsCustomerMapping.IsSaved = false;
+                        }
                     }
                 }
                 db.SubmitChanges();
