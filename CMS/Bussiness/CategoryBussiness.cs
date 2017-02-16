@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CMS.Bussiness
 {
@@ -14,6 +15,21 @@ namespace CMS.Bussiness
         public List<Category> GetAllCateGory()
         {
             return db.Categories.Where(x => x.Deleted == false && x.Published == true).ToList();
+        }
+
+        public List<SelectListItem> GetCategoryDrop()
+        {
+            var rs = new List<SelectListItem>();
+            var category = db.Categories.Where(x => x.Deleted == false && x.Published == true).ToList();
+            if (category != null)
+            {
+                foreach(var item in category)
+                {
+                    if (item.ParentCategoryId == 0) rs.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                    else rs.Add(new SelectListItem {Text = category.FirstOrDefault(x=>x.Id == item.ParentCategoryId).Name + " >> " + item.Name, Value = item.Id.ToString() });
+                }
+            }
+            return rs;
         }
 
         public List<Category> GetParentCateGory()
@@ -32,13 +48,13 @@ namespace CMS.Bussiness
             return db.Categories.FirstOrDefault(x => x.Deleted == false && x.Published == true && x.Id == id);
         }
 
-        public string GetNameCategorySiteById(int id)
+        public string GetNameCategoryById(int id)
         {
-            var categorySite = db.CategorySites.FirstOrDefault(x => x.Deleted == false && x.Published == true && x.Id == id);
-            if (categorySite != null)
+            var category = db.Categories.FirstOrDefault(x => x.Deleted == false && x.Published == true && x.Id == id);
+            if (category != null)
             {
-                if (categorySite.ParentId == 0) return categorySite.Name;
-                string nameCategory = db.CategorySites.FirstOrDefault(x => x.Id == categorySite.ParentId && x.Deleted == false && x.Published == true).Name + " >> " + categorySite.Name;
+                if (category.ParentCategoryId == 0) return category.Name;
+                string nameCategory = db.Categories.FirstOrDefault(x => x.Id == category.ParentCategoryId && x.Deleted == false).Name + " >> " + category.Name;
                 return nameCategory;
             }
             return "";

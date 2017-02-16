@@ -3028,6 +3028,7 @@
     <Content Include="Views\LinkSite\LinkSiteDetail.cshtml" />
     <Content Include="Views\CategorySite\Index.cshtml" />
     <Content Include="Views\CategorySite\Create.cshtml" />
+    <Content Include="Views\CategorySite\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

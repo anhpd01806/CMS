@@ -1,11 +1,11 @@
 ﻿@model CMS.ViewModel.CategorySiteModel
 @{
-    ViewBag.Title = "Thêm mới chức năng";
+    ViewBag.Title = "Sửa chức năng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section featured
 {
-    @using (Html.BeginForm("Create", "CategorySite", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "CategorySite", FormMethod.Post))
     {
 
         @Html.ValidationSummary(true)
@@ -28,6 +28,7 @@
                                 <strong>Thông báo:</strong> @TempData["Success"].ToString()
                             </div>
                         }
+                        @Html.HiddenFor(m=>m.Id)
                         <div class="form col-md-6" role="form">
                             <div class="form-group">
                                 <label>Tên danh mục site</label>
@@ -59,7 +60,7 @@
                                 <div class="col-md-offset-3 col-md-9">
                                     <button class="btn btn-info" type="submit">
                                         <i class="ace-icon fa fa-check bigger-110"></i>
-                                        Thêm mới
+                                        Chỉnh sửa
                                     </button>
                                     &nbsp; &nbsp; &nbsp;
                                     <button class="btn" type="reset">
@@ -75,3 +76,5 @@
         </div>
     }
 }
+
+

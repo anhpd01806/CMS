@@ -25,7 +25,7 @@ namespace CMS.ViewModel
         public string Status { get; set; }
 
         public List<SelectListItem> CategorySiteParentSiteList { get; set; }
-        public int CategorySiteParentId { get; set; }
+        public int ParentId { get; set; }
 
         public List<SelectListItem> SiteList { get; set; }
         public int SiteId { get; set; }
