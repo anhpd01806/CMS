@@ -70,7 +70,7 @@ $(function () {
                         minPrice: minPrice, maxPrice: maxPrice,
                         from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
                     };
-                    $.post("/home/loaddata", data, function (resp) {
+                    $.post("/newssave/loaddata", data, function (resp) {
                         if (resp != null) {
                             $("#listnewstable tbody").html("");
                             $("#listnewstable tbody").html(resp.Content);
@@ -108,7 +108,7 @@ $(function () {
                 minPrice: minPrice, maxPrice: maxPrice,
                 from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
             };
-            $.post("/home/loaddata", data, function (resp) {
+            $.post("/newssave/loaddata", data, function (resp) {
                 if (resp != null) {
                     $("#listnewstable tbody").html("");
                     $("#listnewstable tbody").html(resp.Content);
@@ -129,10 +129,10 @@ $(function () {
         $(document).on("click", ".checkboxItem", function () {
             var count = parseInt($('input:checkbox:checked').length);
             if ($(this).prop('checked')) {
-                $(".btnsave, .btnhide, .btnreport").removeClass("disabled");
+                $(".btnremove, .btnhide, .btnreport").removeClass("disabled");
             } else {
                 if (count < 1) {
-                    $(".btnsave, .btnhide, .btnreport").addClass("disabled");
+                    $(".btnremove, .btnhide, .btnreport").addClass("disabled");
                 }
             }
         });
@@ -175,7 +175,7 @@ $(function () {
                 from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
             };
             $.LoadingOverlay("show");
-            $.post("/home/loaddata", data, function (resp) {
+            $.post("/newssave/loaddata", data, function (resp) {
                 if (resp != null) {
                     $("#listnewstable tbody").html("");
                     $("#listnewstable tbody").html(resp.Content);
@@ -190,20 +190,20 @@ $(function () {
             });
         });
 
-        $(document).on("click", ".btnsave", function () {
+        $(document).on("click", ".btnremove", function () {
             var selected = [];
             $('.checkboxItem:checked').each(function () {
                 selected.push(parseInt($(this).attr('id')));
             });
             if (selected.length == 0) {
-                showmessage("error", "Bạn hãy chọn tin cần lưu!");
+                showmessage("error", "Bạn hãy chọn tin cần xóa khỏi danh sách lưu!");
             } else {
-                $.post("/home/usersavenews", { listNewsId: selected }, function (resp) {
+                $.post("/newssave/userremovenewssave", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
                         if (resp.Status == 1) {
                             LoadData();
                             setTimeout(function () {
-                                showmessage("success", "Tin đã được lưu thành công!");
+                                showmessage("success", "Tin đã được xóa thành công!");
                             }, 1200);
                         } else {
                             showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
@@ -237,17 +237,17 @@ $(function () {
             }
         });
 
-        $(document).on("click", ".save-item-list", function () {
+        $(document).on("click", ".remove-item-list", function () {
             var selected = [parseInt($(this).attr("data-id"))];
             if (selected.length == 0) {
-                showmessage("error", "Bạn hãy chọn tin cần lưu!");
+                showmessage("error", "Bạn hãy chọn tin xóa khỏi danh sách đã lưu!");
             } else {
-                $.post("/home/usersavenews", { listNewsId: selected }, function (resp) {
+                $.post("/newssave/userremovenewssave", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
                         if (resp.Status == 1) {
                             LoadData();
                             setTimeout(function () {
-                                showmessage("success", "Tin đã được lưu thành công!");
+                                showmessage("success", "Tin đã được xóa thành công!");
                             }, 1200);
                         } else {
                             showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
@@ -292,17 +292,17 @@ $(function () {
             var to = $(".txtTo").val();
             var pageIndex = parseInt($('#datatable').attr("data-page"));
             var pageSize = parseInt($(".ddlpage").val());
-            var url = "/home/exportexcel";
+            var url = "/newssave/exportexcel";
             location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize);
         });
-        
+
         //Change search filter
 
         $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo").change(function () {
             LoadData();
         });
 
-        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function(e) {
+        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
             $('#image-gallery').lightSlider({
                 gallery: true,
                 item: 1,
@@ -311,14 +311,14 @@ $(function () {
                 speed: 500,
                 auto: true,
                 loop: true,
-                onSliderLoad: function() {
+                onSliderLoad: function () {
                     $('#image-gallery').removeClass('cS-hidden');
                 }
             });
             $(".mCustomScrollbar").mCustomScrollbar();
         });
 
-        $(document).on("shown.bs.modal", function() {
+        $(document).on("shown.bs.modal", function () {
             $(".mCustomScrollbar").mCustomScrollbar();
         });
     });
@@ -338,7 +338,7 @@ $(function () {
 
         var datefrom = new Date(from.split('-')[1] + "/" + from.split('-')[0] + "/" + from.split('-')[2]);
         var dateto = new Date(to.split('-')[1] + "/" + to.split('-')[0] + "/" + to.split('-')[2]);
-        
+
         if (datefrom.getTime() > dateto.getTime()) {
             showmessage("error", "Ngày bắt đầu không được lớn hơn ngày kết thúc!");
         } else {
@@ -357,7 +357,7 @@ $(function () {
                 pageSize: pageSize
             };
             $.LoadingOverlay("show");
-            $.post("/home/loaddata", data, function(resp) {
+            $.post("/newssave/loaddata", data, function (resp) {
                 if (resp != null) {
                     $("#listnewstable tbody").html("");
                     $("#listnewstable tbody").html(resp.Content);
@@ -372,7 +372,7 @@ $(function () {
             });
         }
     }
-    
+
     function showPagination(pagesCounter) {
         $('#pagination').remove();
         $('.homepagging').html('<div class="pagination" id="pagination"></div>');
@@ -403,7 +403,7 @@ $(function () {
                     minPrice: minPrice, maxPrice: maxPrice,
                     from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
                 };
-                $.post("/home/loaddata", data, function (resp) {
+                $.post("/newssave/loaddata", data, function (resp) {
                     if (resp != null) {
                         $("#listnewstable tbody").html("");
                         $("#listnewstable tbody").html(resp.Content);

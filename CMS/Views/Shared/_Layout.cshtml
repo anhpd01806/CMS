@@ -337,7 +337,7 @@
     <script src="~/assets/js/loadingoverlay.js"></script>
 
     <!-- Socket js -->
-    <script src="http://localhost:8088/socket.io/socket.io.js"></script>
+    @*<script src="http://localhost:8088/socket.io/socket.io.js"></script>*@
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">
@@ -551,12 +551,12 @@
         //connect to notify server
         var userId = "1";
         var isAdmin = true;
-        var socket = io.connect('http://localhost:8088');
-        socket.emit('join-room', { userId, isAdmin });
+        //var socket = io.connect('http://localhost:8088');
+        //socket.emit('join-room', { userId, isAdmin });
 
-        socket.on('show-notify', function (obj) {
-            alert(obj.title);
-        });
+        //socket.on('show-notify', function (obj) {
+        //    alert(obj.title);
+        //});
     });
 
     </script>

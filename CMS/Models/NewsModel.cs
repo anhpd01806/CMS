@@ -81,6 +81,14 @@ namespace CMS.Models
 
         public List<NewsModel> SameNews { get; set; }
 
-        public bool? IsReaded { get; set; }
+        public bool? CusIsReaded { get; set; }
+
+        public bool? CusIsSaved { get; set; }
+
+        public bool? CusIsDeleted { get; set; }
+
+        public bool? CusIsAgency { get; set; }
+
+        public bool? CusIsSpam { get; set; }
     }
 }

@@ -15,13 +15,12 @@ using CMS.Data;
 
 namespace CMS.Controllers
 {
-    public class HomeController : BaseAuthedController
+    public class NewsSaveController : BaseAuthedController
     {
         #region member
-        private readonly HomeBussiness _bussiness = new HomeBussiness();
+        private readonly NewsBussiness _newsbussiness = new NewsBussiness();
+        private readonly HomeBussiness _homebussiness = new HomeBussiness();
         #endregion
-
-        // GET: Home 
         public ActionResult Index()
         {
             try
@@ -33,7 +32,7 @@ namespace CMS.Controllers
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
 
                 #region Get select list category
-                var listCategory = _bussiness.GetListCategory();
+                var listCategory = _homebussiness.GetListCategory();
                 var cateListItems = new List<SelectListItem>();
                 cateListItems.Add(new SelectListItem { Text = "Chọn chuyên mục", Value = "0" });
                 foreach (var item in listCategory)
@@ -41,7 +40,7 @@ namespace CMS.Controllers
                     if (item.ParentCategoryId == 0)
                     {
                         cateListItems.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
-                        var listchillcate = _bussiness.GetChilldrenlistCategory(item.ParentCategoryId);
+                        var listchillcate = _homebussiness.GetChilldrenlistCategory(item.ParentCategoryId);
                         foreach (var chill in listchillcate)
                         {
                             cateListItems.Add(new SelectListItem { Text = (item.Name + " >> " + chill.Name), Value = chill.Id.ToString() });
@@ -52,7 +51,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _bussiness.GetListDistric();
+                var listDistrict = _homebussiness.GetListDistric();
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)
@@ -62,7 +61,7 @@ namespace CMS.Controllers
                 model.ListDistric = new SelectList(listdictrictItem, "Value", "Text");
                 #endregion
                 #region Get select list site
-                var listSite = _bussiness.GetListSite();
+                var listSite = _homebussiness.GetListSite();
                 var listsiteItem = new List<SelectListItem>();
                 listsiteItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
                 foreach (var item in listSite)
@@ -72,7 +71,7 @@ namespace CMS.Controllers
                 model.ListSite = new SelectList(listsiteItem, "Value", "Text");
                 #endregion
                 #region Get select list status
-                var listStatus = _bussiness.GetlistStatusModel();
+                var listStatus = _homebussiness.GetlistStatusModel();
                 var listStatusItem = new List<SelectListItem>();
                 listStatusItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
                 foreach (var item in listStatus)
@@ -82,7 +81,7 @@ namespace CMS.Controllers
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
 
-                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, ref total);
+                model.ListNew = _newsbussiness.GetListNewStatusByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize,1, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);
@@ -102,7 +101,7 @@ namespace CMS.Controllers
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, ref total);
+                var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize,1, ref total);
                 var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
                 return Json(new
                 {
@@ -121,99 +120,6 @@ namespace CMS.Controllers
             }
         }
 
-        public JsonResult GetNewsDetail()
-        {
-            try
-            {
-                var Id = Convert.ToInt32(Request["Id"]);
-                int userId = Convert.ToInt32(Session["SS-USERID"]);
-                var news = _bussiness.GetNewsDetail(Id, userId);
-                var content = RenderPartialViewToString("~/Views/Home/NewDetail.cshtml", news);
-                return Json(new
-                {
-                    Content = content
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
-                return Json(new
-                {
-                    Content = string.Empty
-                }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpPost]
-        public JsonResult UserSaveNews(int[] listNewsId)
-        {
-            try
-            {
-                int userId = Convert.ToInt32(Session["SS-USERID"]);
-                var result = 1;
-                if (listNewsId.Length > 0)
-                {
-                    var listItem = new List<News_Customer_Mapping>();
-                    for (int i = 0; i < listNewsId.Length; i++)
-                    {
-                        listItem.Add(new News_Customer_Mapping
-                        {
-                            CustomerId = userId,
-                            NewsId = listNewsId[i],
-                            IsSaved = true,
-                            IsDeleted = false,
-                            IsReaded = false,
-                            IsAgency = false,
-                            IsSpam = false,
-                            CreateDate = DateTime.Now
-                        });
-                    }
-                    result = _bussiness.SaveNewByUserId(listItem, userId);
-                }
-                return Json(new { Status = result });
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
-                return Json(new { Status = 0 });
-            }
-        }
-
-        [HttpPost]
-        public JsonResult UserHideNews(int[] listNewsId)
-        {
-            try
-            {
-                int userId = Convert.ToInt32(Session["SS-USERID"]);
-                var result = 1;
-                if (listNewsId.Length > 0)
-                {
-                    var listItem = new List<News_Customer_Mapping>();
-                    for (int i = 0; i < listNewsId.Length; i++)
-                    {
-                        listItem.Add(new News_Customer_Mapping
-                        {
-                            CustomerId = userId,
-                            NewsId = listNewsId[i],
-                            IsSaved = false,
-                            IsDeleted = true,
-                            IsReaded = false,
-                            IsAgency = false,
-                            IsSpam = false,
-                            CreateDate = DateTime.Now
-                        });
-                    }
-                    result = _bussiness.HideNewByUserId(listItem, userId);
-                }
-                return Json(new { Status = result });
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
-                return Json(new { Status = 0 });
-            }
-        }
-
         public ActionResult ExportExcel(int cateId, int districtId, int newTypeId, int siteId, int backdate, decimal
                 minPrice, decimal maxPrice, string from, string to, int pageIndex, int pageSize)
         {
@@ -227,7 +133,7 @@ namespace CMS.Controllers
             }
             int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, ref total);
+            var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize,1, ref total);
             ExportToExcel(filePath, listNews);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);
@@ -245,7 +151,7 @@ namespace CMS.Controllers
                 //xlPackage.DebugMode = true; 
 
                 // get handle to the existing worksheet
-                var worksheet = xlPackage.Workbook.Worksheets.Add("Danh sách tin tức");
+                var worksheet = xlPackage.Workbook.Worksheets.Add("Danh sách tin tức được lưu");
                 xlPackage.Workbook.CalcMode = ExcelCalcMode.Manual;
                 //Create Headers and format them
                 var properties = new string[]
@@ -306,5 +212,40 @@ namespace CMS.Controllers
                 xlPackage.Save();
             }
         }
-    }
+
+        [HttpPost]
+        public JsonResult UserRemoveNewsSave(int[] listNewsId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var result = 1;
+                if (listNewsId.Length > 0)
+                {
+                    var listItem = new List<News_Customer_Mapping>();
+                    for (int i = 0; i < listNewsId.Length; i++)
+                    {
+                        listItem.Add(new News_Customer_Mapping
+                        {
+                            CustomerId = userId,
+                            NewsId = listNewsId[i],
+                            IsSaved = true,
+                            IsDeleted = false,
+                            IsReaded = false,
+                            IsAgency = false,
+                            IsSpam = false,
+                            CreateDate = DateTime.Now
+                        });
+                    }
+                    result = _newsbussiness.RemoveSaveNewByUserId(listItem, userId);
+                }
+                return Json(new { Status = result });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
+	}
 }

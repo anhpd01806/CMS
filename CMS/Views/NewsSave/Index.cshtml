@@ -6,9 +6,9 @@
 <div class="page-content">
     <div class="row">
         <p>
-            <button class="btn btn-app btn-primary btn-small btnsave disabled">
+            <button class="btn btn-app btn-primary btn-small btnremove disabled">
                 <i class="icon-save bigger-200"></i>
-                Lưu tin
+                Bỏ lưu tin
             </button>
             <button class="btn btn-app btn-success btn-small btnhide disabled">
                 <i class="icon-eye-close bigger-200"></i>
@@ -118,7 +118,7 @@
                                     <div class="control-group">
                                         <label class="control-label">Từ ngày</label>
                                         <div class="input-group col-xs-6">
-                                            <input class="form-control date-picker txtFrom" type="text"/>
+                                            <input class="form-control date-picker txtFrom" type="text" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar bigger-110"></i>
                                             </span>
@@ -129,14 +129,14 @@
                                     <div class="control-group">
                                         <label class="control-label">Đến ngày</label>
                                         <div class="input-group col-xs-6">
-                                            <input class="form-control date-picker txtTo" type="text"/>
+                                            <input class="form-control date-picker txtTo" type="text" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar bigger-110"></i>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-xs-12 clearfix">
                                     <div class="form-actions">
                                         <button class="btn btn-info btnsubmit" type="button">
@@ -216,7 +216,7 @@
                                         <a class="blue detail-item-list" href="javascript:;" data-id="@item.Id">
                                             <i class="icon-zoom-in bigger-130"></i>
                                         </a>
-                                        <a class="green save-item-list" href="javascript:;" data-id="@item.Id">
+                                        <a class="green remove-item-list" href="javascript:;" data-id="@item.Id">
                                             <i class="icon-save bigger-130"></i>
                                         </a>
                                         <a class="orange hide-item-list" href="javascript:;" data-id="@item.Id">
@@ -262,4 +262,4 @@
 
 @*Custom script*@
 <script src="~/Scripts/common.js"></script>
-<script src="~/Scripts/home/home.js"></script>
+<script src="~/Scripts/news/news.js"></script>

@@ -14,4 +14,11 @@ namespace CMS.Helper
 
         public static string MonthPackage = ConfigurationManager.AppSettings["MonthPackage"];
     }
+
+    public enum NewsStatus
+    {
+        IsSave = 1,
+        IsRead = 2,
+        IsDelete = 3
+    }
 }
