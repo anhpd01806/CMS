@@ -34,5 +34,12 @@ namespace CMS.Bussiness
             db.LinkSites.InsertOnSubmit(model);
             db.SubmitChanges();
         }
+
+        public void Delete(int id)
+        {
+            var linkSite = db.LinkSites.FirstOrDefault(x => x.Id == id);
+            db.LinkSites.DeleteOnSubmit(linkSite);
+            db.SubmitChanges();
+        }
     }
 }

@@ -62,6 +62,27 @@ namespace CMS.Controllers
 
         #region Json
         [HttpPost]
+        public JsonResult DeleteData(int id)
+        {
+            try
+            {
+                new LinkSiteBussiness().Delete(id);
+
+                return Json(new
+                {
+                    Result = true,
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    Result = false,
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public JsonResult InsertData(string LinkUrl, int SiteId, int CategoryId, int ProvinceId, int districtId)
         {
             try

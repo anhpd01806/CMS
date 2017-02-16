@@ -10,6 +10,26 @@
 
         $(document).ready(function () {
             FindInfomation();
+
+            $('.delete').click(function (e) {
+                e.preventDefault();
+                $(".delete-selected").removeClass("delete-selected");
+                $(this).addClass("delete-selected");
+            });
+            $('#submitDelete').click(function () {
+                var id = $('.delete-selected').data("id");
+                var data = {
+                    id: id
+                };
+                $.post("/LinkSite/DeleteData", data, function (resp) {
+                    if (resp.Result == true) {
+                        FindInfomation();
+                    }
+                });
+                debugger
+                $('.btn-cancel').click();
+            });
+
         });
 
         //fill category site by site
@@ -99,6 +119,7 @@
                 }
             });
         }
+
         function showPagination(totalpage) {
             $('#pagination').remove();
             $('.homepagging').html('<div class="pagination" id="pagination"></div>');
@@ -231,6 +252,25 @@
                     </div>
                 </div>
                 
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Xác nhận xóa dữ liệu</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Dữ liệu bị xóa không thể phục hồi</p>
+                        <p>Bạn có chắc chắn xóa người dùng ngày</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger btn-ok" id="submitDelete">OK</button>
+                    </div>
+                </div>
             </div>
         </div>
     }
