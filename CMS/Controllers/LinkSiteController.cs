@@ -53,7 +53,7 @@ namespace CMS.Controllers
                 //model.Totalpage = (int)Math.Ceiling((double)new LinkSiteBussiness().GetLinkSiteByParam("", allSite.First().ID
                 //    , int.Parse(model.CategorySite.First().Value), int.Parse(model.CategorySite.First().Value), allProvince.First().Id, PageSize, 0).Count() / (double)PageSize);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;
@@ -74,7 +74,7 @@ namespace CMS.Controllers
                     Result = true,
                 }, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(new
                 {
@@ -107,7 +107,7 @@ namespace CMS.Controllers
                     Result = true,
                 }, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(new
                 {
@@ -132,7 +132,7 @@ namespace CMS.Controllers
                     Content = content
                 }, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(new
                 {

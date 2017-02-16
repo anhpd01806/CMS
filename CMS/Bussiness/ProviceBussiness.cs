@@ -24,7 +24,7 @@ namespace CMS.Bussiness
 
         public Province GetProviceById(int id)
         {
-            return db.Provinces.FirstOrDefault(x=>x.Id == id);
+            return db.Provinces.FirstOrDefault(x=>x.Id == id && x.Published == true);
         }
 
         public void Update(ProviceModel model)

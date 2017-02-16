@@ -19,18 +19,19 @@ namespace CMS.Bussiness
         {
             totalCount = db.LinkSites.Where(x => (x.Url.ToLower().Contains(url.ToLower()) || string.IsNullOrEmpty(url))
                                             && x.SiteId == siteId && x.CategorySiteId == categorySiteId
-                                            && x.DistrictId == districtId && x.ProvinceId == provinceId).Count();
+                                            && x.DistrictId == districtId && x.ProvinceId == provinceId && x.Published == true && x.Deleted == false).Count();
 
             var rs = db.LinkSites.Where(x => (x.Url.ToLower().Contains(url.ToLower()) || string.IsNullOrEmpty(url))
                                             && x.SiteId == siteId && x.CategorySiteId == categorySiteId 
-                                            && x.DistrictId == districtId && x.ProvinceId == provinceId)
+                                            && x.DistrictId == districtId && x.ProvinceId == provinceId && x.Published == true && x.Deleted == false)
                                             .Skip(pageIndex*pageSize).Take(pageSize).ToList();
             return rs;
         }
 
         public string GetNameSiteById(int siteId)
         {
-            return db.Sites.FirstOrDefault(x => x.ID == siteId).Name;
+            var site = db.Sites.FirstOrDefault(x => x.ID == siteId && x.Published == true && x.Deleted == false);
+            return site!= null? site.Name:"";
         }
 
         public void Insert(LinkSite model)
@@ -42,7 +43,7 @@ namespace CMS.Bussiness
         public void Delete(int id)
         {
             var linkSite = db.LinkSites.FirstOrDefault(x => x.Id == id);
-            db.LinkSites.DeleteOnSubmit(linkSite);
+            linkSite.Deleted = true;
             db.SubmitChanges();
         }
     }

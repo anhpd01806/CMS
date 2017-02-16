@@ -44,7 +44,7 @@ namespace CMS.Controllers
                 AccountViewModel model = new AccountViewModel();
                 return View(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View();
             }
@@ -85,7 +85,7 @@ namespace CMS.Controllers
                 }
                 return View(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Error"] = Messages_Contants.ERROR_COMMON;
                 return View("Login");
@@ -156,7 +156,7 @@ namespace CMS.Controllers
                             new RoleUserBussiness().Insert(roleUser);
                             TempData["Success"] = "Tài khoản đã được khởi tạo. Quản trị viên sẽ liên lạc với bạn ngay khi duyệt tài khoản.";
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             TempData["Error"] = Messages_Contants.ERROR_COMMON;
 
@@ -178,7 +178,7 @@ namespace CMS.Controllers
                 ifUserExists = IsUserExists(UserName) ? false : true;
                 return Json(!ifUserExists, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
@@ -194,7 +194,7 @@ namespace CMS.Controllers
                 ifUserExists = IsUserExists(UserName) ? true : false;
                 return Json(!ifUserExists, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }

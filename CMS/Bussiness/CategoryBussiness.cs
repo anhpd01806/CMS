@@ -13,12 +13,12 @@ namespace CMS.Bussiness
 
         public List<Category> GetAllCateGory()
         {
-            return db.Categories.Where(x => x.Deleted == false).ToList();
+            return db.Categories.Where(x => x.Deleted == false && x.Published == true).ToList();
         }
 
         public List<Category> GetParentCateGory()
         {
-            return db.Categories.Where(x => x.Deleted == false && x.ParentCategoryId == 0).ToList();
+            return db.Categories.Where(x => x.Deleted == false && x.Published == true && x.ParentCategoryId == 0).ToList();
         }
 
         public void Insert(Category category)
@@ -29,15 +29,19 @@ namespace CMS.Bussiness
 
         public Category GetCateGoryById(int id)
         {
-            return db.Categories.FirstOrDefault(x => x.Deleted == false && x.Id == id);
+            return db.Categories.FirstOrDefault(x => x.Deleted == false && x.Published == true && x.Id == id);
         }
 
         public string GetNameCategorySiteById(int id)
         {
-            var categorySite = db.CategorySites.FirstOrDefault(x => x.Deleted == false && x.Id == id);
-            if (categorySite.ParentId == 0) return categorySite.Name;
-            string nameCategory = db.CategorySites.FirstOrDefault(x => x.Id == categorySite.ParentId).Name + " >> " + categorySite.Name;
-            return nameCategory;
+            var categorySite = db.CategorySites.FirstOrDefault(x => x.Deleted == false && x.Published == true && x.Id == id);
+            if (categorySite != null)
+            {
+                if (categorySite.ParentId == 0) return categorySite.Name;
+                string nameCategory = db.CategorySites.FirstOrDefault(x => x.Id == categorySite.ParentId && x.Deleted == false && x.Published == true).Name + " >> " + categorySite.Name;
+                return nameCategory;
+            }
+            return "";
         }
 
         public void Update(CategoryModel model)
@@ -55,14 +59,14 @@ namespace CMS.Bussiness
         {
             var category = db.Categories.FirstOrDefault(x => x.Id == id);
             if (db.Categories.Any(x => x.ParentCategoryId == id)) return false;
-            db.Categories.DeleteOnSubmit(category);
+            category.Deleted = true;
             db.SubmitChanges();
             return true;
         }
 
         public List<CategorySite> GetCategorySiteBySiteId(int siteId)
         {
-            return db.CategorySites.Where(x => x.SiteId == siteId).ToList();
+            return db.CategorySites.Where(x => x.SiteId == siteId && x.Deleted == false && x.Published == true).ToList();
         }
     }
 }

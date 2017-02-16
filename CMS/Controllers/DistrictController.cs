@@ -65,7 +65,7 @@ namespace CMS.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = Messages_Contants.ERROR_COMMON;
+                TempData["Error"] = ex;
             }
             return View(model);
         }
@@ -97,7 +97,7 @@ namespace CMS.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = Messages_Contants.ERROR_COMMON;
+                TempData["Error"] = ex;
             }
             return RedirectToAction("Index", "District");
         }
@@ -112,7 +112,7 @@ namespace CMS.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = Messages_Contants.ERROR_COMMON;
+                TempData["Error"] = ex;
             }
             return RedirectToAction("Index", "District");
         }

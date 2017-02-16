@@ -21,7 +21,7 @@ namespace CMS.Bussiness
                 db.Roles.InsertOnSubmit(role);
                 db.SubmitChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
 
@@ -44,7 +44,7 @@ namespace CMS.Bussiness
                 }
                 db.SubmitChanges();
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
             }
@@ -62,7 +62,7 @@ namespace CMS.Bussiness
                     db.SubmitChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
             }

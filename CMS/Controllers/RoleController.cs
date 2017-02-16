@@ -56,7 +56,7 @@ namespace CMS.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = Messages_Contants.ERROR_COMMON;
+                TempData["Error"] = ex;
             }
             return RedirectToAction("Create", "Role");
         }
@@ -85,7 +85,7 @@ namespace CMS.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Có lỗi xảy ra. Vui lòng thử lại";
+                TempData["Error"] = ex;
                 return RedirectToAction("Index", "Role");
             }
 
@@ -114,7 +114,7 @@ namespace CMS.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = Messages_Contants.ERROR_COMMON;
+                TempData["Error"] = ex;
             }
             return Redirect("~/Role/Index");
         }
@@ -138,7 +138,7 @@ namespace CMS.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = Messages_Contants.ERROR_COMMON;
+                TempData["Error"] = ex;
             }
             return Redirect("~/Role/Index");
         }

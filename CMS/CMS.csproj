@@ -2919,6 +2919,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Bussiness\CacheBussiness.cs" />
     <Compile Include="Bussiness\CategoryBussiness.cs" />
+    <Compile Include="Bussiness\CategorySiteBussiness.cs" />
     <Compile Include="Bussiness\DistrictBussiness.cs" />
     <Compile Include="Bussiness\HomeBussiness.cs" />
     <Compile Include="Bussiness\MenuBussiness.cs" />
@@ -2935,6 +2936,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseAuthedController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CategorySiteController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -2973,6 +2975,7 @@
     <Compile Include="Models\SiteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AccountViewModel.cs" />
+    <Compile Include="ViewModel\CategorySiteViewModel.cs" />
     <Compile Include="ViewModel\CategoryViewModel.cs" />
     <Compile Include="ViewModel\DistrictViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
@@ -3023,6 +3026,8 @@
     <Content Include="Views\NewsSave\Index.cshtml" />
     <Content Include="Views\LinkSite\Index.cshtml" />
     <Content Include="Views\LinkSite\LinkSiteDetail.cshtml" />
+    <Content Include="Views\CategorySite\Index.cshtml" />
+    <Content Include="Views\CategorySite\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

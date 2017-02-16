@@ -39,7 +39,7 @@ namespace CMS.Controllers
                     Content = content
                 }, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(new
                 {
@@ -118,7 +118,7 @@ namespace CMS.Controllers
                     }
                     catch (Exception ex)
                     {
-                        TempData["Error"] = Messages_Contants.ERROR_COMMON;
+                        TempData["Error"] = ex;
                         return RedirectToAction("Create", "User");
                     }
                 }
@@ -147,7 +147,7 @@ namespace CMS.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = Messages_Contants.ERROR_DELETE;
+                TempData["Error"] = ex;
             }
 
             return RedirectToAction("Index", "User");

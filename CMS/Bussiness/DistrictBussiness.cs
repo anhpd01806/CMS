@@ -13,7 +13,7 @@ namespace CMS.Bussiness
 
         public List<District> GetAllDistrict()
         {
-            return db.Districts.Where(x => x.IsDeleted == false).ToList();
+            return db.Districts.Where(x => x.IsDeleted == false && x.Published == true).ToList();
         }
 
         public List<Province> GetAllProvince()
@@ -29,7 +29,7 @@ namespace CMS.Bussiness
 
         public District GetDistrictById(int id)
         {
-            return db.Districts.FirstOrDefault(x => x.IsDeleted == false && x.Id == id);
+            return db.Districts.FirstOrDefault(x => x.IsDeleted == false && x.Published == true && x.Id == id);
         }
 
         public void Ụpdate(DistrictModel model)
@@ -45,7 +45,7 @@ namespace CMS.Bussiness
         public void Delete(int id)
         {
             var district = db.Districts.FirstOrDefault(x => x.Id == id);
-            db.Districts.DeleteOnSubmit(district);
+            district.IsDeleted = true;
             db.SubmitChanges();
         }
 
@@ -56,7 +56,7 @@ namespace CMS.Bussiness
 
         public string GetNameProvinceById(int id)
         {
-            return db.Provinces.FirstOrDefault(x => x.Id == id).Name;
+            return db.Provinces.FirstOrDefault(x => x.Id == id && x.Published == true).Name;
         }
     }
 }

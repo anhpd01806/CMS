@@ -48,7 +48,7 @@ namespace CMS.Controllers
                 }
                 catch (Exception ex)
                 {
-                    TempData["Error"] = Messages_Contants.ERROR_COMMON;
+                    TempData["Error"] = ex;
                 }
             }
             model = new PaymentViewModel();
@@ -98,7 +98,7 @@ namespace CMS.Controllers
                                 }).ToList();
                 return Json(itemList, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }

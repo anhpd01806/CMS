@@ -231,7 +231,7 @@ namespace WebBackendPlus.Controllers
                 }
                 return breadCrumb;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return "";

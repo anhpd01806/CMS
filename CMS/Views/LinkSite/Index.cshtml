@@ -101,20 +101,22 @@
         // click button nhap link
         function InsertInformation() {
             var LinkUrl = $('#LinkUrl').val();
-            var SiteId = $('#SiteId').val();
-            var CategoryId = $('#CategoryId').val();
-            var ProvinceId = $('#ProvinceId').val();
-            var districtId = $('#districtId').val();
+            if (LinkUrl != "") {
+                var SiteId = $('#SiteId').val();
+                var CategoryId = $('#CategoryId').val();
+                var ProvinceId = $('#ProvinceId').val();
+                var districtId = $('#districtId').val();
 
-            var data = {
-                LinkUrl: LinkUrl, SiteId: SiteId, CategoryId: CategoryId, ProvinceId: ProvinceId, districtId: districtId
-            };
-            $.post("/LinkSite/InsertData", data, function (resp) {
-                if (resp.Result == true) {
-                    $('#LinkUrl').val("");
-                    FindInfomation();
-                }
-            });
+                var data = {
+                    LinkUrl: LinkUrl, SiteId: SiteId, CategoryId: CategoryId, ProvinceId: ProvinceId, districtId: districtId
+                };
+                $.post("/LinkSite/InsertData", data, function (resp) {
+                    if (resp.Result == true) {
+                        $('#LinkUrl').val("");
+                        FindInfomation();
+                    }
+                });
+            }else {alert('Trường Url không được để trống')}
         }
 
         function showPagination(totalpage) {
@@ -235,18 +237,18 @@
                                 <tbody></tbody>
                             </table>
                             <input type="hidden" id="TotalPage" data-total="@Model.Totalpage" data-page="1" />
-                                <div class="row page-home">
-                                    <div class="col-xs-4"></div>
-                                    <div class="col-xs-8">
-                                        <div class="dataTables_paginate homepagging">
-                                            <div class="pagination" id="pagination"></div>
-                                        </div>
+                            <div class="row page-home">
+                                <div class="col-xs-4"></div>
+                                <div class="col-xs-8">
+                                    <div class="dataTables_paginate homepagging">
+                                        <div class="pagination" id="pagination"></div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
 
