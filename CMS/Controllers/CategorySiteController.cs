@@ -11,7 +11,7 @@ using WebBackendPlus.Controllers;
 
 namespace CMS.Controllers
 {
-    public class CategorySiteController : Controller
+    public class CategorySiteController : BaseAuthedController
     {
 
         // GET: CategorySite
