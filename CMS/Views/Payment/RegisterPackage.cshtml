@@ -30,8 +30,6 @@
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                    debugger;
-                    $(function () {
                         $.each(result, function (i, item) {
                             $('<tr>').append(
                             $('<td>').text(item.DateString),
@@ -39,8 +37,6 @@
                             $('<td>').text(item.Amount),
                             $('<td>').text(item.Notes)).appendTo('#datatable1 > tbody');
                         });
-                    });
-
                 },
                 error: function (response) {
                     debugger;

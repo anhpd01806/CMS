@@ -57,9 +57,9 @@ namespace CMS.Bussiness
         public List<PaymentHistory> GetPaymentHistoryByUserId(int userId, int page)
         {
             if (page == 0)
-                return db.PaymentHistories.Where(x => x.UserId == userId && x.CreatedDate <= DateTime.Now && x.CreatedDate >= DateTime.Now.AddDays(-30)).OrderByDescending(x => x.CreatedDate).ToList();
+                return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Take(20).ToList();
             else
-                return db.PaymentHistories.Where(x => x.UserId == userId && x.CreatedDate < DateTime.Now.AddDays(-page * 30) && x.CreatedDate >= DateTime.Now.AddDays(-(page + 1) * 30)).OrderByDescending(x => x.CreatedDate).ToList();
+                return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Skip(page*20).Take(20).ToList();
         }
 
         public string GetPaymentMethodById(int id)

@@ -13,7 +13,7 @@ namespace CMS.Bussiness
 
         public List<Province> GetAllProvice()
         {
-            return db.Provinces.ToList();
+            return db.Provinces.Where(x=>x.Published == true).ToList();
         }
 
         public void Insert(Province model)

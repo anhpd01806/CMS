@@ -48,5 +48,15 @@ namespace CMS.Bussiness
             db.Districts.DeleteOnSubmit(district);
             db.SubmitChanges();
         }
+
+        public List<District> GetDistrictByProvinceId(int provinceId)
+        {
+            return db.Districts.Where(x => x.ProvinceId == provinceId && x.IsDeleted == false && x.Published == true).ToList();
+        }
+
+        public string GetNameProvinceById(int id)
+        {
+            return db.Provinces.FirstOrDefault(x => x.Id == id).Name;
+        }
     }
 }

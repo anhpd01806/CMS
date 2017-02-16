@@ -2929,6 +2929,7 @@
     <Compile Include="Bussiness\RoleAccessBussiness.cs" />
     <Compile Include="Bussiness\RoleBussiness.cs" />
     <Compile Include="Bussiness\RoleUserBussiness.cs" />
+    <Compile Include="Bussiness\LinkSiteBussiness.cs" />
     <Compile Include="Bussiness\UserBussiness.cs" />
     <Compile Include="Common\InMemoryCache.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -2946,6 +2947,7 @@
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ProviceController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\LinkSiteController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Data\CmsData.designer.cs">
       <AutoGen>True</AutoGen>
@@ -2979,6 +2981,7 @@
     <Compile Include="ViewModel\PaymentViewModel.cs" />
     <Compile Include="ViewModel\ProvinceViewModel.cs" />
     <Compile Include="ViewModel\RoleViewModel.cs" />
+    <Compile Include="ViewModel\LinkSiteViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -3018,6 +3021,8 @@
     <Content Include="Views\Payment\RegisterPackage.cshtml" />
     <Content Include="Views\User\UserDetail.cshtml" />
     <Content Include="Views\NewsSave\Index.cshtml" />
+    <Content Include="Views\LinkSite\Index.cshtml" />
+    <Content Include="Views\LinkSite\LinkSiteDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

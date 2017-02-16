@@ -13,7 +13,7 @@ namespace CMS.Bussiness
 
         public List<Category> GetAllCateGory()
         {
-            return db.Categories.Where(x=>x.Deleted == false).ToList();
+            return db.Categories.Where(x => x.Deleted == false).ToList();
         }
 
         public List<Category> GetParentCateGory()
@@ -30,6 +30,14 @@ namespace CMS.Bussiness
         public Category GetCateGoryById(int id)
         {
             return db.Categories.FirstOrDefault(x => x.Deleted == false && x.Id == id);
+        }
+
+        public string GetNameCategorySiteById(int id)
+        {
+            var categorySite = db.CategorySites.FirstOrDefault(x => x.Deleted == false && x.Id == id);
+            if (categorySite.ParentId == 0) return categorySite.Name;
+            string nameCategory = db.CategorySites.FirstOrDefault(x => x.Id == categorySite.ParentId).Name + " >> " + categorySite.Name;
+            return nameCategory;
         }
 
         public void Update(CategoryModel model)
@@ -50,6 +58,11 @@ namespace CMS.Bussiness
             db.Categories.DeleteOnSubmit(category);
             db.SubmitChanges();
             return true;
+        }
+
+        public List<CategorySite> GetCategorySiteBySiteId(int siteId)
+        {
+            return db.CategorySites.Where(x => x.SiteId == siteId).ToList();
         }
     }
 }
