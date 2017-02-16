@@ -26,7 +26,6 @@
                         FindInfomation();
                     }
                 });
-                debugger
                 $('.btn-cancel').click();
             });
 
@@ -73,7 +72,6 @@
         // click button tim kiem
         function FindInfomation() {
             $.LoadingOverlay("show");
-            debugger
             var search = $('#LinkUrl').val();
             var pageIndex = 1;
             var SiteId = $('#SiteId').val();
@@ -85,8 +83,8 @@
                 search: search, SiteId: SiteId, CategoryId: CategoryId, ProvinceId: ProvinceId, districtId: districtId, pageIndex: pageIndex
             };
             $.post("/LinkSite/LoadData", data, function (resp) {
+                debugger
                 if (resp != null) {
-                    debugger
                     $("#datatable1 tbody").html("");
                     $("#datatable1 tbody").html(resp.Content);
                     if (resp.TotalPage > 1) {
@@ -102,7 +100,6 @@
 
         // click button nhap link
         function InsertInformation() {
-            debugger
             var LinkUrl = $('#LinkUrl').val();
             var SiteId = $('#SiteId').val();
             var CategoryId = $('#CategoryId').val();
@@ -121,6 +118,7 @@
         }
 
         function showPagination(totalpage) {
+            debugger
             $('#pagination').remove();
             $('.homepagging').html('<div class="pagination" id="pagination"></div>');
             if (totalpage > 1) {
@@ -237,8 +235,6 @@
                                 <tbody></tbody>
                             </table>
                             <input type="hidden" id="TotalPage" data-total="@Model.Totalpage" data-page="1" />
-                            @if (Model.Totalpage > 1)
-                            {
                                 <div class="row page-home">
                                     <div class="col-xs-4"></div>
                                     <div class="col-xs-8">
@@ -247,7 +243,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            }
                         </div>
                     </div>
                 </div>

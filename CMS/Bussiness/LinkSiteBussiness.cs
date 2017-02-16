@@ -15,8 +15,12 @@ namespace CMS.Bussiness
             return db.Sites.Where(x => x.Deleted == false && x.Published == true).ToList();
         }
 
-        public List<LinkSite> GetLinkSiteByParam(string url, int siteId, int categorySiteId, int districtId, int provinceId, int pageSize, int pageIndex)
+        public List<LinkSite> GetLinkSiteByParam(ref int totalCount, string url, int siteId, int categorySiteId, int districtId, int provinceId, int pageSize, int pageIndex)
         {
+            totalCount = db.LinkSites.Where(x => (x.Url.ToLower().Contains(url.ToLower()) || string.IsNullOrEmpty(url))
+                                            && x.SiteId == siteId && x.CategorySiteId == categorySiteId
+                                            && x.DistrictId == districtId && x.ProvinceId == provinceId).Count();
+
             var rs = db.LinkSites.Where(x => (x.Url.ToLower().Contains(url.ToLower()) || string.IsNullOrEmpty(url))
                                             && x.SiteId == siteId && x.CategorySiteId == categorySiteId 
                                             && x.DistrictId == districtId && x.ProvinceId == provinceId)

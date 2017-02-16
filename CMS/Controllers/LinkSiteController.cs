@@ -13,6 +13,7 @@ namespace CMS.Controllers
 {
     public class LinkSiteController : BaseAuthedController
     {
+        private int PageSize = 20;
         // GET: Site
         public ActionResult Index()
         {
@@ -49,8 +50,8 @@ namespace CMS.Controllers
                     //get district by province
                     model.DistrictList = new DistrictBussiness().GetDistrictByProvinceId(allProvince.First().Id).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
                 }
-                model.Totalpage = (int)Math.Ceiling((double)new LinkSiteBussiness().GetLinkSiteByParam("", allSite.First().ID
-                    , int.Parse(model.CategorySite.First().Value), int.Parse(model.CategorySite.First().Value), allProvince.First().Id, 20, 0).Count() / (double)20);
+                //model.Totalpage = (int)Math.Ceiling((double)new LinkSiteBussiness().GetLinkSiteByParam("", allSite.First().ID
+                //    , int.Parse(model.CategorySite.First().Value), int.Parse(model.CategorySite.First().Value), allProvince.First().Id, PageSize, 0).Count() / (double)PageSize);
             }
             catch (Exception ex)
             {
@@ -122,7 +123,7 @@ namespace CMS.Controllers
             {
                 int totalpage = 0;
                 LinkSiteViewModel model = new LinkSiteViewModel();
-                model.LinkSiteList = GetLinkSite(ref totalpage, search, SiteId, CategoryId, districtId, ProvinceId, 20, pageIndex);
+                model.LinkSiteList = GetLinkSite(ref totalpage, search, SiteId, CategoryId, districtId, ProvinceId, PageSize, pageIndex);
                 var content = RenderPartialViewToString("~/Views/LinkSite/LinkSiteDetail.cshtml", model.LinkSiteList);
                 model.Totalpage = totalpage;
                 return Json(new
@@ -175,7 +176,8 @@ namespace CMS.Controllers
 
         private List<LinkSiteModel> GetLinkSite(ref int totalPage, string search, int siteId, int categorySiteId, int districtId, int provinceId, int pageSize, int pageIndex)
         {
-            var linkSite = new LinkSiteBussiness().GetLinkSiteByParam(search, siteId, categorySiteId, districtId, provinceId, pageSize, (pageIndex - 1));
+            int totalCount = 0;
+            var linkSite = new LinkSiteBussiness().GetLinkSiteByParam(ref totalCount, search, siteId, categorySiteId, districtId, provinceId, pageSize, (pageIndex - 1));
             //var categoryName = new CategoryBussiness().GetNameCategorySiteById(categorySiteId);
             var district = new DistrictBussiness().GetDistrictById(districtId);
             var rs = (from a in linkSite
@@ -189,7 +191,7 @@ namespace CMS.Controllers
                           Province = new DistrictBussiness().GetNameProvinceById(provinceId),
                           Status = a.Published == true ? "Hoạt động" : "Tạm ngừng"
                       }).OrderByDescending(x => x.Id).ToList();
-            totalPage = (int)Math.Ceiling((double)rs.Count / (double)pageSize);
+            totalPage = (int)Math.Ceiling((double)totalCount / (double)pageSize);
             return rs;
         }
 
