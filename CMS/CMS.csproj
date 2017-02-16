@@ -47,7 +47,7 @@
       <HintPath>C:\Users\Pham Duc Anh\AppData\Roaming\Skype\My Skype Received Files\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus">
-      <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+      <HintPath>packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="MemoryCache, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MemoryCache.1.2.0\lib\MemoryCache.dll</HintPath>
@@ -58,9 +58,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data.Linq" />
@@ -2902,6 +2902,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\news\news.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Shared\breadcrumb.cshtml" />
     <Content Include="Views\Shared\PartialMenu.cshtml" />
@@ -2921,6 +2922,7 @@
     <Compile Include="Bussiness\DistrictBussiness.cs" />
     <Compile Include="Bussiness\HomeBussiness.cs" />
     <Compile Include="Bussiness\MenuBussiness.cs" />
+    <Compile Include="Bussiness\NewsBussiness.cs" />
     <Compile Include="Bussiness\OperationBussiness.cs" />
     <Compile Include="Bussiness\PaymentBussiness.cs" />
     <Compile Include="Bussiness\ProviceBussiness.cs" />
@@ -2936,6 +2938,9 @@
     <Compile Include="Controllers\DistrictController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\NewsHideController.cs" />
+    <Compile Include="Controllers\NewsSaveController.cs" />
+    <Compile Include="Controllers\NewsViewedController.cs" />
     <Compile Include="Controllers\NoticeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
@@ -3012,6 +3017,7 @@
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\Payment\RegisterPackage.cshtml" />
     <Content Include="Views\User\UserDetail.cshtml" />
+    <Content Include="Views\NewsSave\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3022,6 +3028,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="assets\js\core\cache\" />
+    <Folder Include="Views\NewsHide\" />
+    <Folder Include="Views\NewsViewed\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
