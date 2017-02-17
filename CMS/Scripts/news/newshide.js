@@ -129,15 +129,22 @@ $(function () {
         $(document).on("click", ".checkboxItem", function () {
             var count = parseInt($('input:checkbox:checked').length);
             if ($(this).prop('checked')) {
-                $(".btnremove, .btnhide, .btnreport").removeClass("disabled");
+                $(".btnsave, .btnremovehide, .btnreport").removeClass("disabled");
             } else {
                 if (count < 1) {
-                    $(".btnremove, .btnhide, .btnreport").addClass("disabled");
+                    $(".btnsave, .btnremovehide, .btnreport").addClass("disabled");
                 }
             }
         });
 
         $(document).on("click", ".detail-item-list", function () {
+            $(this).parents("tr").attr("style", "color: #c55f05;");
+            $(this).parents("tr").find(".label-info").html("Đã xem");
+            $(this).parents("tr").find(".label-info").addClass("label-warning");
+            $(this).parents("tr").find(".label-info").addClass("arrowed-right");
+            $(this).parents("tr").find(".label-info").addClass("arrowed-in");
+            $(this).parents("tr").find(".label-warning").removeClass("label-info");
+            $(this).parents("tr").find(".label-warning").removeClass("arrowed");
             $.LoadingOverlay("show");
             $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
@@ -153,41 +160,6 @@ $(function () {
 
         $(document).on("click", ".btnclose", function () {
             $("#newsdetail").modal("hide");
-        });
-
-        $(document).on("click", ".btnsubmit", function () {
-            var cateId = parseInt($(".cateId").val());
-            var districtId = parseInt($(".districtId").val());
-            var newTypeId = parseInt($(".newTypeId").val());
-            var siteId = parseInt($(".siteId").val());
-            var backdate = parseInt($(".ddlbackdate").val());
-            var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-            var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
-            var from = $(".txtFrom").val();
-            var to = $(".txtTo").val();
-            var pageIndex = 1;
-            var pageSize = parseInt($(".ddlpage").val());
-
-            var data = {
-                cateId: cateId, districtId: districtId, newTypeId: newTypeId,
-                siteId: siteId, backdate: backdate,
-                minPrice: minPrice, maxPrice: maxPrice,
-                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
-            };
-            $.LoadingOverlay("show");
-            $.post("/newshide/loaddata", data, function (resp) {
-                if (resp != null) {
-                    $("#listnewstable tbody").html("");
-                    $("#listnewstable tbody").html(resp.Content);
-                    if (resp.TotalPage > 1) {
-                        $(".page-home").show();
-                        showPagination(resp.TotalPage);
-                    } else {
-                        $(".page-home").hide();
-                    }
-                }
-                $.LoadingOverlay("hide");
-            });
         });
 
         $(document).on("click", ".btnsave", function () {

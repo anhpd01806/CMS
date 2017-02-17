@@ -90,7 +90,7 @@ namespace CMS.Bussiness
             }))
             {
                 var news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId)
+                                where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value)
                                 select (c.NewsId)).ToList();
 
                 var query = from c in db.News
@@ -241,14 +241,16 @@ namespace CMS.Bussiness
                 foreach (var item in cusNews)
                 {
                     var query = (from c in db.News_Customer_Mappings
-                                 where c.NewsId.Equals(item.NewsId) && c.IsSaved.Value
-                                 select new
-                                 {
-                                     Id = c.Id
-                                 }).FirstOrDefault();
+                                 where c.NewsId.Equals(item.NewsId)
+                                 select c).FirstOrDefault();
                     if (query == null)
                     {
                         db.News_Customer_Mappings.InsertOnSubmit(item);
+                    }
+                    else
+                    {
+                        query.IsSaved = true;
+                        query.IsDeleted = false;
                     }
                 }
                 db.SubmitChanges();

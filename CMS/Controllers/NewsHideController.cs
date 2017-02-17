@@ -103,7 +103,7 @@ namespace CMS.Controllers
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), ref total);
+                var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, 0, -1, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), ref total);
                 var content = RenderPartialViewToString("~/Views/NewsHide/Paging.cshtml", listNews);
                 return Json(new
                 {

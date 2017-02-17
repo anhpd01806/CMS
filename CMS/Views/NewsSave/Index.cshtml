@@ -25,19 +25,16 @@
         </p>
         <h3 class="header smaller lighter blue"></h3>
 
-        <div class="widget-box widget-color-dark collapsed">
+        <div class="widget-box widget-color-dark">
             <div class="widget-header">
                 <h6 class="widget-title"> <i class="icon-filter"></i> Lọc tin tức</h6>
 
                 <div class="widget-toolbar widget-color-dark">
 
                     <a href="#" data-action="collapse">
-                        <i class="ace-icon fa fa-chevron-down"></i>
+                        <i class="ace-icon fa fa-chevron-up"></i>
                     </a>
 
-                    <a href="#" data-action="fullscreen" class="orange2">
-                        <i class="ace-icon fa fa-expand"></i>
-                    </a>
                 </div>
             </div>
             <div class="widget-body">
@@ -137,18 +134,18 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 clearfix">
-                                    <div class="form-actions">
-                                        <button class="btn btn-info btnsubmit" type="button">
-                                            <i class="icon-ok bigger-110"></i>
-                                            Tìm kiếm
-                                        </button>
-                                        <button class="btn" type="reset">
-                                            <i class="icon-undo bigger-110"></i>
-                                            Mặc định
-                                        </button>
-                                    </div>
-                                </div>
+                                @*<div class="col-xs-12 clearfix">
+                                        <div class="form-actions">
+                                            <button class="btn btn-info btnsubmit" type="button">
+                                                <i class="icon-ok bigger-110"></i>
+                                                Tìm kiếm
+                                            </button>
+                                            <button class="btn" type="reset">
+                                                <i class="icon-undo bigger-110"></i>
+                                                Mặc định
+                                            </button>
+                                        </div>
+                                    </div>*@
                             </div>
                         </form>
                     </div>
@@ -190,8 +187,10 @@
                         <th>Ngày đăng</th>
                         <th>Giá</th>
                         <th>Điện thoại</th>
-                        <th>Loại tin</th>
-                        <th>Tính năng</th>
+                        <th style="text-align: center">Loại tin</th>
+                        <th>Xem</th>
+                        <th style="text-align: center">Chính chủ</th>
+                        <th style="text-align: center">Tính năng</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -199,7 +198,7 @@
                     {
                         foreach (var item in Model.ListNew)
                         {
-                            <tr @( item.CusIsReaded != null ? (item.CusIsReaded.Value ? "style=\"color: blue;\"" : string.Empty) : string.Empty)>
+                            <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #c55f05;" : string.Empty)">
                                 <td>
                                     <label class="pos-rel">
                                         <input type="checkbox" class="checkboxItem" id="@item.Id" />
@@ -211,18 +210,33 @@
                                 <td class="td-medium">@item.PriceText</td>
                                 <td class="td-small">@item.Phone</td>
                                 <td class="td-medium">@item.StatusName</td>
+                                <td>
+                                    @if (Convert.ToBoolean(item.CusIsReaded))
+                                    {
+                                        <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-info arrowed">Chưa xem</span>
+
+                                    }
+                                </td>
+                                <td style="text-align: center">
+                                    <img src="~/assets/images/approved.gif" />
+                                </td>
+
                                 <td class="td-actions">
                                     <div class="hidden-phone visible-desktop action-buttons">
-                                        <a class="blue detail-item-list" href="javascript:;" data-id="@item.Id">
+                                        <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
                                             <i class="icon-zoom-in bigger-130"></i>
                                         </a>
-                                        <a class="green remove-item-list" href="javascript:;" data-id="@item.Id">
+                                        <a class="green remove-item-list" href="javascript:;" title="Xóa tin đã lưu" data-id="@item.Id">
                                             <i class="icon-trash bigger-130"></i>
                                         </a>
-                                        <a class="orange hide-item-list" href="javascript:;" data-id="@item.Id">
+                                        <a class="orange hide-item-list" href="javascript:;" title="Ẩn tin đã lưu" data-id="@item.Id">
                                             <i class="icon-eye-close bigger-130"></i>
                                         </a>
-                                        <a class="red report-item-list" href="javascript:;" data-id="@item.Id">
+                                        <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
                                             <i class="icon-warning-sign bigger-130"></i>
                                         </a>
                                     </div>

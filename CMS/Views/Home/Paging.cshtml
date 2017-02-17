@@ -4,7 +4,7 @@
 {
     foreach (var item in Model)
     {
-        <tr>
+        <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #c55f05;" : string.Empty)">
             <td>
                 <label class="pos-rel">
                     <input type="checkbox" class="checkboxItem" id="@item.Id" />
@@ -16,18 +16,32 @@
             <td class="td-medium">@item.PriceText</td>
             <td class="td-small">@item.Phone</td>
             <td class="td-medium">@item.StatusName</td>
+            <td style="text-align: center">
+                @if (Convert.ToBoolean(item.CusIsReaded))
+                {
+                    <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
+                }
+                else
+                {
+                    <span class="label label-info arrowed">Chưa xem</span>
+
+                }
+            </td>
+            <td style="text-align: center">
+                <img src="~/assets/images/approved.gif" />
+            </td>
             <td class="td-actions">
                 <div class="hidden-phone visible-desktop action-buttons">
-                    <a class="blue detail-item-list" href="javascript:;" data-id="@item.Id">
+                    <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
                         <i class="icon-zoom-in bigger-130"></i>
                     </a>
-                    <a class="green save-item-list" href="javascript:;" data-id="@item.Id">
+                    <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
                         <i class="icon-save bigger-130"></i>
                     </a>
-                    <a class="orange hide-item-list" href="javascript:;" data-id="@item.Id">
+                    <a class="orange hide-item-list" href="javascript:;" title="Ẩn tin" data-id="@item.Id">
                         <i class="icon-eye-close bigger-130"></i>
                     </a>
-                    <a class="red report-item-list" href="javascript:;" data-id="@item.Id">
+                    <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
                         <i class="icon-warning-sign bigger-130"></i>
                     </a>
                 </div>
