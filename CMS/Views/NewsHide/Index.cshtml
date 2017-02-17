@@ -1,6 +1,6 @@
 ﻿@model CMS.ViewModel.HomeViewModel
 @{
-    ViewBag.Title = "Trang chủ";
+    ViewBag.Title = "Tin đã ẩn";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="page-content">
@@ -10,9 +10,9 @@
                 <i class="icon-save bigger-200"></i>
                 Lưu tin
             </button>
-            <button class="btn btn-app btn-success btn-small btnhide disabled">
-                <i class="icon-eye-close bigger-200"></i>
-                Ẩn tin
+            <button class="btn btn-app btn-success btn-small btnremovehide disabled">
+                <i class="icon-eye-open bigger-200"></i>
+                Xóa tin ẩn
             </button>
             <button class="btn btn-app btn-inverse btn-small btnreport disabled">
                 <i class="icon-warning-sign bigger-200"></i>
@@ -118,7 +118,7 @@
                                     <div class="control-group">
                                         <label class="control-label">Từ ngày</label>
                                         <div class="input-group col-xs-6">
-                                            <input class="form-control date-picker txtFrom" type="text"/>
+                                            <input class="form-control date-picker txtFrom" type="text" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar bigger-110"></i>
                                             </span>
@@ -129,14 +129,14 @@
                                     <div class="control-group">
                                         <label class="control-label">Đến ngày</label>
                                         <div class="input-group col-xs-6">
-                                            <input class="form-control date-picker txtTo" type="text"/>
+                                            <input class="form-control date-picker txtTo" type="text" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar bigger-110"></i>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-xs-12 clearfix">
                                     <div class="form-actions">
                                         <button class="btn btn-info btnsubmit" type="button">
@@ -219,8 +219,8 @@
                                         <a class="green save-item-list" href="javascript:;" data-id="@item.Id">
                                             <i class="icon-save bigger-130"></i>
                                         </a>
-                                        <a class="orange hide-item-list" href="javascript:;" data-id="@item.Id">
-                                            <i class="icon-eye-close bigger-130"></i>
+                                        <a class="orange remove-hide-item-list" href="javascript:;" data-id="@item.Id">
+                                            <i class="icon-eye-open bigger-130"></i>
                                         </a>
                                         <a class="red report-item-list" href="javascript:;" data-id="@item.Id">
                                             <i class="icon-warning-sign bigger-130"></i>
@@ -262,4 +262,4 @@
 
 @*Custom script*@
 <script src="~/Scripts/common.js"></script>
-<script src="~/Scripts/home/home.js"></script>
+<script src="~/Scripts/news/newshide.js"></script>

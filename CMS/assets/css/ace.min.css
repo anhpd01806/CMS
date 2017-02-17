@@ -14803,6 +14803,11 @@ div.dataTables_scrollBody table, div.dataTables_scrollFoot table {
         padding-bottom: 12px;
         background-color: #EFF3F8;
     }
+    .dataTables_wrapper .tbheader{
+        padding-top: 12px;
+        padding-bottom: 20px;
+        background-color: #EFF3F8;
+    }
 
         .dataTables_wrapper .row:first-child + .dataTable {
             border-top: 1px solid #ddd;

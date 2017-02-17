@@ -27,9 +27,19 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                var news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value
+                var news_new = new List<int>();
+                if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
+                {
+                    news_new = (from c in db.News_Customer_Mappings
+                        where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value
+                        select (c.NewsId)).ToList();
+                }
+                else
+                {
+                    news_new = (from c in db.News_Customer_Mappings
+                                where c.CustomerId.Equals(UserId)
                                 select (c.NewsId)).ToList();
+                }
 
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
@@ -63,7 +73,7 @@ namespace CMS.Bussiness
                 }
                 if (newsStatus == Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete))
                 {
-                    query = query.Where(c => c.CusIsDeleted.HasValue && c.CusIsDeleted.Value);
+                    query = query.Where(c => c.CusIsDeleted.HasValue && c.CusIsDeleted.Value );
                 }
                 if (newsStatus == Convert.ToInt32(CMS.Helper.NewsStatus.IsRead))
                 {
@@ -135,7 +145,7 @@ namespace CMS.Bussiness
                     {
                         foreach (var newsCustomerMapping in query)
                         {
-                            if (newsCustomerMapping.IsDeleted.Value)
+                            if (newsCustomerMapping.IsDeleted.Value || newsCustomerMapping.IsReaded.Value)
                             {
                                 newsCustomerMapping.IsSaved = false;
                             }
@@ -156,6 +166,42 @@ namespace CMS.Bussiness
             }
         }
 
+        #endregion
+
+        #region News Hide
+        public int RemoveHideNewByUserId(List<News_Customer_Mapping> cusNews, int userId)
+        {
+            try
+            {
+                foreach (var item in cusNews)
+                {
+                    var query = (from c in db.News_Customer_Mappings
+                                 where c.NewsId.Equals(item.NewsId) && c.IsDeleted.Value
+                                 select c).ToList();
+                    if (query != null)
+                    {
+                        foreach (var newsCustomerMapping in query)
+                        {
+                            if (newsCustomerMapping.IsSaved.Value || newsCustomerMapping.IsReaded.Value)
+                            {
+                                newsCustomerMapping.IsDeleted = false;
+                            }
+                            else
+                            {
+                                db.News_Customer_Mappings.DeleteOnSubmit(newsCustomerMapping);
+                            }
+                        }
+                        db.SubmitChanges();
+                    }
+                }
+
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
         #endregion
     }
 }

@@ -1,0 +1,43 @@
+﻿@model List<CMS.Models.NewsModel>
+
+@if (Model != null && Model.Count > 0)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <label class="pos-rel">
+                    <input type="checkbox" class="checkboxItem" id="@item.Id" />
+                </label>
+            </td>
+            <td>@item.Title</td>
+            <td class="td-medium">@item.DistictName</td>
+            <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
+            <td class="td-medium">@item.PriceText</td>
+            <td class="td-small">@item.Phone</td>
+            <td class="td-medium">@item.StatusName</td>
+            <td class="td-actions">
+                <div class="hidden-phone visible-desktop action-buttons">
+                    <a class="blue detail-item-list" href="javascript:;" data-id="@item.Id">
+                        <i class="icon-zoom-in bigger-130"></i>
+                    </a>
+                    <a class="green save-item-list" href="javascript:;" data-id="@item.Id">
+                        <i class="icon-save bigger-130"></i>
+                    </a>
+                    <a class="orange remove-hide-item-list" href="javascript:;" data-id="@item.Id">
+                        <i class="icon-eye-open bigger-130"></i>
+                    </a>
+                    <a class="red report-item-list" href="javascript:;" data-id="@item.Id">
+                        <i class="icon-warning-sign bigger-130"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="8" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+    </tr>
+}

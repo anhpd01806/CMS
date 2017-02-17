@@ -1,13 +1,13 @@
 ﻿@model CMS.ViewModel.HomeViewModel
 @{
-    ViewBag.Title = "Trang chủ";
+    ViewBag.Title = "Tin đã lưu";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="page-content">
     <div class="row">
         <p>
             <button class="btn btn-app btn-primary btn-small btnremove disabled">
-                <i class="icon-save bigger-200"></i>
+                <i class="icon-trash bigger-200"></i>
                 Bỏ lưu tin
             </button>
             <button class="btn btn-app btn-success btn-small btnhide disabled">
@@ -160,7 +160,7 @@
             <i class="icon-list"></i> Danh sách tin tức
         </div>
         <div class="dataTables_wrapper form-inline no-footer">
-            <div class="row">
+            <div class="tbheader">
                 <div class="col-xs-6">
                     <div class="dataTables_length">
                         <label>
@@ -217,7 +217,7 @@
                                             <i class="icon-zoom-in bigger-130"></i>
                                         </a>
                                         <a class="green remove-item-list" href="javascript:;" data-id="@item.Id">
-                                            <i class="icon-save bigger-130"></i>
+                                            <i class="icon-trash bigger-130"></i>
                                         </a>
                                         <a class="orange hide-item-list" href="javascript:;" data-id="@item.Id">
                                             <i class="icon-eye-close bigger-130"></i>
