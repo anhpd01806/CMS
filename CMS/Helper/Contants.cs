@@ -30,4 +30,9 @@ namespace CMS.Helper
 
         public const string DELETE_MESSAGE = "Dữ liệu bị xóa không thể khôi phục về mặc định";
     }
+
+    public class Information
+    {
+        public const string HOT_PHONE_NUMBER = "0976.244.811";
+    }
 }

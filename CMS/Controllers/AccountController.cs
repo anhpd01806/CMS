@@ -2,6 +2,7 @@
 using CMS.Data;
 using CMS.Helper;
 using CMS.ViewModel;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Linq;
@@ -31,17 +32,24 @@ namespace CMS.Controllers
         {
             try
             {
+                AccountViewModel model = new AccountViewModel();
+
                 string username = "false";
                 HttpCookie reCookie = Request.Cookies["rememberCookies"];
                 if (reCookie != null) { username = Server.HtmlEncode(reCookie.Value); }
                 if (username.Split(',')[0].Trim().ToLower() == "true")
                 {
+                    if (!CheckUserLogin(int.Parse(username.Split(',')[1].Trim())))
+                    {
+                        TempData["Error"] = "Tài khoản đang sử dụng phần mềm. vui lòng thử lại sau 5 phút.";
+                        return View(model);
+                    }
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
                     CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()));
                     return RedirectToAction("Index", "Home");
                 }
-                AccountViewModel model = new AccountViewModel();
+
                 return View(model);
             }
             catch (Exception)
@@ -78,9 +86,16 @@ namespace CMS.Controllers
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
 
+                        //check login user
+                        if (!CheckUserLogin(user.Id))
+                        {
+                            TempData["Error"] = "Tài khoản đang sử dụng phần mềm. vui lòng thử lại sau.";
+                            return RedirectToAction("Login", "Account");
+                        }
+
                         return RedirectToAction("Index", "Home");
                     }
-                    ModelState.AddModelError("CredentialError", "Mật khẩu không đúng hoặc bạn chưa có quyền đăng nhập. vui lòng liên hệ sđt xxx.xxx");
+                    ModelState.AddModelError("CredentialError", "Mật khẩu không đúng hoặc bạn chưa có quyền đăng nhập. vui lòng liên hệ sđt " + Information.HOT_PHONE_NUMBER);
                     return View("Login");
                 }
                 return View(model);
@@ -92,6 +107,22 @@ namespace CMS.Controllers
             }
         }
 
+        private Boolean CheckUserLogin(int userId)
+        {
+            var currentApp = System.Web.HttpContext.Current.Application["usr_" + userId];
+
+            if (currentApp != null)
+            {
+                if (System.Web.HttpContext.Current.Application["usr_" + userId].Equals("true"))
+                {
+                    return false;
+                }
+            }
+            //storing session to login at sametime
+            System.Web.HttpContext.Current.Application["usr_" + userId] = "true";
+
+            return true;
+        }
         /// <summary>
         /// Đăng xuất
         /// </summary>
@@ -217,7 +248,7 @@ namespace CMS.Controllers
         //check tai khoan con tien su dung
         private void CheckAcceptedUser(int userId)
         {
-          Session["USER-ACCEPTED"] =  db.PaymentAccepteds.Any(x => x.UserId == userId && x.StartDate.Date >= DateTime.Now.Date && DateTime.Now.Date <= x.EndDate.Date);
+            Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && x.StartDate.Date >= DateTime.Now.Date && DateTime.Now.Date <= x.EndDate.Date);
         }
     }
 }
