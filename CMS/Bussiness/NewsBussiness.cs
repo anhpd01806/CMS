@@ -15,6 +15,7 @@ namespace CMS.Bussiness
     {
         #region member
         private readonly CmsDataDataContext db = new CmsDataDataContext();
+        private readonly HomeBussiness _homeBussiness = new HomeBussiness();
         #endregion
 
         #region News save
@@ -27,18 +28,41 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
+                var listBlacklist = (from c in db.Blacklists
+                    select (c.Words)).ToList();
+
                 var news_new = new List<int>();
-                if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
+
+                if (_homeBussiness.GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator))
                 {
-                    news_new = (from c in db.News_Customer_Mappings
-                        where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value
-                        select (c.NewsId)).ToList();
+                    if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
+                    {
+                        news_new = (from c in db.News_Customer_Mappings
+                            where !c.IsDeleted.Value
+                            //c.CustomerId.Equals(UserId) &&
+                            select (c.NewsId)).ToList();
+                    }
+                    else
+                    {
+                        news_new = (from c in db.News_Customer_Mappings
+                            //where c.CustomerId.Equals(UserId)
+                            select (c.NewsId)).ToList();
+                    }
                 }
                 else
                 {
-                    news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId)
-                                select (c.NewsId)).ToList();
+                    if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
+                    {
+                        news_new = (from c in db.News_Customer_Mappings
+                            where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value
+                            select (c.NewsId)).ToList();
+                    }
+                    else
+                    {
+                        news_new = (from c in db.News_Customer_Mappings
+                            where c.CustomerId.Equals(UserId)
+                            select (c.NewsId)).ToList();
+                    }
                 }
 
                 var query = from c in db.News
@@ -48,6 +72,8 @@ namespace CMS.Bussiness
                             where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
                             && news_new.Contains(c.Id)
+                            && !listBlacklist.Contains(c.Phone) //không cho hiển thị có số điện thoại giống số điện thoại trong blacklist
+                            orderby c.StatusId ascending, c.Price descending
                             select new NewsModel
                             {
                                 Id = c.Id,
@@ -67,15 +93,20 @@ namespace CMS.Bussiness
                                 CusIsDeleted = ncm.IsDeleted
                             };
 
-                if (newsStatus == Convert.ToInt32(CMS.Helper.NewsStatus.IsSave))
+                //if (_homeBussiness.GetRoleByUser(UserId) != Convert.ToInt32(CmsRole.Administrator))
+                //{
+                //    query = query.Where(c => news_new.Contains(c.Id));
+                //}
+
+                if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsSave))
                 {
                     query = query.Where(c => c.CusIsSaved.HasValue && c.CusIsSaved.Value && !c.CusIsDeleted.Value);
                 }
-                if (newsStatus == Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete))
+                if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsDelete))
                 {
                     query = query.Where(c => c.CusIsDeleted.HasValue && c.CusIsDeleted.Value );
                 }
-                if (newsStatus == Convert.ToInt32(CMS.Helper.NewsStatus.IsRead))
+                if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsRead))
                 {
                     query = query.Where(c => c.CusIsReaded.HasValue && c.CusIsReaded.Value);
                 }
@@ -111,11 +142,11 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
-                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime(From));
+                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime((From.Split('-')[1] + "/" + From.Split('-')[0] + "/" + From.Split('-')[2])));
                 }
                 if (!string.IsNullOrEmpty(To))
                 {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime(To));
+                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[1] + "/" + To.Split('-')[0] + "/" + To.Split('-')[2])));
                 }
                 if (MinPrice != -1)
                 {

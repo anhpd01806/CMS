@@ -129,10 +129,10 @@ $(function () {
         $(document).on("click", ".checkboxItem", function () {
             var count = parseInt($('input:checkbox:checked').length);
             if ($(this).prop('checked')) {
-                $(".btnremove, .btnhide, .btnreport").removeClass("disabled");
+                $(".btnremove, .btnhide, .btnreport, .btnspam").removeClass("disabled");
             } else {
                 if (count < 1) {
-                    $(".btnremove, .btnhide, .btnreport").addClass("disabled");
+                    $(".btnremove, .btnhide, .btnreport, .btnspam").addClass("disabled");
                 }
             }
         });

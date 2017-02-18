@@ -6,7 +6,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Transactions;
 using CMS.Data;
+using CMS.Helper;
 using CMS.Models;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
 namespace CMS.Bussiness
 {
@@ -89,9 +91,22 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                var news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value)
-                                select (c.NewsId)).ToList();
+                var listBlacklist = (from c in db.Blacklists
+                                     select (c.Words)).ToList();
+
+                var news_new = new List<int>();
+                if (GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator))
+                {
+                    news_new = (from c in db.News_Customer_Mappings
+                        where  (c.IsDeleted.Value || c.IsSaved.Value) //c.CustomerId.Equals(UserId) &&
+                        select (c.NewsId)).ToList();
+                }
+                else
+                {
+                    news_new = (from c in db.News_Customer_Mappings
+                                    where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value)
+                                    select (c.NewsId)).ToList();
+                }
 
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
@@ -99,8 +114,9 @@ namespace CMS.Bussiness
                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
                             from tm in temp.DefaultIfEmpty()
                             where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                                  && !d.IsDeleted && d.Published
-                                  && !news_new.Contains(c.Id)
+                            && !d.IsDeleted && d.Published
+                            && !news_new.Contains(c.Id)
+                            && !listBlacklist.Contains(c.Phone) //không cho hiển thị có số điện thoại giống số điện thoại trong blacklist
                             orderby c.StatusId ascending, c.Price descending
                             select new NewsModel
                             {
@@ -151,11 +167,11 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
-                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime(From));
+                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime((From.Split('-')[1] + "/" + From.Split('-')[0] + "/" + From.Split('-')[2])));
                 }
                 if (!string.IsNullOrEmpty(To))
                 {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime(To));
+                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[1] + "/" + To.Split('-')[0] + "/" + To.Split('-')[2])));
                 }
                 if (MinPrice != -1)
                 {
@@ -335,6 +351,75 @@ namespace CMS.Bussiness
             return query;
         }
 
+        public int ReportNews(List<New> listNewsReport, int userReport)
+        {
+            try
+            {
+                foreach (var item in listNewsReport)
+                {
+                    var reportItem = new NewsReport();
+                    reportItem.StatusId = Convert.ToInt32(item.StatusId);
+                    reportItem.NewsId = item.Id;
+                    reportItem.CreateDate = DateTime.Now;
+                    reportItem.Notes = string.Empty;
+                    reportItem.CustomerId = userReport;
+                    db.NewsReports.InsertOnSubmit(reportItem);
+                }
+                db.SubmitChanges();
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int Spam(List<New> listNewReport, int userReport)
+        {
+            try
+            {
+                foreach (var item in listNewReport)
+                {
+                    var reportItem = new CMS.Data.Blacklist();
+                    reportItem.Words = item.Phone;
+                    reportItem.Description = string.Empty;
+                    reportItem.CreatedOn = DateTime.Now;
+                    reportItem.Type = 1;
+                    db.Blacklists.InsertOnSubmit(reportItem);
+                }
+                db.SubmitChanges();
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+        #endregion
+
+        #region Role
+
+        public int GetRoleByUser(int userId)
+        {
+            try
+            {
+                var query = (from c in db.Role_Users
+                    where c.UserId.Equals(userId)
+                    select new
+                    {
+                        RoleId = c.RoleId
+                    }).FirstOrDefault();
+                if (query != null)
+                {
+                    return query.RoleId;
+                }
+                return 0;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
         #endregion
     }
 }

@@ -14,10 +14,20 @@
                 <i class="icon-eye-close bigger-200"></i>
                 Ẩn tin
             </button>
-            <button class="btn btn-app btn-inverse btn-small btnreport disabled">
-                <i class="icon-warning-sign bigger-200"></i>
-                Báo mô giới
-            </button>
+            @if (Model.RoleId == Convert.ToInt32(CMS.Helper.CmsRole.Administrator))
+            {
+                <button class="btn btn-app btn-inverse btn-small btnspam disabled">
+                    <i class="icon-warning-sign bigger-200"></i>
+                    Chặn mô giới
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-app btn-inverse btn-small btnreport disabled">
+                    <i class="icon-warning-sign bigger-200"></i>
+                    Báo mô giới
+                </button>
+            }
             <button class="btn btn-app btn-danger btnexport btn-small">
                 <i class="icon-download-alt bigger-200"></i>
                 Xuất Excel

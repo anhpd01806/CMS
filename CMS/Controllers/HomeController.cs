@@ -85,6 +85,7 @@ namespace CMS.Controllers
                 model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
+                model.RoleId = _bussiness.GetRoleByUser(userId);
                 return View(model);
             }
             catch (Exception ex)

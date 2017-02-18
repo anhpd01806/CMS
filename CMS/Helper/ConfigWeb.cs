@@ -21,4 +21,10 @@ namespace CMS.Helper
         IsRead = 2,
         IsDelete = 3
     }
+
+    public enum CmsRole
+    {
+        Administrator = 1,
+        Customer = 2
+    }
 }
