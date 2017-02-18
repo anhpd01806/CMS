@@ -34,7 +34,21 @@
             </button>
         </p>
         <h3 class="header smaller lighter blue"></h3>
-
+        <div class="search_all">
+            <label class="col-xs-1 lblsearch">Tìm kiếm: </label>
+            <div class="col-xs-8">
+                <div class="input-group">
+                    <input class="form-control txtsearchkey" type="text" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-inverse btn-white">
+                            <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
+                            Tìm
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="space"></div>
         <div class="widget-box widget-color-dark">
             <div class="widget-header">
                 <h6 class="widget-title"> <i class="icon-filter"></i> Lọc tin tức</h6>
@@ -122,21 +136,23 @@
                                 <div class="col-xs-6">
                                     <div class="control-group">
                                         <label class="control-label">Từ ngày</label>
-                                        <div class="input-group col-xs-6">
+                                        <div class="input-group col-xs-5" style="float: left;">
                                             <input class="form-control date-picker txtFrom" type="text" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar bigger-110"></i>
                                             </span>
                                         </div>
-                                        @*<div class="input-group col-xs-6">
-                                            <input class="form-control " type="checkbox" />
-                                        </div>*@
+                                        <div class="input-group col-xs-4" style="top: 7px;">
+                                            <label>Hiển thị tin trùng</label>
+                                            <input id="id-check-horizontal" type="checkbox" class="ace ace-switch ace-switch-6" />
+                                            <span class="lbl middle"></span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="control-group">
                                         <label class="control-label">Đến ngày</label>
-                                        <div class="input-group col-xs-6">
+                                        <div class="input-group col-xs-5">
                                             <input class="form-control date-picker txtTo" type="text" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar bigger-110"></i>
@@ -197,71 +213,71 @@
                     {
                         foreach (var item in Model.ListNew)
                         {
-                            <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #c55f05;" : string.Empty)">
-                                <td>
-                                    <label class="pos-rel">
-                                        <input type="checkbox" class="checkboxItem" id="@item.Id" />
-                                    </label>
-                                </td>
-                                <td>@item.Title</td>
-                                <td class="td-medium">@item.DistictName</td>
-                                <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
-                                <td class="td-medium">@item.PriceText</td>
-                                <td class="td-small">@item.Phone</td>
-                                <td class="td-medium">@item.StatusName</td>
-                                <td>
-                                    @if (Convert.ToBoolean(item.CusIsReaded))
+                    <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #c55f05;" : string.Empty)">
+                        <td>
+                            <label class="pos-rel">
+                                <input type="checkbox" class="checkboxItem" id="@item.Id" />
+                            </label>
+                        </td>
+                        <td>@item.Title</td>
+                        <td class="td-medium">@item.DistictName</td>
+                        <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
+                        <td class="td-medium">@item.PriceText</td>
+                        <td class="td-small">@item.Phone</td>
+                        <td class="td-medium">@item.StatusName</td>
+                        <td>
+                            @if (Convert.ToBoolean(item.CusIsReaded))
                                     {
-                                        <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
+                                    <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
                                     }
                                     else
                                     {
-                                        <span class="label label-info arrowed">Chưa xem</span>
+                                    <span class="label label-info arrowed">Chưa xem</span>
 
                                     }
-                                </td>
-                                <td style="text-align: center">
-                                    @*<span class="label label-success arrowed-in arrowed-in-right">Tin chính chủ</span>*@
-                                    <img src="~/assets/images/approved.gif" />
-                                </td>
-                                <td class="td-actions">
-                                    <div class="hidden-phone visible-desktop action-buttons">
-                                        <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
-                                            <i class="icon-zoom-in bigger-130"></i>
-                                        </a>
-                                        <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
-                                            <i class="icon-save bigger-130"></i>
-                                        </a>
-                                        <a class="orange hide-item-list" href="javascript:;" title="Ẩn tin" data-id="@item.Id">
-                                            <i class="icon-eye-close bigger-130"></i>
-                                        </a>
-                                        <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
-                                            <i class="icon-warning-sign bigger-130"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                        </td>
+                        <td style="text-align: center">
+                            @*<span class="label label-success arrowed-in arrowed-in-right">Tin chính chủ</span>*@
+                            <img src="~/assets/images/approved.gif" />
+                        </td>
+                        <td class="td-actions">
+                            <div class="hidden-phone visible-desktop action-buttons">
+                                <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
+                                    <i class="icon-zoom-in bigger-130"></i>
+                                </a>
+                                <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
+                                    <i class="icon-save bigger-130"></i>
+                                </a>
+                                <a class="orange hide-item-list" href="javascript:;" title="Ẩn tin" data-id="@item.Id">
+                                    <i class="icon-eye-close bigger-130"></i>
+                                </a>
+                                <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
+                                    <i class="icon-warning-sign bigger-130"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                         }
                     }
                     else
                     {
-                        <tr>
-                            <td colspan="8" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
-                        </tr>
+                    <tr>
+                        <td colspan="8" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+                    </tr>
                     }
                 </tbody>
             </table>
             <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-page="1" />
             @if (Model.Totalpage > 1)
             {
-                <div class="row page-home">
-                    <div class="col-xs-4"></div>
-                    <div class="col-xs-8">
-                        <div class="dataTables_paginate homepagging">
-                            <div class="pagination" id="pagination"></div>
-                        </div>
+            <div class="row page-home">
+                <div class="col-xs-4"></div>
+                <div class="col-xs-8">
+                    <div class="dataTables_paginate homepagging">
+                        <div class="pagination" id="pagination"></div>
                     </div>
                 </div>
+            </div>
             }
         </div>
     </div>

@@ -134,3 +134,13 @@ label, .lbl {
 .slideimage {
     min-height: 300px;
 }
+.lblsearch {
+    vertical-align: middle;
+    top: 7px;
+}
+.space {
+    width: 100%;
+}
+.searchicon {
+    margin-right: 2px;
+}

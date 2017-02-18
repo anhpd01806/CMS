@@ -29,24 +29,23 @@ namespace CMS.Bussiness
             }))
             {
                 var listBlacklist = (from c in db.Blacklists
-                    select (c.Words)).ToList();
+                                     select (c.Words)).ToList();
 
                 var news_new = new List<int>();
 
-                if (_homeBussiness.GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator))
+                if (GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator))
                 {
                     if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
                     {
                         news_new = (from c in db.News_Customer_Mappings
-                            where !c.IsDeleted.Value
-                            //c.CustomerId.Equals(UserId) &&
-                            select (c.NewsId)).ToList();
+                                    where !c.IsDeleted.Value
+                                    select (c.NewsId)).ToList();
                     }
                     else
                     {
                         news_new = (from c in db.News_Customer_Mappings
-                            //where c.CustomerId.Equals(UserId)
-                            select (c.NewsId)).ToList();
+                                    where c.IsDeleted.Value
+                                    select (c.NewsId)).ToList();
                     }
                 }
                 else
@@ -54,14 +53,14 @@ namespace CMS.Bussiness
                     if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
                     {
                         news_new = (from c in db.News_Customer_Mappings
-                            where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value
-                            select (c.NewsId)).ToList();
+                                    where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value
+                                    select (c.NewsId)).ToList();
                     }
                     else
                     {
                         news_new = (from c in db.News_Customer_Mappings
-                            where c.CustomerId.Equals(UserId)
-                            select (c.NewsId)).ToList();
+                                    where c.CustomerId.Equals(UserId) && c.IsDeleted.Value
+                                    select (c.NewsId)).ToList();
                     }
                 }
 
@@ -104,7 +103,7 @@ namespace CMS.Bussiness
                 }
                 if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsDelete))
                 {
-                    query = query.Where(c => c.CusIsDeleted.HasValue && c.CusIsDeleted.Value );
+                    query = query.Where(c => c.CusIsDeleted.HasValue && c.CusIsDeleted.Value);
                 }
                 if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsRead))
                 {
@@ -188,7 +187,7 @@ namespace CMS.Bussiness
                         db.SubmitChanges();
                     }
                 }
-                
+
                 return 1;
             }
             catch
@@ -227,6 +226,31 @@ namespace CMS.Bussiness
                 }
 
                 return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+        #endregion
+
+        #region Role
+
+        public int GetRoleByUser(int userId)
+        {
+            try
+            {
+                var query = (from c in db.Role_Users
+                             where c.UserId.Equals(userId)
+                             select new
+                             {
+                                 RoleId = c.RoleId
+                             }).FirstOrDefault();
+                if (query != null)
+                {
+                    return query.RoleId;
+                }
+                return 0;
             }
             catch
             {

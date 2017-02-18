@@ -84,6 +84,7 @@ namespace CMS.Controllers
                 model.ListNew = _newsbussiness.GetListNewStatusByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
+                model.RoleId = _newsbussiness.GetRoleByUser(userId);
                 return View(model);
             }
             catch (Exception ex)
