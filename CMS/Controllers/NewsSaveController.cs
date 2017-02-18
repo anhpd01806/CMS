@@ -94,14 +94,14 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult LoadData(int cateId, int districtId, int newTypeId, int siteId, int backdate, decimal
-                minPrice, decimal maxPrice, string from, string to, int pageIndex, int pageSize)
+        public JsonResult LoadData(int cateId, int districtId, int newTypeId, int siteId, int backdate, double
+                minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize)
         {
             try
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, 0, -1, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), ref total);
+                var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), ref total);
                 var content = RenderPartialViewToString("~/Views/NewsSave/Paging.cshtml", listNews);
                 return Json(new
                 {
