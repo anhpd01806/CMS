@@ -250,6 +250,15 @@ namespace CMS.Bussiness
             return query;
         }
 
+        public New GetNewsDetail(int Id)
+        {
+            var query = (from c in db.News
+                         where c.Id.Equals(Id)
+                         orderby c.Id ascending 
+                         select c).FirstOrDefault();
+            return query;
+        }
+
         public int SaveNewByUserId(List<News_Customer_Mapping> cusNews, int userId)
         {
             try
@@ -361,7 +370,7 @@ namespace CMS.Bussiness
                     reportItem.StatusId = Convert.ToInt32(item.StatusId);
                     reportItem.NewsId = item.Id;
                     reportItem.CreateDate = DateTime.Now;
-                    reportItem.Notes = string.Empty;
+                    reportItem.Notes = "Tin mô giới: " + item.Title;
                     reportItem.CustomerId = userReport;
                     db.NewsReports.InsertOnSubmit(reportItem);
                 }
@@ -382,7 +391,7 @@ namespace CMS.Bussiness
                 {
                     var reportItem = new CMS.Data.Blacklist();
                     reportItem.Words = item.Phone;
-                    reportItem.Description = string.Empty;
+                    reportItem.Description = "Tin mô giới: " + item.Title;
                     reportItem.CreatedOn = DateTime.Now;
                     reportItem.Type = 1;
                     db.Blacklists.InsertOnSubmit(reportItem);
@@ -395,6 +404,7 @@ namespace CMS.Bussiness
                 return 0;
             }
         }
+        
         #endregion
 
         #region Role

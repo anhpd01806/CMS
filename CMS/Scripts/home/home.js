@@ -162,41 +162,6 @@ $(function () {
             $("#newsdetail").modal("hide");
         });
 
-        //$(document).on("click", ".btnsubmit", function () {
-        //    var cateId = parseInt($(".cateId").val());
-        //    var districtId = parseInt($(".districtId").val());
-        //    var newTypeId = parseInt($(".newTypeId").val());
-        //    var siteId = parseInt($(".siteId").val());
-        //    var backdate = parseInt($(".ddlbackdate").val());
-        //    var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-        //    var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
-        //    var from = $(".txtFrom").val();
-        //    var to = $(".txtTo").val();
-        //    var pageIndex = 1;
-        //    var pageSize = parseInt($(".ddlpage").val());
-
-        //    var data = {
-        //        cateId: cateId, districtId: districtId, newTypeId: newTypeId,
-        //        siteId: siteId, backdate: backdate,
-        //        minPrice: minPrice, maxPrice: maxPrice,
-        //        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
-        //    };
-        //    $.LoadingOverlay("show");
-        //    $.post("/home/loaddata", data, function (resp) {
-        //        if (resp != null) {
-        //            $("#listnewstable tbody").html("");
-        //            $("#listnewstable tbody").html(resp.Content);
-        //            if (resp.TotalPage > 1) {
-        //                $(".page-home").show();
-        //                showPagination(resp.TotalPage);
-        //            } else {
-        //                $(".page-home").hide();
-        //            }
-        //        }
-        //        $.LoadingOverlay("hide");
-        //    });
-        //});
-
         $(document).on("click", ".btnsave", function () {
             if (!$(this).hasClass("disabled")) {
                 var selected = [];
@@ -307,6 +272,60 @@ $(function () {
             var pageSize = parseInt($(".ddlpage").val());
             var url = "/home/exportexcel";
             location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize);
+        });
+
+        $(document).on("click", ".btnreport", function() {
+            if (!$(this).hasClass("disabled")) {
+                var selected = [];
+                $('.checkboxItem:checked').each(function () {
+                    selected.push(parseInt($(this).attr('id')));
+                });
+                if (selected.length == 0) {
+                    showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+                } else {
+                    $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
+                        if (resp != null) {
+                            if (resp.Status == 1) {
+                                LoadData();
+                                setTimeout(function () {
+                                    showmessage("success", "Tin mô giới đã được báo cáo thành công!");
+                                }, 1200);
+
+                            } else {
+                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            }
+                        }
+                        ;
+                    });
+                }
+            }
+        });
+        
+        $(document).on("click", ".btnspam", function () {
+            if (!$(this).hasClass("disabled")) {
+                var selected = [];
+                $('.checkboxItem:checked').each(function () {
+                    selected.push(parseInt($(this).attr('id')));
+                });
+                if (selected.length == 0) {
+                    showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+                } else {
+                    $.post("/home/newsspam", { listNewsId: selected }, function (resp) {
+                        if (resp != null) {
+                            if (resp.Status == 1) {
+                                LoadData();
+                                setTimeout(function () {
+                                    showmessage("success", "Tin mô giới đã được cho vào danh sách đen!");
+                                }, 1200);
+
+                            } else {
+                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            }
+                        }
+                        ;
+                    });
+                }
+            }
         });
         
         //Change search filter

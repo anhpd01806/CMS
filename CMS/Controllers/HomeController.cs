@@ -307,5 +307,55 @@ namespace CMS.Controllers
                 xlPackage.Save();
             }
         }
+
+        public JsonResult ReportNews(int[] listNewsId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var result = 1;
+                if (listNewsId.Length > 0)
+                {
+                    var listItem = new List<New>();
+                    for (int i = 0; i < listNewsId.Length; i++)
+                    {
+                        var news = _bussiness.GetNewsDetail(listNewsId[i]);
+                        listItem.Add(news);
+                    }
+                    result = _bussiness.ReportNews(listItem, userId);
+                }
+                return Json(new { Status = result });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
+
+        public JsonResult NewsSpam(int[] listNewsId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var result = 1;
+                if (listNewsId.Length > 0)
+                {
+                    var listItem = new List<New>();
+                    for (int i = 0; i < listNewsId.Length; i++)
+                    {
+                        var news = _bussiness.GetNewsDetail(listNewsId[i]);
+                        listItem.Add(news);
+                    }
+                    result = _bussiness.Spam(listItem, userId);
+                }
+                return Json(new { Status = result });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
     }
 }
