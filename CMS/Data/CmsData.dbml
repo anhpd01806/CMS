@@ -354,21 +354,6 @@
       <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.Notify" Member="Notifies">
-    <Type Name="Notify">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Userid" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Newsid" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="DateSend" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="UserName" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Title" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Type" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Accepted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="ViewFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="SendTo" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="SendFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Operations" Member="Operations">
     <Type Name="Operation">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -686,6 +671,21 @@
       <Column Name="Score" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
       <Column Name="Value" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="ExpireAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Notify" Member="Notifies">
+    <Type Name="Notify">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Userid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Newsid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DateSend" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Type" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Accepted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ViewFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SendTo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SendFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
     </Type>
   </Table>
 </Database>
