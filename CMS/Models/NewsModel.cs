@@ -90,5 +90,9 @@ namespace CMS.Models
         public bool? CusIsAgency { get; set; }
 
         public bool? CusIsSpam { get; set; }
+
+        public int RepeatTotal { get; set; }
+
+        public bool IsAdmin { get; set; }
     }
 }

@@ -57,6 +57,7 @@ label, .lbl {
 .td-small {
     min-width: 85px;
     text-align: left;
+    max-width: 100px;
 }
 
 .td-actions {

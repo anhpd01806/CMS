@@ -14,8 +14,8 @@
             <td class="td-medium">@item.DistictName</td>
             <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
             <td class="td-medium">@item.PriceText</td>
-            <td class="td-small">@item.Phone</td>
-            <td class="td-medium">@item.StatusName</td>
+            <td class="td-small">@item.Phone.Replace(",", ", ").Trim()</td>
+            <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName + " (" + item.RepeatTotal + " tin trùng)")</td>
             <td style="text-align: center">
                 @if (Convert.ToBoolean(item.CusIsReaded))
                 {
@@ -41,9 +41,18 @@
                     <a class="orange hide-item-list" href="javascript:;" title="Ẩn tin đã lưu" data-id="@item.Id">
                         <i class="icon-eye-close bigger-130"></i>
                     </a>
-                    <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
-                        <i class="icon-warning-sign bigger-130"></i>
-                    </a>
+                    @if (item.IsAdmin)
+                    {
+                        <a class="red spam-item-list" href="javascript:;" title="Chặn mô giới" data-id="@item.Id">
+                            <i class="icon-warning-sign bigger-130"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
+                            <i class="icon-warning-sign bigger-130"></i>
+                        </a>
+                    }
                 </div>
             </td>
         </tr>

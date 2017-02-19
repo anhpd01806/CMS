@@ -41,6 +41,15 @@ $(function () {
             todayHighlight: true
         });
 
+        $(document).on("change", "#chkIsrepeatNews", function () {
+            if ($(this).prop('checked')) {
+                $(this).val(1);
+            } else {
+                $(this).val(0);
+            }
+        });
+
+
         var totalpage = parseInt($('#datatable').attr("data-total"));
         if (totalpage > 1) {
             var obj = $('#pagination').twbsPagination({
@@ -63,12 +72,13 @@ $(function () {
                     var to = $(".txtTo").val();
                     var pageIndex = page;
                     var pageSize = parseInt($(".ddlpage").val());
+                    var isrepeat = $("#chkIsrepeatNews").val();
 
                     var data = {
                         cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                         siteId: siteId, backdate: backdate,
                         minPrice: minPrice, maxPrice: maxPrice,
-                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
+                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat
                     };
                     $.post("/home/loaddata", data, function (resp) {
                         if (resp != null) {
@@ -79,6 +89,9 @@ $(function () {
                             } else {
                                 $(".page-home").hide();
                             }
+                            $(".fistrecord").html(((page - 1) * pageSize) + 1);
+                            $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
+                            $(".totalrecord").html(resp.TotalRecord);
                             $('#datatable').attr("data-total", resp.TotalPage);
                             $('#datatable').attr("data-page", page);
                             $.LoadingOverlay("hide");
@@ -101,12 +114,13 @@ $(function () {
             var to = $(".txtTo").val();
             var pageIndex = 1;
             var pageSize = parseInt($(this).val());
+            var isrepeat = $("#chkIsrepeatNews").val();
 
             var data = {
                 cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                 siteId: siteId, backdate: backdate,
                 minPrice: minPrice, maxPrice: maxPrice,
-                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
+                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat
             };
             $.post("/home/loaddata", data, function (resp) {
                 if (resp != null) {
@@ -118,7 +132,9 @@ $(function () {
                     } else {
                         $(".page-home").hide();
                     }
-
+                    $(".fistrecord").html(((pageIndex - 1) * pageSize) + 1);
+                    $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
+                    $(".totalrecord").html(resp.TotalRecord);
                 }
                 $.LoadingOverlay("hide");
             });
@@ -144,7 +160,7 @@ $(function () {
             $(this).parents("tr").find(".label-info").addClass("arrowed-right");
             $(this).parents("tr").find(".label-info").addClass("arrowed-in");
             $(this).parents("tr").find(".label-warning").removeClass("label-info");
-            $(this).parents("tr").find(".label-warning").removeClass("arrowed");            
+            $(this).parents("tr").find(".label-warning").removeClass("arrowed");
             $.LoadingOverlay("show");
             $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
@@ -165,17 +181,17 @@ $(function () {
         $(document).on("click", ".btnsave", function () {
             if (!$(this).hasClass("disabled")) {
                 var selected = [];
-                $('.checkboxItem:checked').each(function() {
+                $('.checkboxItem:checked').each(function () {
                     selected.push(parseInt($(this).attr('id')));
                 });
                 if (selected.length == 0) {
                     showmessage("error", "Bạn hãy chọn tin cần lưu!");
                 } else {
-                    $.post("/home/usersavenews", { listNewsId: selected }, function(resp) {
+                    $.post("/home/usersavenews", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
                                 LoadData();
-                                setTimeout(function() {
+                                setTimeout(function () {
                                     showmessage("success", "Tin đã được lưu thành công!");
                                 }, 1200);
                             } else {
@@ -191,17 +207,17 @@ $(function () {
         $(document).on("click", ".btnhide", function () {
             if (!$(this).hasClass("disabled")) {
                 var selected = [];
-                $('.checkboxItem:checked').each(function() {
+                $('.checkboxItem:checked').each(function () {
                     selected.push(parseInt($(this).attr('id')));
                 });
                 if (selected.length == 0) {
                     showmessage("error", "Bạn hãy chọn tin cần ẩn!");
                 } else {
-                    $.post("/home/userhidenews", { listNewsId: selected }, function(resp) {
+                    $.post("/home/userhidenews", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
                                 LoadData();
-                                setTimeout(function() {
+                                setTimeout(function () {
                                     showmessage("success", "Tin đã được ẩn thành công!");
                                 }, 1200);
 
@@ -258,6 +274,52 @@ $(function () {
             $("#newsdetail").modal("hide");
         });
 
+        $(document).on("click", ".spam-item-list", function () {
+            var selected = [parseInt($(this).attr("data-id"))];
+            if (selected.length == 0) {
+                showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+            } else {
+                $.post("/home/newsspam", { listNewsId: selected }, function (resp) {
+                    if (resp != null) {
+                        if (resp.Status == 1) {
+                            LoadData();
+                            setTimeout(function () {
+                                showmessage("success", "Tin mô giới đã được cho vào danh sách đen!");
+                            }, 1200);
+
+                        } else {
+                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                        }
+                    }
+                    ;
+                });
+            }
+            $("#newsdetail").modal("hide");
+        });
+
+        $(document).on("click", ".report-item-list", function () {
+            var selected = [parseInt($(this).attr("data-id"))];
+            if (selected.length == 0) {
+                showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+            } else {
+                $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
+                    if (resp != null) {
+                        if (resp.Status == 1) {
+                            LoadData();
+                            setTimeout(function () {
+                                showmessage("success", "Tin mô giới đã được báo cáo thành công!");
+                            }, 1200);
+
+                        } else {
+                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                        }
+                    }
+                    ;
+                });
+            }
+            $("#newsdetail").modal("hide");
+        });
+
         $(document).on("click", ".btnexport", function () {
             var cateId = parseInt($(".cateId").val());
             var districtId = parseInt($(".districtId").val());
@@ -270,11 +332,13 @@ $(function () {
             var to = $(".txtTo").val();
             var pageIndex = parseInt($('#datatable').attr("data-page"));
             var pageSize = parseInt($(".ddlpage").val());
+            var isrepeat = $("#chkIsrepeatNews").val();
+
             var url = "/home/exportexcel";
-            location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize);
+            location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat);
         });
 
-        $(document).on("click", ".btnreport", function() {
+        $(document).on("click", ".btnreport", function () {
             if (!$(this).hasClass("disabled")) {
                 var selected = [];
                 $('.checkboxItem:checked').each(function () {
@@ -300,7 +364,7 @@ $(function () {
                 }
             }
         });
-        
+
         $(document).on("click", ".btnspam", function () {
             if (!$(this).hasClass("disabled")) {
                 var selected = [];
@@ -327,14 +391,14 @@ $(function () {
                 }
             }
         });
-        
+
         //Change search filter
 
-        $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo").change(function () {
+        $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
             LoadData();
         });
 
-        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function(e) {
+        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
             $('#image-gallery').lightSlider({
                 gallery: true,
                 item: 1,
@@ -343,14 +407,14 @@ $(function () {
                 speed: 500,
                 auto: true,
                 loop: true,
-                onSliderLoad: function() {
+                onSliderLoad: function () {
                     $('#image-gallery').removeClass('cS-hidden');
                 }
             });
             $(".mCustomScrollbar").mCustomScrollbar();
         });
 
-        $(document).on("shown.bs.modal", function() {
+        $(document).on("shown.bs.modal", function () {
             $(".mCustomScrollbar").mCustomScrollbar();
         });
     });
@@ -367,10 +431,11 @@ $(function () {
         var to = $(".txtTo").val();
         var pageIndex = parseInt($('#datatable').attr("data-page"));
         var pageSize = parseInt($(".ddlpage").val());
+        var isrepeat = $("#chkIsrepeatNews").val();
 
         var datefrom = new Date(from.split('-')[1] + "/" + from.split('-')[0] + "/" + from.split('-')[2]);
         var dateto = new Date(to.split('-')[1] + "/" + to.split('-')[0] + "/" + to.split('-')[2]);
-        
+
         if (datefrom.getTime() > dateto.getTime()) {
             showmessage("error", "Ngày bắt đầu không được lớn hơn ngày kết thúc!");
         } else {
@@ -386,10 +451,11 @@ $(function () {
                 from: from,
                 to: to,
                 pageIndex: pageIndex,
-                pageSize: pageSize
+                pageSize: pageSize,
+                IsRepeat: isrepeat
             };
             $.LoadingOverlay("show");
-            $.post("/home/loaddata", data, function(resp) {
+            $.post("/home/loaddata", data, function (resp) {
                 if (resp != null) {
                     $("#listnewstable tbody").html("");
                     $("#listnewstable tbody").html(resp.Content);
@@ -399,12 +465,15 @@ $(function () {
                     } else {
                         $(".page-home").hide();
                     }
+                    $(".fistrecord").html(((pageIndex - 1) * pageSize) + 1);
+                    $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
+                    $(".totalrecord").html(resp.TotalRecord);
                 }
                 $.LoadingOverlay("hide");
             });
         }
     }
-    
+
     function showPagination(pagesCounter) {
         $('#pagination').remove();
         $('.homepagging').html('<div class="pagination" id="pagination"></div>');
@@ -428,12 +497,13 @@ $(function () {
                 var to = $(".txtTo").val();
                 var pageIndex = page;
                 var pageSize = parseInt($(".ddlpage").val());
+                var isrepeat = $("#chkIsrepeatNews").val();
 
                 var data = {
                     cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                     siteId: siteId, backdate: backdate,
                     minPrice: minPrice, maxPrice: maxPrice,
-                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
+                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat
                 };
                 $.post("/home/loaddata", data, function (resp) {
                     if (resp != null) {
@@ -444,6 +514,9 @@ $(function () {
                         } else {
                             $(".page-home").hide();
                         }
+                        $(".fistrecord").html(((page - 1) * pageSize) + 1);
+                        $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
+                        $(".totalrecord").html(resp.TotalRecord);
                         $('#datatable').attr("data-total", resp.TotalPage);
                         $('#datatable').attr("data-page", page);
                         $.LoadingOverlay("hide");

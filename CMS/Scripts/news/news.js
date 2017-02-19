@@ -63,12 +63,13 @@ $(function () {
                     var to = $(".txtTo").val();
                     var pageIndex = page;
                     var pageSize = parseInt($(".ddlpage").val());
+                    var isrepeat = $("#chkIsrepeatNews").val();
 
                     var data = {
                         cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                         siteId: siteId, backdate: backdate,
                         minPrice: minPrice, maxPrice: maxPrice,
-                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
+                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat
                     };
                     $.post("/newssave/loaddata", data, function (resp) {
                         if (resp != null) {
@@ -79,6 +80,9 @@ $(function () {
                             } else {
                                 $(".page-home").hide();
                             }
+                            $(".fistrecord").html(((page - 1) * pageSize) + 1);
+                            $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
+                            $(".totalrecord").html(resp.TotalRecord);
                             $('#datatable').attr("data-total", resp.TotalPage);
                             $('#datatable').attr("data-page", page);
                             $.LoadingOverlay("hide");
@@ -101,12 +105,13 @@ $(function () {
             var to = $(".txtTo").val();
             var pageIndex = 1;
             var pageSize = parseInt($(this).val());
+            var isrepeat = $("#chkIsrepeatNews").val();
 
             var data = {
                 cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                 siteId: siteId, backdate: backdate,
                 minPrice: minPrice, maxPrice: maxPrice,
-                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
+                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat
             };
             $.post("/newssave/loaddata", data, function (resp) {
                 if (resp != null) {
@@ -118,10 +123,20 @@ $(function () {
                     } else {
                         $(".page-home").hide();
                     }
-
+                    $(".fistrecord").html(((pageIndex - 1) * pageSize) + 1);
+                    $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
+                    $(".totalrecord").html(resp.TotalRecord);
                 }
                 $.LoadingOverlay("hide");
             });
+        });
+
+        $(document).on("change", "#chkIsrepeatNews", function () {
+            if ($(this).prop('checked')) {
+                $(this).val(1);
+            } else {
+                $(this).val(0);
+            }
         });
 
         $("#check-all").checkAll();
@@ -258,6 +273,52 @@ $(function () {
             $("#newsdetail").modal("hide");
         });
 
+        $(document).on("click", ".spam-item-list", function () {
+            var selected = [parseInt($(this).attr("data-id"))];
+            if (selected.length == 0) {
+                showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+            } else {
+                $.post("/home/newsspam", { listNewsId: selected }, function (resp) {
+                    if (resp != null) {
+                        if (resp.Status == 1) {
+                            LoadData();
+                            setTimeout(function () {
+                                showmessage("success", "Tin mô giới đã được cho vào danh sách đen!");
+                            }, 1200);
+
+                        } else {
+                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                        }
+                    }
+                    ;
+                });
+            }
+            $("#newsdetail").modal("hide");
+        });
+
+        $(document).on("click", ".report-item-list", function () {
+            var selected = [parseInt($(this).attr("data-id"))];
+            if (selected.length == 0) {
+                showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+            } else {
+                $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
+                    if (resp != null) {
+                        if (resp.Status == 1) {
+                            LoadData();
+                            setTimeout(function () {
+                                showmessage("success", "Tin mô giới đã được báo cáo thành công!");
+                            }, 1200);
+
+                        } else {
+                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                        }
+                    }
+                    ;
+                });
+            }
+            $("#newsdetail").modal("hide");
+        });
+
         $(document).on("click", ".btnexport", function () {
             var cateId = parseInt($(".cateId").val());
             var districtId = parseInt($(".districtId").val());
@@ -270,13 +331,69 @@ $(function () {
             var to = $(".txtTo").val();
             var pageIndex = parseInt($('#datatable').attr("data-page"));
             var pageSize = parseInt($(".ddlpage").val());
+            var isrepeat = $("#chkIsrepeatNews").val();
+
             var url = "/newssave/exportexcel";
-            location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize);
+            location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat);
+        });
+
+        $(document).on("click", ".btnreport", function () {
+            if (!$(this).hasClass("disabled")) {
+                var selected = [];
+                $('.checkboxItem:checked').each(function () {
+                    selected.push(parseInt($(this).attr('id')));
+                });
+                if (selected.length == 0) {
+                    showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+                } else {
+                    $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
+                        if (resp != null) {
+                            if (resp.Status == 1) {
+                                LoadData();
+                                setTimeout(function () {
+                                    showmessage("success", "Tin mô giới đã được báo cáo thành công!");
+                                }, 1200);
+
+                            } else {
+                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            }
+                        }
+                        ;
+                    });
+                }
+            }
+        });
+
+        $(document).on("click", ".btnspam", function () {
+            if (!$(this).hasClass("disabled")) {
+                var selected = [];
+                $('.checkboxItem:checked').each(function () {
+                    selected.push(parseInt($(this).attr('id')));
+                });
+                if (selected.length == 0) {
+                    showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+                } else {
+                    $.post("/home/newsspam", { listNewsId: selected }, function (resp) {
+                        if (resp != null) {
+                            if (resp.Status == 1) {
+                                LoadData();
+                                setTimeout(function () {
+                                    showmessage("success", "Tin mô giới đã được cho vào danh sách đen!");
+                                }, 1200);
+
+                            } else {
+                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            }
+                        }
+                        ;
+                    });
+                }
+            }
         });
 
         //Change search filter
 
-        $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo").change(function () {
+        $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
             LoadData();
         });
 
@@ -313,6 +430,7 @@ $(function () {
         var to = $(".txtTo").val();
         var pageIndex = parseInt($('#datatable').attr("data-page"));
         var pageSize = parseInt($(".ddlpage").val());
+        var isrepeat = $("#chkIsrepeatNews").val();
 
         var datefrom = new Date(from.split('-')[1] + "/" + from.split('-')[0] + "/" + from.split('-')[2]);
         var dateto = new Date(to.split('-')[1] + "/" + to.split('-')[0] + "/" + to.split('-')[2]);
@@ -332,7 +450,8 @@ $(function () {
                 from: from,
                 to: to,
                 pageIndex: pageIndex,
-                pageSize: pageSize
+                pageSize: pageSize,
+                IsRepeat: isrepeat
             };
             $.LoadingOverlay("show");
             $.post("/newssave/loaddata", data, function (resp) {
@@ -345,6 +464,9 @@ $(function () {
                     } else {
                         $(".page-home").hide();
                     }
+                    $(".fistrecord").html(((pageIndex - 1) * pageSize) + 1);
+                    $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
+                    $(".totalrecord").html(resp.TotalRecord);
                 }
                 $.LoadingOverlay("hide");
             });
@@ -374,12 +496,13 @@ $(function () {
                 var to = $(".txtTo").val();
                 var pageIndex = page;
                 var pageSize = parseInt($(".ddlpage").val());
+                var isrepeat = $("#chkIsrepeatNews").val();
 
                 var data = {
                     cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                     siteId: siteId, backdate: backdate,
                     minPrice: minPrice, maxPrice: maxPrice,
-                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize
+                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat
                 };
                 $.post("/newssave/loaddata", data, function (resp) {
                     if (resp != null) {
@@ -390,6 +513,9 @@ $(function () {
                         } else {
                             $(".page-home").hide();
                         }
+                        $(".fistrecord").html(((page - 1) * pageSize) + 1);
+                        $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
+                        $(".totalrecord").html(resp.TotalRecord);
                         $('#datatable').attr("data-total", resp.TotalPage);
                         $('#datatable').attr("data-page", page);
                         $.LoadingOverlay("hide");

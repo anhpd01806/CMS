@@ -21,7 +21,7 @@ namespace CMS.Bussiness
         #region News save
 
         public List<NewsModel> GetListNewStatusByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
-            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, int newsStatus, ref int total)
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, int newsStatus, bool IsRepeat, ref int total)
         {
             using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
             {
@@ -89,13 +89,11 @@ namespace CMS.Bussiness
                                 CreatedOn = c.CreatedOn,
                                 CusIsReaded = ncm.IsReaded,
                                 CusIsSaved = ncm.IsSaved,
-                                CusIsDeleted = ncm.IsDeleted
+                                CusIsDeleted = ncm.IsDeleted,
+                                IsRepeat = c.IsRepeat,
+                                RepeatTotal = c.IsRepeat ? CountRepeatnews(c.Id, UserId, d.Id) : 0,
+                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
                             };
-
-                //if (_homeBussiness.GetRoleByUser(UserId) != Convert.ToInt32(CmsRole.Administrator))
-                //{
-                //    query = query.Where(c => news_new.Contains(c.Id));
-                //}
 
                 if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsSave))
                 {
@@ -154,6 +152,10 @@ namespace CMS.Bussiness
                 if (MaxPrice != -1)
                 {
                     query = query.Where(c => c.Price.Value <= Convert.ToDecimal(MaxPrice));
+                }
+                if (!IsRepeat)
+                {
+                    query = query.Where(c => !c.IsRepeat);
                 }
                 #endregion
 
@@ -256,6 +258,66 @@ namespace CMS.Bussiness
             {
                 return 0;
             }
+        }
+        #endregion
+
+        #region Help
+        public int CountRepeatnews(int newId, int userId, int districId)
+        {
+            var listBlacklist = (from c in db.Blacklists
+                                 select (c.Words)).ToList();
+
+            var news_new = new List<int>();
+            if (GetRoleByUser(userId) == Convert.ToInt32(CmsRole.Administrator))
+            {
+                news_new = (from c in db.News_Customer_Mappings
+                            where (c.IsDeleted.Value || c.IsSaved.Value) //c.CustomerId.Equals(userId) &&
+                            select (c.NewsId)).ToList();
+            }
+            else
+            {
+                news_new = (from c in db.News_Customer_Mappings
+                            where c.CustomerId.Equals(userId) && (c.IsDeleted.Value || c.IsSaved.Value)
+                            select (c.NewsId)).ToList();
+            }
+
+            var news = _homeBussiness.GetNewsDetail(newId);
+            if (news != null)
+            {
+                var query = from c in db.News
+                            join d in db.Districts on c.DistrictId equals d.Id
+                            join t in db.NewsStatus on c.StatusId equals t.Id
+                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                            from tm in temp.DefaultIfEmpty()
+                            where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                            && !d.IsDeleted && d.Published
+                            && !news_new.Contains(c.Id)
+                            && !listBlacklist.Contains(c.Phone)
+                            && c.DistrictId.Equals(news.DistrictId)
+                            && c.Phone.Contains(news.Phone)
+                            orderby c.StatusId ascending, c.Price descending
+                            select new NewsModel
+                            {
+                                Id = c.Id,
+                                Title = c.Title,
+                                CategoryId = c.CategoryId,
+                                Link = c.Link,
+                                Phone = c.Phone,
+                                Price = c.Price,
+                                PriceText = c.PriceText,
+                                DistrictId = d.Id,
+                                SiteId = c.SiteId,
+                                DistictName = d.Name,
+                                StatusId = t.Id,
+                                StatusName = t.Name,
+                                CreatedOn = c.CreatedOn,
+                                CusIsReaded = tm.IsReaded
+                            };
+
+                var total = query.ToList().Count;
+                return total;
+            }
+            return 0;
         }
         #endregion
     }

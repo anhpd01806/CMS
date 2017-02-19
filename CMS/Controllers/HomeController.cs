@@ -82,7 +82,7 @@ namespace CMS.Controllers
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
 
-                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, ref total);
+                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 model.RoleId = _bussiness.GetRoleByUser(userId);
@@ -97,18 +97,19 @@ namespace CMS.Controllers
 
         [HttpPost]
         public JsonResult LoadData(int cateId, int districtId, int newTypeId, int siteId, int backdate, double
-                minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize)
+                minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat)
         {
             try
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, ref total);
+                var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), ref total);
                 var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
                 return Json(new
                 {
                     TotalPage = (int)Math.Ceiling((double)total / (double)pageSize),
-                    Content = content
+                    Content = content,
+                    TotalRecord = total
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -117,7 +118,7 @@ namespace CMS.Controllers
                 return Json(new
                 {
                     TotalPage = 0,
-                    Content = "<tr><td colspan='8'>Hệ thống gặp sự cố trong quá trình load dữ liệu<td></tr>"
+                    Content = "<tr><td colspan='10'>Hệ thống gặp sự cố trong quá trình load dữ liệu<td></tr>"
                 }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -216,7 +217,7 @@ namespace CMS.Controllers
         }
 
         public ActionResult ExportExcel(int cateId, int districtId, int newTypeId, int siteId, int backdate, decimal
-                minPrice, decimal maxPrice, string from, string to, int pageIndex, int pageSize)
+                minPrice, decimal maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat)
         {
 
             string fileName = string.Format("News_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
@@ -228,7 +229,7 @@ namespace CMS.Controllers
             }
             int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, ref total);
+            var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), ref total);
             ExportToExcel(filePath, listNews);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);

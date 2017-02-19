@@ -536,6 +536,7 @@
     <Content Include="assets\css\font-awesome\font-awesome.min.css" />
     <Content Include="assets\css\fonts.googleapis.com.css" />
     <Content Include="assets\css\fullcalendar.min.css" />
+    <Content Include="assets\css\images\approved.gif" />
     <Content Include="assets\css\images\pattern.jpg" />
     <Content Include="assets\css\jquery-ui.custom.min.css" />
     <Content Include="assets\css\jquery-ui.min.css" />
@@ -689,6 +690,7 @@
     <Content Include="assets\images\500.png" />
     <Content Include="assets\images\503.png" />
     <Content Include="assets\images\apple-touch-icon.png" />
+    <Content Include="assets\images\approved.gif" />
     <Content Include="assets\images\assemble.png" />
     <Content Include="assets\images\author\cover.jpg" />
     <Content Include="assets\images\author\dropdown-arrow2-open.png" />
@@ -2943,6 +2945,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\news\news.js" />
+    <Content Include="Scripts\news\newshide.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Shared\breadcrumb.cshtml" />
     <Content Include="Views\Shared\PartialMenu.cshtml" />
@@ -3071,6 +3074,9 @@
     <Content Include="Views\CategorySite\Create.cshtml" />
     <Content Include="Views\CategorySite\Edit.cshtml" />
     <Content Include="Views\LandingPage\Index.cshtml" />
+    <Content Include="Views\NewsSave\Paging.cshtml" />
+    <Content Include="Views\NewsHide\Index.cshtml" />
+    <Content Include="Views\NewsHide\Paging.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3081,7 +3087,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="assets\js\core\cache\" />
-    <Folder Include="Views\NewsHide\" />
     <Folder Include="Views\NewsViewed\" />
   </ItemGroup>
   <ItemGroup>
