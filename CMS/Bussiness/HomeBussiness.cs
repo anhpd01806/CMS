@@ -133,7 +133,7 @@ namespace CMS.Bussiness
                                 StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = 0,//CountRepeatnews(c.Id, UserId, d.Id),
+                                RepeatTotal = 1,//CountRepeatnews(c.Id, UserId, d.Id),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
                             };
 

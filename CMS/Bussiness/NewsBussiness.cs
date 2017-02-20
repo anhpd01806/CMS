@@ -91,7 +91,7 @@ namespace CMS.Bussiness
                                 CusIsSaved = ncm.IsSaved,
                                 CusIsDeleted = ncm.IsDeleted,
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = 0,//CountRepeatnews(c.Id, UserId, d.Id),
+                                RepeatTotal = 1,//CountRepeatnews(c.Id, UserId, d.Id),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
                             };
 
