@@ -98,7 +98,7 @@ namespace CMS.Bussiness
                 if (GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator))
                 {
                     news_new = (from c in db.News_Customer_Mappings
-                                where (c.IsDeleted.Value || c.IsSaved.Value) //c.CustomerId.Equals(UserId) &&
+                                where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value)
                                 select (c.NewsId)).ToList();
                 }
                 else
@@ -196,6 +196,43 @@ namespace CMS.Bussiness
 
                 total = query.ToList().Count;
                 return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            }
+        }
+
+        //Export excel
+        public List<NewsModel> ExportExcel(int [] listNewsId)
+        {
+            using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+            }))
+            {
+                var query = (from c in db.News
+                            join d in db.Districts on c.DistrictId equals d.Id
+                            join t in db.NewsStatus on c.StatusId equals t.Id
+                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                            from tm in temp.DefaultIfEmpty()
+                            where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                            && listNewsId.Contains(c.Id)
+                            orderby c.StatusId ascending, c.Price descending
+                            select new NewsModel
+                            {
+                                Id = c.Id,
+                                Title = c.Title,
+                                CategoryId = c.CategoryId,
+                                Link = c.Link,
+                                Phone = c.Phone,
+                                Price = c.Price,
+                                PriceText = c.PriceText,
+                                DistrictId = d.Id,
+                                DistictName = d.Name,
+                                StatusId = t.Id,
+                                StatusName = t.Name,
+                                CreatedOn = c.CreatedOn,
+                                IsRepeat = c.IsRepeat,
+                                RepeatTotal = 1
+                            }).ToList();
+                return query;
             }
         }
 

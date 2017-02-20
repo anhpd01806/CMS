@@ -236,6 +236,22 @@ namespace CMS.Controllers
             return File(bytes, "text/xls", fileName);
         }
 
+        public ActionResult ExportExcelV2(int[] listNewsId)
+        {
+            string fileName = string.Format("News_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
+            string filePath = Path.Combine(Request.PhysicalApplicationPath, "File\\ExportImport", fileName);
+            var folder = Request.PhysicalApplicationPath + "File\\ExportImport";
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+            var listNews = _bussiness.ExportExcel(listNewsId);
+            ExportToExcel(filePath, listNews);
+
+            var bytes = System.IO.File.ReadAllBytes(filePath);
+            return File(bytes, "text/xls", fileName);
+        }
+
         public virtual void ExportToExcel(string filePath, IList<NewsModel> listnews)
         {
             var newFile = new FileInfo(filePath);
