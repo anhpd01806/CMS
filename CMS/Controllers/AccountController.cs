@@ -46,7 +46,7 @@ namespace CMS.Controllers
                     }
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
-                    CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()));
+                    CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()), username.Split(',')[3].Trim());
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -79,10 +79,10 @@ namespace CMS.Controllers
                     {
                         Session.Add("SS-USER", user);
                         Session.Add("SS-USERID", user.Id);
-                        CheckAcceptedUser(user.Id);
+                        CheckAcceptedUser(user.Id, user.IsFree.ToString());
                         // set cookies for user
                         HttpCookie rememberCookie = new HttpCookie("rememberCookies");
-                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName);
+                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName) + "," + user.IsFree;
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
 
@@ -173,7 +173,8 @@ namespace CMS.Controllers
                             Phone = model.Phone,
                             Email = model.Email,
                             IsDeleted = false,
-                            IsMember = false
+                            IsMember = false,
+                            IsFree = false
                         };
                         var userId = new UserBussiness().Insert(u);
                         var roleUser = new Role_User
@@ -246,9 +247,10 @@ namespace CMS.Controllers
         #endregion
 
         //check tai khoan con tien su dung
-        private void CheckAcceptedUser(int userId)
+        private void CheckAcceptedUser(int userId, string isFree)
         {
-            Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && x.StartDate.Date >= DateTime.Now.Date && DateTime.Now.Date <= x.EndDate.Date);
+            if (isFree.ToLower().Trim() == "true") Session["USER-ACCEPTED"] = true;
+            else Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && x.StartDate.Date >= DateTime.Now.Date && DateTime.Now.Date <= x.EndDate.Date);
         }
     }
 }

@@ -86,7 +86,8 @@ namespace CMS.Controllers
                     Email = model.Email,
                     ManagerBy = int.Parse(model.ManagerBy),
                     IsDeleted = false,
-                    IsMember = true
+                    IsMember = true,
+                    IsFree = true
                 };
 
                 int userId = 0;
