@@ -84,7 +84,7 @@ namespace CMS.Bussiness
         }
 
         public List<NewsModel> GetListNewByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
-            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, ref int total)
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, ref int total)
         {
             using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
             {
@@ -133,7 +133,7 @@ namespace CMS.Bussiness
                                 StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = c.IsRepeat ? CountRepeatnews(c.Id, UserId, d.Id) : 0,
+                                RepeatTotal = CountRepeatnews(c.Id, UserId, d.Id),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
                             };
 
@@ -182,10 +182,16 @@ namespace CMS.Bussiness
                 {
                     query = query.Where(c => c.Price.Value <= Convert.ToDecimal(MaxPrice));
                 }
-                if (!IsRepeat)
+                if (!string.IsNullOrEmpty(key))
                 {
-                    query = query.Where(c => !c.IsRepeat);
+                    query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.DistictName.Contains(key));
                 }
+                //if (!IsRepeat)
+                //{
+                //    var list = query.ToList().Where(c => c.RepeatTotal < 2).ToList();
+                //    total = list.Count();
+                //    return list.Skip((pageIndex - 1)*pageSize).Take(pageSize).ToList();
+                //}
                 #endregion
 
                 total = query.ToList().Count;

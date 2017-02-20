@@ -40,7 +40,7 @@
                 <div class="input-group">
                     <input class="form-control txtsearchkey" placeholder="Nhập vào tiêu đề tin, số điện thoại, quận huyện..." type="text" />
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-inverse btn-white">
+                        <button type="button" class="btn btn-inverse btn-white btnsearch">
                             <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
                             Tìm
                         </button>
@@ -225,7 +225,7 @@
                         <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
                         <td class="td-medium">@item.PriceText</td>
                         <td class="td-small">@item.Phone.Replace(",", ", ").Trim()</td>
-                        <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName + " (" + item.RepeatTotal + " tin trùng)")</td>
+                        <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName + " (" + (item.RepeatTotal - 1) + " tin trùng)")</td>
                         <td>
                             @if (Convert.ToBoolean(item.CusIsReaded))
                             {

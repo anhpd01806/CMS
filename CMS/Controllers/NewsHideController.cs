@@ -83,7 +83,7 @@ namespace CMS.Controllers
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
 
-                model.ListNew = _newsbussiness.GetListNewStatusByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), false, ref total);
+                model.ListNew = _newsbussiness.GetListNewStatusByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 model.RoleId = _newsbussiness.GetRoleByUser(userId);
@@ -98,13 +98,13 @@ namespace CMS.Controllers
 
         [HttpPost]
         public JsonResult LoadData(int cateId, int districtId, int newTypeId, int siteId, int backdate, double
-                minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat)
+                minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string key)
         {
             try
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), Convert.ToBoolean(IsRepeat), ref total);
+                var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), Convert.ToBoolean(IsRepeat),key, ref total);
                 var content = RenderPartialViewToString("~/Views/NewsHide/Paging.cshtml", listNews);
                 return Json(new
                 {
@@ -125,7 +125,7 @@ namespace CMS.Controllers
         }
 
         public ActionResult ExportExcel(int cateId, int districtId, int newTypeId, int siteId, int backdate, decimal
-                minPrice, decimal maxPrice, string from, string to, int pageIndex, int pageSize,int IsRepeat)
+                minPrice, decimal maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string key)
         {
 
             string fileName = string.Format("News_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
@@ -137,7 +137,7 @@ namespace CMS.Controllers
             }
             int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), Convert.ToBoolean(IsRepeat), ref total);
+            var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), Convert.ToBoolean(IsRepeat),key, ref total);
             ExportToExcel(filePath, listNews);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);

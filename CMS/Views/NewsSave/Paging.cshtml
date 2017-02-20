@@ -15,7 +15,7 @@
             <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
             <td class="td-medium">@item.PriceText</td>
             <td class="td-small">@item.Phone.Replace(",", ", ").Trim()</td>
-            <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName + " (" + item.RepeatTotal + " tin trùng)")</td>
+            <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName + " (" + (item.RepeatTotal - 1) + " tin trùng)")</td>
             <td style="text-align: center">
                 @if (Convert.ToBoolean(item.CusIsReaded))
                 {
@@ -61,6 +61,6 @@
 else
 {
     <tr>
-        <td colspan="8" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+        <td colspan="10" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
     </tr>
 }

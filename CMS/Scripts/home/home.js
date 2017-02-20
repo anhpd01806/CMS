@@ -73,12 +73,13 @@ $(function () {
                     var pageIndex = page;
                     var pageSize = parseInt($(".ddlpage").val());
                     var isrepeat = $("#chkIsrepeatNews").val();
+                    var key = $.trim($(".txtsearchkey").val());
 
                     var data = {
                         cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                         siteId: siteId, backdate: backdate,
                         minPrice: minPrice, maxPrice: maxPrice,
-                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat
+                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key : key
                     };
                     $.post("/home/loaddata", data, function (resp) {
                         if (resp != null) {
@@ -115,12 +116,13 @@ $(function () {
             var pageIndex = 1;
             var pageSize = parseInt($(this).val());
             var isrepeat = $("#chkIsrepeatNews").val();
+            var key = $.trim($(".txtsearchkey").val());
 
             var data = {
                 cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                 siteId: siteId, backdate: backdate,
                 minPrice: minPrice, maxPrice: maxPrice,
-                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat
+                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
             };
             $.post("/home/loaddata", data, function (resp) {
                 if (resp != null) {
@@ -138,6 +140,18 @@ $(function () {
                 }
                 $.LoadingOverlay("hide");
             });
+        });
+
+        $(document).on("click", ".btnsearch", function () {
+            LoadData();
+        });
+        
+        $('.txtsearchkey').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                LoadData();
+            }
+            event.stopPropagation();
         });
 
         $("#check-all").checkAll();
@@ -432,6 +446,7 @@ $(function () {
         var pageIndex = parseInt($('#datatable').attr("data-page"));
         var pageSize = parseInt($(".ddlpage").val());
         var isrepeat = $("#chkIsrepeatNews").val();
+        var key = $.trim($(".txtsearchkey").val());
 
         var datefrom = new Date(from.split('-')[1] + "/" + from.split('-')[0] + "/" + from.split('-')[2]);
         var dateto = new Date(to.split('-')[1] + "/" + to.split('-')[0] + "/" + to.split('-')[2]);
@@ -452,7 +467,8 @@ $(function () {
                 to: to,
                 pageIndex: pageIndex,
                 pageSize: pageSize,
-                IsRepeat: isrepeat
+                IsRepeat: isrepeat,
+                key: key
             };
             $.LoadingOverlay("show");
             $.post("/home/loaddata", data, function (resp) {
@@ -498,12 +514,13 @@ $(function () {
                 var pageIndex = page;
                 var pageSize = parseInt($(".ddlpage").val());
                 var isrepeat = $("#chkIsrepeatNews").val();
+                var key = $.trim($(".txtsearchkey").val());
 
                 var data = {
                     cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                     siteId: siteId, backdate: backdate,
                     minPrice: minPrice, maxPrice: maxPrice,
-                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat
+                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
                 };
                 $.post("/home/loaddata", data, function (resp) {
                     if (resp != null) {
