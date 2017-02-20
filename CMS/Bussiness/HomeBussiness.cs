@@ -94,19 +94,15 @@ namespace CMS.Bussiness
                 var listBlacklist = (from c in db.Blacklists
                                      select (c.Words)).ToList();
 
-                var news_new = new List<int>();
-                if (GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator))
-                {
-                    news_new = (from c in db.News_Customer_Mappings
+                //Danh sách tin đã lưu hoặc đã ẩn theo user
+                var news_new = (from c in db.News_Customer_Mappings
                                 where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value)
                                 select (c.NewsId)).ToList();
-                }
-                else
-                {
-                    news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value)
-                                select (c.NewsId)).ToList();
-                }
+
+                //Danh sách tin đã đọc theo user
+                var news_isread = (from c in db.News_Customer_Mappings
+                                   where c.CustomerId.Equals(UserId) && c.IsReaded.Value
+                                   select (c.NewsId)).ToList();
 
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
@@ -132,6 +128,9 @@ namespace CMS.Bussiness
                                 StatusId = t.Id,
                                 StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
+                                CusIsReaded = news_isread.Contains(c.Id) ? true : false,  //CheckReadByUser(UserId, c.Id),
+                                CusIsSaved = tm.IsSaved,
+                                CusIsDeleted = tm.IsDeleted,
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = 1,//CountRepeatnews(c.Id, UserId, d.Id),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
@@ -200,7 +199,7 @@ namespace CMS.Bussiness
         }
 
         //Export excel
-        public List<NewsModel> ExportExcel(int [] listNewsId)
+        public List<NewsModel> ExportExcel(List<int> listNewsId)
         {
             using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
             {

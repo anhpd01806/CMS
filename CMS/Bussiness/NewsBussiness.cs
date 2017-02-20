@@ -33,23 +33,6 @@ namespace CMS.Bussiness
 
                 var news_new = new List<int>();
 
-                //if (GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator))
-                //{
-                //    if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
-                //    {
-                //        news_new = (from c in db.News_Customer_Mappings
-                //                    where !c.IsDeleted.Value
-                //                    select (c.NewsId)).ToList();
-                //    }
-                //    else
-                //    {
-                //        news_new = (from c in db.News_Customer_Mappings
-                //                    where c.IsDeleted.Value
-                //                    select (c.NewsId)).ToList();
-                //    }
-                //}
-                //else
-                //{
                 if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
                 {
                     news_new = (from c in db.News_Customer_Mappings
@@ -62,7 +45,11 @@ namespace CMS.Bussiness
                                 where c.CustomerId.Equals(UserId) && c.IsDeleted.Value
                                 select (c.NewsId)).ToList();
                 }
-                //}
+
+                //Danh sách tin đã đọc theo user
+                var news_isread = (from c in db.News_Customer_Mappings
+                                   where c.CustomerId.Equals(UserId) && c.IsReaded.Value
+                                   select (c.NewsId)).ToList();
 
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
@@ -87,7 +74,7 @@ namespace CMS.Bussiness
                                 StatusId = t.Id,
                                 StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
-                                CusIsReaded = ncm.IsReaded,
+                                CusIsReaded = news_isread.Contains(c.Id) ? true : false,
                                 CusIsSaved = ncm.IsSaved,
                                 CusIsDeleted = ncm.IsDeleted,
                                 IsRepeat = c.IsRepeat,

@@ -145,3 +145,6 @@ label, .lbl {
 .searchicon {
     margin-right: 2px;
 }
+.lbltitle {
+    cursor: pointer;
+}

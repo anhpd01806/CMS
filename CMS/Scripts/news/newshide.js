@@ -187,6 +187,27 @@ $(function () {
             });
         });
 
+        $(document).on("click", ".lbltitle", function () {
+            $(this).parents("tr").attr("style", "color: #c55f05;");
+            $(this).parents("tr").find(".label-info").html("Đã xem");
+            $(this).parents("tr").find(".label-info").addClass("label-warning");
+            $(this).parents("tr").find(".label-info").addClass("arrowed-right");
+            $(this).parents("tr").find(".label-info").addClass("arrowed-in");
+            $(this).parents("tr").find(".label-warning").removeClass("label-info");
+            $(this).parents("tr").find(".label-warning").removeClass("arrowed");
+            $.LoadingOverlay("show");
+            $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
+                if (resp != null) {
+                    $("#modaldetail").empty();
+                    $("#modaldetail").html(resp.Content);
+                    setTimeout(function () {
+                        $("#newsdetail").modal("show");
+                    }, 500);
+                }
+                $.LoadingOverlay("hide");
+            });
+        });
+
         $(document).on("click", ".btnclose", function () {
             $("#newsdetail").modal("hide");
         });
@@ -334,20 +355,17 @@ $(function () {
         });
 
         $(document).on("click", ".btnexport", function () {
-            var cateId = parseInt($(".cateId").val());
-            var districtId = parseInt($(".districtId").val());
-            var newTypeId = parseInt($(".newTypeId").val());
-            var siteId = parseInt($(".siteId").val());
-            var backdate = parseInt($(".ddlbackdate").val());
-            var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-            var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
-            var from = $(".txtFrom").val();
-            var to = $(".txtTo").val();
-            var pageIndex = parseInt($('#datatable').attr("data-page"));
-            var pageSize = parseInt($(".ddlpage").val());
-            var isrepeat = $("#chkIsrepeatNews").val();
-            var url = "/newshide/exportexcel";
-            location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat);
+            var selected = "";
+            $('.checkboxItem:checked').each(function () {
+                selected += $(this).attr('id') + ",";
+            });
+            selected = selected.slice(0, -1);
+            if (selected.length == 0) {
+                showboxcomfirm("Thông báo", "Bạn chưa chọn tin nào! Bạn có muốn xuất hết danh sách tin tức đang được hiển thị không?");
+            } else {
+                var url = "/home/exportexcelv2";
+                location.href = decodeURIComponent(url + "?listNewsId=" + selected);
+            }
         });
 
         $(document).on("click", ".btnreport", function () {
@@ -555,5 +573,41 @@ $(function () {
         }
         var price = strprice.split('+')[1];
         return price;
+    }
+
+    function showboxcomfirm(title, message) {
+        bootbox.confirm({
+            title: title,
+            message: message,
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Đồng ý'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Đóng'
+                },
+            },
+            callback: function (result) {
+                if (result) {
+
+                    var cateId = parseInt($(".cateId").val());
+                    var districtId = parseInt($(".districtId").val());
+                    var newTypeId = parseInt($(".newTypeId").val());
+                    var siteId = parseInt($(".siteId").val());
+                    var backdate = parseInt($(".ddlbackdate").val());
+                    var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
+                    var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                    var from = $(".txtFrom").val();
+                    var to = $(".txtTo").val();
+                    var pageIndex = parseInt($('#datatable').attr("data-page"));
+                    var pageSize = parseInt($(".ddlpage").val());
+                    var isrepeat = $("#chkIsrepeatNews").val();
+                    var key = $.trim($(".txtsearchkey").val());
+
+                    var url = "/newshide/exportexcel";
+                    location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat + "&key=" + key);
+                }
+            }
+        });
     }
 });

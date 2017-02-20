@@ -16,17 +16,17 @@
             </button>
             @if (Model.RoleId == Convert.ToInt32(CMS.Helper.CmsRole.Administrator))
             {
-            <button class="btn btn-app btn-inverse btn-small btnspam disabled">
-                <i class="icon-warning-sign bigger-200"></i>
-                Chặn mô giới
-            </button>
+                <button class="btn btn-app btn-inverse btn-small btnspam disabled">
+                    <i class="icon-warning-sign bigger-200"></i>
+                    Chặn mô giới
+                </button>
             }
             else
             {
-            <button class="btn btn-app btn-inverse btn-small btnreport disabled">
-                <i class="icon-warning-sign bigger-200"></i>
-                Báo mô giới
-            </button>
+                <button class="btn btn-app btn-inverse btn-small btnreport disabled">
+                    <i class="icon-warning-sign bigger-200"></i>
+                    Báo mô giới
+                </button>
             }
             <button class="btn btn-app btn-danger btnexport btn-small">
                 <i class="icon-download-alt bigger-200"></i>
@@ -211,85 +211,89 @@
                 <tbody>
                     @if (Model.ListNew.Any())
                     {
-                    foreach (var item in Model.ListNew)
-                    {
-                    <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? " color #c55f05;" : "")">
-                        <td>
-                            <label class="pos-rel">
-                                <input type="checkbox" class="checkboxItem" id="@item.Id" />
-                            </label>
-                        </td>
-                        <td>@item.Title</td>
-                        <td class="td-medium">@item.DistictName</td>
-                        <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
-                        <td class="td-medium">@item.PriceText</td>
-                        <td class="td-small">@item.Phone.Replace(",", ", ").Trim()</td>
-                        <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName + " (" + (item.RepeatTotal - 1) + " tin trùng)")</td>
-                        <td>
-                            @if (Convert.ToBoolean(item.CusIsReaded))
-                            {
-                            <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
-                            }
-                            else
-                            {
-                            <span class="label label-info arrowed">Chưa xem</span>
+                        foreach (var item in Model.ListNew)
+                        {
+                            <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? " color #c55f05;" : "")">
+                                <td>
+                                    <label class="pos-rel">
+                                        <input type="checkbox" class="checkboxItem" id="@item.Id" />
+                                    </label>
+                                </td>
+                                <td>
+                                    <span data-id="@item.Id" class="lbltitle">
+                                        @item.Title
+                                    </span>
+                                </td>
+                                <td class="td-medium">@item.DistictName</td>
+                                <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
+                                <td class="td-medium">@item.PriceText</td>
+                                <td class="td-small">@item.Phone.Replace(",", ", ").Trim()</td>
+                                <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName + " (" + (item.RepeatTotal - 1) + " tin trùng)")</td>
+                                <td>
+                                    @if (Convert.ToBoolean(item.CusIsReaded))
+                                    {
+                                        <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-info arrowed">Chưa xem</span>
 
-                            }
-                        </td>
-                        <td style="text-align: center">
-                            <img src="~/assets/images/approved.gif" />
-                        </td>
-                        <td class="td-actions">
-                            <div class="hidden-phone visible-desktop action-buttons">
-                                <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
-                                    <i class="icon-zoom-in bigger-130"></i>
-                                </a>
-                                <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
-                                    <i class="icon-save bigger-130"></i>
-                                </a>
-                                <a class="orange remove-hide-item-list" href="javascript:;" title="Bỏ ẩn tin" data-id="@item.Id">
-                                    <i class="icon-eye-open bigger-130"></i>
-                                </a>
-                                @if (item.IsAdmin)
-                                {
-                                <a class="red spam-item-list" href="javascript:;" title="Chặn mô giới" data-id="@item.Id">
-                                    <i class="icon-warning-sign bigger-130"></i>
-                                </a>
-                                }
-                                else
-                                {
-                                <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
-                                    <i class="icon-warning-sign bigger-130"></i>
-                                </a>
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                    }
+                                    }
+                                </td>
+                                <td style="text-align: center">
+                                    <img src="~/assets/images/approved.gif" />
+                                </td>
+                                <td class="td-actions">
+                                    <div class="hidden-phone visible-desktop action-buttons">
+                                        <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
+                                            <i class="icon-zoom-in bigger-130"></i>
+                                        </a>
+                                        <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
+                                            <i class="icon-save bigger-130"></i>
+                                        </a>
+                                        <a class="orange remove-hide-item-list" href="javascript:;" title="Bỏ ẩn tin" data-id="@item.Id">
+                                            <i class="icon-eye-open bigger-130"></i>
+                                        </a>
+                                        @if (item.IsAdmin)
+                                        {
+                                            <a class="red spam-item-list" href="javascript:;" title="Chặn mô giới" data-id="@item.Id">
+                                                <i class="icon-warning-sign bigger-130"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
+                                                <i class="icon-warning-sign bigger-130"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     }
                     else
                     {
-                    <tr>
-                        <td colspan="10" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
-                    </tr>
+                        <tr>
+                            <td colspan="10" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+                        </tr>
                     }
                 </tbody>
             </table>
             <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-page="1" />
             @if (Model.Totalpage > 1)
             {
-            <div class="row page-home">
-                <div class="col-xs-4">
-                    <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
-                        Hiển thị <span class="fistrecord">@(((Model.pageIndex - 1) * Model.pageSize) + 1)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> bản ghi
+                <div class="row page-home">
+                    <div class="col-xs-4">
+                        <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
+                            Hiển thị <span class="fistrecord">@(((Model.pageIndex - 1) * Model.pageSize) + 1)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> bản ghi
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="dataTables_paginate homepagging">
+                            <div class="pagination" id="pagination"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-xs-8">
-                    <div class="dataTables_paginate homepagging">
-                        <div class="pagination" id="pagination"></div>
-                    </div>
-                </div>
-            </div>
             }
         </div>
     </div>
