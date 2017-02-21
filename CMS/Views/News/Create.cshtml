@@ -1,6 +1,93 @@
-﻿
+﻿@model CMS.ViewModel.HomeViewModel
 @{
     ViewBag.Title = "Đăng tin";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="page-header">
+    <h1>
+        Tin tức
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            Đăng tin mới
+        </small>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" id="frmnews" role="form">
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tiêu đề tin (<span class="requied">*</span>) </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="txttitle" placeholder="Nhập vào tiêu đề tin" name="title" class="col-xs-12 col-sm-12" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Danh mục tin (<span class="requied">*</span>)</label>
+
+                <div class="col-sm-9">
+                        @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "col-xs-12 col-sm-12 ddlfrm cateId" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Quận huyện (<span class="requied">*</span>)</label>
+
+                <div class="col-sm-9">
+                    @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "col-xs-12 col-sm-12 ddlfrm districtId" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Điện thoại (<span class="requied">*</span>)</label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="txtphone" placeholder="Nhập vào số điện thoại" name="phone" class="col-xs-12 col-sm-12 ddlfrm txtphone" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Giá (<span class="requied">*</span>)</label>
+
+                <div class="col-sm-9">
+                    <input type="number" id="txtphone" placeholder="Nhập vào giá" name="price" class="col-xs-12 col-sm-12 ddlfrm txtprice" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Giá bằng chữ (<span class="requied">*</span>)</label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="txtphone" placeholder="Nhập vào giá bằng chữ" name="pricetext" class="col-xs-12 col-sm-12 ddlfrm txtpricetext" />
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nội dung (<span class="requied">*</span>)</label>
+
+                <div class="col-sm-9">
+                    <textarea class="col-sm-12 col-xs-12" id="txtcontent" name="content"></textarea>
+                </div>
+            </div>
+            <div class="clearfix form-actions">
+                <div class="col-md-12">
+                    <button class="btn btn-info btnsave" type="submit">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        Lưu tin
+                    </button>
+
+                    &nbsp; &nbsp; &nbsp;
+                    <button class="btn" type="reset">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        Làm mới
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<script src="~/assets/js/jquery.validate.min.js"></script>
+<script src="~/assets/ckeditor/ckeditor.js"></script>
+<script src="~/Scripts/news/createnews.js"></script>

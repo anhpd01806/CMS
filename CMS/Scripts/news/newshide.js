@@ -187,6 +187,24 @@ $(function () {
             });
         });
 
+        $(document).on("click", ".btnsamenews", function () {
+            $("#newsdetail").modal("hide");
+            var id = $(this).attr("data-id");
+            setTimeout(function () {
+                $.LoadingOverlay("show");
+                $.get("/home/getnewsdetail", { Id: parseInt(id) }, function (resp) {
+                    if (resp != null) {
+                        $("#modaldetail").empty();
+                        $("#modaldetail").html(resp.Content);
+                        setTimeout(function () {
+                            $("#newsdetail").modal("show");
+                        }, 500);
+                    }
+                    $.LoadingOverlay("hide");
+                });
+            }, 200);
+        });
+
         $(document).on("click", ".lbltitle", function () {
             $(this).parents("tr").attr("style", "color: #c55f05;");
             $(this).parents("tr").find(".label-info").html("Đã xem");

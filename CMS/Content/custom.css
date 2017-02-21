@@ -148,3 +148,10 @@ label, .lbl {
 .lbltitle {
     cursor: pointer;
 }
+.ddlfrm {
+    height: 35px;
+}
+.requied {
+    color: red;
+    font-weight: bold;
+}

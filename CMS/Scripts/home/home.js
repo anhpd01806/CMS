@@ -79,7 +79,7 @@ $(function () {
                         cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                         siteId: siteId, backdate: backdate,
                         minPrice: minPrice, maxPrice: maxPrice,
-                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key : key
+                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
                     };
                     $.post("/home/loaddata", data, function (resp) {
                         if (resp != null) {
@@ -145,7 +145,7 @@ $(function () {
         $(document).on("click", ".btnsearch", function () {
             LoadData();
         });
-        
+
         $('.txtsearchkey').keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which);
             if (keycode == '13') {
@@ -186,6 +186,24 @@ $(function () {
                 }
                 $.LoadingOverlay("hide");
             });
+        });
+
+        $(document).on("click", ".btnsamenews", function () {
+            $("#newsdetail").modal("hide");
+            var id = $(this).attr("data-id");
+            setTimeout(function () {
+                $.LoadingOverlay("show");
+                $.get("/home/getnewsdetail", { Id: parseInt(id) }, function (resp) {
+                    if (resp != null) {
+                        $("#modaldetail").empty();
+                        $("#modaldetail").html(resp.Content);
+                        setTimeout(function () {
+                            $("#newsdetail").modal("show");
+                        }, 500);
+                    }
+                    $.LoadingOverlay("hide");
+                });
+            }, 200);
         });
 
         $(document).on("click", ".lbltitle", function () {

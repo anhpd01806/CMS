@@ -55,7 +55,8 @@ namespace CMS.Bussiness
                             join d in db.Districts on c.DistrictId equals d.Id
                             join t in db.NewsStatus on c.StatusId equals t.Id
                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
-                            where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                            join s in db.Sites on c.SiteId equals s.ID
+                            where c.CreatedOn.HasValue && !c.IsDeleted && !s.Deleted && s.Published //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
                             && news_new.Contains(c.Id)
                             && !listBlacklist.Contains(c.Phone) //không cho hiển thị có số điện thoại giống số điện thoại trong blacklist
@@ -65,6 +66,7 @@ namespace CMS.Bussiness
                                 Id = c.Id,
                                 Title = c.Title,
                                 CategoryId = c.CategoryId,
+                                SiteId = c.SiteId,
                                 Link = c.Link,
                                 Phone = c.Phone,
                                 Price = c.Price,
@@ -126,11 +128,11 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
-                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime((From.Split('-')[1] + "/" + From.Split('-')[0] + "/" + From.Split('-')[2])));
+                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime((From.Split('-')[0] + "/" + From.Split('-')[1] + "/" + From.Split('-')[2] + " 00:00:00.00")));
                 }
                 if (!string.IsNullOrEmpty(To))
                 {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[1] + "/" + To.Split('-')[0] + "/" + To.Split('-')[2])));
+                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[0] + "/" + To.Split('-')[1] + "/" + To.Split('-')[2] + " 23:59:59.999")));
                 }
                 if (MinPrice != -1)
                 {
