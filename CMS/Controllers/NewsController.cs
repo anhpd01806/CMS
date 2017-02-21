@@ -15,16 +15,75 @@ using CMS.Data;
 
 namespace CMS.Controllers
 {
-    public class NewsController : Controller
+    public class NewsController : BaseAuthedController
     {
         #region member
-        private readonly NewsBussiness _newsbussiness = new NewsBussiness();
-        private readonly HomeBussiness _homebussiness = new HomeBussiness();
+        private readonly HomeBussiness _bussiness = new HomeBussiness();
         #endregion
 
         public ActionResult Create()
         {
-            return View();
+            try
+            {
+                var model = new HomeViewModel();
+
+                #region Get select list category
+                var listCategory = _bussiness.GetListCategory();
+                var cateListItems = new List<SelectListItem>();
+                cateListItems.Add(new SelectListItem { Text = "Chọn chuyên mục", Value = "0" });
+                foreach (var item in listCategory)
+                {
+                    if (item.ParentCategoryId == 0)
+                    {
+                        cateListItems.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                        var listchillcate = _bussiness.GetChilldrenlistCategory(item.ParentCategoryId);
+                        foreach (var chill in listchillcate)
+                        {
+                            cateListItems.Add(new SelectListItem { Text = (item.Name + " >> " + chill.Name), Value = chill.Id.ToString() });
+                        }
+                    }
+                }
+                model.ListCategory = new SelectList(cateListItems, "Value", "Text");
+                #endregion
+                #region Get select list district
+
+                var listDistrict = _bussiness.GetListDistric();
+                var listdictrictItem = new List<SelectListItem>();
+                listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
+                foreach (var item in listDistrict)
+                {
+                    listdictrictItem.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                }
+                model.ListDistric = new SelectList(listdictrictItem, "Value", "Text");
+                #endregion
+                #region Get select list site
+                var listSite = _bussiness.GetListSite();
+                var listsiteItem = new List<SelectListItem>();
+                listsiteItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
+                foreach (var item in listSite)
+                {
+                    listsiteItem.Add(new SelectListItem { Text = item.Name, Value = item.ID.ToString() });
+                }
+                model.ListSite = new SelectList(listsiteItem, "Value", "Text");
+                #endregion
+                #region Get select list status
+                var listStatus = _bussiness.GetlistStatusModel();
+                var listStatusItem = new List<SelectListItem>();
+                listStatusItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
+                foreach (var item in listStatus)
+                {
+                    listStatusItem.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                }
+                model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
+                #endregion
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return null;
+            }
         }
 	}
 }
