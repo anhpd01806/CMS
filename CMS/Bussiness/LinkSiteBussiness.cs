@@ -24,7 +24,7 @@ namespace CMS.Bussiness
             var rs = db.LinkSites.Where(x => (x.Url.ToLower().Contains(url.ToLower()) || string.IsNullOrEmpty(url))
                                             && x.SiteId == siteId && x.CategorySiteId == categorySiteId 
                                             && x.DistrictId == districtId && x.ProvinceId == provinceId && x.Published == true && x.Deleted == false)
-                                            .Skip(pageIndex*pageSize).Take(pageSize).ToList();
+                                            .OrderByDescending(x => x.Id).Skip(pageIndex*pageSize).Take(pageSize).ToList();
             return rs;
         }
 

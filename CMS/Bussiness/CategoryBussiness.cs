@@ -82,7 +82,7 @@ namespace CMS.Bussiness
 
         public List<CategorySite> GetCategorySiteBySiteId(int siteId)
         {
-            return db.CategorySites.Where(x => x.SiteId == siteId && x.Deleted == false && x.Published == true).ToList();
+            return db.CategorySites.Where(x => x.SiteId == siteId && x.Deleted == false).ToList();
         }
     }
 }

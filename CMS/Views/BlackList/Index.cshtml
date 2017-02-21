@@ -1,4 +1,4 @@
-﻿@model CMS.ViewModel.LinkSiteViewModel
+﻿@model CMS.ViewModel.BlackListViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -21,7 +21,7 @@
                 var data = {
                     id: id
                 };
-                $.post("/LinkSite/DeleteData", data, function (resp) {
+                $.post("/BlackList/DeleteData", data, function (resp) {
                     if (resp.Result == true) {
                         FindInfomation();
                     }
@@ -29,60 +29,40 @@
                 $('.btn-cancel').click();
             });
 
+            $('#Seach').focusout(function () {
+                $.LoadingOverlay("show");
+                var search = $('#Seach').val();
+                var pageIndex = 1;
+
+                var data = {
+                    search: search, pageIndex: pageIndex
+                };
+                $.post("/BlackList/LoadData", data, function (resp) {
+                    if (resp != null) {
+                        debugger
+                        $("#datatable1 tbody").html("");
+                        $("#datatable1 tbody").html(resp.Content);
+                        if (resp.TotalPage > 1) {
+                            $(".page-home").show();
+                            showPagination(resp.TotalPage);
+                        } else {
+                            $(".page-home").hide();
+                        }
+                        $.LoadingOverlay("hide");
+                    }
+                });
+            });
         });
-
-        //fill category site by site
-        function FillCategorySite() {
-            var id = $('#SiteId').val();
-            $.ajax({
-                url: '/LinkSite/FillCategorySite',
-                type: "GET",
-                dataType: "JSON",
-                data: { id: id },
-                success: function (result) {
-                    $("#CategoryId").html(""); // clear before appending new list
-                    $.each(result, function (i, result) {
-                            $("#CategoryId").append(
-                                $('<option></option>').val(result.Value).html(result.Text));
-                    });
-                    FindInfomation();
-                }
-            });
-        }
-
-        //fill district by province
-        function FillDistrictSite() {
-            var id = $('#ProvinceId').val();
-            $.ajax({
-                url: '/LinkSite/FillDistrict',
-                type: "GET",
-                dataType: "JSON",
-                data: { id: id },
-                success: function (result) {
-                    $("#districtId").html(""); // clear before appending new list
-                    $.each(result, function (i, result) {
-                        $("#districtId").append(
-                            $('<option></option>').val(result.Value).html(result.Text));
-                    });
-                    FindInfomation();
-                }
-            });
-        }
-
         // click button tim kiem
         function FindInfomation() {
             $.LoadingOverlay("show");
-            var search = $('#LinkUrl').val();
+            var search = $('#Seach').val();
             var pageIndex = 1;
-            var SiteId = $('#SiteId').val();
-            var CategoryId = $('#CategoryId').val();
-            var ProvinceId = $('#ProvinceId').val();
-            var districtId = $('#districtId').val();
 
             var data = {
-                search: search, SiteId: SiteId, CategoryId: CategoryId, ProvinceId: ProvinceId, districtId: districtId, pageIndex: pageIndex
+                search: search, pageIndex: pageIndex
             };
-            $.post("/LinkSite/LoadData", data, function (resp) {
+            $.post("/BlackList/LoadData", data, function (resp) {
                 debugger
                 if (resp != null) {
                     $("#datatable1 tbody").html("");
@@ -98,25 +78,23 @@
             });
         }
 
-        // click button nhap link
+        // click button nhap black list
         function InsertInformation() {
-            var LinkUrl = $('#LinkUrl').val();
-            if (LinkUrl != "") {
-                var SiteId = $('#SiteId').val();
-                var CategoryId = $('#CategoryId').val();
-                var ProvinceId = $('#ProvinceId').val();
-                var districtId = $('#districtId').val();
+            var Phone = $('#Phone').val();
+            if (Phone != "") {
+                var Description = $('#Description').val();
 
                 var data = {
-                    LinkUrl: LinkUrl, SiteId: SiteId, CategoryId: CategoryId, ProvinceId: ProvinceId, districtId: districtId
+                    Phone: Phone, Description: Description
                 };
-                $.post("/LinkSite/InsertData", data, function (resp) {
+                $.post("/BlackList/InsertData", data, function (resp) {
                     if (resp.Result == true) {
-                        $('#LinkUrl').val("");
+                        $('#Phone').val("");
+                        $('#Description').val("");
                         FindInfomation();
                     }
                 });
-            } else { alert('Trường Url không được để trống') }
+            } else { alert('Trường Phone không được để trống') }
         }
 
         function showPagination(totalpage) {
@@ -133,17 +111,12 @@
                     last: 'Trang cuối',
                     onPageClick: function (event, page) {
                         $.LoadingOverlay("show");
-                        var search = $('#LinkUrl').val();
+                        var search = $('#Seach').val();
                         var pageIndex = page;
-                        var SiteId = $('#SiteId').val();
-                        var CategoryId = $('#CategoryId').val();
-                        var ProvinceId = $('#ProvinceId').val();
-                        var districtId = $('#districtId').val();
-
                         var data = {
-                            search: search, SiteId: SiteId, CategoryId: CategoryId, ProvinceId: ProvinceId, districtId: districtId, pageIndex: pageIndex
+                            search: search, pageIndex: pageIndex
                         };
-                        $.post("/LinkSite/LoadData", data, function (resp) {
+                        $.post("/BlackList/LoadData", data, function (resp) {
                             if (resp != null) {
                                 debugger
                                 $("#datatable1 tbody").html("");
@@ -166,7 +139,7 @@
 }
 @section featured
 {
-    @using (Html.BeginForm("Index", "LinkSite", FormMethod.Post))
+    @using (Html.BeginForm("Index", "BlackList", FormMethod.Post))
     {
         @Html.ValidationSummary(true)
         <div class="page-content">
@@ -189,46 +162,33 @@
                         <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
                         <div class="form col-md-6" role="form">
                             <div class="form-group">
-                                <label>Nhập link site</label>
-                                @Html.TextBoxFor(m => m.LinkUrl, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.LinkUrl)
-                            </div>
-                        </div>
-                        <div class="form col-md-6" role="form">
-                            <div class="form-group">
-                                <label>Chọn trang web</label>
-                                @Html.DropDownListFor(m => m.SiteId, Model.SiteList, new { @class = "form-control", @onchange = "FillCategorySite()" })
+                                <label>Nhập số điện thoại</label>
+                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Phone)
                             </div>
                             <div class="form-group">
-                                <label>Chọn danh mục web</label>
-                                @Html.DropDownListFor(m => m.CategoryId, Model.CategorySite, new { @class = "form-control", @onchange = "FindInfomation()" })
-                            </div>
-                            <div class="form-group">
-                                <label>Chọn tỉnh, thành phố</label>
-                                @Html.DropDownListFor(m => m.ProvinceId, Model.ProvinceList, new { @class = "form-control", @onchange = "FillDistrictSite()" })
-                            </div>
-                            <div class="form-group">
-                                <label>Chọn quận, huyện</label>
-                                @Html.DropDownListFor(m => m.districtId, Model.DistrictList, new { @class = "form-control", @onchange = "FindInfomation()" })
+                                <label>Nhập mô tả</label>
+                                @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Description)
                             </div>
                         </div>
                         <div class="col-md-12 footer-button">
-                            <button class="btn btn-primary" onclick="InsertInformation(); return false;">Nhập link</button>
-                            <button class="btn btn-primary" onclick="FindInfomation(); return false;">Tìm kiếm</button>
+                            <button class="btn btn-primary" onclick="InsertInformation(); return false;">Thêm blacklist</button>
                         </div>
                     </div>
                     <div class="col-xs-12">
-                        <h3 class="header smaller lighter blue">Danh sách link site</h3>
+                        <h3 class="header smaller lighter blue">Danh sách đen số điện thoại</h3>
                         <div id="datatable1_wrapper" class="dataTables_wrapper form-inline no-footer">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                </div><div class="col-xs-6"><div id="datatable1_filter" class="dataTables_filter"><label>Tìm:<input type="search" id="Seach" class="form-control input-sm" aria-controls="datatable1"></label></div></div>
+                            </div>
                             <table id="datatable1" class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>Stt</th>
-                                        <th>Url</th>
-                                        <th>Thuộc trang web</th>
-                                        <th>Tỉnh, thành phố</th>
-                                        <th>Quận, huyện</th>
-                                        <th>Trạng thái</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Mô tả</th>
                                         <th class="text-center"></th>
                                     </tr>
                                 </thead>

@@ -2960,6 +2960,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Bussiness\BlackListBussiness.cs" />
     <Compile Include="Bussiness\CacheBussiness.cs" />
     <Compile Include="Bussiness\CategoryBussiness.cs" />
     <Compile Include="Bussiness\CategorySiteBussiness.cs" />
@@ -2978,6 +2979,7 @@
     <Compile Include="Common\InMemoryCache.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseAuthedController.cs" />
+    <Compile Include="Controllers\BlackListController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CategorySiteController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
@@ -3019,6 +3021,7 @@
     <Compile Include="Models\SiteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AccountViewModel.cs" />
+    <Compile Include="ViewModel\BlackListViewModel.cs" />
     <Compile Include="ViewModel\CategorySiteViewModel.cs" />
     <Compile Include="ViewModel\CategoryViewModel.cs" />
     <Compile Include="ViewModel\DistrictViewModel.cs" />
@@ -3077,6 +3080,8 @@
     <Content Include="Views\NewsSave\Paging.cshtml" />
     <Content Include="Views\NewsHide\Index.cshtml" />
     <Content Include="Views\NewsHide\Paging.cshtml" />
+    <Content Include="Views\BlackList\Index.cshtml" />
+    <Content Include="Views\BlackList\BlackListDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

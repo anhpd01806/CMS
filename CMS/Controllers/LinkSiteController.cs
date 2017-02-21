@@ -144,6 +144,7 @@ namespace CMS.Controllers
         public ActionResult FillCategorySite(int id)
         {
             LinkSiteViewModel model = new LinkSiteViewModel();
+
             //get category site by link site
             var categorySite = new CategoryBussiness().GetCategorySiteBySiteId(id);
 
@@ -190,7 +191,7 @@ namespace CMS.Controllers
                           District = district == null ? "" : district.Name,
                           Province = new DistrictBussiness().GetNameProvinceById(provinceId),
                           Status = a.Published == true ? "Hoạt động" : "Tạm ngừng"
-                      }).OrderByDescending(x => x.Id).ToList();
+                      }).ToList();
             totalPage = (int)Math.Ceiling((double)totalCount / (double)pageSize);
             return rs;
         }
