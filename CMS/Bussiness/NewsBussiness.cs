@@ -254,6 +254,10 @@ namespace CMS.Bussiness
         }
         #endregion
 
+        #region Edit and Insert news
+        
+        #endregion
+
         #region Help
         public int CountRepeatnews(int newId, int userId, int districId)
         {

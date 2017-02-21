@@ -107,8 +107,8 @@ namespace CMS.Bussiness
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
                             join t in db.NewsStatus on c.StatusId equals t.Id
-                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
-                            from tm in temp.DefaultIfEmpty()
+                            //join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                            //from tm in temp.DefaultIfEmpty()
                             where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
                             && !news_new.Contains(c.Id)
@@ -129,8 +129,8 @@ namespace CMS.Bussiness
                                 StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
                                 CusIsReaded = news_isread.Contains(c.Id) ? true : false,  //CheckReadByUser(UserId, c.Id),
-                                CusIsSaved = tm.IsSaved,
-                                CusIsDeleted = tm.IsDeleted,
+                                //CusIsSaved = tm.IsSaved,
+                                //CusIsDeleted = tm.IsDeleted,
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = 1,//CountRepeatnews(c.Id, UserId, d.Id),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
