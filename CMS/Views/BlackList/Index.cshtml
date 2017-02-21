@@ -41,7 +41,6 @@
                 };
                 $.post("/BlackList/LoadData", data, function (resp) {
                     if (resp != null) {
-                        debugger
                         $("#datatable1 tbody").html("");
                         $("#datatable1 tbody").html(resp.Content);
                         if (resp.TotalPage > 1) {
@@ -65,7 +64,6 @@
                 search: search, pageIndex: pageIndex
             };
             $.post("/BlackList/LoadData", data, function (resp) {
-                debugger
                 if (resp != null) {
                     $("#datatable1 tbody").html("");
                     $("#datatable1 tbody").html(resp.Content);
@@ -100,8 +98,16 @@
             } else { showmessage("error", "Bạn cần nhập số điện thoại"); }
         }
 
-        function showPagination(totalpage) {
+        //xuất excel
+        function ExportExcel() {
             debugger
+            var search = $('#Seach').val();
+            var pageIndex = parseInt($('#TotalPage').attr("data-page"));
+
+            var url = "/BlackList/ExportExcel";
+            location.href = decodeURIComponent(url + "?search=" + search + "&pageIndex=" + pageIndex);
+        }
+        function showPagination(totalpage) {
             $('#pagination').remove();
             $('.homepagging').html('<div class="pagination" id="pagination"></div>');
             if (totalpage > 1) {
@@ -177,6 +183,7 @@
                         </div>
                         <div class="col-md-12 footer-button">
                             <button class="btn btn-primary" onclick="InsertInformation(); return false;">Thêm blacklist</button>
+                            <button class="btn btn-primary" onclick="ExportExcel(); return false;">Xuất excel</button>
                         </div>
                     </div>
                     <div class="col-xs-12">
