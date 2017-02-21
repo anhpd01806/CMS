@@ -268,7 +268,7 @@ namespace CMS.Bussiness
             {
 
                 var getnewsave = (from c in db.News_Customer_Mappings
-                                  where c.NewsId.Equals(query.Id) //&& c.IsReaded.Value
+                                  where c.NewsId.Equals(query.Id) && c.CustomerId.Equals(UserId)
                                   select c).ToList();
                 if (!getnewsave.Any())
                 {
