@@ -316,7 +316,7 @@ namespace CMS.Bussiness
                 foreach (var item in cusNews)
                 {
                     var query = (from c in db.News_Customer_Mappings
-                                 where c.NewsId.Equals(item.NewsId)
+                                 where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
                                  select c).FirstOrDefault();
                     if (query == null)
                     {
@@ -344,7 +344,7 @@ namespace CMS.Bussiness
                 foreach (var item in cusNews)
                 {
                     var query = (from c in db.News_Customer_Mappings
-                                 where c.NewsId.Equals(item.NewsId) //&& c.IsDeleted.Value
+                                 where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
                                  select c).ToList();
                     if (!query.Any())
                     {

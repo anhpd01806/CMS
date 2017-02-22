@@ -154,8 +154,8 @@ namespace CMS.Bussiness
                 //}
                 #endregion
 
-                total = query.ToList().Count;
-                return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                total = query.Distinct().ToList().Count;
+                return query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -166,7 +166,7 @@ namespace CMS.Bussiness
                 foreach (var item in cusNews)
                 {
                     var query = (from c in db.News_Customer_Mappings
-                                 where c.NewsId.Equals(item.NewsId) && c.IsSaved.Value
+                                 where c.NewsId.Equals(item.NewsId) && c.IsSaved.Value && c.CustomerId.Equals(userId)
                                  select c).ToList();
                     if (query != null)
                     {
@@ -203,7 +203,7 @@ namespace CMS.Bussiness
                 foreach (var item in cusNews)
                 {
                     var query = (from c in db.News_Customer_Mappings
-                                 where c.NewsId.Equals(item.NewsId) && c.IsDeleted.Value
+                                 where c.NewsId.Equals(item.NewsId) && c.IsDeleted.Value && c.CustomerId.Equals(userId)
                                  select c).ToList();
                     if (query != null)
                     {
