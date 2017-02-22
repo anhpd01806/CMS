@@ -170,11 +170,11 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
-                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime((From.Split('-')[0] + "/" + From.Split('-')[1] + "/" + From.Split('-')[2] + " 00:00:00.00")));
+                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime((From.Split('-')[2] + "/" + From.Split('-')[1] + "/" + From.Split('-')[0] + " 00:00:00.00")));
                 }
                 if (!string.IsNullOrEmpty(To))
                 {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[0] + "/" + To.Split('-')[1] + "/" + To.Split('-')[2] +" 23:59:59.999")));
+                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] +" 23:59:59.999")));
                 }
                 if (MinPrice != -1)
                 {
