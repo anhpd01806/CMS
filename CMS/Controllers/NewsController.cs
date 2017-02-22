@@ -85,5 +85,54 @@ namespace CMS.Controllers
                 return null;
             }
         }
+
+        [HttpPost]
+        public JsonResult CreateNews()
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var title = Request["title"];
+                var cateId = Convert.ToInt32(Request["cateId"]);
+                var districtId = Convert.ToInt32(Request["districtId"]);
+                var phone = Request["phone"];
+                var price = Convert.ToDecimal(Request["price"]);
+                var pricetext = Request["pricetext"];
+                var content = Request["content"];
+
+                var newsItem = new New();
+                //var count = _bussiness.CountRepeatnews()
+
+                newsItem.CategoryId = cateId;
+                newsItem.Title = title;
+                newsItem.Contents = content;
+                newsItem.DistrictId = districtId;
+                newsItem.ProvinceId = 1;
+                newsItem.DateOld = DateTime.Now;
+                newsItem.IsSpam = false;
+                newsItem.IsUpdated = false;
+                newsItem.IsDeleted = false;
+                newsItem.IsPhone = false;
+
+                newsItem.Phone = phone;
+                newsItem.Price = price;
+                newsItem.PriceText = pricetext;
+
+                return Json(new
+                {
+                    success = 1,
+                    message = string.Empty
+                });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    success = 1,
+                    message = "Hệ thống gặp sự cố trong quá trình đăng tin mới"
+                });
+            }
+        }
 	}
 }

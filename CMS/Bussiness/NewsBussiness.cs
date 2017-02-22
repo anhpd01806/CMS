@@ -266,20 +266,15 @@ namespace CMS.Bussiness
             var listBlacklist = (from c in db.Blacklists
                                  select (c.Words)).ToList();
 
-            var news_new = new List<int>();
-            if (GetRoleByUser(userId) == Convert.ToInt32(CmsRole.Administrator))
-            {
-                news_new = (from c in db.News_Customer_Mappings
-                            where (c.IsDeleted.Value || c.IsSaved.Value) //c.CustomerId.Equals(userId) &&
-                            select (c.NewsId)).ToList();
-            }
-            else
-            {
-                news_new = (from c in db.News_Customer_Mappings
+            //Danh sách tin đã lưu hoặc đã ẩn theo user
+            var news_new = (from c in db.News_Customer_Mappings
                             where c.CustomerId.Equals(userId) && (c.IsDeleted.Value || c.IsSaved.Value)
                             select (c.NewsId)).ToList();
-            }
 
+            //Danh sách tin đã đọc theo user
+            var news_isread = (from c in db.News_Customer_Mappings
+                               where c.CustomerId.Equals(userId) && c.IsReaded.Value
+                               select (c.NewsId)).ToList();
             var news = _homeBussiness.GetNewsDetail(newId);
             if (news != null)
             {

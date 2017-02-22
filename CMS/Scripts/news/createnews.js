@@ -12,57 +12,70 @@ $(document).ready(function () {
     jQuery.validator.addMethod('Selectcheck', function (value) {
         return (value != '0');
     }, "Bạn chưa chọn giá trị nào.");
+
     $("#frmnews").validate({
-            ignore: [],
-            debug: false,
-            rules: {
-                title: {
-                    required: true,
-                    minlength: 10
-                },
-                CategoryId: {
-                    Selectcheck: true
-                },
-                DistricId: {
-                    Selectcheck: true
-                },
-                phone: {
-                    required: true,
-                    rgphone: true,
-                },
-                price: {
-                    required: true,
-                    number: true
-                },
-                pricetext: {
-                    required: true,
-                }
+        ignore: [],
+        rules: {
+            title: {
+                required: true,
+                minlength: 10
             },
-            messages: {
-                title: {
-                    required: "Tiêu đề không được để trống",
-                    minlength: "Tiêu đề lớn hơn 10 kí tự"
-                },
-                CategoryId: {
-                    Selectcheck: "Bạn chưa chọn danh mục nào"
-                },
-                DistricId: {
-                    Selectcheck: "Bạn chưa chọn quận huyện nào"
-                },
-                phone: {
-                    required: "Số điện thoại không được để trống",
-                    rgphone: "Số điện thoại chưa đúng định dạng",
-                },
-                price: {
-                    required: "Giá không được bỏ trống",
-                    number: "Giá phải là số"
-                },
-                pricetext: {
-                    required: "Giá không được để trống",
-                }
+            CategoryId: {
+                Selectcheck: true
             },
-            submitHandler: function () {
-                alert(1);
+            DistricId: {
+                Selectcheck: true
+            },
+            phone: {
+                required: true,
+                rgphone: true,
+            },
+            price: {
+                required: true
+            },
+            pricetext: {
+                required: true,
+            },
+            txtcontent: {
+                required: function () {
+                    CKEDITOR.instances.txtcontent.updateElement();
+                }
             }
-        });
+        },
+        messages: {
+            title: {
+                required: "Tiêu đề không được để trống",
+                minlength: "Tiêu đề lớn hơn 10 kí tự"
+            },
+            phone: {
+                required: "Số điện thoại không được để trống",
+                rgphone: "Số điện thoại chưa đúng định dạng",
+            },
+            price: {
+                required: "Giá không được bỏ trống"
+            },
+            pricetext: {
+                required: "Giá không được để trống",
+            },
+            CategoryId: {
+                Selectcheck: "Bạn chưa chọn danh mục nào"
+            },
+            DistricId: {
+                Selectcheck: "Bạn chưa chọn quận huyện nào"
+            },
+            txtcontent: {
+                required: "Nội dung tin không được bỏ trống"
+            }
+        },
+        submitHandler: function () {
+            var title = $.trim($("#txttitle").val());
+            var cateId = $("#CategoryId").val();
+            var districtId = $("#DistricId").val();
+            var phone = $("#txtphone").val();
+            var price = $("#txtprice").val();
+            var pricetext = $("#txtpricetext").val();
+            var content = CKEDITOR.instances.editor1.getData();
+
+        }
+    });
 });
