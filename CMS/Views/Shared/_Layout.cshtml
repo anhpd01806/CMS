@@ -246,10 +246,6 @@
                     <a class="btn btn-info" href="/User/Index">
                         <i class="ace-icon fa fa-users"></i>
                     </a>
-
-                    <a class="btn btn-danger" href="/Report/Msisdnlog">
-                        <i class="ace-icon fa fa-search"></i>
-                    </a>
                 </div>
 
                 <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
@@ -272,6 +268,11 @@
             <script type="text/javascript">
                 try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
             </script>
+
+            <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                <p><i class="fa fa-circle fa-lg icon-amount" style="color:deepskyblue"></i> Số dư tài khoản</p>
+                <small style="padding-left:20px;color:orangered"> @ViewBag.CashAmount vnđ</small>
+            </div>
         </div>
 
         <div class="main-content">

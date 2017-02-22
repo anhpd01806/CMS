@@ -59,7 +59,7 @@ namespace CMS.Bussiness
             if (page == 0)
                 return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Take(20).ToList();
             else
-                return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Skip(page*20).Take(20).ToList();
+                return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Skip(page * 20).Take(20).ToList();
         }
 
         public string GetPaymentMethodById(int id)
@@ -100,6 +100,14 @@ namespace CMS.Bussiness
                     return "Nạp tiền thành công";
                 }
             }
+        }
+
+        public string GetCashPaymentByUserId(int userId)
+        {
+            var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            if (cash != null)
+                return string.Format("{0:n0}", cash.AmountTotal);
+            else return "0";
         }
     }
 }

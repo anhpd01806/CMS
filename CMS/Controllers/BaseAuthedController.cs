@@ -48,6 +48,7 @@ namespace WebBackendPlus.Controllers
             ViewBag.TitleForm = titleForm;
             var userInfo = (User)Session["SS-USER"];
             ViewBag.FullName = Session["SS-FULLNAME"] != null? Session["SS-FULLNAME"] : userInfo.FullName != null ? userInfo.FullName : userInfo.UserName;
+            ViewBag.CashAmount = new PaymentBussiness().GetCashPaymentByUserId(userId);
         }
 
         /// <summary>
