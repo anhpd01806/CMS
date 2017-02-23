@@ -2987,6 +2987,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LandingPageController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\NewsHideController.cs" />
     <Compile Include="Controllers\NewsSaveController.cs" />
     <Compile Include="Controllers\NewsViewedController.cs" />
@@ -3082,6 +3083,7 @@
     <Content Include="Views\NewsHide\Paging.cshtml" />
     <Content Include="Views\BlackList\Index.cshtml" />
     <Content Include="Views\BlackList\BlackListDetail.cshtml" />
+    <Content Include="Views\News\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
