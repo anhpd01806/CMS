@@ -96,7 +96,7 @@ namespace CMS.Bussiness
 
                 //Danh sách tin đã lưu hoặc đã ẩn theo user
                 var news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value)
+                                where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value || c.IsAgency.Value)
                                 select (c.NewsId)).ToList();
 
                 //Danh sách tin đã đọc theo user

@@ -94,5 +94,9 @@ namespace CMS.Models
         public int RepeatTotal { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public string Cusname { get; set; }
+
+        public bool IsPayment { get; set; }
     }
 }

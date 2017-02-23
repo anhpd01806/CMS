@@ -26,8 +26,8 @@ namespace CMS.Controllers
         {
             try
             {
-                int total = 0;
                 var model = new HomeViewModel();
+                int total = 0;
                 model.pageIndex = 1;
                 model.pageSize = ConfigWeb.PageSize;
                 int userId = Convert.ToInt32(Session["SS-USERID"]);

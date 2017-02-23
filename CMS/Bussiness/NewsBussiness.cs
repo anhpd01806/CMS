@@ -16,6 +16,7 @@ namespace CMS.Bussiness
         #region member
         private readonly CmsDataDataContext db = new CmsDataDataContext();
         private readonly HomeBussiness _homeBussiness = new HomeBussiness();
+        private readonly PaymentBussiness _payment = new PaymentBussiness();
         #endregion
 
         #region News save
@@ -284,6 +285,96 @@ namespace CMS.Bussiness
                 return 0;
             }
         }
+
+        public List<NewsModel> GetListNewNotActiveByFilter(int CateId, int DistricId, int StatusId, int SiteId,
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, ref int total)
+        {
+            var minPayment = Convert.ToDouble(ConfigWeb.MinPayment);
+            var query = from c in db.News
+                            join d in db.Districts on c.DistrictId equals d.Id
+                            join t in db.NewsStatus on c.StatusId equals t.Id
+                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
+                            join s in db.Sites on c.SiteId equals s.ID
+                            join u in db.Users on ncm.CustomerId equals u.Id
+                            where ncm.IsAgency.HasValue && ncm.IsAgency.Value
+                        select new NewsModel
+                        {
+                            Id = c.Id,
+                            Title = c.Title,
+                            CategoryId = c.CategoryId,
+                            SiteId = c.SiteId,
+                            Link = c.Link,
+                            Phone = c.Phone,
+                            Price = c.Price,
+                            PriceText = c.PriceText,
+                            DistrictId = d.Id,
+                            DistictName = d.Name,
+                            StatusId = t.Id,
+                            StatusName = t.Name,
+                            CreatedOn = c.CreatedOn,
+                            Cusname = u.FullName,
+                            IsPayment =  Convert.ToDouble(_payment.GetCashPaymentByUserId(ncm.CustomerId)) >= minPayment ? true : false
+                        };
+
+            #region check param
+            if (CateId != 0)
+            {
+                query = query.Where(c => c.CategoryId.Equals(CateId));
+            }
+            if (DistricId != 0)
+            {
+                query = query.Where(c => c.DistrictId.Equals(DistricId));
+            }
+            if (StatusId != 0)
+            {
+                query = query.Where(c => c.StatusId.Equals(StatusId));
+            }
+            if (SiteId != 0)
+            {
+                query = query.Where(c => c.SiteId.Equals(SiteId));
+            }
+            if (BackDate != -1)
+            {
+                if (BackDate == 0)
+                {
+                    query = query.Where(c => c.CreatedOn == DateTime.Now);
+                }
+                else
+                {
+                    query = query.Where(c => c.CreatedOn >= DateTime.Now.AddDays(-BackDate));
+                }
+
+            }
+            if (!string.IsNullOrEmpty(From))
+            {
+                query = query.Where(c => c.CreatedOn >= Convert.ToDateTime((From.Split('-')[2] + "/" + From.Split('-')[1] + "/" + From.Split('-')[0] + " 00:00:00.00")));
+            }
+            if (!string.IsNullOrEmpty(To))
+            {
+                query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")));
+            }
+            if (MinPrice != -1)
+            {
+                query = query.Where(c => c.Price.Value >= Convert.ToDecimal(MinPrice));
+            }
+            if (MaxPrice != -1)
+            {
+                query = query.Where(c => c.Price.Value <= Convert.ToDecimal(MaxPrice));
+            }
+            if (!string.IsNullOrEmpty(key))
+            {
+                query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.DistictName.Contains(key));
+            }
+            //if (!IsRepeat)
+            //{
+            //    query = query.Where(c => !c.IsRepeat);
+            //}
+            #endregion
+
+            total = query.ToList().Count;
+            return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+
+        }
         #endregion
 
         #region Help
@@ -356,6 +447,6 @@ namespace CMS.Bussiness
             var total = query.Count;
             return total;
         }
-        #endregion
+        #endregion        
     }
 }

@@ -12,6 +12,8 @@ namespace CMS.Helper
 
         public static string DayPackage = ConfigurationManager.AppSettings["DayPackage"];
 
+        public static double MinPayment = Convert.ToDouble(ConfigurationManager.AppSettings["MinPayment"]);
+
         public static string MonthPackage = ConfigurationManager.AppSettings["MonthPackage"];
     }
 
