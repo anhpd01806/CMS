@@ -72,7 +72,7 @@ $(function () {
                     var to = $(".txtTo").val();
                     var pageIndex = page;
                     var pageSize = parseInt($(".ddlpage").val());
-                    var isrepeat = $("#chkIsrepeatNews").val();
+                    var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                     var key = $.trim($(".txtsearchkey").val());
 
                     var data = {
@@ -115,7 +115,7 @@ $(function () {
             var to = $(".txtTo").val();
             var pageIndex = 1;
             var pageSize = parseInt($(this).val());
-            var isrepeat = $("#chkIsrepeatNews").val();
+            var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
             var key = $.trim($(".txtsearchkey").val());
 
             var data = {
@@ -480,7 +480,7 @@ $(function () {
         var to = $(".txtTo").val();
         var pageIndex = parseInt($('#datatable').attr("data-page"));
         var pageSize = parseInt($(".ddlpage").val());
-        var isrepeat = $("#chkIsrepeatNews").val();
+        var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
         var key = $.trim($(".txtsearchkey").val());
 
         var datefrom = new Date(from.split('-')[1] + "/" + from.split('-')[0] + "/" + from.split('-')[2]);
@@ -548,7 +548,7 @@ $(function () {
                 var to = $(".txtTo").val();
                 var pageIndex = page;
                 var pageSize = parseInt($(".ddlpage").val());
-                var isrepeat = $("#chkIsrepeatNews").val();
+                var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                 var key = $.trim($(".txtsearchkey").val());
 
                 var data = {
@@ -619,7 +619,7 @@ $(function () {
                     var to = $(".txtTo").val();
                     var pageIndex = parseInt($('#datatable').attr("data-page"));
                     var pageSize = parseInt($(".ddlpage").val());
-                    var isrepeat = $("#chkIsrepeatNews").val();
+                    var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                     var key = $.trim($(".txtsearchkey").val());
 
                     var url = "/home/exportexcel";

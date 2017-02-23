@@ -146,12 +146,10 @@ namespace CMS.Bussiness
                 {
                     query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.DistictName.Contains(key));
                 }
-                //if (!IsRepeat)
-                //{
-                //    var list = query.ToList().Where(c => c.RepeatTotal < 2).ToList();
-                //    total = list.Count();
-                //    return list.Skip((pageIndex - 1)*pageSize).Take(pageSize).ToList();
-                //}
+                if (!IsRepeat)
+                {
+                    query = query.Where(c => !c.IsRepeat);
+                }
                 #endregion
 
                 total = query.Distinct().ToList().Count;
