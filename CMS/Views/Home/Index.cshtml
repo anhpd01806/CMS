@@ -14,7 +14,7 @@
                 <i class="icon-eye-close bigger-200"></i>
                 Ẩn tin
             </button>
-            @if (Model.RoleId == Convert.ToInt32(CMS.Helper.CmsRole.Administrator))
+            @if (Model.RoleId != Convert.ToInt32(CMS.Helper.CmsRole.Customer))
             {
                 <button class="btn btn-app btn-inverse btn-small btnspam disabled">
                     <i class="icon-warning-sign bigger-200"></i>

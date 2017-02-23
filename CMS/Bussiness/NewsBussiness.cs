@@ -311,6 +311,40 @@ namespace CMS.Bussiness
             }
             return 0;
         }
+
+        //public int CheckRepeatNews(string phone, int cateId)
+        //{
+        //    var query = from c in db.News
+        //                join d in db.Districts on c.DistrictId equals d.Id
+        //                join t in db.NewsStatus on c.StatusId equals t.Id
+        //                join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+        //                from tm in temp.DefaultIfEmpty()
+        //                where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+        //                && !d.IsDeleted && d.Published
+        //                && c.DistrictId.Equals()
+        //                && c.Phone.Contains(news.Phone)
+        //                orderby c.StatusId ascending, c.Price descending
+        //                select new NewsModel
+        //                {
+        //                    Id = c.Id,
+        //                    Title = c.Title,
+        //                    CategoryId = c.CategoryId,
+        //                    Link = c.Link,
+        //                    Phone = c.Phone,
+        //                    Price = c.Price,
+        //                    PriceText = c.PriceText,
+        //                    DistrictId = d.Id,
+        //                    SiteId = c.SiteId,
+        //                    DistictName = d.Name,
+        //                    StatusId = t.Id,
+        //                    StatusName = t.Name,
+        //                    CreatedOn = c.CreatedOn,
+        //                    CusIsReaded = tm.IsReaded
+        //                };
+
+        //    var total = query.ToList().Count;
+        //    return total;
+        //}
         #endregion
     }
 }

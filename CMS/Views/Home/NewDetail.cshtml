@@ -79,7 +79,14 @@
                 <div class="col-sm-10 btn-modal">
                     <button type="button" class="btn btn-success save-item-list" data-id="@Model.Id"><i class="fa fa-floppy-o"></i> Lưu tin</button>
                     <button type="button" class="btn btn-primary hide-item-list" data-id="@Model.Id"><i class="fa fa-eye-slash"></i> Ẩn tin</button>
-                    <button type="button" class="btn btn-warning report-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Báo mô giới</button>
+                    @if (Convert.ToInt32(ViewBag.RoleId) != Convert.ToInt32(CMS.Helper.CmsRole.Customer))
+                    {
+                        <button type="button" class="btn btn-warning spam-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Chặn mô giới</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-warning report-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Báo mô giới</button>
+                    }
                 </div>
                 <div class="col-sm-2">
                     <button type="button" class="btn btn-danger btnclose">Đóng</button>

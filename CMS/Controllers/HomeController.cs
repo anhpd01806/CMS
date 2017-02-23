@@ -127,20 +127,31 @@ namespace CMS.Controllers
         {
             try
             {
-                var Id = Convert.ToInt32(Request["Id"]);
-                int userId = Convert.ToInt32(Session["SS-USERID"]);
-                var news = _bussiness.GetNewsDetail(Id, userId);
-                var content = RenderPartialViewToString("~/Views/Home/NewDetail.cshtml", news);
+                if ((string) Session["USER-ACCEPTED"] == "true")
+                {
+                    var Id = Convert.ToInt32(Request["Id"]);
+                    int userId = Convert.ToInt32(Session["SS-USERID"]);
+                    var news = _bussiness.GetNewsDetail(Id, userId);
+                    ViewBag.RoleId = _bussiness.GetRoleByUser(userId);
+                    var content = RenderPartialViewToString("~/Views/Home/NewDetail.cshtml", news);
+                    return Json(new
+                    {
+                        Pay = 1,
+                        Content = content
+                    }, JsonRequestBehavior.AllowGet);
+                }
                 return Json(new
                 {
-                    Content = content
-                }, JsonRequestBehavior.AllowGet);
+                    Pay = 0,
+                    Content = String.Empty
+                });
             }
             catch (Exception ex)
             {
                 ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
                 return Json(new
                 {
+                    Pay = 1,
                     Content = string.Empty
                 }, JsonRequestBehavior.AllowGet);
             }
