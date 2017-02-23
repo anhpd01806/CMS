@@ -177,11 +177,15 @@ $(function () {
             $.LoadingOverlay("show");
             $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
-                    $("#modaldetail").empty();
-                    $("#modaldetail").html(resp.Content);
-                    setTimeout(function () {
-                        $("#newsdetail").modal("show");
-                    }, 500);
+                    if (resp.Pay == 1 && resp.Content != "") {
+                        $("#modaldetail").empty();
+                        $("#modaldetail").html(resp.Content);
+                        setTimeout(function () {
+                            $("#newsdetail").modal("show");
+                        }, 500);
+                    } else {
+                        window.location.href = '/Payment/RegisterPackage';
+                    }
                 }
                 $.LoadingOverlay("hide");
             });
@@ -194,11 +198,15 @@ $(function () {
                 $.LoadingOverlay("show");
                 $.get("/home/getnewsdetail", { Id: parseInt(id) }, function (resp) {
                     if (resp != null) {
-                        $("#modaldetail").empty();
-                        $("#modaldetail").html(resp.Content);
-                        setTimeout(function () {
-                            $("#newsdetail").modal("show");
-                        }, 500);
+                        if (resp.Pay == 1 && resp.Content != "") {
+                            $("#modaldetail").empty();
+                            $("#modaldetail").html(resp.Content);
+                            setTimeout(function () {
+                                $("#newsdetail").modal("show");
+                            }, 500);
+                        } else {
+                            window.location.href = '/Payment/RegisterPackage';
+                        }
                     }
                     $.LoadingOverlay("hide");
                 });
@@ -216,11 +224,15 @@ $(function () {
             $.LoadingOverlay("show");
             $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
-                    $("#modaldetail").empty();
-                    $("#modaldetail").html(resp.Content);
-                    setTimeout(function () {
-                        $("#newsdetail").modal("show");
-                    }, 500);
+                    if (resp.Pay == 1 && resp.Content != "") {
+                        $("#modaldetail").empty();
+                        $("#modaldetail").html(resp.Content);
+                        setTimeout(function () {
+                            $("#newsdetail").modal("show");
+                        }, 500);
+                    } else {
+                        window.location.href = '/Payment/RegisterPackage';
+                    }
                 }
                 $.LoadingOverlay("hide");
             });
@@ -263,14 +275,14 @@ $(function () {
                     selected.push(parseInt($(this).attr('id')));
                 });
                 if (selected.length == 0) {
-                    showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+                    showmessage("error", "Bạn hãy chọn tin cần khôi phục!");
                 } else {
-                    $.post("/home/userhidenews", { listNewsId: selected }, function (resp) {
+                    $.post("/newshide/userremovenewshide", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
                                 LoadData();
                                 setTimeout(function () {
-                                    showmessage("success", "Tin đã được ẩn thành công!");
+                                    showmessage("success", "Tin đã được khôi phục thành công!");
                                 }, 1200);
 
                             } else {
@@ -307,14 +319,14 @@ $(function () {
         $(document).on("click", ".remove-hide-item-list", function () {
             var selected = [parseInt($(this).attr("data-id"))];
             if (selected.length == 0) {
-                showmessage("error", "Bạn hãy chọn tin cần ẩn!");
+                showmessage("error", "Bạn hãy chọn tin cần khôi phục!");
             } else {
-                $.post("/home/userhidenews", { listNewsId: selected }, function (resp) {
+                $.post("/newshide/userremovenewshide", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
                         if (resp.Status == 1) {
                             LoadData();
                             setTimeout(function () {
-                                showmessage("success", "Tin đã được ẩn thành công!");
+                                showmessage("success", "Tin đã được khôi phục thành công!");
                             }, 1200);
 
                         } else {

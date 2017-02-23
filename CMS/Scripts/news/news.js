@@ -177,11 +177,15 @@ $(function () {
             $.LoadingOverlay("show");
             $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
-                    $("#modaldetail").empty();
-                    $("#modaldetail").html(resp.Content);
-                    setTimeout(function () {
-                        $("#newsdetail").modal("show");
-                    }, 500);
+                    if (resp.Pay == 1 && resp.Content != "") {
+                        $("#modaldetail").empty();
+                        $("#modaldetail").html(resp.Content);
+                        setTimeout(function () {
+                            $("#newsdetail").modal("show");
+                        }, 500);
+                    } else {
+                        window.location.href = '/Payment/RegisterPackage';
+                    }
                 }
                 $.LoadingOverlay("hide");
             });
@@ -194,11 +198,15 @@ $(function () {
                 $.LoadingOverlay("show");
                 $.get("/home/getnewsdetail", { Id: parseInt(id) }, function (resp) {
                     if (resp != null) {
-                        $("#modaldetail").empty();
-                        $("#modaldetail").html(resp.Content);
-                        setTimeout(function () {
-                            $("#newsdetail").modal("show");
-                        }, 500);
+                        if (resp.Pay == 1 && resp.Content != "") {
+                            $("#modaldetail").empty();
+                            $("#modaldetail").html(resp.Content);
+                            setTimeout(function () {
+                                $("#newsdetail").modal("show");
+                            }, 500);
+                        } else {
+                            window.location.href = '/Payment/RegisterPackage';
+                        }
                     }
                     $.LoadingOverlay("hide");
                 });
@@ -216,11 +224,15 @@ $(function () {
             $.LoadingOverlay("show");
             $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
-                    $("#modaldetail").empty();
-                    $("#modaldetail").html(resp.Content);
-                    setTimeout(function () {
-                        $("#newsdetail").modal("show");
-                    }, 500);
+                    if (resp.Pay == 1 && resp.Content != "") {
+                        $("#modaldetail").empty();
+                        $("#modaldetail").html(resp.Content);
+                        setTimeout(function () {
+                            $("#newsdetail").modal("show");
+                        }, 500);
+                    } else {
+                        window.location.href = '/Payment/RegisterPackage';
+                    }
                 }
                 $.LoadingOverlay("hide");
             });

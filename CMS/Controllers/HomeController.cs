@@ -127,7 +127,7 @@ namespace CMS.Controllers
         {
             try
             {
-                if ((string) Session["USER-ACCEPTED"] == "true")
+                if (Convert.ToBoolean(Session["USER-ACCEPTED"]))
                 {
                     var Id = Convert.ToInt32(Request["Id"]);
                     int userId = Convert.ToInt32(Session["SS-USERID"]);
