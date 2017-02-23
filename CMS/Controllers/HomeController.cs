@@ -82,6 +82,7 @@ namespace CMS.Controllers
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
 
+                ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
@@ -104,6 +105,7 @@ namespace CMS.Controllers
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
                 var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat),key, ref total);
+                ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
                 return Json(new
                 {

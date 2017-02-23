@@ -13,6 +13,11 @@ $(document).ready(function () {
         return (value != '0');
     }, "Bạn chưa chọn giá trị nào.");
 
+
+    $("#txtprice").keyup(function () {
+        $(this).val(ConvertCurrency(String(($(this).val().replace(/\./g, '')).replace(/-/g, ''))));
+    });
+
     $("#frmnews").validate({
         ignore: [],
         rules: {
@@ -40,6 +45,15 @@ $(document).ready(function () {
                 required: function () {
                     CKEDITOR.instances.txtcontent.updateElement();
                 }
+            },
+            hiddenRecaptcha: {
+                required: function () {
+                    if (grecaptcha.getResponse() == '') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
             }
         },
         messages: {
@@ -65,17 +79,51 @@ $(document).ready(function () {
             },
             txtcontent: {
                 required: "Nội dung tin không được bỏ trống"
+            },
+            hiddenRecaptcha: {
+                required: "Bạn chưa điền mã capcha"
             }
         },
         submitHandler: function () {
+
             var title = $.trim($("#txttitle").val());
             var cateId = $("#CategoryId").val();
             var districtId = $("#DistricId").val();
             var phone = $("#txtphone").val();
-            var price = $("#txtprice").val();
+            var price = $("#txtprice").val().replace('.', '');
             var pricetext = $("#txtpricetext").val();
-            var content = CKEDITOR.instances.editor1.getData();
-
+            var content = CKEDITOR.instances['txtcontent'].getData();
+            if ($.isNumeric(price)) {
+                var data = {
+                    title: title,
+                    cateId: cateId,
+                    districtId: districtId,
+                    phone: phone,
+                    price: price,
+                    pricetext: pricetext,
+                    content: content
+                };
+                $.post("/news/createNews", data, function(resp) {
+                    if (resp != null) {
+                        if (resp.type == 1) {
+                            showmessage("success", "Tin đã được đăng thành công chờ quản trị viên duyệt!");
+                            setTimeout(function() {
+                                window.location.href = "/home/index";
+                            }, 2000);
+                        }
+                    } else {
+                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                    }
+                });
+            } else {
+                showmessage("error", "Giá tiền phải là số!");
+                return false;
+            }
+            
         }
     });
+
+    function ConvertCurrency(str) {
+        return str.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+    }
 });

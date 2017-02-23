@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using CMS.Models;
 using Elmah;
-using OfficeOpenXml;
 using CMS.Bussiness;
 using WebBackendPlus.Controllers;
 using CMS.ViewModel;
-using CMS.Helper;
 using CMS.Data;
 
 namespace CMS.Controllers
@@ -19,6 +19,7 @@ namespace CMS.Controllers
     {
         #region member
         private readonly HomeBussiness _bussiness = new HomeBussiness();
+        private readonly NewsBussiness _newsbussiness = new NewsBussiness();
         #endregion
 
         public ActionResult Create()
@@ -87,50 +88,76 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public JsonResult CreateNews()
         {
             try
             {
-                int userId = Convert.ToInt32(Session["SS-USERID"]);
-                var title = Request["title"];
-                var cateId = Convert.ToInt32(Request["cateId"]);
-                var districtId = Convert.ToInt32(Request["districtId"]);
-                var phone = Request["phone"];
-                var price = Convert.ToDecimal(Request["price"]);
-                var pricetext = Request["pricetext"];
-                var content = Request["content"];
+                //const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+                //const string secret = "6LdaxRQUAAAAAA7SMaIDY7I_HKyDKD2_dUJX5RO4";
+                //var response = Request["g-recaptcha-response"];
+                //var remoteIp = Request.ServerVariables["REMOTE_ADDR"];
 
-                var newsItem = new New();
-                //var count = _bussiness.CountRepeatnews()
+                //var myParameters = String.Format("secret={0}&response={1}&remoteip={2}", secret, response, remoteIp);
 
-                newsItem.CategoryId = cateId;
-                newsItem.Title = title;
-                newsItem.Contents = content;
-                newsItem.DistrictId = districtId;
-                newsItem.ProvinceId = 1;
-                newsItem.DateOld = DateTime.Now;
-                newsItem.IsSpam = false;
-                newsItem.IsUpdated = false;
-                newsItem.IsDeleted = false;
-                newsItem.IsPhone = false;
+                //using (var wc = new WebClient())
+                //{
+                //    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                //    var json = wc.UploadString(verifyUrl, myParameters);
+                //    var js = new DataContractJsonSerializer(typeof (RecaptchaResult));
+                //    var ms = new MemoryStream(Encoding.ASCII.GetBytes(json));
+                //    var rs = js.ReadObject(ms) as RecaptchaResult;
+                //    if (rs != null && rs.Success) // SUCCESS!!!
+                //    {
+                        int userId = Convert.ToInt32(Session["SS-USERID"]);
+                        var title = Request["title"];
+                        var cateId = Convert.ToInt32(Request["cateId"]);
+                        var districtId = Convert.ToInt32(Request["districtId"]);
+                        var phone = Request["phone"];
+                        var price = Request["price"].Replace(".","");
+                        var pricetext = Request["pricetext"];
+                        var content = Request["content"];
 
-                newsItem.Phone = phone;
-                newsItem.Price = price;
-                newsItem.PriceText = pricetext;
+                        var newsItem = new New();
+                        var count = _newsbussiness.CheckRepeatNews(phone, districtId, userId);
 
-                return Json(new
-                {
-                    success = 1,
-                    message = string.Empty
-                });
+                        newsItem.CategoryId = cateId;
+                        newsItem.Title = title;
+                        newsItem.Contents = content;
+                        newsItem.Link = string.Empty;
+                        newsItem.SiteId = 0;
+                        newsItem.DistrictId = districtId;
+                        newsItem.ProvinceId = 1;
+                        newsItem.DateOld = DateTime.Now;
+                        newsItem.IsSpam = false;
+                        newsItem.IsUpdated = false;
+                        newsItem.IsDeleted = false;
+                        newsItem.IsPhone = false;
+                        newsItem.IsRepeat = count > 0 ? true : false;
+                        newsItem.Phone = phone;
+                        newsItem.Price = string.IsNullOrEmpty(price) ? 0 : Convert.ToDecimal(price);
+                        newsItem.PriceText = pricetext;
+                        newsItem.IsOwner = false;
+                        newsItem.PageView = 0;
+
+                        var result = _newsbussiness.Createnew(newsItem, userId);
+                        return Json(new
+                        {
+                            type = result
+                        });
+                //    }
+                //    return Json(new
+                //    {
+                //        type = 0
+                //    });
+                //}
             }
             catch (Exception ex)
             {
                 ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
                 return Json(new
                 {
-                    success = 1,
-                    message = "Hệ thống gặp sự cố trong quá trình đăng tin mới"
+                    type = 0
                 });
             }
         }

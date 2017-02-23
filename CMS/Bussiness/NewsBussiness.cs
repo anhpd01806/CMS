@@ -255,7 +255,35 @@ namespace CMS.Bussiness
         #endregion
 
         #region Edit and Insert news
-        
+
+        public int Createnew(New newsItem, int userId)
+        {
+            try
+            {
+                db.News.InsertOnSubmit(newsItem);
+                db.SubmitChanges();
+
+                var cusNews = new News_Customer_Mapping
+                {
+                    CustomerId = userId,
+                    NewsId = newsItem.Id,
+                    IsSaved = false,
+                    IsDeleted = false,
+                    IsReaded = false,
+                    IsAgency = true,
+                    IsSpam = false,
+                    CreateDate = DateTime.Now
+                };
+                db.News_Customer_Mappings.InsertOnSubmit(cusNews);
+                db.SubmitChanges();
+
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
         #endregion
 
         #region Help
@@ -312,39 +340,22 @@ namespace CMS.Bussiness
             return 0;
         }
 
-        //public int CheckRepeatNews(string phone, int cateId)
-        //{
-        //    var query = from c in db.News
-        //                join d in db.Districts on c.DistrictId equals d.Id
-        //                join t in db.NewsStatus on c.StatusId equals t.Id
-        //                join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
-        //                from tm in temp.DefaultIfEmpty()
-        //                where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-        //                && !d.IsDeleted && d.Published
-        //                && c.DistrictId.Equals()
-        //                && c.Phone.Contains(news.Phone)
-        //                orderby c.StatusId ascending, c.Price descending
-        //                select new NewsModel
-        //                {
-        //                    Id = c.Id,
-        //                    Title = c.Title,
-        //                    CategoryId = c.CategoryId,
-        //                    Link = c.Link,
-        //                    Phone = c.Phone,
-        //                    Price = c.Price,
-        //                    PriceText = c.PriceText,
-        //                    DistrictId = d.Id,
-        //                    SiteId = c.SiteId,
-        //                    DistictName = d.Name,
-        //                    StatusId = t.Id,
-        //                    StatusName = t.Name,
-        //                    CreatedOn = c.CreatedOn,
-        //                    CusIsReaded = tm.IsReaded
-        //                };
+        public int CheckRepeatNews(string phone, int districId, int userId)
+        {
+            var listBlacklist = (from c in db.Blacklists
+                                 select (c.Words)).ToList();
+            var query = (from c in db.News
+                         join d in db.Districts on c.DistrictId equals d.Id
+                         where c.CreatedOn.HasValue && !c.IsDeleted
+                         && !d.IsDeleted && d.Published
+                         && c.DistrictId.Equals(districId)
+                         && c.Phone.Contains(phone)
+                         && !listBlacklist.Contains(c.Phone)
+                         select c).ToList();
 
-        //    var total = query.ToList().Count;
-        //    return total;
-        //}
+            var total = query.Count;
+            return total;
+        }
         #endregion
     }
 }
