@@ -1,0 +1,20 @@
+﻿@model List<CMS.ViewModel.NewsReportModel>
+
+@{
+    int counter = 0;
+}
+
+@if (Model.Count > 0)
+{
+    foreach (var news in Model)
+    {
+        counter = counter + 1;
+        <tr>
+            <td class="text-center">@counter</td>
+            <td><a onclick="ChangeFirstRandom(@news.NewsId)">@Html.Raw(news.Notes)</a></td>
+            <td>@news.CreateDate</td>
+            <td>@news.Users</td>
+        </tr>
+    }
+}
+

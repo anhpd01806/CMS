@@ -448,5 +448,10 @@ namespace CMS.Bussiness
             return total;
         }
         #endregion        
+
+        public New GetNewsById(int id)
+        {
+            return db.News.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

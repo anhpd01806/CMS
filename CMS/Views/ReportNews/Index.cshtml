@@ -1,0 +1,104 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header{
+    <script src="~/Scripts/common.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            FindInfomation();
+        });
+
+        function FindInfomation() {
+            $.LoadingOverlay("show");
+            $.post("/ReportNews/LoadData", function (resp) {
+                if (resp != null) {
+                    $("#datatable1 tbody").html("");
+                    $("#datatable1 tbody").html(resp.Content);
+                    $(".firstrandom").html("");
+                    $(".firstrandom").html(resp.FirstRandom);
+                    $.LoadingOverlay("hide");
+                }
+            });
+        }
+
+        function DeleteReportNews() {
+            $.LoadingOverlay("show");
+            var id = $('#NewsId').val();
+            var data = {
+                id: id
+            };
+            $.post("/ReportNews/DeleteReportNews", data, function (resp) {
+                if (resp.Result == true) {
+                    FindInfomation();
+                    showmessage("success", "Tin đã được thêm vào blacklist!");
+                } else {
+                    showmessage("error", "Tin đã được thêm vào blacklist trước đó.vui lòng thử lại!");
+                }
+            });
+            $.LoadingOverlay("hide");
+        }
+
+        function CancelReportNews() {
+            $.LoadingOverlay("show");
+            var id = $('#NewsId').val();
+            var data = {
+                id: id
+            };
+            $.post("/ReportNews/CancelReportNews", data, function (resp) {
+                if (resp.Result == true) {
+                    FindInfomation();
+                    showmessage("success", "Đã hủy tin báo mô giới!");
+                }
+            });
+            $.LoadingOverlay("hide");
+        }
+
+        function ChangeFirstRandom(id) {
+            $.LoadingOverlay("show");
+            var data = {
+                id: id
+            };
+            $.post("/ReportNews/ChangeFirstRandom", data, function (resp) {
+                if (resp != null) {
+                    $("#datatable1 tbody").html("");
+                    $("#datatable1 tbody").html(resp.Content);
+                    $(".firstrandom").html("");
+                    $(".firstrandom").html(resp.FirstRandom);
+                }
+            });
+            $.LoadingOverlay("hide");
+        }
+    </script>
+}
+@section menu{
+}
+@section featured{
+    <div class="page-content">
+        <div class="page-content-area">
+            <div class="row">
+                <div class="col-xs-12 firstrandom">
+
+
+
+
+                </div>
+                <div class="col-xs-12">
+                    <h3 class="header smaller lighter blue">Danh sách tin mô giới</h3>
+                    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline no-footer">
+                        <table id="datatable1" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-1 text-center">STT</th>
+                                    <th>Tiêu đề</th>
+                                    <th>Ngày báo mô giới</th>
+                                    <th>Người báo mô giới</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
