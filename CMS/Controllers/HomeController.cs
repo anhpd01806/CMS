@@ -144,7 +144,7 @@ namespace CMS.Controllers
                 {
                     Pay = 0,
                     Content = String.Empty
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
