@@ -31,6 +31,7 @@
                                 <h5><strong>Loại tin: </strong> @Model.StatusName</h5>
                                 <h5><strong>Danh mục: </strong> @Model.CateName</h5>
                                 <h5><strong>Khu vực: </strong> @Model.DistictName</h5>
+                                <h5><strong>Nguồn tin: </strong> @(Model.SiteId == 0 ? Html.Raw("<a href='http://ozo.vn' title='ozo.vn'>ozo.vn</a>") : Html.Raw("<a href='" + Model.Link + "' title='" + Model.SiteName + "'>" + Model.SiteName + "</a>"))</h5>
                             </div>
                             <div class="col-xs-12">
                                 <h5><strong>Tin liên quan:</strong></h5>
@@ -38,7 +39,7 @@
                                 {
                                     foreach (var item in Model.SameNews)
                                     {
-                                        <a href="javasctipt: ;" data-id="@item.Id" class="btnsamenews"><h6>@item.Title</h6></a>
+                                        <a href="javasctipt: ;" data-id="@item.Id" class="btnsamenews"><h6>@item.Title (Nguồn: @(Model.SiteId == 0 ? Html.Raw("<a href='http://ozo.vn' title='ozo.vn'>ozo.vn</a>") : Html.Raw("<a href='" + Model.Link + "' title='" + Model.SiteName + "'>" + Model.SiteName + "</a>")))</h6></a>
                                     }
                                 }
                             </div>

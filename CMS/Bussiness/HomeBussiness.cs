@@ -242,6 +242,7 @@ namespace CMS.Bussiness
                          join d in db.Districts on c.DistrictId equals d.Id
                          join t in db.NewsStatus on c.StatusId equals t.Id
                          join ct in db.Categories on c.CategoryId equals ct.Id
+                         join st in db.Sites on c.SiteId equals st.ID
                          where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                          && !d.IsDeleted && d.Published
                          && c.Id.Equals(Id)
@@ -250,12 +251,14 @@ namespace CMS.Bussiness
                              Id = c.Id,
                              Title = c.Title,
                              Link = c.Link,
+                             SiteId = c.SiteId,
+                             SiteName = st.Name,
                              Phone = c.Phone,
                              Contents = c.Contents,
                              Price = c.Price,
                              PriceText = c.PriceText,
                              DistrictId = d.Id,
-                             DistictName = d.Name,
+                             DistictName = d.Name,                             
                              StatusId = t.Id,
                              StatusName = t.Name,
                              CreatedOn = c.CreatedOn,
@@ -383,6 +386,7 @@ namespace CMS.Bussiness
             var query = (from c in db.News
                          join d in db.Districts on c.DistrictId equals d.Id
                          join t in db.NewsStatus on c.StatusId equals t.Id
+                         join st in db.Sites on c.SiteId equals st.ID
                          where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                          && !d.IsDeleted && d.Published
                          && !news_new.Contains(c.Id)
@@ -395,6 +399,7 @@ namespace CMS.Bussiness
                              Title = c.Title,
                              CategoryId = c.CategoryId,
                              Link = c.Link,
+                             SiteName = st.Name,
                              Phone = c.Phone,
                              Price = c.Price,
                              PriceText = c.PriceText,
