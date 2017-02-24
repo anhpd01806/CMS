@@ -15,7 +15,7 @@ namespace CMS.Bussiness
 
         public List<User> GetAllUser()
         {
-            return db.Users.Where(x => x.IsDeleted == false).OrderBy(m => m.Id).ToList();
+            return db.Users.OrderBy(m => m.Id).ToList();
         }
 
         public User GetUserById(int id)
@@ -35,9 +35,7 @@ namespace CMS.Bussiness
         public List<SelectListItem> GetManagerUser()
         {
             var managerUser = (from u in db.Users
-                               join r in db.Role_Users
-                               on u.Id equals r.UserId
-                               where r.RoleId != 2
+                               where u.IsFree == true
                                select new SelectListItem
                                {
                                    Text = u.FullName != null ? u.FullName : u.UserName,
@@ -79,6 +77,15 @@ namespace CMS.Bussiness
         {
             var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
             user.IsMember = true;
+            user.ManagerBy = int.Parse(model.ManagerBy);
+            db.SubmitChanges();
+        }
+
+        public void Update(UserModel model)
+        {
+            var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
+            user.IsMember = model.IsMember;
+            if(model.IsRestore== true)user.IsDeleted = false;//th khôi phục lại tài khoản
             user.ManagerBy = int.Parse(model.ManagerBy);
             db.SubmitChanges();
         }

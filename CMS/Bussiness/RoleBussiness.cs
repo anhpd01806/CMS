@@ -26,12 +26,15 @@ namespace CMS.Bussiness
             }
 
         }
-        
+
         public Role GetById(int? id)
         {
             return db.Roles.FirstOrDefault(r => r.Id == id);
         }
-
+        public List<Role_User> GetListByUserId(int userId)
+        {
+            return db.Role_Users.Where(r => r.UserId == userId).ToList();
+        }
         public void Update(Role role)
         {
             try
@@ -44,7 +47,7 @@ namespace CMS.Bussiness
                 }
                 db.SubmitChanges();
             }
-            catch (Exception )
+            catch (Exception)
             {
 
             }
@@ -62,11 +65,23 @@ namespace CMS.Bussiness
                     db.SubmitChanges();
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
 
             }
 
+        }
+
+        public void DeleteRoleUserByUserId(int UserId)
+        {
+            var allrole = db.Role_Users.Where(x => x.UserId == UserId).ToList();
+            if (allrole != null)
+            {
+                foreach (var item in allrole)
+                {
+                    var rs = db.ExecuteCommand(@"DELETE FROM Role_User WHERE RoleId =" + item.RoleId + " and UserId=" + item.UserId + ";");
+                }
+            }
         }
     }
 }

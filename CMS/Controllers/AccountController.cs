@@ -252,8 +252,16 @@ namespace CMS.Controllers
         //check tai khoan con tien su dung
         private void CheckAcceptedUser(int userId, string isFree)
         {
-            if (isFree.ToLower().Trim() == "true") Session["USER-ACCEPTED"] = true;
-            else Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && x.StartDate.Date >= DateTime.Now.Date && DateTime.Now.Date <= x.EndDate.Date);
+            if (isFree.ToLower().Trim() == "true")
+            {
+                Session["USER-ACCEPTED"] = true;
+                Session["IS-USERS"] = false;
+            }
+            else
+            {
+                Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && x.StartDate.Date >= DateTime.Now.Date && DateTime.Now.Date <= x.EndDate.Date);
+                Session["IS-USERS"] = true;
+            }
         }
     }
 }

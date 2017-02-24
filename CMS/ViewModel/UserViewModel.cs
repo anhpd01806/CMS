@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CMS.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
@@ -35,8 +36,9 @@ namespace CMS.ViewModel
         
         public string Email { get; set; }
         public Boolean IsMember { get; set; }
+        public Boolean IsRestore { get; set; }
         public string ManagerBy { get; set; }
-
+        public List<Role_User> RoleUsers { get; set; }
         public List<RoleModel> ListRoles { get; set; }
 
         public Boolean Sex { get; set; }
@@ -44,6 +46,8 @@ namespace CMS.ViewModel
         public List<SelectListItem> ManagerList { get; set; }
 
         public string RoleName { get; set; }
+
+        public Boolean IsDelete { get; set; }
     }
 
     public class ChangePasswordViewModel

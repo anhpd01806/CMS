@@ -19,7 +19,7 @@ namespace CMS.Controllers
             UserViewModel model = new UserViewModel();
             //int totalpage = 0;
             //model.UserList = GetUserList(ref totalpage, 1, 1,"");
-            model.Totalpage = new UserBussiness().GetAllUser().Count;
+            model.Totalpage = (int)Math.Ceiling((double)new UserBussiness().GetAllUser().Count / (double)20);
             return View(model);
         }
 
@@ -82,8 +82,8 @@ namespace CMS.Controllers
                     FullName = model.FullName,
                     Password = Helpers.md5(model.UserName.Trim() + "ozo" + model.PassWord.Trim()),
                     Sex = model.Sex,
-                    Phone = model.Phone,
-                    Email = model.Email,
+                    Phone = model.UserName,
+                    Email = "",
                     ManagerBy = int.Parse(model.ManagerBy),
                     IsDeleted = false,
                     IsMember = true,
@@ -131,6 +131,91 @@ namespace CMS.Controllers
             return View(model);
         }
 
+        public ActionResult Edit(int id)
+        {
+            UserModel model = new UserModel();
+
+            //get user by userId
+            var user = new UserBussiness().GetUserById(id);
+            model.Id = user.Id;
+            model.UserName = user.UserName;
+            model.FullName = user.FullName;
+            model.IsMember = user.IsMember ?? false;
+            model.IsRestore = user.IsDeleted ?? false;
+            model.ManagerBy = user.ManagerBy + "";
+            model.RoleUsers = new RoleBussiness().GetListByUserId(id);
+
+            //get dropdownlist and list role
+            var allRoles = new RoleBussiness().GetRoles();
+            model.ManagerList = new UserBussiness().GetManagerUser();
+            if (allRoles != null)
+            {
+                List<RoleModel> lstRoles = new List<RoleModel>();
+                foreach (var role in allRoles)
+                {
+                    RoleModel roleView = new RoleModel
+                    {
+                        Id = role.Id,
+                        Name = role.Name
+                    };
+                    if (model.RoleUsers.FirstOrDefault(r => r.RoleId == roleView.Id) != null)
+                    {
+                        roleView.IsChecked = true;
+                    }
+                    lstRoles.Add(roleView);
+                }
+                model.ListRoles = lstRoles;
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(UserModel model, string[] selectRoles)
+        {
+            try
+            {
+                //update ismember and delete
+                new UserBussiness().Update(model);
+
+                //delte all role in role_users
+                new RoleBussiness().DeleteRoleUserByUserId(model.Id);
+
+                //insert role to role_user
+                List<Role_User> lstRoleUser = new List<Role_User>();
+                if (selectRoles != null)
+                {
+                    lstRoleUser.AddRange(selectRoles.Select(roleId => new Role_User
+                    {
+                        UserId = model.Id,
+                        RoleId = Convert.ToInt32(roleId)
+                    }));
+                    // Insert User to Roles
+                    try
+                    {
+                        foreach (var item in lstRoleUser)
+                        {
+                            new RoleUserBussiness().Insert(item);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["Error"] = ex;
+                        return RedirectToAction("Index", "User");
+                    }
+                }
+
+                TempData["Success"] = Messages_Contants.SUCCESS_UPDATE;
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = Messages_Contants.ERROR_COMMON;
+                return RedirectToAction("Index", "User");
+            }
+
+            return RedirectToAction("Index", "User");
+        }
+
         public ActionResult ResertPassword(string id)
         {
 
@@ -147,7 +232,8 @@ namespace CMS.Controllers
                 {
                     new UserBussiness().Delete(userId);
                     TempData["Success"] = Messages_Contants.SUCCESS_DELETE;
-                }else TempData["Error"] = "Bạn không thể xóa người dùng này.";
+                }
+                else TempData["Error"] = "Bạn không thể xóa người dùng này.";
             }
             catch (Exception ex)
             {
@@ -233,10 +319,11 @@ namespace CMS.Controllers
                         UserName = a.UserName,
                         Phone = a.Phone,
                         Email = a.Email,
+                        IsDelete = a.IsDeleted ?? false,
                         IsMember = a.IsMember ?? false,
                         ManagerBy = a.ManagerBy != null ? allUser.Where(x => x.Id == a.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "",
                         RoleName = GetNameRole(allRoles, allRolesUser, a.Id)
-                    }).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                    }).OrderBy(x=>x.IsMember).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
         #endregion
     }

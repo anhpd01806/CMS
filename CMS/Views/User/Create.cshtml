@@ -33,7 +33,7 @@
                                 @Html.ValidationMessageFor(m => m.FullName)
                             </div>
                             <div class="form-group">
-                                <label>Tên đăng nhập</label>
+                                <label>Số điện thoại</label>
                                 @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.UserName)
                             </div>
@@ -46,32 +46,6 @@
                                 <label>Xác nhận mật khẩu </label>
                                 @Html.PasswordFor(m => m.ConfirmPassWord, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.ConfirmPassWord)
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <label>Nam:</label>
-                                    @Html.RadioButtonFor(m => m.Sex, true)
-                                </div>
-                                <div class="col-sm-6">
-                                    <label>Nữ: </label>
-                                    @Html.RadioButtonFor(m => m.Sex, false)
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Điện thoại</label>
-                                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.Phone)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.Email)
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="col-md-6 form" role="form">

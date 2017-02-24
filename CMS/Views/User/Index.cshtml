@@ -13,12 +13,14 @@
                 $(this).addClass("delete-selected");
             });
             $('#submitDelete').click(function () {
+                debugger;
                 var id = $('.delete-selected').data("id");
                 document.location.href = '/User/RemoveUser/' + id;
             });
 
             //phân trang
             var totalpage = parseInt($('#TotalPage').attr("data-total"));
+            debugger;
             if (totalpage > 1) {
                 $('#pagination').twbsPagination({
                     totalPages: totalpage,
@@ -156,10 +158,10 @@
                         <table id="datatable1" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
+                                    <th class="col-md-1 text-center">STT</th>
                                     <th>Tên người dùng</th>
                                     <th>Tên đăng nhập</th>
                                     <th>Số điện thoại</th>
-                                    <th>Email</th>
                                     <th>Trạng thái</th>
                                     <th>Quản lý bởi</th>
                                     <th>Nhóm quyền</th>

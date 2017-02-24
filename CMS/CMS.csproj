@@ -3086,6 +3086,7 @@
     <Content Include="Views\ReportNews\Index.cshtml" />
     <Content Include="Views\ReportNews\ReportNewsDetail.cshtml" />
     <Content Include="Views\ReportNews\FirstRandomReports.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
