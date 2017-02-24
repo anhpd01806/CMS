@@ -30,9 +30,6 @@ namespace CMS.Data
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertAclRecord(AclRecord instance);
-    partial void UpdateAclRecord(AclRecord instance);
-    partial void DeleteAclRecord(AclRecord instance);
     partial void InsertState(State instance);
     partial void UpdateState(State instance);
     partial void DeleteState(State instance);
@@ -45,9 +42,6 @@ namespace CMS.Data
     partial void InsertAddress(Address instance);
     partial void UpdateAddress(Address instance);
     partial void DeleteAddress(Address instance);
-    partial void InsertBlacklist(Blacklist instance);
-    partial void UpdateBlacklist(Blacklist instance);
-    partial void DeleteBlacklist(Blacklist instance);
     partial void InsertCategory(Category instance);
     partial void UpdateCategory(Category instance);
     partial void DeleteCategory(Category instance);
@@ -141,9 +135,6 @@ namespace CMS.Data
     partial void InsertQueuedEmail(QueuedEmail instance);
     partial void UpdateQueuedEmail(QueuedEmail instance);
     partial void DeleteQueuedEmail(QueuedEmail instance);
-    partial void InsertRole111(Role111 instance);
-    partial void UpdateRole111(Role111 instance);
-    partial void DeleteRole111(Role111 instance);
     partial void InsertRole(Role instance);
     partial void UpdateRole(Role instance);
     partial void DeleteRole(Role instance);
@@ -201,6 +192,9 @@ namespace CMS.Data
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertBlacklist(Blacklist instance);
+    partial void UpdateBlacklist(Blacklist instance);
+    partial void DeleteBlacklist(Blacklist instance);
     #endregion
 		
 		public CmsDataDataContext() : 
@@ -233,14 +227,6 @@ namespace CMS.Data
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<AclRecord> AclRecords
-		{
-			get
-			{
-				return this.GetTable<AclRecord>();
-			}
-		}
-		
 		public System.Data.Linq.Table<State> States
 		{
 			get
@@ -270,14 +256,6 @@ namespace CMS.Data
 			get
 			{
 				return this.GetTable<Address>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Blacklist> Blacklists
-		{
-			get
-			{
-				return this.GetTable<Blacklist>();
 			}
 		}
 		
@@ -545,14 +523,6 @@ namespace CMS.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<Role111> Role111s
-		{
-			get
-			{
-				return this.GetTable<Role111>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Role> Roles
 		{
 			get
@@ -704,179 +674,12 @@ namespace CMS.Data
 				return this.GetTable<User>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AclRecord")]
-	public partial class AclRecord : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _EntityId;
-		
-		private string _EntityName;
-		
-		private int _RoleId;
-		
-		private EntityRef<Role111> _Role111;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnEntityIdChanging(int value);
-    partial void OnEntityIdChanged();
-    partial void OnEntityNameChanging(string value);
-    partial void OnEntityNameChanged();
-    partial void OnRoleIdChanging(int value);
-    partial void OnRoleIdChanged();
-    #endregion
-		
-		public AclRecord()
-		{
-			this._Role111 = default(EntityRef<Role111>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
+		public System.Data.Linq.Table<Blacklist> Blacklists
 		{
 			get
 			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EntityId", DbType="Int NOT NULL")]
-		public int EntityId
-		{
-			get
-			{
-				return this._EntityId;
-			}
-			set
-			{
-				if ((this._EntityId != value))
-				{
-					this.OnEntityIdChanging(value);
-					this.SendPropertyChanging();
-					this._EntityId = value;
-					this.SendPropertyChanged("EntityId");
-					this.OnEntityIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EntityName", DbType="NVarChar(400) NOT NULL", CanBeNull=false)]
-		public string EntityName
-		{
-			get
-			{
-				return this._EntityName;
-			}
-			set
-			{
-				if ((this._EntityName != value))
-				{
-					this.OnEntityNameChanging(value);
-					this.SendPropertyChanging();
-					this._EntityName = value;
-					this.SendPropertyChanged("EntityName");
-					this.OnEntityNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoleId", DbType="Int NOT NULL")]
-		public int RoleId
-		{
-			get
-			{
-				return this._RoleId;
-			}
-			set
-			{
-				if ((this._RoleId != value))
-				{
-					if (this._Role111.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRoleIdChanging(value);
-					this.SendPropertyChanging();
-					this._RoleId = value;
-					this.SendPropertyChanged("RoleId");
-					this.OnRoleIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role111_AclRecord", Storage="_Role111", ThisKey="RoleId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Role111 Role111
-		{
-			get
-			{
-				return this._Role111.Entity;
-			}
-			set
-			{
-				Role111 previousValue = this._Role111.Entity;
-				if (((previousValue != value) 
-							|| (this._Role111.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Role111.Entity = null;
-						previousValue.AclRecords.Remove(this);
-					}
-					this._Role111.Entity = value;
-					if ((value != null))
-					{
-						value.AclRecords.Add(this);
-						this._RoleId = value.Id;
-					}
-					else
-					{
-						this._RoleId = default(int);
-					}
-					this.SendPropertyChanged("Role111");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this.GetTable<Blacklist>();
 			}
 		}
 	}
@@ -1759,164 +1562,6 @@ namespace CMS.Data
 					this._FaxNumber = value;
 					this.SendPropertyChanged("FaxNumber");
 					this.OnFaxNumberChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Blacklist")]
-	public partial class Blacklist : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _Words;
-		
-		private string _Description;
-		
-		private System.DateTime _CreatedOn;
-		
-		private int _Type;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnWordsChanging(string value);
-    partial void OnWordsChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
-    partial void OnCreatedOnChanging(System.DateTime value);
-    partial void OnCreatedOnChanged();
-    partial void OnTypeChanging(int value);
-    partial void OnTypeChanged();
-    #endregion
-		
-		public Blacklist()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Words", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
-		public string Words
-		{
-			get
-			{
-				return this._Words;
-			}
-			set
-			{
-				if ((this._Words != value))
-				{
-					this.OnWordsChanging(value);
-					this.SendPropertyChanging();
-					this._Words = value;
-					this.SendPropertyChanged("Words");
-					this.OnWordsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(250)")]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedOn
-		{
-			get
-			{
-				return this._CreatedOn;
-			}
-			set
-			{
-				if ((this._CreatedOn != value))
-				{
-					this.OnCreatedOnChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedOn = value;
-					this.SendPropertyChanged("CreatedOn");
-					this.OnCreatedOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="Int NOT NULL")]
-		public int Type
-		{
-			get
-			{
-				return this._Type;
-			}
-			set
-			{
-				if ((this._Type != value))
-				{
-					this.OnTypeChanging(value);
-					this.SendPropertyChanging();
-					this._Type = value;
-					this.SendPropertyChanged("Type");
-					this.OnTypeChanged();
 				}
 			}
 		}
@@ -10102,192 +9747,6 @@ namespace CMS.Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Role111")]
-	public partial class Role111 : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _Name;
-		
-		private bool _Active;
-		
-		private bool _IsSystemRole;
-		
-		private string _SystemName;
-		
-		private EntitySet<AclRecord> _AclRecords;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    partial void OnIsSystemRoleChanging(bool value);
-    partial void OnIsSystemRoleChanged();
-    partial void OnSystemNameChanging(string value);
-    partial void OnSystemNameChanged();
-    #endregion
-		
-		public Role111()
-		{
-			this._AclRecords = new EntitySet<AclRecord>(new Action<AclRecord>(this.attach_AclRecords), new Action<AclRecord>(this.detach_AclRecords));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSystemRole", DbType="Bit NOT NULL")]
-		public bool IsSystemRole
-		{
-			get
-			{
-				return this._IsSystemRole;
-			}
-			set
-			{
-				if ((this._IsSystemRole != value))
-				{
-					this.OnIsSystemRoleChanging(value);
-					this.SendPropertyChanging();
-					this._IsSystemRole = value;
-					this.SendPropertyChanged("IsSystemRole");
-					this.OnIsSystemRoleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SystemName", DbType="NVarChar(255)")]
-		public string SystemName
-		{
-			get
-			{
-				return this._SystemName;
-			}
-			set
-			{
-				if ((this._SystemName != value))
-				{
-					this.OnSystemNameChanging(value);
-					this.SendPropertyChanging();
-					this._SystemName = value;
-					this.SendPropertyChanged("SystemName");
-					this.OnSystemNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role111_AclRecord", Storage="_AclRecords", ThisKey="Id", OtherKey="RoleId")]
-		public EntitySet<AclRecord> AclRecords
-		{
-			get
-			{
-				return this._AclRecords;
-			}
-			set
-			{
-				this._AclRecords.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_AclRecords(AclRecord entity)
-		{
-			this.SendPropertyChanging();
-			entity.Role111 = this;
-		}
-		
-		private void detach_AclRecords(AclRecord entity)
-		{
-			this.SendPropertyChanging();
-			entity.Role111 = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Roles")]
 	public partial class Role : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -14007,6 +13466,188 @@ namespace CMS.Data
 					this._IsFree = value;
 					this.SendPropertyChanged("IsFree");
 					this.OnIsFreeChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Blacklist")]
+	public partial class Blacklist : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Words;
+		
+		private string _Description;
+		
+		private string _LinkUrl;
+		
+		private System.DateTime _CreatedOn;
+		
+		private int _Type;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnWordsChanging(string value);
+    partial void OnWordsChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnLinkUrlChanging(string value);
+    partial void OnLinkUrlChanged();
+    partial void OnCreatedOnChanging(System.DateTime value);
+    partial void OnCreatedOnChanged();
+    partial void OnTypeChanging(int value);
+    partial void OnTypeChanged();
+    #endregion
+		
+		public Blacklist()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Words", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
+		public string Words
+		{
+			get
+			{
+				return this._Words;
+			}
+			set
+			{
+				if ((this._Words != value))
+				{
+					this.OnWordsChanging(value);
+					this.SendPropertyChanging();
+					this._Words = value;
+					this.SendPropertyChanged("Words");
+					this.OnWordsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(1000)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LinkUrl", DbType="NVarChar(1000)")]
+		public string LinkUrl
+		{
+			get
+			{
+				return this._LinkUrl;
+			}
+			set
+			{
+				if ((this._LinkUrl != value))
+				{
+					this.OnLinkUrlChanging(value);
+					this.SendPropertyChanging();
+					this._LinkUrl = value;
+					this.SendPropertyChanged("LinkUrl");
+					this.OnLinkUrlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="Int NOT NULL")]
+		public int Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
 				}
 			}
 		}
