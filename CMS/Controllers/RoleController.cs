@@ -129,11 +129,15 @@ namespace CMS.Controllers
             try
             {
 
-                if (id != null)
+                if (id != null && id != 1 && id != 2)
                 {
                     var roleinfo = new RoleBussiness().GetById(id);
                     new RoleBussiness().Delete(roleinfo);
                     TempData["Success"] = "Xóa thông tin nhóm quyền thành công.";
+                }
+                else
+                {
+                    TempData["Error"] = "Bạn không thể xóa nhóm quyền này.";
                 }
             }
             catch (Exception ex)

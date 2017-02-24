@@ -143,8 +143,11 @@ namespace CMS.Controllers
             try
             {
                 int userId = int.Parse(id);
-                new UserBussiness().Delete(userId);
-                TempData["Success"] = Messages_Contants.SUCCESS_DELETE;
+                if (userId != 1)
+                {
+                    new UserBussiness().Delete(userId);
+                    TempData["Success"] = Messages_Contants.SUCCESS_DELETE;
+                }else TempData["Error"] = "Bạn không thể xóa người dùng này.";
             }
             catch (Exception ex)
             {

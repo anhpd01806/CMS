@@ -28,21 +28,24 @@ namespace CMS.Bussiness
                                     Users = b.UserName,
                                     Notes = a.Notes,
                                     CreateDate = a.CreateDate.Date.ToString(),
-                                    Description = c.Contents
+                                    Description = c.Contents,
+                                    Phone = c.Phone
                                 }).Take(30).ToList();
 
-            model.NewsReportList = newsWithUser.GroupBy(m => new { m.NewsId, m.Notes, m.CreateDate, m.Description })
+            model.NewsReportList = newsWithUser.GroupBy(m => new { m.NewsId, m.Notes, m.CreateDate, m.Description,m.Phone })
                         .Select(g => new NewsReportModel
                         {
                             NewsId = g.Key.NewsId,
                             Notes = g.Key.Notes,
                             CreateDate = g.Key.CreateDate,
                             Users = string.Join(",", newsWithUser.Where(x => x.NewsId == g.Key.NewsId).Select(x => x.Users).ToList()),
-                            Description = g.Key.Description
+                            Description = g.Key.Description,
+                            Phone = g.Key.Phone
                         }).ToList();
 
-            if (id == 0) model.FirstRandomNewsReport = model.NewsReportList.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-            else model.FirstRandomNewsReport = model.NewsReportList.FirstOrDefault(x=>x.NewsId == id);
+
+            model.FirstRandomNewsReport = model.NewsReportList.FirstOrDefault(x => x.NewsId == id);
+            if (model.FirstRandomNewsReport == null) model.FirstRandomNewsReport = model.NewsReportList.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
             return model;
         }
 

@@ -37,7 +37,7 @@ namespace CMS.Bussiness
             var managerUser = (from u in db.Users
                                join r in db.Role_Users
                                on u.Id equals r.UserId
-                               where r.RoleId == 1
+                               where r.RoleId != 2
                                select new SelectListItem
                                {
                                    Text = u.FullName != null ? u.FullName : u.UserName,
