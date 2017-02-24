@@ -121,7 +121,7 @@ namespace CMS.Controllers
                 return Json(new
                 {
                     TotalPage = 0,
-                    Content = "<tr><td colspan='10'>Hệ thống gặp sự cố trong quá trình load dữ liệu<td></tr>"
+                    Content = "<tr><td colspan='9'>Hệ thống gặp sự cố trong quá trình load dữ liệu<td></tr>"
                 }, JsonRequestBehavior.AllowGet);
             }
         }

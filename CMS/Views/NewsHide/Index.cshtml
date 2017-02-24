@@ -5,40 +5,11 @@
 }
 <div class="page-content">
     <div class="row">
-        <p>
-            <button class="btn btn-app btn-primary btn-small btnsave disabled">
-                <i class="icon-save bigger-200"></i>
-                Lưu tin
-            </button>
-            <button class="btn btn-app btn-success btn-small btnremovehide disabled">
-                <i class="icon-eye-open bigger-200"></i>
-                Xóa tin ẩn
-            </button>
-            @if (Model.RoleId != Convert.ToInt32(CMS.Helper.CmsRole.Customer))
-            {
-                <button class="btn btn-app btn-inverse btn-small btnspam disabled">
-                    <i class="icon-warning-sign bigger-200"></i>
-                    Chặn mô giới
-                </button>
-            }
-            else
-            {
-                <button class="btn btn-app btn-inverse btn-small btnreport disabled">
-                    <i class="icon-warning-sign bigger-200"></i>
-                    Báo mô giới
-                </button>
-            }
-            <button class="btn btn-app btn-danger btnexport btn-small">
-                <i class="icon-download-alt bigger-200"></i>
-                Xuất Excel
-            </button>
-        </p>
-        <h3 class="header smaller lighter blue"></h3>
         <div class="search_all">
             <label class="col-xs-1 lblsearch">Tìm kiếm: </label>
             <div class="col-xs-8">
                 <div class="input-group">
-                    <input class="form-control txtsearchkey" placeholder="Nhập vào tiêu đề tin, số điện thoại, quận huyện... type=" text" />
+                    <input class="form-control txtsearchkey" placeholder="Nhập vào tiêu đề tin, số điện thoại, quận huyện..." type="text" />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-inverse btn-white btnsearch">
                             <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
@@ -168,9 +139,42 @@
             </div>
         </div>
         <div class="space"></div>
-        <div class="table-header">
-            <i class="icon-list"></i> Danh sách tin tức
+        <div class="hd-fuc">
+            <div class="col-sm-5">
+                <button class="btn btn-sm btn-primary btnsave disabled">
+                    <i class="icon-save bigger-125"></i>
+                    Lưu tin
+                </button>
+                <button class="btn btn-sm btn-success btn-small btnremovehide disabled">
+                    <i class="icon-eye-open bigger-125"></i>
+                    Hiện tin ẩn
+                </button>
+                @if (Model.RoleId != Convert.ToInt32(CMS.Helper.CmsRole.Customer))
+                {
+                    <button class="btn btn-sm btn-inverse btn-small btnspam disabled">
+                        <i class="icon-warning-sign bigger-125"></i>
+                        Chặn môi giới
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-sm btn-inverse btn-small btnreport disabled">
+                        <i class="icon-warning-sign bigger-125"></i>
+                        Báo môi giới
+                    </button>
+                }
+                <button class="btn btn-sm btn-danger btnexport btn-small">
+                    <i class="icon-download-alt bigger-125"></i>
+                    Xuất Excel
+                </button>
+            </div>
+            <div class="col-sm-7 viewpage">
+                <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
+                    Hiển thị <span class="fistrecord">@(((Model.pageIndex - 1) * Model.pageSize) + 1)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> bản ghi
+                </div>
+            </div>
         </div>
+        @*<h3 class="header h3-header smaller lighter blue"></h3>*@
         <div class="dataTables_wrapper form-inline no-footer">
             <div class="tbheader">
                 <div class="col-xs-6">
@@ -205,7 +209,7 @@
                         <th style="text-align: center">Loại tin</th>
                         <th>Xem</th>
                         <th style="text-align: center">Chính chủ</th>
-                        <th style="text-align: center">Tính năng</th>
+                        @*<th style="text-align: center">Tính năng</th>*@
                     </tr>
                 </thead>
                 <tbody>
@@ -261,7 +265,7 @@
                                 <td style="text-align: center">
                                     <img src="~/assets/images/approved.gif" />
                                 </td>
-                                <td class="td-actions">
+                                @*<td class="td-actions">
                                     <div class="hidden-phone visible-desktop action-buttons">
                                         <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
                                             <i class="icon-zoom-in bigger-130"></i>
@@ -274,25 +278,25 @@
                                         </a>
                                         @if (item.IsAdmin)
                                         {
-                                            <a class="red spam-item-list" href="javascript:;" title="Chặn mô giới" data-id="@item.Id">
+                                            <a class="red spam-item-list" href="javascript:;" title="Chặn môi giới" data-id="@item.Id">
                                                 <i class="icon-warning-sign bigger-130"></i>
                                             </a>
                                         }
                                         else
                                         {
-                                            <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
+                                            <a class="red report-item-list" href="javascript:;" title="Báo môi giới" data-id="@item.Id">
                                                 <i class="icon-warning-sign bigger-130"></i>
                                             </a>
                                         }
                                     </div>
-                                </td>
+                                </td>*@
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="10" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+                            <td colspan="9" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
                         </tr>
                     }
                 </tbody>
@@ -301,15 +305,13 @@
             @if (Model.Totalpage > 1)
             {
                 <div class="row page-home">
-                    <div class="col-xs-4">
-                        <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
-                            Hiển thị <span class="fistrecord">@(((Model.pageIndex - 1) * Model.pageSize) + 1)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> bản ghi
-                        </div>
-                    </div>
                     <div class="col-xs-8">
                         <div class="dataTables_paginate homepagging">
                             <div class="pagination" id="pagination"></div>
                         </div>
+                    </div>
+                    <div class="col-xs-4">
+
                     </div>
                 </div>
             }

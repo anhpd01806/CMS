@@ -81,11 +81,11 @@
                     <button type="button" class="btn btn-primary hide-item-list" data-id="@Model.Id"><i class="fa fa-eye-slash"></i> Ẩn tin</button>
                     @if (Convert.ToInt32(ViewBag.RoleId) != Convert.ToInt32(CMS.Helper.CmsRole.Customer))
                     {
-                        <button type="button" class="btn btn-warning spam-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Chặn mô giới</button>
+                        <button type="button" class="btn btn-warning spam-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Chặn môi giới</button>
                     }
                     else
                     {
-                        <button type="button" class="btn btn-warning report-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Báo mô giới</button>
+                        <button type="button" class="btn btn-warning report-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Báo môi giới</button>
                     }
                 </div>
                 <div class="col-sm-2">
