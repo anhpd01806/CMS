@@ -65,9 +65,9 @@
             </button>
 
             <div class="navbar-header pull-left">
-                <a href="#" class="navbar-brand">
+                <a href="Home/index" class="navbar-brand">
                     <small>
-                        <i class="fa fa-leaf"></i>
+                        <img style="width: 10%;" src="~/assets/Logo/ozo.png" />
                         OZO.VN
                     </small>
                 </a>
@@ -232,7 +232,7 @@
             try{ace.settings.check('main-container' , 'fixed')}catch(e){}
         </script>
 
-        <div id="sidebar" class="sidebar responsive display">
+        <div id="sidebar" class="sidebar responsive display menu-min">
             <script type="text/javascript">
                 try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             </script>
@@ -264,7 +264,7 @@
             @Html.Partial("PartialMenu")
 
             <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+                <i class="ace-icon fa fa-angle-double-right" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right" title="Mở/ đóng menu"></i>
             </div>
 
             <script type="text/javascript">

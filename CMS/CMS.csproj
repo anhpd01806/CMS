@@ -1292,6 +1292,7 @@
     <Content Include="assets\landingPage\js\main.js" />
     <Content Include="assets\landingPage\js\skel.min.js" />
     <Content Include="assets\landingPage\js\util.js" />
+    <Content Include="assets\Logo\ozo.png" />
     <Content Include="assets\PageNotFound\style.css" />
     <Content Include="assets\photos\placeholder.png" />
     <Content Include="assets\portraits\1.jpg" />
