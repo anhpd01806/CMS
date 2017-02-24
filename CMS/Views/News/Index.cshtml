@@ -5,17 +5,6 @@
 }
 <div class="page-content">
     <div class="row">
-        <p>
-            <button class="btn btn-app btn-primary btn-small btnsave disabled">
-                <i class="icon-save bigger-200"></i>
-                Duyệt tin
-            </button>
-            <button class="btn btn-app btn-success btn-small btnhide disabled">
-                <i class="icon-eye-close bigger-200"></i>
-                Xóa tin
-            </button>
-        </p>
-        <h3 class="header smaller lighter blue"></h3>
         <div class="search_all">
             <label class="col-xs-1 lblsearch">Tìm kiếm: </label>
             <div class="col-xs-8">
@@ -31,127 +20,15 @@
             </div>
         </div>
         <div class="space"></div>
-        <div class="widget-box widget-color-dark">
-            <div class="widget-header">
-                <h6 class="widget-title"> <i class="icon-filter"></i> Lọc tin tức</h6>
-
-                <div class="widget-toolbar widget-color-dark">
-                    <a href="#" data-action="collapse">
-                        <i class="ace-icon fa fa-chevron-up"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="widget-body">
-                <div class="widget-main padding-4">
-                    <div class="content">
-                        <form class="form-horizontal">
-                            <div class="row" style="margin-top: 20px; display: inline-block;">
-                                <div class="col-xs-6">
-                                    <div class="control-group">
-                                        <label class="control-label" for="form-field-1">Chuyên mục</label>
-                                        <div class="controls">
-                                            @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "form-control col-xs-10 cateId" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="control-group">
-                                        <label class="control-label" for="form-field-1">Quận huyện</label>
-                                        <div class="controls">
-                                            @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "form-control col-xs-10 districtId" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="control-group">
-                                        <label class="control-label" for="form-field-1">Loại tin</label>
-                                        <div class="controls">
-                                            @Html.DropDownListFor(m => m.NewsType, Model.ListStatus, new { @class = "form-control col-xs-10 newTypeId" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="control-group">
-                                        <label class="control-label" for="form-field-1">Nguồn tin</label>
-                                        <div class="controls">
-                                            @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="control-group">
-                                        <label class="control-label" for="form-field-1">Theo ngày</label>
-                                        <div class="controls">
-                                            <select class="form-control col-xs-10 ddlbackdate">
-                                                <option value="-1">Theo ngày</option>
-                                                <option value="0">Hôm nay</option>
-                                                <option value="2">2 Ngày trước</option>
-                                                <option value="3">3 Ngày trước</option>
-                                                <option value="5">5 Ngày trước</option>
-                                                <option value="7">7 Ngày trước</option>
-                                                <option value="15">15 Ngày trước</option>
-                                                <option value="30">30 Ngày trước</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="control-group">
-                                        <label class="control-label" for="form-field-1">Theo giá</label>
-                                        <div class="controls">
-                                            <select class="form-control col-xs-10 ddlprice">
-                                                <option value="">Tất cả</option>
-                                                <option value="0+1000000">&lt; 1 triệu</option>
-                                                <option value="1000000+5000000">1 - 5 triệu</option>
-                                                <option value="5000000+10000000">5 - 10 triệu</option>
-                                                <option value="10000000+50000000">10 - 50 triệu</option>
-                                                <option value="50000000+100000000">50 - 100 triệu</option>
-                                                <option value="100000000+500000000">100 - 500 triệu</option>
-                                                <option value="500000000+1000000000">500 triệu - 1 tỷ</option>
-                                                <option value="1000000000+5000000000">1 - 5 tỷ</option>
-                                                <option value="5000000000+10000000000">5 - 10 tỷ</option>
-                                                <option value="10000000000+-1">&gt; 10 tỷ</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="control-group">
-                                        <label class="control-label">Từ ngày</label>
-                                        <div class="input-group col-xs-5" style="float: left;">
-                                            <input class="form-control date-picker txtFrom" type="text" />
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar bigger-110"></i>
-                                            </span>
-                                        </div>
-                                        <div class="input-group col-xs-4" style="top: 7px;">
-                                            <label>Hiển thị tin trùng</label>
-                                            <input id="chkIsrepeatNews" type="checkbox" value="0" class="ace ace-switch ace-switch-6" />
-                                            <span class="lbl middle"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="control-group">
-                                        <label class="control-label">Đến ngày</label>
-                                        <div class="input-group col-xs-5">
-                                            <input class="form-control date-picker txtTo" type="text" />
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar bigger-110"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="space"></div>
-        <div class="table-header">
-            <i class="icon-list"></i> Danh sách tin tức
+        <div class="hd-fuc">
+            <button class="btn btn-sm btn-primary btn-small btnsave disabled">
+                <i class="icon-save bigger-125"></i>
+                Duyệt tin
+            </button>
+            <button class="btn btn-sm btn-success btn-small btnhide disabled">
+                <i class="icon-eye-close bigger-125"></i>
+                Xóa tin
+            </button>
         </div>
         <div class="dataTables_wrapper form-inline no-footer">
             <div class="tbheader">

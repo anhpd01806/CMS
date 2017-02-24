@@ -84,7 +84,6 @@ namespace CMS.Controllers
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
 
-                //0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total
                 model.ListNew = _newsbussiness.GetListNewNotActiveByFilter(0,0,0,0,-1,string.Empty, string.Empty,0,-1,model.pageIndex, model.pageSize, false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
@@ -200,6 +199,7 @@ namespace CMS.Controllers
                 newsItem.PageView = 0;
                 newsItem.CreatedOn = DateTime.Now;
                 newsItem.CreatedBy = userId;
+                newsItem.StatusId = 1;
 
                 var result = _newsbussiness.Createnew(newsItem, userId);
                 return Json(new

@@ -8,6 +8,7 @@ using System.Transactions;
 using CMS.Data;
 using CMS.Models;
 using CMS.Helper;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
 namespace CMS.Bussiness
 {
@@ -313,7 +314,7 @@ namespace CMS.Bussiness
                             StatusName = t.Name,
                             CreatedOn = c.CreatedOn,
                             Cusname = u.FullName,
-                            IsPayment =  Convert.ToDouble(_payment.GetCashPaymentByUserId(ncm.CustomerId)) >= minPayment ? true : false
+                            IsPayment = false  //Convert.ToDouble(_payment.GetCashPaymentByUserId(ncm.CustomerId)) >= minPayment ? true : false
                         };
 
             #region check param
