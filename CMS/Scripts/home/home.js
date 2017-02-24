@@ -95,6 +95,7 @@ $(function () {
                             $(".totalrecord").html(resp.TotalRecord);
                             $('#datatable').attr("data-total", resp.TotalPage);
                             $('#datatable').attr("data-page", page);
+                            $('#check-all').prop('checked', false);
                             $.LoadingOverlay("hide");
                         }
                     });
@@ -137,6 +138,7 @@ $(function () {
                     $(".fistrecord").html(((pageIndex - 1) * pageSize) + 1);
                     $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
                     $(".totalrecord").html(resp.TotalRecord);
+                    $('#check-all').prop('checked', false);
                 }
                 $.LoadingOverlay("hide");
             });
@@ -535,6 +537,7 @@ $(function () {
                     $(".fistrecord").html(((pageIndex - 1) * pageSize) + 1);
                     $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
                     $(".totalrecord").html(resp.TotalRecord);
+                    $('#check-all').prop('checked', false);
                 }
                 $.LoadingOverlay("hide");
             });
@@ -587,6 +590,7 @@ $(function () {
                         $(".totalrecord").html(resp.TotalRecord);
                         $('#datatable').attr("data-total", resp.TotalPage);
                         $('#datatable').attr("data-page", page);
+                        $('#check-all').prop('checked', false);
                         $.LoadingOverlay("hide");
                     }
                 });
