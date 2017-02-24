@@ -17,6 +17,8 @@ namespace CMS.Helper
         public static string MonthPackage = ConfigurationManager.AppSettings["MonthPackage"];
 
         public static string Captcha_Secret_Key = ConfigurationManager.AppSettings["Captcha_Secret_Key"];
+
+        public static string Captcha_Public_Key = ConfigurationManager.AppSettings["Captcha_Public_Key"];
     }
 
     public enum NewsStatus

@@ -1,5 +1,5 @@
 ﻿@model CMS.ViewModel.UserModel
-
+@{ string capthcha = CMS.Helper.ConfigWeb.Captcha_Public_Key;}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,7 +97,7 @@
                                                             @Html.ValidationMessageFor(m => m.Email)
                                                         </span>
                                                 </label>
-                                                <div class="g-recaptcha" data-sitekey="6LdaxRQUAAAAAEzTtuyPn-Fw1FXwssvfxcOxQ8pG"></div>
+                                                <div class="g-recaptcha" data-sitekey="@capthcha"></div>
                                                 <div class="space"></div>
 
                                                 <div class="clearfix">
