@@ -697,14 +697,6 @@
     <Content Include="assets\images\author\feature_interview.jpg" />
     <Content Include="assets\images\author\feature_interview2.jpg" />
     <Content Include="assets\images\author\profile.jpg" />
-    <Content Include="assets\images\avatars\avatar.png" />
-    <Content Include="assets\images\avatars\avatar1.png" />
-    <Content Include="assets\images\avatars\avatar2.png" />
-    <Content Include="assets\images\avatars\avatar3.png" />
-    <Content Include="assets\images\avatars\avatar4.png" />
-    <Content Include="assets\images\avatars\avatar5.png" />
-    <Content Include="assets\images\avatars\profile-pic.jpg" />
-    <Content Include="assets\images\avatars\user.jpg" />
     <Content Include="assets\images\blog\widget\1.jpg" />
     <Content Include="assets\images\blog\widget\2.jpg" />
     <Content Include="assets\images\bootstrap-colorpicker\alpha-horizontal.png" />
@@ -2936,6 +2928,7 @@
     <Content Include="assets\landingPage\sass\libs\_vars.scss" />
     <Content Include="assets\landingPage\sass\main.scss" />
     <Content Include="assets\landingPage\sass\noscript.scss" />
+    <None Include="Properties\PublishProfiles\CMS.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\home\home.js" />

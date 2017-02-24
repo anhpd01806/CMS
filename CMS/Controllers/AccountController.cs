@@ -149,7 +149,7 @@ namespace CMS.Controllers
             if (ModelState.IsValid)
             {
                 const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
-                const string secret = "6LdaxRQUAAAAAA7SMaIDY7I_HKyDKD2_dUJX5RO4";
+                string secret = ConfigWeb.Captcha_Secret_Key;
                 var response = Request["g-recaptcha-response"];
                 var remoteIp = Request.ServerVariables["REMOTE_ADDR"];
 

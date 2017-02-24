@@ -15,6 +15,8 @@ namespace CMS.Helper
         public static double MinPayment = Convert.ToDouble(ConfigurationManager.AppSettings["MinPayment"]);
 
         public static string MonthPackage = ConfigurationManager.AppSettings["MonthPackage"];
+
+        public static string Captcha_Secret_Key = ConfigurationManager.AppSettings["Captcha_Secret_Key"];
     }
 
     public enum NewsStatus
