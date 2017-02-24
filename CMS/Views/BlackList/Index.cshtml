@@ -11,7 +11,7 @@
 
         $(document).ready(function () {
             FindInfomation();
-
+            $("#check-all").checkAll();
             $('.delete').click(function (e) {
                 e.preventDefault();
                 $(".delete-selected").removeClass("delete-selected");
@@ -83,14 +83,15 @@
             var Phone = $('#Phone').val();
             if (Phone != "") {
                 var Description = $('#Description').val();
-
+                var LinkUrl = $('#LinkUrl').val();
                 var data = {
-                    Phone: Phone, Description: Description
+                    Phone: Phone, Description: Description, LinkUrl: LinkUrl
                 };
                 $.post("/BlackList/InsertData", data, function (resp) {
                     if (resp.Result == true) {
                         $('#Phone').val("");
                         $('#Description').val("");
+                        $('#LinkUrl').val("");
                         showmessage("success", "Số điện thoại đã được lưu thành công!");
                         FindInfomation();
                     }
@@ -100,13 +101,43 @@
 
         //xuất excel
         function ExportExcel() {
-            debugger
-            var search = $('#Seach').val();
-            var pageIndex = parseInt($('#TotalPage').attr("data-page"));
-
-            var url = "/BlackList/ExportExcel";
-            location.href = decodeURIComponent(url + "?search=" + search + "&pageIndex=" + pageIndex);
+            var selected = "";
+            $('.checkboxItem:checked').each(function () {
+                selected += $(this).attr('id') + ",";
+            });
+            selected = selected.slice(0, -1);
+            if (selected.length == 0) {
+                showboxcomfirm("Thông báo", "Bạn chưa chọn tin nào!");
+            } else {
+                var url = "/BlackList/ExportExcel";
+                $('input:checkbox').removeAttr('checked');
+                location.href = decodeURIComponent(url + "?listBlackListId=" + selected);
+            }
         }
+
+        // xóa nhiều bản ghi
+        function DeleteBlackList() {
+            debugger
+            var selected = "";
+            $('.checkboxItem:checked').each(function () {
+                selected += $(this).attr('id') + ",";
+            });
+            selected = selected.slice(0, -1);
+            if (selected.length == 0) {
+                showboxcomfirm("Thông báo", "Bạn chưa chọn tin nào!");
+            } else {
+                var data = {
+                    id: selected
+                };
+                $.post("/BlackList/DeleteData", data, function (resp) {
+                    if (resp.Result == true) {
+                        FindInfomation();
+                        showmessage("success", "Số điện thoại đã được xóa thành công!");
+                    }
+                });
+            }
+        }
+
         function showPagination(totalpage) {
             $('#pagination').remove();
             $('.homepagging').html('<div class="pagination" id="pagination"></div>');
@@ -157,15 +188,15 @@
                     <div class="col-xs-12">
                         @if (TempData["Error"] != null)
                         {
-                        <div class="alert alert-danger message-box ">
-                            <strong>Lỗi:</strong> @TempData["Error"].ToString()
-                        </div>
+                            <div class="alert alert-danger message-box ">
+                                <strong>Lỗi:</strong> @TempData["Error"].ToString()
+                            </div>
                         }
                         @if (TempData["Success"] != null)
                         {
-                        <div class="alert alert-success message-box ">
-                            <strong>Thông báo:</strong> @TempData["Success"].ToString()
-                        </div>
+                            <div class="alert alert-success message-box ">
+                                <strong>Thông báo:</strong> @TempData["Success"].ToString()
+                            </div>
                         }
 
                         <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
@@ -180,10 +211,16 @@
                                 @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.Description)
                             </div>
+                            <div class="form-group">
+                                <label>Nhập link Url</label>
+                                @Html.TextBoxFor(m => m.LinkUrl, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.LinkUrl)
+                            </div>
                         </div>
                         <div class="col-md-12 footer-button">
                             <button class="btn btn-primary" onclick="InsertInformation(); return false;">Thêm blacklist</button>
                             <button class="btn btn-primary" onclick="ExportExcel(); return false;">Xuất excel</button>
+                            <button class="btn btn-primary" onclick="DeleteBlackList(); return false;">Xóa Blacklist</button>
                         </div>
                     </div>
                     <div class="col-xs-12">
@@ -196,9 +233,14 @@
                             <table id="datatable1" class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
+                                        <th class="center">
+                                            <input type="checkbox" id="check-all" />
+                                            <span class="lbl"></span>
+                                        </th>
                                         <th>Stt</th>
                                         <th>Số điện thoại</th>
                                         <th>Mô tả</th>
+                                        <th>Link url</th>
                                         <th class="text-center"></th>
                                     </tr>
                                 </thead>

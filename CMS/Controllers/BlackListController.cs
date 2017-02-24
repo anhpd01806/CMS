@@ -22,7 +22,7 @@ namespace CMS.Controllers
             return View(model);
         }
 
-        public ActionResult ExportExcel(string search, int pageIndex)
+        public ActionResult ExportExcel(string listBlackListId)
         {
             string fileName = string.Format("BlackList_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
             string filePath = Path.Combine(Request.PhysicalApplicationPath, "File\\ExportImport", fileName);
@@ -31,9 +31,8 @@ namespace CMS.Controllers
             {
                 Directory.CreateDirectory(folder);
             }
-            int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            var listBlackList = GetBlackListLink(ref total, search, pageIndex, PageSize);
+            var listBlackList = GetBlackListForExcel(listBlackListId);
             ExportToExcel(filePath, listBlackList);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);
@@ -42,7 +41,7 @@ namespace CMS.Controllers
 
         #region Json
         [HttpPost]
-        public JsonResult InsertData(string Phone, string Description)
+        public JsonResult InsertData(string Phone, string Description,string LinkUrl)
         {
             try
             {
@@ -51,6 +50,7 @@ namespace CMS.Controllers
                     Words = Phone,
                     Description = Description,
                     CreatedOn = DateTime.Now,
+                    LinkUrl = LinkUrl,
                     Type = 1
                 };
 
@@ -94,13 +94,13 @@ namespace CMS.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        
         [HttpPost]
-        public JsonResult DeleteData(int id)
+        public JsonResult DeleteData(string id)
         {
             try
             {
-                new BlackListBussiness().Delete(id);
+                new BlackListBussiness().Delete(id.ToString());
                 return Json(new
                 {
                     Result = true,
@@ -186,6 +186,7 @@ namespace CMS.Controllers
                           Id = a.Id,
                           Words = a.Words,
                           Description = a.Description,
+                          LinkUrl = a.LinkUrl,
                           CreatedOn = a.CreatedOn,
                           Type = a.Type
                       }).ToList();
@@ -193,6 +194,21 @@ namespace CMS.Controllers
             return rs;
         }
 
+        private List<BlacklistModel> GetBlackListForExcel(string listBlackListId)
+        {
+            var blackList = new BlackListBussiness().GetBlackListForExcel(listBlackListId);
+            var rs = (from a in blackList
+                      select new BlacklistModel
+                      {
+                          Id = a.Id,
+                          Words = a.Words,
+                          Description = a.Description,
+                          LinkUrl = a.LinkUrl,
+                          CreatedOn = a.CreatedOn,
+                          Type = a.Type
+                      }).ToList();
+            return rs;
+        }
         #endregion
     }
 }

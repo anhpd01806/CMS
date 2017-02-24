@@ -2940,7 +2940,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\news\news.js" />
     <Content Include="Scripts\news\newshide.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Shared\breadcrumb.cshtml" />
     <Content Include="Views\Shared\PartialMenu.cshtml" />
     <Content Include="Views\Shared\PartialProfile.cshtml" />

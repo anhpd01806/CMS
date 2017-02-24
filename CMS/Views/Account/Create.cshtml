@@ -56,7 +56,7 @@
                                             @Html.ValidationMessage("CredentialError", new { style = "color:red;" })
                                             <fieldset>
                                                 <label class="block clearfix">
-                                                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Tài khoản đăng nhập" })
+                                                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Nhập số điện thoại" })
                                                         <span style="color:red">
                                                             @Html.ValidationMessageFor(m => m.UserName)
                                                         </span>
@@ -77,24 +77,6 @@
                                                         @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "Họ và tên" })
                                                         <span style="color:red">
                                                             @Html.ValidationMessageFor(m => m.FullName)
-                                                        </span>
-                                                </label>
-                                                <label class="block clearfix">
-                                                   Nam:
-                                                    @Html.RadioButtonFor(m => m.Sex, true)
-                                                   Nữ:
-                                                    @Html.RadioButtonFor(m => m.Sex, false)
-                                                </label>
-                                                <label class="block clearfix">
-                                                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = "Số điện thoại" })
-                                                        <span style="color:red">
-                                                            @Html.ValidationMessageFor(m => m.Phone)
-                                                        </span>
-                                                </label>
-                                                <label class="block clearfix">
-                                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
-                                                        <span style="color:red">
-                                                            @Html.ValidationMessageFor(m => m.Email)
                                                         </span>
                                                 </label>
                                                 <div class="g-recaptcha" data-sitekey="@capthcha"></div>

@@ -56,6 +56,7 @@ namespace CMS.Controllers
                         Words = news.Phone,
                         Description = news.Title,
                         CreatedOn = DateTime.Now,
+                        LinkUrl = news.Link,
                         Type = 1
                     };
                     new BlackListBussiness().Insert(model);

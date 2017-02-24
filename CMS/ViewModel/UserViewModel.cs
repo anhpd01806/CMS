@@ -30,11 +30,9 @@ namespace CMS.ViewModel
         [Required(ErrorMessage = "Không được để trống")]
         [System.Web.Mvc.Compare("PassWord", ErrorMessage = "Mật khẩu xác nhận không khớp.")]
         public string ConfirmPassWord { get; set; }
-
-        [Required(ErrorMessage = "Không được để trống")]
+        
         public string Phone { get; set; }
-
-        [EmailAddress(ErrorMessage = "Vui lòng nhập đúng định dạng email")]
+        
         public string Email { get; set; }
         public Boolean IsMember { get; set; }
         public string ManagerBy { get; set; }

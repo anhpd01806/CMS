@@ -14,6 +14,7 @@ namespace CMS.ViewModel
         [Required(ErrorMessage = "Không được để trống")]
         public string Phone { get; set; }
         public string Description { get; set; }
+        public string LinkUrl { get; set; }
         public int Totalpage { get; set; }
     }
 
@@ -22,6 +23,7 @@ namespace CMS.ViewModel
         public int Id { get; set; }
         public string Words { get; set; }
         public string Description { get; set; }
+        public string LinkUrl { get; set; }
         public DateTime CreatedOn { get; set; }
         public int Type { get; set; }
     }

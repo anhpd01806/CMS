@@ -19,6 +19,13 @@ namespace CMS.Bussiness
             return rs;
         }
 
+        public List<Blacklist> GetBlackListForExcel(string listBlackListId)
+        {
+            var arrayId = listBlackListId.Split(',');
+            var rs = db.Blacklists.Where(x => arrayId.Contains(x.Id.ToString())).ToList();
+            return rs;
+        }
+
         public void Insert(Blacklist model)
         {
             var blaclist = db.Blacklists.FirstOrDefault(x => x.Words == model.Words);
@@ -29,10 +36,11 @@ namespace CMS.Bussiness
             db.SubmitChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            var blackList = db.Blacklists.FirstOrDefault(x => x.Id == id);
-            db.Blacklists.DeleteOnSubmit(blackList);
+            var arrayId = id.Split(',');
+            var blackList = db.Blacklists.Where(x => arrayId.Contains(x.Id.ToString())).ToList();
+            db.Blacklists.DeleteAllOnSubmit(blackList);
             db.SubmitChanges();
         }
     }

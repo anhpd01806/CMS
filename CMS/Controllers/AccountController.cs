@@ -32,6 +32,7 @@ namespace CMS.Controllers
         {
             try
             {
+                if (Session["SS-USERID"] != null) return RedirectToAction("Index", "Home");
                 AccountViewModel model = new AccountViewModel();
 
                 string username = "false";
@@ -77,6 +78,13 @@ namespace CMS.Controllers
                                                         && x.IsDeleted == false && x.IsMember == true);
                     if (user != null)
                     {
+                        //check login user
+                        if (!CheckUserLogin(user.Id))
+                        {
+                            TempData["Error"] = "Tài khoản đang sử dụng phần mềm. vui lòng thử lại sau 5 phút.";
+                            return RedirectToAction("Login", "Account");
+                        }
+
                         Session.Add("SS-USER", user);
                         Session.Add("SS-USERID", user.Id);
                         CheckAcceptedUser(user.Id, user.IsFree.ToString());
@@ -85,13 +93,6 @@ namespace CMS.Controllers
                         rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName) + "," + user.IsFree;
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
-
-                        //check login user
-                        if (!CheckUserLogin(user.Id))
-                        {
-                            TempData["Error"] = "Tài khoản đang sử dụng phần mềm. vui lòng thử lại sau.";
-                            return RedirectToAction("Login", "Account");
-                        }
 
                         return RedirectToAction("Index", "Home");
                     }
@@ -170,9 +171,9 @@ namespace CMS.Controllers
                             UserName = model.UserName,
                             FullName = model.FullName,
                             Password = Helpers.md5(model.UserName.Trim() + "ozo" + model.PassWord.Trim()),
-                            Sex = model.Sex,
-                            Phone = model.Phone,
-                            Email = model.Email,
+                            Sex = true,
+                            Phone = model.UserName,
+                            Email = "",
                             IsDeleted = false,
                             IsMember = false,
                             IsFree = false
@@ -195,6 +196,7 @@ namespace CMS.Controllers
 
                         }
                     }
+                    else TempData["Error"] = "Vui lòng xác nhận captcha";
                 }
                 return RedirectToAction("Login", "Account");
             }
