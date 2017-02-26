@@ -491,7 +491,7 @@ $(function () {
         var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
         var from = $(".txtFrom").val();
         var to = $(".txtTo").val();
-        var pageIndex = parseInt($('#datatable').attr("data-page"));
+        var pageIndex = 1;
         var pageSize = parseInt($(".ddlpage").val());
         var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
         var key = $.trim($(".txtsearchkey").val());
