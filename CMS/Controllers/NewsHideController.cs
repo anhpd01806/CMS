@@ -98,6 +98,41 @@ namespace CMS.Controllers
             }
         }
 
+        public JsonResult GetNewsDetail()
+        {
+            try
+            {
+                if (Convert.ToBoolean(Session["USER-ACCEPTED"]))
+                {
+                    var Id = Convert.ToInt32(Request["Id"]);
+                    int userId = Convert.ToInt32(Session["SS-USERID"]);
+                    ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
+                    var news = _homebussiness.GetNewsDetail(Id, userId);
+                    ViewBag.RoleId = _homebussiness.GetRoleByUser(userId);
+                    var content = RenderPartialViewToString("~/Views/NewsHide/NewDetail.cshtml", news);
+                    return Json(new
+                    {
+                        Pay = 1,
+                        Content = content
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new
+                {
+                    Pay = 0,
+                    Content = String.Empty
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    Pay = 1,
+                    Content = string.Empty
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         public JsonResult LoadData(int cateId, int districtId, int newTypeId, int siteId, int backdate, double
                 minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string key)

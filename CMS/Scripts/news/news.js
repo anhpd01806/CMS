@@ -177,7 +177,7 @@ $(function () {
             $(this).parents("tr").find(".label-warning").removeClass("label-info");
             $(this).parents("tr").find(".label-warning").removeClass("arrowed");
             $.LoadingOverlay("show");
-            $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
+            $.get("/newssave/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
                     if (resp.Pay == 1 && resp.Content != "") {
                         $("#modaldetail").empty();
@@ -224,7 +224,7 @@ $(function () {
             $(this).parents("tr").find(".label-warning").removeClass("label-info");
             $(this).parents("tr").find(".label-warning").removeClass("arrowed");
             $.LoadingOverlay("show");
-            $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
+            $.get("/newssave/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
                     if (resp.Pay == 1 && resp.Content != "") {
                         $("#modaldetail").empty();
