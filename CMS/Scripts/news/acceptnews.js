@@ -16,7 +16,7 @@
                 var pageSize = parseInt($(".ddlpage").val());
 
                 var data = {
-                    key : key, pageIndex : pageIndex, pageSize : pageSize
+                    key: key, pageIndex: pageIndex, pageSize: pageSize
                 };
                 $.post("/news/loaddata", data, function (resp) {
                     if (resp != null) {
@@ -136,7 +136,7 @@
         } else {
             $(group).prop("checked", false);
             $(".btnsave, .btnhide, .btnreport, .btnspam").addClass("disabled");
-        }        
+        }
     });
 
     $(document).on("change", ".ddlpage", function () {
@@ -165,6 +165,88 @@
             }
             $.LoadingOverlay("hide");
         });
+    });
+
+    $(document).on("click", ".lbltitle", function () {
+        $.LoadingOverlay("show");
+        $.get("/news/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
+            if (resp != null) {
+                $("#modaldetail").empty();
+                $("#modaldetail").html(resp.Content);
+                setTimeout(function () {
+                    $("#newsdetail").modal("show");
+                }, 500);
+            }
+            $.LoadingOverlay("hide");
+        });
+    });
+
+    $(document).on("click", ".btnclose", function () {
+        $("#newsdetail").modal("hide");
+    });
+
+    $(document).on("click", ".save-item-list", function () {
+        var selected = [$.trim($(this).attr('data-id')) + "-" + $.trim($(this).attr('data-userId'))];
+        if (selected.length == 0) {
+            showmessage("error", "Bạn hãy chọn tin cần duyệt!");
+        } else {
+            $.post("/news/activeordeleteNews", { newsId: selected, isDelete: false }, function (resp) {
+                if (resp != null) {
+                    if (resp.Status == 1) {
+                        LoadData();
+                        setTimeout(function () {
+                            showmessage("success", "Tin đã được lưu thành công!");
+                        }, 1200);
+                    }
+                    if (resp.Status == 3) {
+                        showmessage("error", "Hiện tài khoản ngày không đủ tiền để chi trả chi phí đăng bài viết!");
+                    }
+                    if (resp.Status == 4) {
+                        showmessage("error", "Bạn chưa chọn tin để duyệt!");
+                    }
+                    if (resp.Status == 0) {
+                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                    }
+                    if (resp.Status == 2) {
+                        showmessage("error", "Không tìm thấy dữ liệu cần duyệt!");
+                    }
+                }
+                ;
+            });
+        }
+        $("#newsdetail").modal("hide");
+    });
+
+    $(document).on("click", ".hide-item-list", function () {
+        var selected = [$.trim($(this).attr('data-id')) + "-" + $.trim($(this).attr('data-userId'))];
+        if (selected.length == 0) {
+            showmessage("error", "Bạn hãy chọn tin cần xóa!");
+        } else {
+            $.post("/news/activeordeleteNews", { newsId: selected, isDelete: true }, function (resp) {
+                if (resp != null) {
+                    if (resp.Status == 1) {
+                        LoadData();
+                        setTimeout(function () {
+                            showmessage("success", "Tin đã được xóa thành công!");
+                        }, 1200);
+                    }
+                    if (resp.Status == 3) {
+                        showmessage("error", "Hiện tài khoản ngày không đủ tiền để chi trả chi phí đăng bài viết!");
+                    }
+                    if (resp.Status == 4) {
+                        showmessage("error", "Bạn chưa chọn tin để duyệt!");
+                    }
+                    if (resp.Status == 0) {
+                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                    }
+                    if (resp.Status == 2) {
+                        showmessage("error", "Không tìm thấy dữ liệu cần duyệt!");
+                    }
+                }
+                ;
+            });
+        }
+        $("#newsdetail").modal("hide");
     });
 
     function showPagination(pagesCounter) {
@@ -209,9 +291,8 @@
     }
 
     function LoadData() {
-        $.LoadingOverlay("show");
         var key = $.trim($(".txtsearchkey").val());
-        var pageIndex = parseInt($('#datatable').attr("data-page"));
+        var pageIndex = 1;
         var pageSize = parseInt($(".ddlpage").val());
 
         var data = {
@@ -232,8 +313,8 @@
                 $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
                 $(".totalrecord").html(resp.TotalRecord);
                 $('#check-all').prop('checked', false);
+                $.LoadingOverlay("hide");
             }
-            $.LoadingOverlay("hide");
         });
     }
 });

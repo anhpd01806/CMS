@@ -449,6 +449,35 @@ namespace CMS.Bussiness
                 return 0;
             }
         }
+
+        public NewsModel GetNewsDetail(int Id, int UserId)
+        {
+            var query = (from c in db.News
+                         join d in db.Districts on c.DistrictId equals d.Id
+                         join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
+                         join u in db.Users on ncm.CustomerId equals u.Id
+                         where c.CreatedOn.HasValue
+                         && c.Id.Equals(Id)
+                         select new NewsModel
+                         {
+                             Id = c.Id,
+                             Title = c.Title,
+                             Link = c.Link,
+                             SiteId = c.SiteId,
+                             Phone = c.Phone,
+                             Contents = c.Contents,
+                             Price = c.Price,
+                             PriceText = c.PriceText,
+                             DistrictId = d.Id,
+                             DistictName = d.Name,
+                             CreatedOn = c.CreatedOn,
+                             Cusname = u.FullName,
+                             CusId = u.Id,
+
+                         }).FirstOrDefault();
+
+            return query;
+        }
         #endregion
 
         #region Help

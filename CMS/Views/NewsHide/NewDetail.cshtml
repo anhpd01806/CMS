@@ -80,7 +80,7 @@
                 <div class="col-sm-10 btn-modal">
                     <button type="button" class="btn btn-success save-item-list" data-id="@Model.Id"><i class="fa fa-floppy-o"></i> Lưu tin</button>
                     <button type="button" class="btn btn-primary remove-hide-item-list" data-id="@Model.Id"><i class="fa fa-eye"></i> Hiện tin</button>
-                    @if (!Convert.ToBoolean(ViewBag.User))
+                    @if (Convert.ToBoolean(ViewBag.User))
                     {
                         <button type="button" class="btn btn-warning spam-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Chặn môi giới</button>
                     }

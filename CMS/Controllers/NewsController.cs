@@ -97,6 +97,33 @@ namespace CMS.Controllers
             }
         }
 
+        public JsonResult GetNewsDetail()
+        {
+            try
+            {
+                var Id = Convert.ToInt32(Request["Id"]);
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
+                var news = _newsbussiness.GetNewsDetail(Id, userId);
+                ViewBag.RoleId = _bussiness.GetRoleByUser(userId);
+                var content = RenderPartialViewToString("~/Views/News/NewsDetail.cshtml", news);
+                return Json(new
+                {
+                    Pay = 1,
+                    Content = content
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    Pay = 1,
+                    Content = string.Empty
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public ActionResult Create()
         {
             try
@@ -245,7 +272,7 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult ActiveOrDeleteNews(string [] newsId, bool isDelete)
+        public JsonResult ActiveOrDeleteNews(string[] newsId, bool isDelete)
         {
             try
             {

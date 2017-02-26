@@ -149,7 +149,7 @@
                     <i class="icon-eye-close bigger-125"></i>
                     Ẩn tin
                 </button>
-                @if (!Convert.ToBoolean(ViewBag.User))
+                @if (Convert.ToBoolean(ViewBag.User))
                 {
                     <button class="btn btn-sm btn-inverse btnspam disabled">
                         <i class="icon-warning-sign bigger-125"></i>

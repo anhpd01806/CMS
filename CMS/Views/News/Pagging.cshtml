@@ -1,7 +1,7 @@
 ﻿@model List<CMS.Models.NewsModel>
-@if (Model.ListNew.Any())
+@if (Model.Any())
 {
-    foreach (var item in Model.ListNew)
+    foreach (var item in Model)
     {
         <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #c55f05;" : string.Empty)">
             <td style="text-align: center;">

@@ -134,6 +134,7 @@ namespace CMS.Controllers
                 {
                     var Id = Convert.ToInt32(Request["Id"]);
                     int userId = Convert.ToInt32(Session["SS-USERID"]);
+                    ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                     var news = _bussiness.GetNewsDetail(Id, userId);
                     ViewBag.RoleId = _bussiness.GetRoleByUser(userId);
                     var content = RenderPartialViewToString("~/Views/Home/NewDetail.cshtml", news);
