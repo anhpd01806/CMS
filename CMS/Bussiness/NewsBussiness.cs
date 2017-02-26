@@ -38,19 +38,19 @@ namespace CMS.Bussiness
                 if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
                 {
                     news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value
+                                where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value && !c.IsAgency.Value
                                 select (c.NewsId)).ToList();
                 }
                 else
                 {
                     news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && c.IsDeleted.Value
+                                where c.CustomerId.Equals(UserId) && c.IsDeleted.Value && !c.IsAgency.Value
                                 select (c.NewsId)).ToList();
                 }
 
                 //Danh sách tin đã đọc theo user
                 var news_isread = (from c in db.News_Customer_Mappings
-                                   where c.CustomerId.Equals(UserId) && c.IsReaded.Value
+                                   where c.CustomerId.Equals(UserId) && c.IsReaded.Value && !c.IsAgency.Value
                                    select (c.NewsId)).ToList();
 
                 var query = from c in db.News
@@ -69,6 +69,7 @@ namespace CMS.Bussiness
                                 Title = c.Title,
                                 CategoryId = c.CategoryId,
                                 SiteId = c.SiteId,
+                                Contents = c.Contents,
                                 Link = c.Link,
                                 Phone = c.Phone,
                                 Price = c.Price,
@@ -292,12 +293,10 @@ namespace CMS.Bussiness
         {
             var minPayment = Convert.ToDouble(ConfigWeb.MinPayment);
             var query = from c in db.News
-                            join d in db.Districts on c.DistrictId equals d.Id
-                            join t in db.NewsStatus on c.StatusId equals t.Id
-                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
-                            join s in db.Sites on c.SiteId equals s.ID
-                            join u in db.Users on ncm.CustomerId equals u.Id
-                            where ncm.IsAgency.HasValue && ncm.IsAgency.Value
+                        join d in db.Districts on c.DistrictId equals d.Id
+                        join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
+                        join u in db.Users on ncm.CustomerId equals u.Id
+                        where ncm.IsAgency.HasValue && ncm.IsAgency.Value
                         select new NewsModel
                         {
                             Id = c.Id,
@@ -310,11 +309,11 @@ namespace CMS.Bussiness
                             PriceText = c.PriceText,
                             DistrictId = d.Id,
                             DistictName = d.Name,
-                            StatusId = t.Id,
-                            StatusName = t.Name,
+                            StatusId = c.StatusId,
                             CreatedOn = c.CreatedOn,
                             Cusname = u.FullName,
-                            IsPayment = false  //Convert.ToDouble(_payment.GetCashPaymentByUserId(ncm.CustomerId)) >= minPayment ? true : false
+                            CusId = u.Id,
+                            IsPayment = false
                         };
 
             #region check param
@@ -373,8 +372,82 @@ namespace CMS.Bussiness
             #endregion
 
             total = query.ToList().Count;
-            return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            var list = query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            var newslist = new List<NewsModel>();
+            if (list.Any())
+            {
+                foreach (var item in list)
+                {
+                    item.IsPayment = Convert.ToDouble(string.IsNullOrEmpty(_payment.GetCashPaymentByUserId(item.CusId)) ? "0" : _payment.GetCashPaymentByUserId(item.CusId)) >= minPayment ? true : false;
+                    newslist.Add(item);
+                }
+            }
+            return newslist;
 
+        }
+        #endregion
+
+        #region Active or delete news
+        /// <summary>
+        /// Status:  0 thất bại
+        ///          1 thành công
+        ///          2 tin không tồn tại
+        ///          3 không đủ tiền thanh toán
+        ///          4 dữ liệu truyền vào bị null
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <param name="isDelete"></param>
+        /// <returns></returns>
+        public int ActiveOrDelete(string[] newsId, bool isDelete)
+        {
+            try
+            {
+                if (newsId.Length > 0)
+                {
+                    for (int i = 0; i < newsId.Length; i++)
+                    {
+
+                        var userid = Convert.ToInt32(string.IsNullOrEmpty(newsId[i].Split('-')[1]) ? "0" : newsId[i].Split('-')[1]);
+                        var newsid = Convert.ToInt32(string.IsNullOrEmpty(newsId[i].Split('-')[0]) ? "0" : newsId[i].Split('-')[0]);
+                        var minPayment = Convert.ToDouble(ConfigWeb.MinPayment);
+                        var totalMoney = Convert.ToDouble(string.IsNullOrEmpty(_payment.GetCashPaymentByUserId(userid)) ? "0" : _payment.GetCashPaymentByUserId(userid));
+
+                        var news = (from c in db.News_Customer_Mappings
+                                    where c.CustomerId.Equals(userid) && c.NewsId.Equals(newsid) && c.IsAgency.HasValue && c.IsAgency.Value
+                                    select c).ToList();
+                        if (news.Any())
+                        {
+                            foreach (var item in news)
+                            {
+                                if (isDelete)
+                                {
+                                    db.News_Customer_Mappings.DeleteOnSubmit(item);
+                                    db.News.DeleteOnSubmit(GetNewsById(item.NewsId));
+                                }
+                                else
+                                {
+                                    if (totalMoney >= minPayment)
+                                    {
+                                        db.News_Customer_Mappings.DeleteOnSubmit(item);
+                                    }
+                                    else
+                                    {
+                                        return 3;
+                                    }
+                                }
+                            }
+                            db.SubmitChanges();
+                            return 1;
+                        }
+                        return 2;
+                    }
+                }
+                return 4;
+            }
+            catch
+            {
+                return 0;
+            }
         }
         #endregion
 
@@ -448,7 +521,7 @@ namespace CMS.Bussiness
             var total = query.Count;
             return total;
         }
-        #endregion        
+        #endregion
 
         public New GetNewsById(int id)
         {

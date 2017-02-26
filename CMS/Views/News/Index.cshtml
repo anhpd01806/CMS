@@ -21,14 +21,21 @@
         </div>
         <div class="space"></div>
         <div class="hd-fuc">
-            <button class="btn btn-sm btn-primary btn-small btnsave disabled">
-                <i class="icon-save bigger-125"></i>
-                Duyệt tin
-            </button>
-            <button class="btn btn-sm btn-success btn-small btnhide disabled">
-                <i class="icon-eye-close bigger-125"></i>
-                Xóa tin
-            </button>
+            <div class="col-sm-5">
+                <button class="btn btn-sm btn-primary btn-small btnsave disabled">
+                    <i class="icon-save bigger-125"></i>
+                    Duyệt tin
+                </button>
+                <button class="btn btn-sm btn-success btn-small btnhide disabled">
+                    <i class="icon-eye-close bigger-125"></i>
+                    Xóa tin
+                </button>
+            </div>
+            <div class="col-sm-7 viewpage">
+                <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
+                    Hiển thị <span class="fistrecord">@(((Model.pageIndex - 1) * Model.pageSize))</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> tin
+                </div>
+            </div>
         </div>
         <div class="dataTables_wrapper form-inline no-footer">
             <div class="tbheader">
@@ -53,7 +60,7 @@
                 <thead>
                     <tr>
                         <th class="center">
-                            <input type="checkbox" id="check-all" />
+                            @*<input type="checkbox" id="check-all" />*@
                             <span class="lbl"></span>
                         </th>
                         <th>Tiêu đề</th>
@@ -62,7 +69,7 @@
                         <th>Giá</th>
                         <th>Điện thoại</th>
                         <th>Người đăng</th>
-                        <th style="text-align: center">Tính năng</th>
+                        <th class="center">TT</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,42 +78,29 @@
                         foreach (var item in Model.ListNew)
                         {
                             <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #c55f05;" : string.Empty)">
-                                <td>
+                                <td style="text-align: center;">
+
                                     <label class="pos-rel">
-                                        <input type="checkbox" class="checkboxItem" id="@item.Id" />
+                                        <input type="checkbox" class="checkboxItem" id="@item.Id" data-userId="@item.CusId" />
                                     </label>
                                 </td>
-                                <td>@item.Title</td>
-                                <td class="td-medium">>@item.DistictName</td>
+                                <td> <span data-id="@item.Id" class="lbltitle" title="@item.Contents">@item.Title</span></td>
+                                <td class="td-medium">@item.DistictName</td>
                                 <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
                                 <td class="td-medium">@item.PriceText</td>
                                 <td class="td-small">@item.Phone.Replace(",", ", ").Trim()</td>
                                 <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.Cusname)</td>
-                                
-                                <td class="td-actions">
-                                    <div class="hidden-phone visible-desktop action-buttons">
-                                        <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
-                                            <i class="icon-zoom-in bigger-130"></i>
-                                        </a>
-                                        <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
-                                            <i class="icon-save bigger-130"></i>
-                                        </a>
-                                        <a class="orange hide-item-list" href="javascript:;" title="Ẩn tin" data-id="@item.Id">
-                                            <i class="icon-eye-close bigger-130"></i>
-                                        </a>
-                                        @if (item.IsAdmin)
-                                        {
-                                            <a class="red spam-item-list" href="javascript:;" title="Chặn mô giới" data-id="@item.Id">
-                                                <i class="icon-warning-sign bigger-130"></i>
-                                            </a>
-                                        }
-                                        else
-                                        {
-                                            <a class="red report-item-list" href="javascript:;" title="Báo mô giới" data-id="@item.Id">
-                                                <i class="icon-warning-sign bigger-130"></i>
-                                            </a>
-                                        }
-                                    </div>
+                                <td class="center">
+                                    @if (item.IsPayment)
+                                    {
+                                        <label><img src="~/assets/images/approved.gif" /></label>
+                                    }
+                                    else
+                                    {
+                                        <label title="Tài khoản không đủ tiền để duyệt tin">
+                                            <img src="~/assets/images/delete.gif" />
+                                        </label>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -123,15 +117,13 @@
             @if (Model.Totalpage > 1)
             {
                 <div class="row page-home">
-                    <div class="col-xs-4">
-                        <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
-                            Hiển thị <span class="fistrecord">@(((Model.pageIndex - 1) * Model.pageSize) + 1)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> bản ghi
-                        </div>
-                    </div>
                     <div class="col-xs-8">
                         <div class="dataTables_paginate homepagging">
                             <div class="pagination" id="pagination"></div>
                         </div>
+                    </div>
+                    <div class="col-xs-4">
+
                     </div>
                 </div>
             }
@@ -147,4 +139,4 @@
 
 @*Custom script*@
 <script src="~/Scripts/common.js"></script>
-<script src="~/Scripts/home/home.js"></script>
+<script src="~/Scripts/news/acceptnews.js"></script>

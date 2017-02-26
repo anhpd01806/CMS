@@ -97,6 +97,8 @@ namespace CMS.Models
 
         public string Cusname { get; set; }
 
+        public int CusId { get; set; }
+
         public bool IsPayment { get; set; }
 
         public string SiteName { get; set; }

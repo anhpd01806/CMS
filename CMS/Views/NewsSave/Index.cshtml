@@ -150,7 +150,7 @@
                     <i class="icon-eye-close bigger-125"></i>
                     Ẩn tin
                 </button>
-                @if (Model.RoleId != Convert.ToInt32(CMS.Helper.CmsRole.Customer))
+                @if (!Convert.ToBoolean(ViewBag.User))
                 {
                     <button class="btn btn-sm btn-inverse btn-small btnspam disabled">
                         <i class="icon-warning-sign bigger-125"></i>
@@ -171,7 +171,7 @@
             </div>
             <div class="col-sm-7 viewpage">
                 <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
-                    Hiển thị <span class="fistrecord">@(((Model.pageIndex - 1) * Model.pageSize) + 1)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> bản ghi
+                    Hiển thị <span class="fistrecord">@((Model.pageIndex - 1) * Model.pageSize)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> tin
                 </div>
             </div>
         </div>
@@ -225,7 +225,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <span data-id="@item.Id" class="lbltitle">
+                                    <span data-id="@item.Id" class="lbltitle" title="@item.Contents">
                                         @item.Title
                                     </span>
                                 </td>

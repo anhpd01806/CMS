@@ -127,6 +127,7 @@ namespace CMS.Bussiness
                                 Price = c.Price,
                                 PriceText = c.PriceText,
                                 DistrictId = d.Id,
+                                Contents = c.Contents,
                                 DistictName = d.Name,
                                 StatusId = t.Id,
                                 StatusName = t.Name,
@@ -445,6 +446,7 @@ namespace CMS.Bussiness
                     var reportItem = new CMS.Data.Blacklist();
                     reportItem.Words = item.Phone;
                     reportItem.Description = "Tin mô giới: " + item.Title;
+                    reportItem.LinkUrl = item.Link;
                     reportItem.CreatedOn = DateTime.Now;
                     reportItem.Type = 1;
                     db.Blacklists.InsertOnSubmit(reportItem);

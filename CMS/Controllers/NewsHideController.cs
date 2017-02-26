@@ -45,7 +45,7 @@ namespace CMS.Controllers
                         var listchillcate = _homebussiness.GetChilldrenlistCategory(item.Id);
                         foreach (var chill in listchillcate)
                         {
-                            cateListItems.Add(new SelectListItem { Text = (item.Name + " >> " + chill.Name), Value = chill.Id.ToString() });
+                            cateListItems.Add(new SelectListItem { Text = ("\xA0\xA0\xA0" + item.Name + " >> " + chill.Name), Value = chill.Id.ToString() });
                         }
                     }
                 }
@@ -84,6 +84,7 @@ namespace CMS.Controllers
                 #endregion
 
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
+                ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 model.ListNew = _newsbussiness.GetListNewStatusByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);

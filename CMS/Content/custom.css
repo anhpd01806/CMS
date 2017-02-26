@@ -186,3 +186,10 @@ span.error {
 #pagination .pagination {
     margin: 0;
 }
+.txtwarring {
+    padding-left: 11%;
+    margin-bottom: 15px;
+    display: inline-block;
+    color: red;
+    font-size: 14px;
+}

@@ -90,7 +90,7 @@ $(document).ready(function () {
             var cateId = $("#CategoryId").val();
             var districtId = $("#DistricId").val();
             var phone = $("#txtphone").val();
-            var price = $("#txtprice").val().replace('.', '');
+            var price = $("#txtprice").val().replace(/\./g, '');
             var pricetext = $("#txtpricetext").val();
             var content = CKEDITOR.instances['txtcontent'].getData();
             if ($.isNumeric(price)) {

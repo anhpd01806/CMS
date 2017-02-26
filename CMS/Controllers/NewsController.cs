@@ -21,6 +21,7 @@ namespace CMS.Controllers
         #region member
         private readonly HomeBussiness _bussiness = new HomeBussiness();
         private readonly NewsBussiness _newsbussiness = new NewsBussiness();
+        private readonly PaymentBussiness _payment = new PaymentBussiness();
         #endregion
 
 
@@ -84,7 +85,7 @@ namespace CMS.Controllers
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
 
-                model.ListNew = _newsbussiness.GetListNewNotActiveByFilter(0,0,0,0,-1,string.Empty, string.Empty,0,-1,model.pageIndex, model.pageSize, false, string.Empty, ref total);
+                model.ListNew = _newsbussiness.GetListNewNotActiveByFilter(0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);
@@ -114,7 +115,7 @@ namespace CMS.Controllers
                         var listchillcate = _bussiness.GetChilldrenlistCategory(item.Id);
                         foreach (var chill in listchillcate)
                         {
-                            cateListItems.Add(new SelectListItem { Text = (item.Name + " >> " + chill.Name), Value = chill.Id.ToString() });
+                            cateListItems.Add(new SelectListItem { Text = ("\xA0\xA0\xA0" + item.Name + " >> " + chill.Name), Value = chill.Id.ToString() });
                         }
                     }
                 }
@@ -213,6 +214,53 @@ namespace CMS.Controllers
                 return Json(new
                 {
                     type = 0
+                });
+            }
+        }
+
+        public ActionResult LoadData(string key, int pageIndex, int pageSize)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                int total = 0;
+                var listNews = _newsbussiness.GetListNewNotActiveByFilter(0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, false, key, ref total);
+                var content = RenderPartialViewToString("~/Views/News/Pagging.cshtml", listNews);
+                return Json(new
+                {
+                    TotalPage = (int)Math.Ceiling((double)total / (double)pageSize),
+                    Content = content,
+                    TotalRecord = total
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    TotalPage = 0,
+                    Content = "<tr><td colspan='8'>Hệ thống gặp sự cố trong quá trình load dữ liệu<td></tr>"
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult ActiveOrDeleteNews(string [] newsId, bool isDelete)
+        {
+            try
+            {
+                var stt = _newsbussiness.ActiveOrDelete(newsId, isDelete);
+                return Json(new
+                {
+                    Status = stt
+                });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    Status = 0
                 });
             }
         }

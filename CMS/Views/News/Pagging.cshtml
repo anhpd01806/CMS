@@ -1,0 +1,39 @@
+﻿@model List<CMS.Models.NewsModel>
+@if (Model.ListNew.Any())
+{
+    foreach (var item in Model.ListNew)
+    {
+        <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #c55f05;" : string.Empty)">
+            <td style="text-align: center;">
+
+                <label class="pos-rel">
+                    <input type="checkbox" class="checkboxItem" id="@item.Id" />
+                </label>
+            </td>
+            <td> <span data-id="@item.Id" class="lbltitle" title="@item.Contents">@item.Title</span></td>
+            <td class="td-medium">@item.DistictName</td>
+            <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
+            <td class="td-medium">@item.PriceText</td>
+            <td class="td-small">@item.Phone.Replace(",", ", ").Trim()</td>
+            <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.Cusname)</td>
+            <td class="center">
+                @if (item.IsPayment)
+                {
+                    <label><img src="~/assets/images/approved.gif" /></label>
+                }
+                else
+                {
+                    <label title="Tài khoản không đủ tiền để duyệt tin">
+                        <img src="~/assets/images/delete.gif" />
+                    </label>
+                }
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="8" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+    </tr>
+}
