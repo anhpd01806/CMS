@@ -190,7 +190,10 @@ namespace CMS.Controllers
                     worksheet.Cells[row, col].Value = item.Title;
                     col++;
 
-                    worksheet.Cells[row, col].Value = item.DistictName;
+                    worksheet.Cells[row, col].Value = item.Contents;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.DistictName : "Vui lòng nạp tiền";
                     col++;
 
                     worksheet.Cells[row, col].Value = Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyy");
@@ -199,7 +202,7 @@ namespace CMS.Controllers
                     worksheet.Cells[row, col].Value = item.PriceText;
                     col++;
 
-                    worksheet.Cells[row, col].Value = item.Phone;
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Phone : "Vui lòng nạp tiền";
                     col++;
 
                     worksheet.Cells[row, col].Value = item.StatusName;
