@@ -22,6 +22,55 @@ namespace CMS.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult Index(FormCollection formCollection)
+        {
+            if (Request != null)
+            {
+                HttpPostedFileBase file = Request.Files["UploadedFile"];
+                if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+                {
+                    string fileName = file.FileName;
+                    string fileContentType = file.ContentType;
+                    byte[] fileBytes = new byte[file.ContentLength];
+                    var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
+
+                    using (var package = new ExcelPackage(file.InputStream))
+                    {
+                        var currentSheet = package.Workbook.Worksheets;
+                        var workSheet = currentSheet.First();
+                        var noOfCol = workSheet.Dimension.End.Column;
+                        var noOfRow = workSheet.Dimension.End.Row;
+
+                        for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                        {
+                            var black = new Blacklist();
+                            try
+                            {
+
+                                black.Words = workSheet.Cells[rowIterator, 2].Value.ToString();
+                                black.Description = workSheet.Cells[rowIterator, 3].Value.ToString();
+                                black.CreatedOn = DateTime.Now;
+                                black.LinkUrl = workSheet.Cells[rowIterator, 4].Value.ToString();
+                                black.Type = 1;
+                                new BlackListBussiness().Insert(black);
+                            }
+                            catch
+                            {
+                                TempData["Error"] = "Có một hoặc nhiều bản ghi đang sai định dạng.Lưu ý: Số điện thoại, mô tả, và link url không được để trống";
+                            }
+                        }
+                    }
+                    TempData["Success"] = "Import dữ liệu thành công";
+                }
+                else
+                {
+                    TempData["Error"] = "Đường dẫn không chính xác hoặc để trống. vui lòng thử lại";
+                }
+            }
+            BlackListViewModel model = new BlackListViewModel();
+            return View(model);
+        }
         public ActionResult ExportExcel(string listBlackListId)
         {
             string fileName = string.Format("BlackList_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
@@ -41,7 +90,7 @@ namespace CMS.Controllers
 
         #region Json
         [HttpPost]
-        public JsonResult InsertData(string Phone, string Description,string LinkUrl)
+        public JsonResult InsertData(string Phone, string Description, string LinkUrl)
         {
             try
             {
@@ -94,7 +143,7 @@ namespace CMS.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
-        
+
         [HttpPost]
         public JsonResult DeleteData(string id)
         {
@@ -137,7 +186,8 @@ namespace CMS.Controllers
                     {
                         "STT",
                         "Số điện thoại",
-                        "Mô tả"
+                        "Mô tả",
+                        "Link Url"
                     };
                 for (var i = 0; i < properties.Length; i++)
                 {
@@ -159,6 +209,9 @@ namespace CMS.Controllers
                     col++;
 
                     worksheet.Cells[row, col].Value = item.Description;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.LinkUrl;
                     col++;
                     //next row
                     row++;

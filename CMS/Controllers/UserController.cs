@@ -30,8 +30,8 @@ namespace CMS.Controllers
             {
                 int totalpage = 0;
                 UserViewModel model = new UserViewModel();
-                model.UserList = GetUserList(ref totalpage, int.Parse(pageIndex), 20, search);
-                var content = RenderPartialViewToString("~/Views/User/UserDetail.cshtml", model.UserList);
+                model.UserList = GetAdminList(ref totalpage, int.Parse(pageIndex), 20, search);
+                var content = RenderPartialViewToString("~/Views/User/AdminDetail.cshtml", model.UserList);
                 model.Totalpage = totalpage;
                 return Json(new
                 {
@@ -305,9 +305,10 @@ namespace CMS.Controllers
             return String.Join(", ", rs);
         }
 
-        private List<UserModel> GetUserList(ref int pageTotal, int pageIndex, int pageSize, string search)
+        //get all nhân viên or quản trị viên
+        private List<UserModel> GetAdminList(ref int pageTotal, int pageIndex, int pageSize, string search)
         {
-            var allUser = new UserBussiness().GetAllUser().Where(x => x.UserName.Contains(search)).ToList();
+            var allUser = new UserBussiness().GetAdminUser().Where(x => x.UserName.Contains(search)).ToList();
             var allRoles = new RoleBussiness().GetRoles();
             var allRolesUser = new RoleUserBussiness().GetAllRoleUser();
             pageTotal = (int)Math.Ceiling((double)allUser.Count / (double)pageSize);

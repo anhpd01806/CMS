@@ -11,6 +11,9 @@ namespace CMS.ViewModel
     {
         public List<UserModel> UserList { get; set; }
         public int Totalpage { get; set; }
+
+        public List<SelectListItem> ManagerList { get; set; }
+        public int ManagerId { get; set; }
     }
 
     public class UserModel
@@ -48,6 +51,7 @@ namespace CMS.ViewModel
         public string RoleName { get; set; }
 
         public Boolean IsDelete { get; set; }
+        public Boolean IsOnline { get; set; }
     }
 
     public class ChangePasswordViewModel

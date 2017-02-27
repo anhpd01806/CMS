@@ -259,7 +259,7 @@ namespace CMS.Controllers
             }
             else
             {
-                Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && x.StartDate.Date >= DateTime.Now.Date && DateTime.Now.Date <= x.EndDate.Date);
+                Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && DateTime.Now.Date <= x.EndDate.Date);
                 Session["IS-USERS"] = true;
             }
         }

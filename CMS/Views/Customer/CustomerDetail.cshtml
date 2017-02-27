@@ -7,22 +7,37 @@
     {
         counter = counter + 1;
         <tr>
-            <td>@counter</td>
+            <td class="text-center">@counter</td>
             <td>@u.FullName</td>
             <td>@u.UserName</td>
             <td>@u.Phone</td>
-            <td>@Html.Raw(u.IsDelete== true ? "TK bị khóa" : u.IsMember == true ? "Kích hoạt" : "Chưa được duyệt")</td>
+            <td class="text-center">
+                @if (u.IsDelete == true)
+                { <span class="label label-inverse">TK bị khóa</span>}
+                else if (u.IsMember == true)
+                { <span class="label label-warning arrowed-right arrowed-in">Kích hoạt</span>}
+                else
+                { <span class="label label-info arrowed">Chưa được duyệt</span>}
+            </td>
             <td>@u.ManagerBy</td>
+            @if (u.IsOnline == true)
+            {
+                <td class="text-center"><span class="badge badge-success">online</span></td>
+            }
+            else
+            {
+                <td class="text-center"><span class="badge badge-grey">offline</span></td>
+            }
             <td>@u.RoleName</td>
             <td class="text-center">
                 <div class="hidden-sm hidden-xs action-buttons">
-                    <a class="green" href="/User/Edit/@u.Id">
+                    <a class="green" href="/Customer/Edit/@u.Id">
                         <i class="ace-icon fa fa-pencil bigger-130"></i>
                     </a>
-                    <a class="green" href="/User/ResertPassword/@u.Id">
+                    <a class="green" href="/Customer/ResertPassword/@u.Id">
                         <i class="fa fa-refresh"></i>
                     </a>
-                    <a class="red" href="/User/RemoveUser/@u.Id">
+                    <a class="red" href="/Customer/RemoveUser/@u.Id">
                         <i class="fa fa-ban" title="Chặn tài khoản"></i>
                     </a>
                 </div>
@@ -33,14 +48,14 @@
                         </button>
                         <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                             <li>
-                                <a href="/User/Edit/@u.Id" class="tooltip-success" data-rel="tooltip" title="Sửa">
+                                <a href="/Customer/Edit/@u.Id" class="tooltip-success" data-rel="tooltip" title="Sửa">
                                     <span class="green">
                                         <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                     </span>
                                 </a>
                             </li>
                             <li>
-                                <a href="/User/ResertPassword/@u.Id" class="tooltip-success" data-rel="tooltip" title="Khôi phục mật khẩu">
+                                <a href="/Customer/ResertPassword/@u.Id" class="tooltip-success" data-rel="tooltip" title="Khôi phục mật khẩu">
                                     <span class="green">
                                         <i class="fa fa-refresh"></i>
                                     </span>

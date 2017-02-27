@@ -3069,7 +3069,7 @@
     <Content Include="Views\Home\NewDetail.cshtml" />
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\Payment\RegisterPackage.cshtml" />
-    <Content Include="Views\User\UserDetail.cshtml" />
+    <Content Include="Views\User\AdminDetail.cshtml" />
     <Content Include="Views\NewsSave\Index.cshtml" />
     <Content Include="Views\LinkSite\Index.cshtml" />
     <Content Include="Views\LinkSite\LinkSiteDetail.cshtml" />
@@ -3087,6 +3087,9 @@
     <Content Include="Views\ReportNews\ReportNewsDetail.cshtml" />
     <Content Include="Views\ReportNews\FirstRandomReports.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\Customer\CustomerDetail.cshtml" />
+    <Content Include="Views\Customer\DetailInformation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

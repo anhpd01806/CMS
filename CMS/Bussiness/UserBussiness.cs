@@ -18,6 +18,16 @@ namespace CMS.Bussiness
             return db.Users.OrderBy(m => m.Id).ToList();
         }
 
+        public List<User> GetAdminUser()
+        {
+            return db.Users.Where(x => x.IsFree == true).OrderBy(m => m.Id).ToList();
+        }
+
+        public List<User> GetCustomerUser(int managerId)
+        {
+            return db.Users.Where(x => x.IsFree == false && (x.ManagerBy == managerId || managerId == -1)).OrderBy(m => m.Id).ToList();
+        }
+
         public User GetUserById(int id)
         {
             return db.Users.FirstOrDefault(x => x.Id == id);
@@ -85,7 +95,7 @@ namespace CMS.Bussiness
         {
             var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
             user.IsMember = model.IsMember;
-            if(model.IsRestore== true)user.IsDeleted = false;//th khôi phục lại tài khoản
+            if (model.IsRestore == true) user.IsDeleted = false;//th khôi phục lại tài khoản
             user.ManagerBy = int.Parse(model.ManagerBy);
             db.SubmitChanges();
         }

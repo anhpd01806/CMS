@@ -10,8 +10,6 @@ namespace CMS.ViewModel
     public class BlackListViewModel
     {
         public List<BlacklistModel> BlackList { get; set; }
-
-        [Required(ErrorMessage = "Không được để trống")]
         public string Phone { get; set; }
         public string Description { get; set; }
         public string LinkUrl { get; set; }

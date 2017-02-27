@@ -33,6 +33,6 @@ namespace CMS.Helper
 
     public class Information
     {
-        public const string HOT_PHONE_NUMBER = "0976.244.811";
+        public const string HOT_PHONE_NUMBER = "0982.66.77.00";
     }
 }
