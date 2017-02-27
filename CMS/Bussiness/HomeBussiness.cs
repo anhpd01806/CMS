@@ -195,8 +195,8 @@ namespace CMS.Bussiness
                 }
                 #endregion
 
-                total = query.ToList().Count;
-                return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                total = query.Distinct().ToList().Count;
+                return query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -232,7 +232,7 @@ namespace CMS.Bussiness
                                 CreatedOn = c.CreatedOn,
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = 1
-                            }).ToList();
+                            }).Distinct().ToList();
                 return query;
             }
         }

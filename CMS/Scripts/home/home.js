@@ -71,7 +71,10 @@ $(function () {
                     var from = $(".txtFrom").val();
                     var to = $(".txtTo").val();
                     var pageIndex = page;
-                    var pageSize = parseInt($(".ddlpage").val());
+                    var pageSize = 20;
+                    if (typeof $(".ddlpage").val() != "undefined") {
+                        pageSize = parseInt($(".ddlpage").val());
+                    }
                     var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                     var key = $.trim($(".txtsearchkey").val());
 
@@ -96,6 +99,16 @@ $(function () {
                             $('#datatable').attr("data-total", resp.TotalPage);
                             $('#datatable').attr("data-page", page);
                             $('#check-all').prop('checked', false);
+                            $('#listnewstable').DataTable({
+                                sDom: 'rt',
+                                retrieve: true,
+                                bFilter: false,
+                                bInfo: false,
+                                searching: false,
+                                paging: false,
+                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort'}, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                            });
+                            $('#check-all').parent().removeClass("sorting_asc");
                             $.LoadingOverlay("hide");
                         }
                     });
@@ -115,7 +128,10 @@ $(function () {
             var from = $(".txtFrom").val();
             var to = $(".txtTo").val();
             var pageIndex = 1;
-            var pageSize = parseInt($(this).val());
+            var pageSize = 20;
+            if (typeof $(".ddlpage").val() != "undefined") {
+                pageSize = parseInt($(".ddlpage").val());
+            }
             var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
             var key = $.trim($(".txtsearchkey").val());
 
@@ -139,6 +155,16 @@ $(function () {
                     $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
                     $(".totalrecord").html(resp.TotalRecord);
                     $('#check-all').prop('checked', false);
+                    $('#listnewstable').DataTable({
+                        sDom: 'rt',
+                        retrieve: true,
+                        bFilter: false,
+                        bInfo: false,
+                        searching: false,
+                        paging: false,
+                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                    });
+                    $('#check-all').parent().removeClass("sorting_asc");
                 }
                 $.LoadingOverlay("hide");
             });
@@ -510,7 +536,10 @@ $(function () {
         var from = $(".txtFrom").val();
         var to = $(".txtTo").val();
         var pageIndex = 1;
-        var pageSize = parseInt($(".ddlpage").val());
+        var pageSize = 20;
+        if (typeof $(".ddlpage").val() != "undefined") {
+            pageSize = parseInt($(".ddlpage").val());
+        }
         var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
         var key = $.trim($(".txtsearchkey").val());
 
@@ -551,6 +580,16 @@ $(function () {
                     $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
                     $(".totalrecord").html(resp.TotalRecord);
                     $('#check-all').prop('checked', false);
+                    $('#listnewstable').DataTable({
+                        sDom: 'rt',
+                        retrieve: true,
+                        bFilter: false,
+                        bInfo: false,
+                        searching: false,
+                        paging: false,
+                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                    });
+                    $('#check-all').parent().removeClass("sorting_asc");
                 }
                 $.LoadingOverlay("hide");
             });
@@ -579,7 +618,10 @@ $(function () {
                 var from = $(".txtFrom").val();
                 var to = $(".txtTo").val();
                 var pageIndex = page;
-                var pageSize = parseInt($(".ddlpage").val());
+                var pageSize = 20;
+                if (typeof $(".ddlpage").val() != "undefined") {
+                    pageSize = parseInt($(".ddlpage").val());
+                }
                 var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                 var key = $.trim($(".txtsearchkey").val());
 
@@ -604,6 +646,16 @@ $(function () {
                         $('#datatable').attr("data-total", resp.TotalPage);
                         $('#datatable').attr("data-page", page);
                         $('#check-all').prop('checked', false);
+                        $('#listnewstable').DataTable({
+                            sDom: 'rt',
+                            retrieve: true,
+                            bFilter: false,
+                            bInfo: false,
+                            searching: false,
+                            paging: false,
+                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                        });
+                        $('#check-all').parent().removeClass("sorting_asc");
                         $.LoadingOverlay("hide");
                     }
                 });

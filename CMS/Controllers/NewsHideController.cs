@@ -106,6 +106,7 @@ namespace CMS.Controllers
                 {
                     var Id = Convert.ToInt32(Request["Id"]);
                     int userId = Convert.ToInt32(Session["SS-USERID"]);
+                    ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                     ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                     var news = _homebussiness.GetNewsDetail(Id, userId);
                     ViewBag.RoleId = _homebussiness.GetRoleByUser(userId);
@@ -225,7 +226,7 @@ namespace CMS.Controllers
                     worksheet.Cells[row, col].Value = item.Title;
                     col++;
 
-                    worksheet.Cells[row, col].Value = item.Contents;
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Contents : "Vui lòng nạp tiền"; 
                     col++;
 
                     worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.DistictName : "Vui lòng nạp tiền";

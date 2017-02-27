@@ -67,6 +67,7 @@ label, .lbl {
 
 .custom-table {
     margin-bottom: 0;
+    display: inline-block;
 }
 
 .customheader {
@@ -181,7 +182,7 @@ span.error {
     padding: 10px 20px 0 0;
 }
 .homepagging {
-    text-align: left;
+    text-align: right;
 }
 #pagination .pagination {
     margin: 0;
