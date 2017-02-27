@@ -416,15 +416,28 @@ $(function () {
                 } else {
                     $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
-                            if (resp.Status == 1) {
-                                LoadData();
-                                setTimeout(function () {
-                                    showmessage("success", "Tin mô giới đã được báo cáo thành công!");
-                                }, 1200);
-
-                            } else {
-                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
-                            }
+                            LoadData();
+                            setTimeout(function () {
+                                showmessage("success", "Tin mô giới đã được báo cáo thành công!");
+                            }, 1200);
+                            //send notify to admin
+                            var socket = io.connect('http://ozo.vn:8088');
+                            $.each(resp, function (i, value) {
+                                var notify = {};
+                                notify.title = value.Title;
+                                //notify id
+                                notify.id = value.Id;
+                                notify.type = value.Type;
+                                //user name
+                                notify.name = value.UserName;
+                                //link image avatar
+                                notify.avatar = "/assets/avatars/avatar.png";
+                                notify.time = value.DateSend;
+                                socket.emit('send-to-admin', notify);
+                            });
+                        }
+                        else {
+                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
                         }
                         ;
                     });

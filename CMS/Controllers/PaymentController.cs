@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using WebBackendPlus.Controllers;
-
+using CMS.Models;
 namespace CMS.Controllers
 {
     public class PaymentController : BaseAuthedController
@@ -41,9 +41,25 @@ namespace CMS.Controllers
                     new PaymentBussiness().Insert(paymentHistory);
 
                     //insert payment accepted
-                    new PaymentBussiness().PaymentAcceptedUpdate(model,userId);
+                    new PaymentBussiness().PaymentAcceptedUpdate(model, userId);
 
                     TempData["Success"] = "Nạp tiền thành công";
+                    //insert notifycation
+                    var notify = new Notify
+                    {
+                        UserName = "Admin",
+                        Userid = userId,
+                        SendFlag = false,
+                        DateSend = DateTime.Now,
+                        Title = "Bạn đã nạp thành công " + model.Amount + "đ",
+                        Accepted = false,
+                        ViewFlag = false,
+                        SendTo = userId,
+                        Type = 3
+                    };
+                    var notifyId = new NotifyBussiness().Insert(notify);
+                    notify.Id = notifyId;
+                    TempData["Notify"] = notify;
                     ModelState.Clear();
                 }
                 catch (Exception ex)
@@ -55,7 +71,7 @@ namespace CMS.Controllers
             model.PayMethodList = new PaymentBussiness().GetPaymentMethod();
             return View(model);
         }
-     
+
         public ActionResult RegisterPackage()
         {
             int userId = Convert.ToInt32(Session["SS-USERID"]);
@@ -87,7 +103,7 @@ namespace CMS.Controllers
             {
                 int page = int.Parse(Page);
                 int userID = new UserBussiness().GetUserByName(UserName);
-                var itemList = (from a in new PaymentBussiness().GetPaymentHistoryByUserId(userID,page)
+                var itemList = (from a in new PaymentBussiness().GetPaymentHistoryByUserId(userID, page)
                                 select new PaymentHistoryModel
                                 {
                                     Id = a.Id,

@@ -1,10 +1,16 @@
 ﻿@model CMS.ViewModel.AccountViewModel
-
+@using CMS.Data
+@{
+    Notify noti = new Notify();
+    if (TempData["Notify"] != null)
+    {
+        noti = (Notify)TempData["Notify"];
+    }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>OZO.VN</title>
-
     <!-- BEGIN META -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,19 +21,16 @@
     <!-- END STYLESHEETS -->
     <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/assets/css/font-awesome/font-awesome.min.css" rel="stylesheet" />
-
     <!-- text fonts -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-
     <!-- ace styles -->
     <link href="~/assets/css/ace.min.css" rel="stylesheet" />
-
     <link href="~/assets/css/ace-rtl.min.css" rel="stylesheet" />
     <script src="~/scripts/jquery-1.10.2.min.js"></script>
     <script src="~/scripts/jquery.validate.min.js" type="text/javascript"></script>
     <script src="~/scripts/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
     <!-- Socket js -->
-    <script src="http://localhost:8088/socket.io/socket.io.js"></script>
+    <script src="http://ozo.vn:8088/socket.io/socket.io.js"></script>
 </head>
 <body class="login-layout light-login">
     <div class="main-container">
@@ -41,9 +44,7 @@
                                 <span class="red">OZO.VN</span>
                             </h1>
                         </div>
-
                         <div class="space-6"></div>
-
                         <div class="position-relative">
                             <div id="login-box" class="login-box visible widget-box no-border">
                                 <div class="widget-body">
@@ -52,7 +53,6 @@
                                             <i class="ace-icon fa fa-coffee green"></i>
                                             Đăng nhập
                                         </h4>
-
                                         <div class="space-6"></div>
                                         @using (Html.BeginForm("Login", "Account", FormMethod.Post))
                                         {
@@ -88,10 +88,9 @@
                                                         </span>
                                                 </label>
                                                 <div class="space"></div>
-
                                                 <div class="clearfix">
                                                     <label class="inline">
-                                                        <input name="@Html.NameFor(m=>m.RememberMe)" type="checkbox" class="ace" value="true" id="Status" @if (ViewBag.RememberMe == true) { <text> checked='checked' </text>         } />
+                                                        <input name="@Html.NameFor(m=>m.RememberMe)" type="checkbox" class="ace" value="true" id="Status" @if (ViewBag.RememberMe == true) { <text> checked='checked' </text>           } />
                                                         <span class="lbl"> Nhớ tài khoản</span>
                                                     </label>
                                                     <a href="@Url.Action("ForgotPassword", "Page")" class="elements" style="padding-left: 80px;">
@@ -117,7 +116,6 @@
                                     </div><!-- /.widget-main -->
                                 </div><!-- /.widget-body -->
                             </div><!-- /.login-box -->
-
                             <div id="forgot-box" class="forgot-box widget-box no-border">
                                 <div class="widget-body">
                                     <div class="widget-main">
@@ -125,12 +123,10 @@
                                             <i class="ace-icon fa fa-key"></i>
                                             Retrieve Password
                                         </h4>
-
                                         <div class="space-6"></div>
                                         <p>
                                             Enter your email and to receive instructions
                                         </p>
-
                                         <form>
                                             <fieldset>
                                                 <label class="block clearfix">
@@ -139,7 +135,6 @@
                                                         <i class="ace-icon fa fa-envelope"></i>
                                                     </span>
                                                 </label>
-
                                                 <div class="clearfix">
                                                     <button type="button" class="width-35 pull-right btn btn-sm btn-danger">
                                                         <i class="ace-icon fa fa-lightbulb-o"></i>
@@ -149,7 +144,6 @@
                                             </fieldset>
                                         </form>
                                     </div><!-- /.widget-main -->
-
                                     <div class="toolbar center">
                                         <a href="#" data-target="#login-box" class="back-to-login-link">
                                             Back to login
@@ -158,7 +152,6 @@
                                     </div>
                                 </div><!-- /.widget-body -->
                             </div><!-- /.forgot-box -->
-
                             <div id="signup-box" class="signup-box widget-box no-border">
                                 <div class="widget-body">
                                     <div class="widget-main">
@@ -166,10 +159,8 @@
                                             <i class="ace-icon fa fa-users blue"></i>
                                             New User Registration
                                         </h4>
-
                                         <div class="space-6"></div>
                                         <p> Enter your details to begin: </p>
-
                                         <form>
                                             <fieldset>
                                                 <label class="block clearfix">
@@ -178,28 +169,24 @@
                                                         <i class="ace-icon fa fa-envelope"></i>
                                                     </span>
                                                 </label>
-
                                                 <label class="block clearfix">
                                                     <span class="block input-icon input-icon-right">
                                                         <input type="text" class="form-control" placeholder="Username" />
                                                         <i class="ace-icon fa fa-user"></i>
                                                     </span>
                                                 </label>
-
                                                 <label class="block clearfix">
                                                     <span class="block input-icon input-icon-right">
                                                         <input type="password" class="form-control" placeholder="Password" />
                                                         <i class="ace-icon fa fa-lock"></i>
                                                     </span>
                                                 </label>
-
                                                 <label class="block clearfix">
                                                     <span class="block input-icon input-icon-right">
                                                         <input type="password" class="form-control" placeholder="Repeat password" />
                                                         <i class="ace-icon fa fa-retweet"></i>
                                                     </span>
                                                 </label>
-
                                                 <label class="block">
                                                     <input type="checkbox" class="ace" />
                                                     <span class="lbl">
@@ -207,25 +194,20 @@
                                                         <a href="#">User Agreement</a>
                                                     </span>
                                                 </label>
-
                                                 <div class="space-24"></div>
-
                                                 <div class="clearfix">
                                                     <button type="reset" class="width-30 pull-left btn btn-sm">
                                                         <i class="ace-icon fa fa-refresh"></i>
                                                         <span class="bigger-110">Reset</span>
                                                     </button>
-
                                                     <button type="button" class="width-65 pull-right btn btn-sm btn-success">
                                                         <span class="bigger-110">Register</span>
-
                                                         <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
                                                     </button>
                                                 </div>
                                             </fieldset>
                                         </form>
                                     </div>
-
                                     <div class="toolbar center">
                                         <a href="#" data-target="#login-box" class="back-to-login-link">
                                             <i class="ace-icon fa fa-arrow-left"></i>
@@ -235,7 +217,6 @@
                                 </div><!-- /.widget-body -->
                             </div><!-- /.signup-box -->
                         </div><!-- /.position-relative -->
-
                         <div class="navbar-fixed-top align-right">
                             <br />
                             &nbsp;
@@ -264,7 +245,6 @@
     <script type="text/javascript">
         window.jQuery || document.write("<script src='assets/js/jquery.min.js'>" + "<" + "/script>");
     </script>
-
     <!-- <![endif]-->
     <!--[if IE]>
     <script type="text/javascript">
@@ -274,7 +254,6 @@
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
     </script>
-
     <!-- inline scripts related to this page -->
     <script type="text/javascript">
         jQuery(function ($) {
@@ -316,17 +295,30 @@
 
         $(document).ready(function () {
             //when create account succes and rendirect to login then set flagCreateAccount = true;
-            var flagCreateAccount = true;
-            if (flagCreateAccount) {
+            var notifyId = $('#noti-id').val();
+            if (notifyId != 0) {
                 var notify = {};
-                notify.title = 'Tạo mới tài khoản';
-                notify.id = '1';
-                //connect notify server 
-                var socket = io.connect('http://localhost:8088');
+                notify.title = $('#noti-title').val();
+                //notify id
+                notify.id = notifyId;
+                notify.type = 1;
+                //user name
+                notify.name = $('#noti-user-name').val();
+                //link image avatar
+                notify.avatar = "/assets/avatars/avatar.png";
+                notify.time = $('#noti-time').val();
+                //connect notify server
+                var socket = io.connect('http://ozo.vn:8088');
                 socket.emit('send-to-admin', notify);
             }
-  
+
         });
     </script>
+
+    <input type="hidden" value="@noti.Title" id="noti-title" />
+    <input type="hidden" value="@noti.Id" id="noti-id" />
+    <input type="hidden" value="@noti.Type" id="noti-type" />
+    <input type="hidden" value="@noti.UserName" id="noti-user-name" />
+    <input type="hidden" value="@noti.DateSend" id="noti-time" />
 </body>
 </html>

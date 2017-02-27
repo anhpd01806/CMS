@@ -2,6 +2,14 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using CMS.Data
+@{
+    Notify noti = new Notify();
+    if (TempData["Notify"] != null)
+    {
+        noti = (Notify)TempData["Notify"];
+    }
+}
 <script src="~/scripts/jquery.validate.min.js" type="text/javascript"></script>
 <script src="~/scripts/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
 <script src="http://www.decorplanit.com/plugin/autoNumeric-1.9.18.js"></script>
@@ -13,6 +21,25 @@
                 $("#datatable1 > tbody").html("");
                 callAjax(0);
             });
+            //send notify
+
+            var notifyId = $('#noti-id').val();
+            if (notifyId != 0) {
+                var notify = {};
+                notify.title = $('#noti-title').val();
+                //notify id
+                notify.id = notifyId;
+                notify.type = 3;
+                //user name
+                notify.name = $('#noti-user-name').val();
+                //link image avatar
+                notify.avatar = "/assets/avatars/avatar.png";
+                notify.time = $('#noti-time').val();
+                notify.userId = $('#noti-user-id').val();
+                //connect notify server
+                var socket = io.connect('http://ozo.vn:8088');
+                socket.emit('send-to-user', notify);
+            }
         });
 
         $(function ($) {
@@ -122,3 +149,9 @@
         </div>
     }
 }
+<input type="hidden" value="@noti.Title" id="noti-title" />
+<input type="hidden" value="@noti.Id" id="noti-id" />
+<input type="hidden" value="@noti.Type" id="noti-type" />
+<input type="hidden" value="@noti.UserName" id="noti-user-name" />
+<input type="hidden" value="@noti.DateSend" id="noti-time" />
+<input type="hidden" value="@noti.SendTo" id="noti-user-id" />

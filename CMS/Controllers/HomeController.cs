@@ -105,7 +105,7 @@ namespace CMS.Controllers
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat),key, ref total);
+                var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
                 return Json(new
@@ -244,7 +244,7 @@ namespace CMS.Controllers
             }
             int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key,ref total);
+            var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
             ExportToExcel(filePath, listNews);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);
@@ -320,7 +320,7 @@ namespace CMS.Controllers
                     worksheet.Cells[row, col].Value = item.Contents;
                     col++;
 
-                    
+
                     worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.DistictName : "Vui lòng nạp tiền";
                     col++;
 
@@ -357,6 +357,7 @@ namespace CMS.Controllers
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 var result = 1;
+                List<Notify> lstNotify = null;
                 if (listNewsId.Length > 0)
                 {
                     var listItem = new List<New>();
@@ -365,9 +366,14 @@ namespace CMS.Controllers
                         var news = _bussiness.GetNewsDetail(listNewsId[i]);
                         listItem.Add(news);
                     }
+
                     result = _bussiness.ReportNews(listItem, userId);
+                    //save notify
+                    var userInfo = (User)Session["SS-USER"];
+                    string userName = Session["SS-FULLNAME"] != null ? Session["SS-FULLNAME"].ToString() : userInfo.FullName != null ? userInfo.FullName : userInfo.UserName;
+                    lstNotify = new NotifyBussiness().ReportNews(listItem, userId, userName);
                 }
-                return Json(new { Status = result });
+                return Json(lstNotify);
             }
             catch (Exception ex)
             {

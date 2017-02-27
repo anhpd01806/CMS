@@ -2,8 +2,8 @@
 using CMS.Data;
 using CMS.Helper;
 using CMS.ViewModel;
-using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -32,17 +32,27 @@ namespace CMS.Controllers
         {
             try
             {
-                if (Session["SS-USERID"] != null) return RedirectToAction("Index", "Home");
+                if (Session["SS-USERID"] != null)
+                {
+                    int userId = (int)Session["SS-USERID"];
+                    bool checkUser = (bool)Session["IS-USERS"];
+                    GetNotifyUser(checkUser, userId);
+                    Session.Add("SS-USERINFO", checkUser?1:0);
+                    return RedirectToAction("Index", "Home");
+                }
                 AccountViewModel model = new AccountViewModel();
 
                 string username = "false";
                 HttpCookie reCookie = Request.Cookies["rememberCookies"];
                 if (reCookie != null) { username = Server.HtmlEncode(reCookie.Value); }
+                bool isUser = CheckUserIsUser(int.Parse(username.Split(',')[1].Trim()));
+                GetNotifyUser(isUser, int.Parse(username.Split(',')[1].Trim()));
+                Session.Add("SS-USERINFO", isUser);
                 if (username.Split(',')[0].Trim().ToLower() == "true")
                 {
                     if (!CheckUserLogin(int.Parse(username.Split(',')[1].Trim())))
                     {
-                        TempData["Error"] = "Tài khoản đang sử dụng phần mềm. vui lòng thử lại sau 5 phút.";
+                        TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thử lại sau 5 phút.";
                         return View(model);
                     }
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
@@ -93,7 +103,15 @@ namespace CMS.Controllers
                         rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName) + "," + user.IsFree;
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
-
+                        //check login user
+                        if (!CheckUserLogin(user.Id))
+                        {
+                            TempData["Error"] = "Tài khoản đang sử dụng phần mềm. vui lòng thử lại sau.";
+                            return RedirectToAction("Login", "Account");
+                        }
+                        bool isUser = (bool)Session["IS-USERS"];
+                        GetNotifyUser(isUser, user.Id);
+                        Session.Add("SS-USERINFO", isUser?1:0);
                         return RedirectToAction("Index", "Home");
                     }
                     ModelState.AddModelError("CredentialError", "Mật khẩu không đúng hoặc bạn chưa có quyền đăng nhập. vui lòng liên hệ sđt " + Information.HOT_PHONE_NUMBER);
@@ -179,6 +197,24 @@ namespace CMS.Controllers
                             IsFree = false
                         };
                         var userId = new UserBussiness().Insert(u);
+                        //Insert to tbl notify
+                        var notify = new Notify
+                        {
+                            UserName = "Guest",
+                            Userid = userId,
+                            SendFlag = true,
+                            DateSend = DateTime.Now,
+                            Title = "Yêu cầu tạo tài khoản mới",
+                            Accepted = false,
+                            ViewFlag = false,
+                            Type = 1
+                        };
+                        var notifyId = new NotifyBussiness().Insert(notify);
+                        //set iduser vừa insert vào
+                        notify.Id = notifyId;
+                        //gan notify vao viewbag
+                        TempData["Notify"] = notify;
+
                         var roleUser = new Role_User
                         {
                             UserId = userId,
@@ -262,6 +298,24 @@ namespace CMS.Controllers
                 Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && DateTime.Now.Date <= x.EndDate.Date);
                 Session["IS-USERS"] = true;
             }
+        }
+
+        private void GetNotifyUser(bool IsUser, int UserId)
+        {
+            List<Models.NoticeModel> lstNotify = new NotifyBussiness().GetNotify(IsUser, UserId);
+            Session["NotityUser"] = lstNotify;
+        }
+
+        private Boolean CheckUserIsUser(int userId)
+        {
+            var rs = (from r in db.Roles
+                      join ru in db.Role_Users
+                      on r.Id equals ru.RoleId
+                      join u in db.Users
+                      on ru.UserId equals u.Id
+                      where r.Id == 2 && u.Id == userId
+                      select r).Any();
+            return rs;
         }
     }
 }
