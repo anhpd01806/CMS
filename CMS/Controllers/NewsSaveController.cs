@@ -43,7 +43,7 @@ namespace CMS.Controllers
                         var listchillcate = _homebussiness.GetChilldrenlistCategory(item.Id);
                         foreach (var chill in listchillcate)
                         {
-                            cateListItems.Add(new SelectListItem { Text = ("\xA0\xA0\xA0" + item.Name + " >> " + chill.Name), Value = chill.Id.ToString() });
+                            cateListItems.Add(new SelectListItem { Text = ("\xA0\xA0\xA0" + ">> " + chill.Name), Value = chill.Id.ToString() });
                         }
                     }
                 }
