@@ -13,35 +13,26 @@ namespace CMS.Controllers
 {
     public class CustomerController : BaseAuthedController
     {
-        // GET: Customer
+        // GET: User
         public ActionResult Index()
         {
             UserViewModel model = new UserViewModel();
-            //int totalpage = 0;
             var managerList = new UserBussiness().GetManagerUser();
-            managerList.Add(new SelectListItem { Text = "Tất cả", Value = "-1" });
-            model.ManagerList = managerList.ToList();
+            managerList.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
+            model.ManagerList = managerList.OrderBy(x=>x.Value).ToList();
             model.ManagerId = int.Parse(Session["SS-USERID"].ToString());
-            model.Totalpage = (int)Math.Ceiling((double)new UserBussiness().GetCustomerUser(model.ManagerId).Count / (double)20);
+            model.Totalpage = 2;
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Index(UserModel model)
-        {
-            new UserBussiness().UpdateCustomer(model); 
-            return RedirectToAction("Index","Notice");
-        }
-
-        [HttpPost]
-        public JsonResult LoadData(string search, string pageIndex,string managerId)
+        public JsonResult LoadData(string search, string pageIndex, int managerId)
         {
             try
             {
                 int totalpage = 0;
-                int manId = int.Parse(managerId);
                 UserViewModel model = new UserViewModel();
-                model.UserList = GetCustomerList(ref totalpage, int.Parse(pageIndex), 20, search, manId);
+                model.UserList = GetCustomerList(ref totalpage, int.Parse(pageIndex), 20, search, managerId);
                 var content = RenderPartialViewToString("~/Views/Customer/CustomerDetail.cshtml", model.UserList);
                 model.Totalpage = totalpage;
                 return Json(new
@@ -57,89 +48,6 @@ namespace CMS.Controllers
                     TotalPage = 0
                 }, JsonRequestBehavior.AllowGet);
             }
-        }
-
-
-        public ActionResult Create()
-        {
-            UserModel model = new UserModel();
-            var allRoles = new RoleBussiness().GetRoles();
-            model.ManagerList = new UserBussiness().GetManagerUser();
-            if (allRoles != null)
-            {
-                List<RoleModel> lstRoles = new List<RoleModel>();
-                foreach (var role in allRoles)
-                {
-                    RoleModel roleView = new RoleModel
-                    {
-                        Id = role.Id,
-                        Name = role.Name
-                    };
-                    lstRoles.Add(roleView);
-                }
-                model.ListRoles = lstRoles;
-            }
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult Create(UserModel model, string[] selectRoles)
-        {
-            if (ModelState.IsValid)
-            {
-                var u = new User
-                {
-                    UserName = model.UserName,
-                    FullName = model.FullName,
-                    Password = Helpers.md5(model.UserName.Trim() + "ozo" + model.PassWord.Trim()),
-                    Sex = model.Sex,
-                    Phone = model.UserName,
-                    Email = "",
-                    ManagerBy = int.Parse(model.ManagerBy),
-                    IsDeleted = false,
-                    IsMember = true,
-                    IsFree = true
-                };
-
-                int userId = 0;
-                try
-                {
-                    userId = new UserBussiness().Insert(u);
-                }
-                catch (Exception)
-                {
-                    TempData["Error"] = Messages_Contants.ERROR_COMMON;
-                    return RedirectToAction("Create", "User");
-                }
-
-                List<Role_User> lstRoleUser = new List<Role_User>();
-                if (selectRoles != null)
-                {
-                    lstRoleUser.AddRange(selectRoles.Select(roleId => new Role_User
-                    {
-                        UserId = userId,
-                        RoleId = Convert.ToInt32(roleId)
-                    }));
-                    // Insert User to Roles
-                    try
-                    {
-                        foreach (var item in lstRoleUser)
-                        {
-                            new RoleUserBussiness().Insert(item);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        TempData["Error"] = ex;
-                        return RedirectToAction("Create", "User");
-                    }
-                }
-                TempData["Success"] = Messages_Contants.SUCCESS_INSERT;
-
-                return RedirectToAction("Create", "User");
-
-            }
-            return View(model);
         }
 
         public ActionResult Edit(int id)
@@ -277,10 +185,6 @@ namespace CMS.Controllers
             return RedirectToAction("UserInformation", "User");
         }
 
-        public ActionResult DetailInformation()
-        {
-            return View();
-        }
         #region Private funtion
         private string GetNameRole(List<Role> role, List<Role_User> roleUser, int userId)
         {
@@ -294,8 +198,9 @@ namespace CMS.Controllers
         //get all khách hàng
         private List<UserModel> GetCustomerList(ref int pageTotal, int pageIndex, int pageSize, string search,int managerId)
         {
-            var admin = new UserBussiness().GetAdminUser().ToList();
-            var allUser = new UserBussiness().GetCustomerUser(managerId).Where(x => x.UserName.Contains(search)).ToList();
+            var allAdmin = new UserBussiness().GetAdminUser();
+            var allUser = new UserBussiness().GetCustomerUser(managerId).Where(x => x.UserName.Contains(search) || x.FullName.Contains(search)
+                                                                                ||x.Phone.Contains(search)).ToList();
             var allRoles = new RoleBussiness().GetRoles();
             var allRolesUser = new RoleUserBussiness().GetAllRoleUser();
             pageTotal = (int)Math.Ceiling((double)allUser.Count / (double)pageSize);
@@ -309,7 +214,7 @@ namespace CMS.Controllers
                         Email = a.Email,
                         IsDelete = a.IsDeleted ?? false,
                         IsMember = a.IsMember ?? false,
-                        ManagerBy = a.ManagerBy != null ? admin.Where(x => x.Id == a.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "",
+                        ManagerBy = a.ManagerBy != null ? allAdmin.Where(x => x.Id == a.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "",
                         RoleName = GetNameRole(allRoles, allRolesUser, a.Id),
                         IsOnline = CheckCustomerOnline(a.Id)
                     }).OrderBy(x => x.IsMember).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();

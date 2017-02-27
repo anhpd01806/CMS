@@ -18,75 +18,15 @@
                 document.location.href = '/Customer/RemoveUser/' + id;
             });
 
-            //phân trang
-            var totalpage = parseInt($('#TotalPage').attr("data-total"));
-            debugger;
-            if (totalpage > 1) {
-                $('#pagination').twbsPagination({
-                    totalPages: totalpage,
-                    visiblePages: 5,
-                    first: 'Trang đầu',
-                    prev: 'Trước',
-                    next: 'Tiếp',
-                    last: 'Trang cuối',
-                    onPageClick: function (event, page) {
-                        $.LoadingOverlay("show");
-                        var search = $('#Seach').val();
-                        var pageIndex = page;
-                        var managerId = $('#ManagerId').val();
-                        var data = {
-                            search: search, pageIndex: pageIndex, managerId: managerId
-                        };
-                        $.post("/Customer/LoadData", data, function (resp) {
-                            if (resp != null) {
-                                debugger
-                                $("#datatable1 tbody").html("");
-                                $("#datatable1 tbody").html(resp.Content);
-                                if (resp.TotalPage > 1) {
-                                    $(".page-home").show();
-                                } else {
-                                    $(".page-home").hide();
-                                }
-                                $('#TotalPage').attr("data-total", resp.TotalPage);
-                                $('#TotalPage').attr("data-page", page);
-                                $.LoadingOverlay("hide");
-                            }
-                        });
-                    }
-                });
-            }
-
-            //search data
-            $('#Seach').focusout(function () {
-                $.LoadingOverlay("show");
-                var search = $('#Seach').val();
-                var pageIndex = 1;
-
-                var data = {
-                    search: search, pageIndex: pageIndex
-                };
-                $.post("/Customer/LoadData", data, function (resp) {
-                    if (resp != null) {
-                        debugger
-                        $("#datatable1 tbody").html("");
-                        $("#datatable1 tbody").html(resp.Content);
-                        if (resp.TotalPage > 1) {
-                            $(".page-home").show();
-                            showPagination(resp.TotalPage);
-                        } else {
-                            $(".page-home").hide();
-                        }
-                        $.LoadingOverlay("hide");
-                    }
-                });
-            });
+            // load data
+            LoadData();
         });
 
-        //load data by manager
-        function LoadDataByManager() {
+        function LoadData() {
             $.LoadingOverlay("show");
             var search = $('#Seach').val();
             var pageIndex = 1;
+
             var managerId = $('#ManagerId').val();
             var data = {
                 search: search, pageIndex: pageIndex, managerId: managerId
@@ -107,9 +47,17 @@
             });
         }
 
+        function LoadDataByManager() {
+            LoadData();
+        }
+
+        function SearchData() {
+            LoadData();
+        }
+
         function showPagination(totalpage) {
             $('#pagination').remove();
-            $('.homepagging').html('<div class="pagination" id="pagination"></div>');
+            $('.paging_simple_numbers').html('<div class="pagination" id="pagination"></div>');
             $('#pagination').twbsPagination({
                 totalPages: totalpage,
                 visiblePages: 5,
@@ -121,6 +69,7 @@
                     $.LoadingOverlay("show");
                     var search = $('#Seach').val();
                     var pageIndex = page;
+
                     var managerId = $('#ManagerId').val();
                     var data = {
                         search: search, pageIndex: pageIndex, managerId: managerId
@@ -170,9 +119,9 @@
                             <label class="col-xs-1 lblsearch">Tìm kiếm: </label>
                             <div class="col-xs-8">
                                 <div class="input-group">
-                                    <input class="form-control txtsearchkey" placeholder="Nhập vào tên đăng nhập, tên khách hàng, số điện thoại..." type="text" />
+                                    <input class="form-control txtsearchkey" id="Seach" placeholder="Nhập vào tên đăng nhập, tên khách hàng, số điện thoại" type="text" />
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-inverse btn-white btnsearch">
+                                        <button type="button" onclick="SearchData()" class="btn btn-inverse btn-white btnsearch">
                                             <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
                                             Tìm
                                         </button>
@@ -199,8 +148,6 @@
                                     @Html.DropDownListFor(m => m.ManagerId, Model.ManagerList, new { @class = "form-control", @onchange = "LoadDataByManager()" })
                                 </div>
                             </div>
-                            <div class="col-xs-6">
-                            </div><div class="col-xs-6"><div id="datatable1_filter" class="dataTables_filter"><label>Tìm:<input type="search" id="Seach" class="form-control input-sm" aria-controls="datatable1"></label></div></div>
                         </div>
                         <table id="datatable1" class="table table-striped table-bordered table-hover">
                             <thead>

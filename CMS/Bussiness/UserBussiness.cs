@@ -25,7 +25,7 @@ namespace CMS.Bussiness
 
         public List<User> GetCustomerUser(int managerId)
         {
-            return db.Users.Where(x => x.IsFree == false && (x.ManagerBy == managerId || managerId == -1)).OrderBy(m => m.Id).ToList();
+            return db.Users.Where(x => x.IsFree == false && (x.ManagerBy == managerId || managerId == 0)).OrderBy(m => m.Id).ToList();
         }
 
         public User GetUserById(int id)
