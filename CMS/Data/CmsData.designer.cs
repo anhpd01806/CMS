@@ -13722,6 +13722,10 @@ namespace CMS.Data
 		
 		private bool _Isdelete;
 		
+		private bool _IsSpam;
+		
+		private bool _Isdeleted;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -13734,6 +13738,10 @@ namespace CMS.Data
     partial void OnCustomerIDChanged();
     partial void OnIsdeleteChanging(bool value);
     partial void OnIsdeleteChanged();
+    partial void OnIsSpamChanging(bool value);
+    partial void OnIsSpamChanged();
+    partial void OnIsdeletedChanging(bool value);
+    partial void OnIsdeletedChanged();
     #endregion
 		
 		public News_Trash()
@@ -13817,6 +13825,46 @@ namespace CMS.Data
 					this._Isdelete = value;
 					this.SendPropertyChanged("Isdelete");
 					this.OnIsdeleteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit NOT NULL")]
+		public bool IsSpam
+		{
+			get
+			{
+				return this._IsSpam;
+			}
+			set
+			{
+				if ((this._IsSpam != value))
+				{
+					this.OnIsSpamChanging(value);
+					this.SendPropertyChanging();
+					this._IsSpam = value;
+					this.SendPropertyChanged("IsSpam");
+					this.OnIsSpamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Isdeleted", DbType="Bit NOT NULL")]
+		public bool Isdeleted
+		{
+			get
+			{
+				return this._Isdeleted;
+			}
+			set
+			{
+				if ((this._Isdeleted != value))
+				{
+					this.OnIsdeletedChanging(value);
+					this.SendPropertyChanging();
+					this._Isdeleted = value;
+					this.SendPropertyChanged("Isdeleted");
+					this.OnIsdeletedChanged();
 				}
 			}
 		}

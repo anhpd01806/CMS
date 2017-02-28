@@ -340,7 +340,7 @@
         <classShapeMoniker Id="42f34f0c-a391-491f-b6ca-92207e2dca4e" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(1.75 : 3.625); (1.75 : 3.1249995); (3.5 : 3.1249995)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(1.75 : 3.625); (1.75 : 3.1249995); (3.5 : 3.1249995)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/CmsDataDataContext/Customer/Customer_CustomerAddress" />
       <nodes>
         <classShapeMoniker Id="4ebe7045-f0fd-4745-9723-848621706cf1" />
@@ -435,10 +435,10 @@
         <elementListCompartment Id="a6452d34-3ca2-4743-b909-a4227f635718" absoluteBounds="7.39, 2.21, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="92973df2-5f31-4c50-a261-e93e8043a8c7" absoluteBounds="4.875, 0.75, 2, 1.5785953776041666">
+    <classShape Id="828db13c-7ec8-4454-b48b-05ddb5e83e76" absoluteBounds="3.875, 0.5, 2, 1.9631982421875">
       <DataClassMoniker Name="/CmsDataDataContext/News_Trash" />
       <nestedChildShapes>
-        <elementListCompartment Id="6c5d7e18-2aa1-4f57-9885-8de6423cbddd" absoluteBounds="4.89, 1.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="325e7429-905d-4252-a38e-78eb57ff6d2a" absoluteBounds="3.8899999999999997, 0.96, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
