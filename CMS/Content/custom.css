@@ -67,7 +67,7 @@ label, .lbl {
 
 .custom-table {
     margin-bottom: 0;
-    display: inline-block;
+    display: inline-table;
 }
 
 .customheader {
