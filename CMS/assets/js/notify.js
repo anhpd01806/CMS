@@ -26,6 +26,18 @@ $(document).ready(function () {
         $('#ul-notify').prepend(tagLi);
         //update count notify
         $('#count-notify').attr('data-badge', parseInt(typeof ($('#count-notify').data('badge')) === "undefined" ? 0 : $('#count-notify').data('badge')) + 1);
+        $.ajax({
+            type: "GET",
+            url: "/Notice/UpdateNotifySesion",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+
+            },
+            error: function (response) {
+                alert('Có lỗi xẩy ra khi lấy dữ liệu trong database !');
+            }
+        });
     });
 
     $('#btn-accept-acount').click(function () {
@@ -79,7 +91,8 @@ function DetailNotify(id, type) {
         }
     });
     if (type == 2) {
-        $.ajax({
+        window.location = '/ReportNews/Index';
+        /*$.ajax({
             type: "GET",
             url: "/Notice/GetNotify",
             data: { Id: id },
@@ -96,9 +109,10 @@ function DetailNotify(id, type) {
             error: function (response) {
                 alert('Có lỗi xẩy ra khi lấy dữ liệu trong database !');
             }
-        });
+        });*/
     }
     if (type == 3) {
+
         $.ajax({
             type: "GET",
             url: "/Notice/GetNotify",
@@ -131,15 +145,16 @@ function DetailNotify(id, type) {
                 if (result) {
 
                     //set date for modal
-                    $('#nt-user-name').text(result.Account);
-                    $('#nt-full-name').text(result.FullName);
-                    $('#nt-gender').text(result.Gender ? 'Nam' : 'Nữ');
-                    $('#nt-phone').text(result.Phone);
-                    $('#nt-email').text(result.Email);
-                    $('#btn-accept-acount').attr('data-id', result.Id);
-                    $('#btn-accept-acount').attr('data-userid', result.Userid);
+                    //$('#nt-user-name').text(result.Account);
+                    //$('#nt-full-name').text(result.FullName);
+                    //$('#nt-gender').text(result.Gender ? 'Nam' : 'Nữ');
+                    //$('#nt-phone').text(result.Phone);
+                    //$('#nt-email').text(result.Email);
+                    //$('#btn-accept-acount').attr('data-id', result.Id);
+                    //$('#btn-accept-acount').attr('data-userid', result.Userid);
+                    window.location = '/Customer/Edit/' + result.Userid;
                     //show modal notify create account
-                    $('#md-notify-account').modal('show');
+                    //$('#md-notify-account').modal('show');
                 }
 
             },

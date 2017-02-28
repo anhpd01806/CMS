@@ -28,13 +28,13 @@ namespace CMS.Controllers
                 return Json(notify, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
-            {             
+            {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
 
         //accept account 
-        public JsonResult AcceptAccount(string Id , string UserId)
+        public JsonResult AcceptAccount(string Id, string UserId)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace CMS.Controllers
                 new NotifyBussiness().UpdateNotifyView(id);
                 //update session
                 List<NoticeModel> lstNotify = (List<CMS.Models.NoticeModel>)Session["NotityUser"];
-                if(lstNotify != null)
+                if (lstNotify != null)
                 {
                     Session["NotityUser"] = (from n in lstNotify where n.Id != id select n).ToList();
                 }
@@ -75,7 +75,22 @@ namespace CMS.Controllers
             }
         }
 
+        public JsonResult UpdateNotifySesion()
+        {
+            try
+            {
+                //update session
+                List<NoticeModel> lstNotify = new NotifyBussiness().GetNotify(false, 1);
+                Session["NotityUser"] = lstNotify;
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 
-   
+
 }

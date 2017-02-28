@@ -619,8 +619,10 @@
 
     </script>
     @{
-        int id = 1;
-        int isUser = 1;
+        //int id = 1;
+        //int isUser = 1;
+        int id = (int)@Session["SS-USERID"];
+        int isUser = (int)@Session["SS-USERINFO"];
         //bool isUser = true;
     }
     <input type="hidden" value="@id" id="user-id">
