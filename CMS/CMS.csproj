@@ -3090,6 +3090,7 @@
     <Content Include="Views\Customer\Edit.cshtml" />
     <Content Include="Views\Customer\CustomerDetail.cshtml" />
     <Content Include="Views\Customer\DetailInformation.cshtml" />
+    <Content Include="Views\Customer\PaymentDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

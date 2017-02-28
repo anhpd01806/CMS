@@ -8,9 +8,8 @@
         counter = counter + 1;
         <tr>
             <td class="text-center">@counter</td>
+            <td><a onclick="CustomerDetail(@u.Id)">@u.UserName</a></td>
             <td>@u.FullName</td>
-            <td>@u.UserName</td>
-            <td>@u.Phone</td>
             <td class="text-center">
                 @if (u.IsDelete == true)
                 { <span class="label label-inverse">TK bị khóa</span>}

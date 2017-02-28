@@ -109,5 +109,13 @@ namespace CMS.Bussiness
                 return string.Format("{0:n0}", cash.AmountTotal);
             else return "0";
         }
+
+        public string GetTimePaymentByUserId(int userId)
+        {
+            var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            if (cash != null)
+                return string.Format(cash.EndDate.ToString("dd/MM/yyyy"));
+            else return "Chưa đăng ký gói cước";
+        }
     }
 }

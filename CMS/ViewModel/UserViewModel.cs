@@ -14,6 +14,7 @@ namespace CMS.ViewModel
 
         public List<SelectListItem> ManagerList { get; set; }
         public int ManagerId { get; set; }
+        public CustomerDetail CustomerDetail { get; set; }
     }
 
     public class UserModel
@@ -34,9 +35,9 @@ namespace CMS.ViewModel
         [Required(ErrorMessage = "Không được để trống")]
         [System.Web.Mvc.Compare("PassWord", ErrorMessage = "Mật khẩu xác nhận không khớp.")]
         public string ConfirmPassWord { get; set; }
-        
+
         public string Phone { get; set; }
-        
+
         public string Email { get; set; }
         public Boolean IsMember { get; set; }
         public Boolean IsRestore { get; set; }
@@ -79,5 +80,16 @@ namespace CMS.ViewModel
 
         [DataMember(Name = "error-codes")]
         public string[] ErrorCodes { get; set; }
+    }
+
+    public class CustomerDetail
+    {
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public string ManagerBy { get; set; }
+        public string TimeEnd { get; set; }
+        public string Amount { get; set; }
+        public string LastLogin { get; set; }
     }
 }

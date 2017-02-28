@@ -21,7 +21,8 @@
             // load data
             LoadData();
         });
-
+        var page = 1;
+        var UserId = 0;
         function LoadData() {
             $.LoadingOverlay("show");
             var search = $('#Seach').val();
@@ -47,14 +48,17 @@
             });
         }
 
+        // load data bởi quản trị viên
         function LoadDataByManager() {
             LoadData();
         }
 
+        // tìm kiếm dữ liệu
         function SearchData() {
             LoadData();
         }
 
+        // phân trang
         function showPagination(totalpage) {
             $('#pagination').remove();
             $('.paging_simple_numbers').html('<div class="pagination" id="pagination"></div>');
@@ -92,6 +96,75 @@
                 }
             });
         }
+
+        //lấy chi tiết khách hàng
+        function CustomerDetail(id) {
+            $.LoadingOverlay("show");
+            var data = {
+                id: id
+            };
+            $.post("/Customer/CustomerDetail", data, function (resp) {
+                if (resp != null) {
+                    debugger
+                    $("#CustomerDetail").html("");
+                    $("#CustomerDetail").html(resp.Content);
+                }
+            });
+
+            var dataPayment = {
+                UserId: id,
+                Page: 0
+            };
+            $.post("/Customer/GetHistoryPayment", dataPayment, function (resp) {
+                if (resp != null) {
+                    debugger
+                    $("#PayMentCustomer").html("");
+                    $("#PayMentCustomer").html(resp.Content);
+                    UserId = resp.UserId;
+                }
+            });
+            $.LoadingOverlay("hide");
+            page = 1;
+        }
+        var count = 21;
+        // load thêm lịch sứ
+        function LoadMore() {
+            debugger;
+            var dataPayment = {
+                UserId: UserId,
+                Page: page
+            };
+            $.ajax({
+                type: "GET",
+                url: "/Customer/LoadMoreHistory",
+                data: dataPayment,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $.each(result, function (i, item) {
+                        $('<tr>').append(
+                        $('<td class="text-center">').text(count),
+                        $('<td>').text(item.DateString),
+                        $('<td>').text(item.PaymentMethod),
+                        $('<td>').text(item.Amount),
+                        $('<td>').text(item.Notes)).appendTo('#HistoryPayment > tbody');
+                        count++;
+                    });
+                },
+                error: function (response) {
+                    debugger;
+                    alert('eror');
+                }
+            });
+            page++;
+            return false;
+        }
+
+        //xuất excel
+        function ExportExcel(id) {
+                var url = "/Customer/ExportExcel";
+                location.href = decodeURIComponent(url + "?userId=" + id + "&page=" + page);
+        }
     </script>
 }
 @section menu{
@@ -119,7 +192,7 @@
                             <label class="col-xs-1 lblsearch">Tìm kiếm: </label>
                             <div class="col-xs-8">
                                 <div class="input-group">
-                                    <input class="form-control txtsearchkey" id="Seach" placeholder="Nhập vào tên đăng nhập, tên khách hàng, số điện thoại" type="text" />
+                                    <input class="form-control txtsearchkey" id="Seach" placeholder="Nhập vào tên đăng nhập, tên khách hàng" type="text" />
                                     <span class="input-group-btn">
                                         <button type="button" onclick="SearchData()" class="btn btn-inverse btn-white btnsearch">
                                             <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
@@ -153,9 +226,8 @@
                             <thead>
                                 <tr>
                                     <th class="col-md-1 text-center">STT</th>
-                                    <th>Tên khách hàng</th>
                                     <th>Tên đăng nhập</th>
-                                    <th>Số điện thoại</th>
+                                    <th>Tên khách hàng</th>
                                     <th>Trạng thái</th>
                                     <th>Quản lý bởi</th>
                                     <th>Đang online</th>
@@ -168,15 +240,21 @@
                         <input type="hidden" id="TotalPage" data-total="@Model.Totalpage" data-page="1" />
                         @if (Model.Totalpage > 1)
                         {
-                            <div class="row page-home">
-                                <div class="col-xs-4"></div>
-                                <div class="col-xs-8">
-                                    <div class="dataTables_paginate paging_simple_numbers">
-                                        <div class="pagination" id="pagination"></div>
-                                    </div>
+                        <div class="row page-home">
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-8">
+                                <div class="dataTables_paginate paging_simple_numbers">
+                                    <div class="pagination" id="pagination"></div>
                                 </div>
                             </div>
+                        </div>
                         }
+                    </div>
+                    <div id="CustomerDetail">
+                      
+                    </div>
+                    <div id="PayMentCustomer" class="row">
+                      
                     </div>
                 </div>
             </div>

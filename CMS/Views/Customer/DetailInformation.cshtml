@@ -1,69 +1,68 @@
-﻿@model List<CMS.ViewModel.UserModel>
+﻿@model CMS.ViewModel.CustomerDetail
 
-@if (Model.Count > 0)
+@if (Model != null)
 {
-    int counter = 0;
-    foreach (var u in Model)
-    {
-        counter = counter + 1;
-        <tr>
-            <td>@counter</td>
-            <td>@u.FullName</td>
-            <td>@u.UserName</td>
-            <td>@u.Phone</td>
-            <td>
-                @if (u.IsDelete == true)
-                { <span class="label label-inverse">TK bị khóa</span>}
-                else if (u.IsMember == true)
-                { <span class="label label-warning arrowed-right arrowed-in">Kích hoạt</span>}
-                else
-                { <span class="label label-info arrowed">Chưa được duyệt</span>}
-            </td>
-            <td>@u.ManagerBy</td>
-            <td>@u.RoleName</td>
-            <td class="text-center">
-                <div class="hidden-sm hidden-xs action-buttons">
-                    <a class="green" href="/User/Edit/@u.Id">
-                        <i class="ace-icon fa fa-pencil bigger-130"></i>
-                    </a>
-                    <a class="green" href="/User/ResertPassword/@u.Id">
-                        <i class="fa fa-refresh"></i>
-                    </a>
-                    <a class="red" href="/User/RemoveUser/@u.Id">
-                        <i class="fa fa-ban" title="Chặn tài khoản"></i>
-                    </a>
+    <h3 class="header smaller lighter blue">Thông tin chi tiết</h3>
+    <div style="padding-bottom: 1%; padding-left: 91%;">
+        <button onclick="ExportExcel(@Model.UserId); return false;" class="btn btn-sm btn-danger btnexport btn-small">
+            <i class="icon-download-alt bigger-125"></i>
+            Xuất Excel
+        </button>
+    </div>
+    <div class="col-md-6 form" role="form">
+        <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+                <div class="profile-info-name">
+                    <label>Họ tên :</label>
                 </div>
-                <div class="hidden-md hidden-lg">
-                    <div class="inline position-relative">
-                        <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                            <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                            <li>
-                                <a href="/User/Edit/@u.Id" class="tooltip-success" data-rel="tooltip" title="Sửa">
-                                    <span class="green">
-                                        <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/User/ResertPassword/@u.Id" class="tooltip-success" data-rel="tooltip" title="Khôi phục mật khẩu">
-                                    <span class="green">
-                                        <i class="fa fa-refresh"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="tooltip-error delete-selected" data-rel="tooltip" title="Xóa" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
-                                    <span class="red">
-                                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="profile-info-value">
+                    <span>@Model.FullName</span>
                 </div>
-            </td>
-        </tr>
-    }
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name">
+                    <label>Số điện thoại</label>
+                </div>
+                <div class="profile-info-value">
+                    <span>@Model.UserName</span>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name">
+                    <label>Quản lý bởi</label>
+                </div>
+                <div class="profile-info-value">
+                    <span>@Model.ManagerBy</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 form" role="form">
+        <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+                <div class="profile-info-name">
+                    <label>Hết hạn</label>
+                </div>
+                <div class="profile-info-value">
+                    <span>@Model.TimeEnd </span>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name">
+                    <label>Số dư</label>
+                </div>
+                <div class="profile-info-value">
+                    <span>@Model.Amount vnđ</span>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name">
+                    <label>Login cuối</label>
+                </div>
+                <div class="profile-info-value">
+                    <span>@Model.LastLogin </span>
+                </div>
+            </div>
+        </div>
+    </div>
 }
