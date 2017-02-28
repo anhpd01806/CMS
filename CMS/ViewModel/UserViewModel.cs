@@ -26,6 +26,7 @@ namespace CMS.ViewModel
 
         [Required(ErrorMessage = "Không được để trống")]
         [Remote("doesUserNameNotExist", "Account", ErrorMessage = "Tài khoản đã được đăng ký. vui lòng chọn tài khoản khác")]
+        [RegularExpression("^[0-9]{10,11}$", ErrorMessage = "Vui lòng nhập số điện thoại (Số điện thoại bao gồm dãy số từ 10 đến 11 số.)")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Không được để trống")]

@@ -47,17 +47,34 @@ namespace CMS.Controllers
                             var black = new Blacklist();
                             try
                             {
-
                                 black.Words = workSheet.Cells[rowIterator, 2].Value.ToString();
-                                black.Description = workSheet.Cells[rowIterator, 3].Value.ToString();
+                                try
+                                {
+
+                                    black.Description = workSheet.Cells[rowIterator, 3].Value.ToString();
+                                }
+                                catch (Exception)
+                                {
+
+                                    black.Description = "";
+                                }
                                 black.CreatedOn = DateTime.Now;
-                                black.LinkUrl = workSheet.Cells[rowIterator, 4].Value.ToString();
+                                try
+                                {
+                                    black.LinkUrl = workSheet.Cells[rowIterator, 4].Value.ToString();
+                                }
+                                catch (Exception)
+                                {
+
+                                    black.LinkUrl = "";
+                                }
+
                                 black.Type = 1;
                                 new BlackListBussiness().Insert(black);
                             }
                             catch
                             {
-                                TempData["Error"] = "Có một hoặc nhiều bản ghi đang sai định dạng.Lưu ý: Số điện thoại, mô tả, và link url không được để trống";
+                                TempData["Error"] = "Có một hoặc nhiều bản ghi đang sai định dạng.Lưu ý: Số điện thoại không được để trống";
                             }
                         }
                     }

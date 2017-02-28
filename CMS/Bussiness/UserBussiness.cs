@@ -100,6 +100,14 @@ namespace CMS.Bussiness
             db.SubmitChanges();
         }
 
+        public void UpdateLastLogin(int id)
+        {
+            var user = db.Users.FirstOrDefault(x => x.Id == id);
+            user.LastLoginDate = DateTime.Now;
+            user.LastActivityDate = DateTime.Now;
+            db.SubmitChanges();
+        }
+
         public void UpdateProfile(UserModel model)
         {
             var user = db.Users.FirstOrDefault(x => x.Id == model.Id);

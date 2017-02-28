@@ -2964,6 +2964,7 @@
     <Compile Include="Bussiness\HomeBussiness.cs" />
     <Compile Include="Bussiness\MenuBussiness.cs" />
     <Compile Include="Bussiness\NewsBussiness.cs" />
+    <Compile Include="Bussiness\NotifyBussiness.cs" />
     <Compile Include="Bussiness\OperationBussiness.cs" />
     <Compile Include="Bussiness\PaymentBussiness.cs" />
     <Compile Include="Bussiness\ProviceBussiness.cs" />
@@ -3016,6 +3017,7 @@
     <Compile Include="Models\NewsModel.cs" />
     <Compile Include="Models\NewsStatusModel.cs" />
     <Compile Include="Models\News_Customer_MappingModel.cs" />
+    <Compile Include="Models\NoticeModel.cs" />
     <Compile Include="Models\ProvinceModel.cs" />
     <Compile Include="Models\SiteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

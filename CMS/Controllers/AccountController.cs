@@ -34,10 +34,11 @@ namespace CMS.Controllers
             {
                 if (Session["SS-USERID"] != null)
                 {
-                    int userId = (int)Session["SS-USERID"];
-                    bool checkUser = (bool)Session["IS-USERS"];
-                    GetNotifyUser(checkUser, userId);
-                    Session.Add("SS-USERINFO", checkUser?1:0);
+                    //int userId = (int)Session["SS-USERID"];
+                    //bool checkUser = (bool)Session["IS-USERS"];
+                    //GetNotifyUser(checkUser, userId);
+                    //Session.Add("SS-USERINFO", checkUser?1:0);
+                    //update last login user
                     return RedirectToAction("Index", "Home");
                 }
                 AccountViewModel model = new AccountViewModel();
@@ -58,6 +59,8 @@ namespace CMS.Controllers
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
                     CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()), username.Split(',')[3].Trim());
+                    //update last login user
+                    UpdateLastLoginUser(int.Parse(username.Split(',')[1].Trim()));
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -94,24 +97,23 @@ namespace CMS.Controllers
                             TempData["Error"] = "Tài khoản đang sử dụng phần mềm. vui lòng thử lại sau 5 phút.";
                             return RedirectToAction("Login", "Account");
                         }
+                        //update last login user
+                        UpdateLastLoginUser(user.Id);
 
                         Session.Add("SS-USER", user);
                         Session.Add("SS-USERID", user.Id);
+
+                        // kt khách hàng đã đăng ký gói cước chưa?
                         CheckAcceptedUser(user.Id, user.IsFree.ToString());
                         // set cookies for user
                         HttpCookie rememberCookie = new HttpCookie("rememberCookies");
                         rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName) + "," + user.IsFree;
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
-                        //check login user
-                        if (!CheckUserLogin(user.Id))
-                        {
-                            TempData["Error"] = "Tài khoản đang sử dụng phần mềm. vui lòng thử lại sau.";
-                            return RedirectToAction("Login", "Account");
-                        }
+
                         bool isUser = (bool)Session["IS-USERS"];
                         GetNotifyUser(isUser, user.Id);
-                        Session.Add("SS-USERINFO", isUser?1:0);
+                        Session.Add("SS-USERINFO", isUser ? 1 : 0);
                         return RedirectToAction("Index", "Home");
                     }
                     ModelState.AddModelError("CredentialError", "Mật khẩu không đúng hoặc bạn chưa có quyền đăng nhập. vui lòng liên hệ sđt " + Information.HOT_PHONE_NUMBER);
@@ -238,7 +240,7 @@ namespace CMS.Controllers
             }
             return View(model);
         }
-        #region Check user exist
+        #region json
         [AllowAnonymous]
         //[HttpPost]
         public JsonResult doesUserNameExist(string UserName)
@@ -270,7 +272,9 @@ namespace CMS.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
 
+        #region Private
         private bool IsUserExists(string UserName)
         {
             var user = db.Users.FirstOrDefault(x => x.UserName.Equals(UserName));
@@ -283,8 +287,6 @@ namespace CMS.Controllers
                 return true;
             }
         }
-        #endregion
-
         //check tai khoan con tien su dung
         private void CheckAcceptedUser(int userId, string isFree)
         {
@@ -317,5 +319,11 @@ namespace CMS.Controllers
                       select r).Any();
             return rs;
         }
+
+        private void UpdateLastLoginUser(int userId)
+        {
+            new UserBussiness().UpdateLastLogin(userId);
+        }
+        #endregion
     }
 }

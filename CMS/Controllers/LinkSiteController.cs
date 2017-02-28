@@ -37,7 +37,7 @@ namespace CMS.Controllers
                         // get child category with parent
                         foreach (var itemChild in categorySite.Where(x => x.ParentId == item.Id))
                         {
-                            model.CategorySite.Add(new SelectListItem {Text = "    >> " + itemChild.Name, Value = itemChild.Id.ToString() });
+                            model.CategorySite.Add(new SelectListItem {Text = "   " + itemChild.Name, Value = itemChild.Id.ToString() });
                         }
                     }
                 }
