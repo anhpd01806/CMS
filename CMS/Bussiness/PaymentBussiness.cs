@@ -80,7 +80,7 @@ namespace CMS.Bussiness
                     paymentAccepted.AmountTotal = paymentAccepted.AmountTotal - model.Payment;
                     paymentAccepted.StartDate = DateTime.Now;
                     //th tk đã hết hạn sử dụng
-                    if (DateTime.Now.Date > paymentAccepted.EndDate.Date)
+                    if (DateTime.Now > paymentAccepted.EndDate)
                         paymentAccepted.EndDate = model.Payment.ToString() == ConfigWeb.DayPackage ? DateTime.Now.AddDays(1) : DateTime.Now.AddMonths(1);
                     else
                         paymentAccepted.EndDate = model.Payment.ToString() == ConfigWeb.DayPackage ? paymentAccepted.EndDate.AddDays(1) : paymentAccepted.EndDate.AddMonths(1);
