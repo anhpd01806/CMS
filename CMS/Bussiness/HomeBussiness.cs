@@ -93,6 +93,9 @@ namespace CMS.Bussiness
             {
                 var listBlacklist = (from c in db.Blacklists
                                      select (c.Words)).ToList();
+                var listDelete = (from c in db.News_Trashes
+                                  where c.Isdelete || c.Isdeleted
+                                     select (c.NewsId)).ToList();
 
                 //Danh sách tin đã lưu hoặc đã ẩn theo user
                 var news_new = (from c in db.News_Customer_Mappings
@@ -112,7 +115,7 @@ namespace CMS.Bussiness
                             //from tm in temp.DefaultIfEmpty()
                             where c.CreatedOn.HasValue && !c.IsDeleted && !s.Deleted && s.Published //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
-
+                            && !listDelete.Contains(c.Id)
                             && !news_new.Contains(c.Id)
                             && !listBlacklist.Contains(c.Phone) //không cho hiển thị có số điện thoại giống số điện thoại trong blacklist                            
                             orderby c.StatusId ascending, c.Price descending
@@ -455,6 +458,49 @@ namespace CMS.Bussiness
                 return 1;
             }
             catch
+            {
+                return 0;
+            }
+        }
+
+        public int Delete(int [] listNewDelete, int userId)
+        {
+            try
+            {
+                for (int i = 0; i < listNewDelete.Length; i++)
+                {
+                    var query = (from c in db.News_Customer_Mappings
+                                 where c.CustomerId.Equals(userId) && c.NewsId.Equals(listNewDelete[i]) && !c.IsAgency.Value
+                                 select c).ToList();
+                    if(query.Any())
+                    {
+                        foreach (var item in query)
+                        {
+                            item.IsDeleted = false;
+                            item.IsSaved = false;                            
+                        }
+                    }
+
+                    var query2 = (from c in db.News_Trashes
+                                  where c.CustomerID.Equals(userId) && c.NewsId.Equals(listNewDelete[i])
+                                  select c).ToList();
+                    if (!query2.Any())
+                    {
+                        var itemtrash = new News_Trash
+                        {
+                            CustomerID = userId,
+                            NewsId = listNewDelete[i],
+                            Isdelete = true,
+                            Isdeleted = false,
+                            IsSpam = false
+                        };
+                        db.News_Trashes.InsertOnSubmit(itemtrash);
+                    }
+                    db.SubmitChanges();
+                }
+                return 1;
+            }
+            catch 
             {
                 return 0;
             }

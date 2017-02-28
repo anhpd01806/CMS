@@ -1,0 +1,294 @@
+﻿@model CMS.ViewModel.HomeViewModel
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-content">
+    <div class="row">
+        <div class="search_all">
+            <center>
+                <label class="col-xs-1 lblsearch">Tìm kiếm: </label>
+                <div class="col-xs-8">
+                    <div class="input-group">
+                        <input class="form-control txtsearchkey" placeholder="Nhập vào tiêu đề tin, số điện thoại, quận huyện..." type="text" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-inverse btn-white btnsearch">
+                                <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
+                                Tìm
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </center>
+        </div>
+        <div class="space"></div>
+        <div class="widget-box widget-color-dark">
+            <div class="widget-header">
+                <h6 class="widget-title"> <i class="icon-filter"></i> Lọc tin tức</h6>
+
+                <div class="widget-toolbar widget-color-dark">
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main padding-4">
+                    <div class="content">
+                        <form class="form-horizontal">
+                            <div class="row" style="margin-top: 20px; display: inline-block;">
+                                <div class="col-xs-6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Chuyên mục</label>
+                                        <div class="controls">
+                                            @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "form-control col-xs-10 cateId" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Quận huyện</label>
+                                        <div class="controls">
+                                            @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "form-control col-xs-10 districtId" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Loại tin</label>
+                                        <div class="controls">
+                                            @Html.DropDownListFor(m => m.NewsType, Model.ListStatus, new { @class = "form-control col-xs-10 newTypeId" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Nguồn tin</label>
+                                        <div class="controls">
+                                            @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Theo ngày</label>
+                                        <div class="controls">
+                                            <select class="form-control col-xs-10 ddlbackdate">
+                                                <option value="-1">Theo ngày</option>
+                                                <option value="0">Hôm nay</option>
+                                                <option value="2">2 Ngày trước</option>
+                                                <option value="3">3 Ngày trước</option>
+                                                <option value="5">5 Ngày trước</option>
+                                                <option value="7">7 Ngày trước</option>
+                                                <option value="15">15 Ngày trước</option>
+                                                <option value="30">30 Ngày trước</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="form-field-1">Theo giá</label>
+                                        <div class="controls">
+                                            <select class="form-control col-xs-10 ddlprice">
+                                                <option value="">Tất cả</option>
+                                                <option value="0+1000000">&lt; 1 triệu</option>
+                                                <option value="1000000+5000000">1 - 5 triệu</option>
+                                                <option value="5000000+10000000">5 - 10 triệu</option>
+                                                <option value="10000000+50000000">10 - 50 triệu</option>
+                                                <option value="50000000+100000000">50 - 100 triệu</option>
+                                                <option value="100000000+500000000">100 - 500 triệu</option>
+                                                <option value="500000000+1000000000">500 triệu - 1 tỷ</option>
+                                                <option value="1000000000+5000000000">1 - 5 tỷ</option>
+                                                <option value="5000000000+10000000000">5 - 10 tỷ</option>
+                                                <option value="10000000000+-1">&gt; 10 tỷ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="control-group">
+                                        <label class="control-label">Từ ngày</label>
+                                        <div class="input-group col-xs-9">
+                                            <input class="form-control date-picker txtFrom" type="text" />
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="control-group">
+                                        <label class="control-label">Đến ngày</label>
+                                        <div class="input-group col-xs-9">
+                                            <input class="form-control date-picker txtTo" type="text" />
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <div class="control-group">
+                                        <label class="control-label"></label>
+                                        <div class="input-group col-xs-8" style="top: 7px; padding-right: 0;">
+                                            <label><span>Hiển thị tin trùng</span> </label>
+                                            <input id="chkIsrepeatNews" type="checkbox" value="0" class="ace ace-switch ace-switch-6" />
+                                            <span class="lbl middle"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="space"></div>
+        <div class="hd-fuc">
+            <div class="col-sm-5">
+                <button class="btn btn-sm btn-primary btnsave disabled">
+                    <i class="icon-save bigger-125"></i>
+                    Khôi phục tin
+                </button>
+                <button class="btn btn-sm btn-success btnhide disabled">
+                    <i class="icon-trash bigger-125"></i>
+                    Xóa tin
+                </button>                
+                <button class="btn btn-sm btn-danger btnexport btn-small">
+                    <i class="icon-download-alt bigger-125"></i>
+                    Xuất Excel
+                </button>
+            </div>
+            <div class="col-sm-7 viewpage">
+                <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
+                    Hiển thị <span class="fistrecord">@((Model.pageIndex - 1) * Model.pageSize)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> tin
+                </div>
+            </div>
+        </div>
+        @*<h3 class="header h3-header smaller lighter blue"></h3>*@
+        <div class="dataTables_wrapper form-inline no-footer">
+            <table id="listnewstable" class="table table-striped table-bordered table-hover custom-table">
+                <thead>
+                    <tr>
+                        <th class="center">
+                            <input type="checkbox" id="check-all" />
+                            <span class="lbl"></span>
+                        </th>
+                        <th>Tiêu đề</th>
+                        <th>Quận huyện</th>
+                        <th style="min-width: 105px;">Ngày đăng</th>
+                        <th style="min-width: 105px;">Giá</th>
+                        <th>Điện thoại</th>
+                        <th style="text-align: center">Loại tin</th>
+                        <th>Xem</th>
+                        <th style="text-align: center">Chính chủ</th>
+                        @*<th style="text-align: center">Tính năng</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ListNew.Any())
+                    {
+                        foreach (var item in Model.ListNew)
+                        {
+                            <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #c55f05;" : string.Empty)">
+                                <td>
+                                    <label class="pos-rel">
+                                        <input type="checkbox" class="checkboxItem" id="@item.Id" />
+                                    </label>
+                                </td>
+                                <td>
+                                    <span data-id="@item.Id" class="lbltitle" title="@( Convert.ToBoolean(ViewBag.Accept) ? item.Contents : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
+                                        @item.Title
+                                    </span>
+                                </td>
+                                <td class="td-medium">
+                                    @if (Convert.ToBoolean(ViewBag.Accept))
+                                    {
+                                        <span>@item.DistictName</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="error">Vui lòng nạp tiền</span>
+                                    }
+                                </td>
+                                <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
+                                <td class="td-medium">@item.PriceText</td>
+                                <td class="td-small">
+                                    @if (Convert.ToBoolean(ViewBag.Accept))
+                                    {
+                                        <span>@item.Phone.Replace(",", ", ").Trim()</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="error">Vui lòng nạp tiền</span>
+                                    }
+                                </td>
+                                <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>
+                                <td>
+                                    @if (Convert.ToBoolean(item.CusIsReaded))
+                                    {
+                                        <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-info arrowed">Chưa xem</span>
+
+                                    }
+                                </td>
+                                <td style="text-align: center">
+                                    @*<span class="label label-success arrowed-in arrowed-in-right">Tin chính chủ</span>*@
+                                    <img src="~/assets/images/approved.gif" />
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-page="1" />
+            @if (Model.Totalpage > 1)
+            {
+                <div class="row page-home">
+                    <div class="col-xs-4">
+                        <div class="dataTables_length">
+                            <label>
+                                Hiển thị
+                                <select class="ddlpage">
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="150">150</option>
+                                    <option value="200">200</option>
+                                </select>
+                                bảng ghi
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="dataTables_paginate homepagging">
+                            <div class="pagination" id="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="modaldetail">
+
+</div>
+<script src="~/assets/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+<script src="~/assets/js/dataTables.buttons.min.js"></script>
+
+@*Custom script*@
+<script src="~/Scripts/common.js"></script>
+<script src="~/Scripts/home/home.js"></script>
