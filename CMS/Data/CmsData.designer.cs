@@ -195,6 +195,9 @@ namespace CMS.Data
     partial void InsertNotify(Notify instance);
     partial void UpdateNotify(Notify instance);
     partial void DeleteNotify(Notify instance);
+    partial void InsertNews_Trash(News_Trash instance);
+    partial void UpdateNews_Trash(News_Trash instance);
+    partial void DeleteNews_Trash(News_Trash instance);
     #endregion
 		
 		public CmsDataDataContext() : 
@@ -680,6 +683,14 @@ namespace CMS.Data
 			get
 			{
 				return this.GetTable<Notify>();
+			}
+		}
+		
+		public System.Data.Linq.Table<News_Trash> News_Trashes
+		{
+			get
+			{
+				return this.GetTable<News_Trash>();
 			}
 		}
 	}
@@ -13672,6 +13683,140 @@ namespace CMS.Data
 					this._Description = value;
 					this.SendPropertyChanged("Description");
 					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News_Trash")]
+	public partial class News_Trash : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _NewsId;
+		
+		private int _CustomerID;
+		
+		private bool _Isdelete;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNewsIdChanging(int value);
+    partial void OnNewsIdChanged();
+    partial void OnCustomerIDChanging(int value);
+    partial void OnCustomerIDChanged();
+    partial void OnIsdeleteChanging(bool value);
+    partial void OnIsdeleteChanged();
+    #endregion
+		
+		public News_Trash()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
+		public int NewsId
+		{
+			get
+			{
+				return this._NewsId;
+			}
+			set
+			{
+				if ((this._NewsId != value))
+				{
+					this.OnNewsIdChanging(value);
+					this.SendPropertyChanging();
+					this._NewsId = value;
+					this.SendPropertyChanged("NewsId");
+					this.OnNewsIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="Int NOT NULL")]
+		public int CustomerID
+		{
+			get
+			{
+				return this._CustomerID;
+			}
+			set
+			{
+				if ((this._CustomerID != value))
+				{
+					this.OnCustomerIDChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerID = value;
+					this.SendPropertyChanged("CustomerID");
+					this.OnCustomerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Isdelete", DbType="Bit NOT NULL")]
+		public bool Isdelete
+		{
+			get
+			{
+				return this._Isdelete;
+			}
+			set
+			{
+				if ((this._Isdelete != value))
+				{
+					this.OnIsdeleteChanging(value);
+					this.SendPropertyChanging();
+					this._Isdelete = value;
+					this.SendPropertyChanged("Isdelete");
+					this.OnIsdeleteChanged();
 				}
 			}
 		}
