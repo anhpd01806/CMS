@@ -68,6 +68,17 @@ $(function () {
         });
     }
     
+    $(document).on("click", ".checkboxItem", function () {
+        var count = parseInt($('input:checkbox:checked').length);
+        if ($(this).prop('checked')) {
+            $(".btnsave, .btnhide, .btnreport, .btnspam, .btndelete").removeClass("disabled");
+        } else {
+            if (count < 1) {
+                $(".btnsave, .btnhide, .btnreport, .btnspam, .btndelete").addClass("disabled");
+            }
+        }
+    });
+
     $(document).on("change", ".ddlpage", function () {
         $.LoadingOverlay("show");
         var cateId = parseInt($(".cateId").val());
