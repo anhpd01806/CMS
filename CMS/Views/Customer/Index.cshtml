@@ -4,9 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section header{
+    <script src="~/Scripts/common.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $("#check-all").checkAll();
             $('.delete').click(function (e) {
                 e.preventDefault();
                 $(".delete-selected").removeClass("delete-selected");
@@ -17,7 +19,13 @@
                 var id = $('.delete-selected').data("id");
                 document.location.href = '/Customer/RemoveUser/' + id;
             });
-
+            debugger;
+            var dropvalue = $('#ManagerId').val()
+            if (dropvalue == 0) {
+                $('#ManagerId').removeAttr('disabled');
+            } else {
+                $('#ManagerId').attr("disabled", "disabled");
+            }
             // load data
             LoadData();
         });
@@ -29,12 +37,13 @@
             var pageIndex = 1;
 
             var managerId = $('#ManagerId').val();
+            var statusId = $('#StatusId').val();
             var data = {
-                search: search, pageIndex: pageIndex, managerId: managerId
+                search: search, pageIndex: pageIndex, managerId: managerId, statusId: statusId
             };
             $.post("/Customer/LoadData", data, function (resp) {
                 if (resp != null) {
-                    debugger
+                    debugger;
                     $("#datatable1 tbody").html("");
                     $("#datatable1 tbody").html(resp.Content);
                     if (resp.TotalPage > 1) {
@@ -46,10 +55,16 @@
                     $.LoadingOverlay("hide");
                 }
             });
+            $('#check-all').prop('checked', false);
         }
 
         // load data bởi quản trị viên
         function LoadDataByManager() {
+            LoadData();
+        }
+
+        //load data bởi tình trạng
+        function LoadByPaymentStatus() {
             LoadData();
         }
 
@@ -75,8 +90,9 @@
                     var pageIndex = page;
 
                     var managerId = $('#ManagerId').val();
+                    var statusId = $('#StatusId').val();
                     var data = {
-                        search: search, pageIndex: pageIndex, managerId: managerId
+                        search: search, pageIndex: pageIndex, managerId: managerId, statusId: statusId
                     };
                     $.post("/Customer/LoadData", data, function (resp) {
                         if (resp != null) {
@@ -129,7 +145,6 @@
         var count = 21;
         // load thêm lịch sứ
         function LoadMore() {
-            debugger;
             var dataPayment = {
                 UserId: UserId,
                 Page: page
@@ -160,10 +175,27 @@
             return false;
         }
 
-        //xuất excel
+        //xuất excel chi tiết khách hàng
         function ExportExcel(id) {
-                var url = "/Customer/ExportExcel";
-                location.href = decodeURIComponent(url + "?userId=" + id + "&page=" + page);
+            var url = "/Customer/ExportExcel";
+            location.href = decodeURIComponent(url + "?userId=" + id + "&page=" + page);
+        }
+
+        // xuất excel toàn bộ khách hàng
+        function ExportExcelAllUser() {
+            var selected = "";
+            $('.checkboxItem:checked').each(function () {
+                selected += $(this).attr('id') + ",";
+            });
+            selected = selected.slice(0, -1);
+            if (selected.length == 0) {
+                showboxcomfirm("Thông báo", "Bạn chưa chọn tin nào!");
+            } else {
+                var url = "/Customer/ExportExcelAllCustomer";
+                $('input:checkbox').removeAttr('checked');
+                location.href = decodeURIComponent(url + "?listCustomer=" + selected);
+            }
+            $('#check-all').prop('checked', false);
         }
     </script>
 }
@@ -215,24 +247,39 @@
                     </div>
                     <div id="datatable1_wrapper" class="dataTables_wrapper form-inline no-footer">
                         <div class="row">
-                            <div class="form col-md-6" role="form">
+                            <div class="form col-md-6" role="form" style="width:100%">
                                 <div class="form-group">
                                     <label>Quản lý bởi</label>
                                     @Html.DropDownListFor(m => m.ManagerId, Model.ManagerList, new { @class = "form-control", @onchange = "LoadDataByManager()" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Tình trạng tài khoản</label>
+                                    @Html.DropDownListFor(m => m.StatusId, Model.PaymentStatus, new { @class = "form-control", @onchange = "LoadByPaymentStatus()" })
+                                </div>
+                                <div class="form-group" style="padding-left:48%">
+                                    <button onclick="ExportExcelAllUser(); return false;" class="btn btn-sm btn-danger btnexport btn-small">
+                                        <i class="icon-download-alt bigger-125"></i>
+                                        Xuất Excel
+                                    </button>
                                 </div>
                             </div>
                         </div>
                         <table id="datatable1" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th class="col-md-1 text-center">STT</th>
-                                    <th>Tên đăng nhập</th>
-                                    <th>Tên khách hàng</th>
+                                    <th class="col-md-1 text-center" style="width: 5%">
+                                        <input type="checkbox" id="check-all" />
+                                        <span class="lbl"></span>
+                                    </th>
+                                    <th class="col-md-1 text-center" style="width:5%">STT</th>
+                                    <th style="width:9%">Tên đăng nhập</th>
+                                    <th style="width:12%">Tên khách hàng</th>
                                     <th>Trạng thái</th>
+                                    <th>Tài khoản</th>
                                     <th>Quản lý bởi</th>
                                     <th>Đang online</th>
                                     <th>Nhóm quyền</th>
-                                    <th class="text-center"></th>
+                                    <th class="text-center" style="width:8%"></th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -240,21 +287,21 @@
                         <input type="hidden" id="TotalPage" data-total="@Model.Totalpage" data-page="1" />
                         @if (Model.Totalpage > 1)
                         {
-                        <div class="row page-home">
-                            <div class="col-xs-4"></div>
-                            <div class="col-xs-8">
-                                <div class="dataTables_paginate paging_simple_numbers">
-                                    <div class="pagination" id="pagination"></div>
+                            <div class="row page-home">
+                                <div class="col-xs-4"></div>
+                                <div class="col-xs-8">
+                                    <div class="dataTables_paginate paging_simple_numbers">
+                                        <div class="pagination" id="pagination"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                     </div>
                     <div id="CustomerDetail">
-                      
+
                     </div>
                     <div id="PayMentCustomer" class="row">
-                      
+
                     </div>
                 </div>
             </div>

@@ -35,12 +35,20 @@
                     <span>@Model.ManagerBy</span>
                 </div>
             </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name">
+                    <label>Login cuối</label>
+                </div>
+                <div class="profile-info-value">
+                    <span>@Model.LastLogin </span>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-md-6 form" role="form">
         <div class="profile-user-info profile-user-info-striped">
             <div class="profile-info-row">
-                <div class="profile-info-name">
+                <div class="profile-info-name" style="width: 27%;">
                     <label>Hết hạn</label>
                 </div>
                 <div class="profile-info-value">
@@ -48,7 +56,7 @@
                 </div>
             </div>
             <div class="profile-info-row">
-                <div class="profile-info-name">
+                <div class="profile-info-name" style="width: 27%;">
                     <label>Số dư</label>
                 </div>
                 <div class="profile-info-value">
@@ -56,11 +64,19 @@
                 </div>
             </div>
             <div class="profile-info-row">
-                <div class="profile-info-name">
-                    <label>Login cuối</label>
+                <div class="profile-info-name" style="width: 27%;">
+                    <label>Tiền mặt (T @DateTime.Now.AddMonths(-1).ToString("MM/yyyy"))</label>
                 </div>
                 <div class="profile-info-value">
-                    <span>@Model.LastLogin </span>
+                    <span>@Model.CashPayment vnđ</span>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name" style="width: 27%;">
+                    <label>Tiền CK (T @DateTime.Now.AddMonths(-1).ToString("MM/yyyy"))</label>
+                </div>
+                <div class="profile-info-value">
+                    <span>@Model.CardPayment vnđ</span>
                 </div>
             </div>
         </div>

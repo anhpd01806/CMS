@@ -23,9 +23,41 @@ namespace CMS.Bussiness
             return db.Users.Where(x => x.IsFree == true).OrderBy(m => m.Id).ToList();
         }
 
-        public List<User> GetCustomerUser(int managerId)
+        public List<UserModel> GetCustomerUser(ref int pageTotal, int managerId, int statusId, int pageIndex, int pageSize, string search)
         {
-            return db.Users.Where(x => x.IsFree == false && (x.ManagerBy == managerId || managerId == 0)).OrderBy(m => m.Id).ToList();
+            try
+            {
+                var rs = (from a in db.Users
+                          join b in db.PaymentAccepteds
+                          on a.Id equals b.UserId into ps
+                          from b in ps.DefaultIfEmpty()
+                          where (a.ManagerBy == managerId || managerId == 0)
+                          && (statusId == 0 || (statusId == 1 && b.EndDate.AddDays(-2) > DateTime.Now && b.EndDate != null)
+                           || (statusId == 2 && b.EndDate.AddDays(-2) <= DateTime.Now && b.EndDate > DateTime.Now && b.EndDate != null)
+                           || (statusId == 3 && b.EndDate <= DateTime.Now && b.EndDate != null)
+                           || (statusId == 4 && b.EndDate == null))
+                           && (a.UserName.Contains(search) || a.FullName.Contains(search))
+                          select new UserModel
+                          {
+                              Id = a.Id,
+                              ManagerId = a.ManagerBy ?? 0,
+                              FullName = a.FullName,
+                              UserName = a.UserName,
+                              Phone = a.Phone,
+                              Email = a.Email,
+                              IsDelete = a.IsDeleted ?? false,
+                              IsMember = a.IsMember ?? false,
+                              //EndTimePayment = b.EndDate == null ? DateTime.MinValue : b.EndDate,
+                          });
+                pageTotal = (int)Math.Ceiling((double)rs.ToList().Count / (double)pageSize);
+                return rs.OrderBy(x => x.IsMember).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList(); ;
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw;
+            }
+            
         }
 
         public User GetUserById(int id)

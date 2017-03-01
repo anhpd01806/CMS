@@ -11,9 +11,10 @@ namespace CMS.ViewModel
     {
         public List<UserModel> UserList { get; set; }
         public int Totalpage { get; set; }
-
         public List<SelectListItem> ManagerList { get; set; }
         public int ManagerId { get; set; }
+        public List<SelectListItem> PaymentStatus { get; set; }
+        public int StatusId { get; set; }
         public CustomerDetail CustomerDetail { get; set; }
     }
 
@@ -54,6 +55,8 @@ namespace CMS.ViewModel
 
         public Boolean IsDelete { get; set; }
         public Boolean IsOnline { get; set; }
+        public DateTime EndTimePayment { get; set; }
+        public int ManagerId { get; set; }
     }
 
     public class ChangePasswordViewModel
@@ -92,5 +95,14 @@ namespace CMS.ViewModel
         public string TimeEnd { get; set; }
         public string Amount { get; set; }
         public string LastLogin { get; set; }
+        public string CashPayment { get; set; }
+        public string CardPayment { get; set; }
+    }
+
+    public class PaymentTotal
+    {
+        public int PaymentMethodId { get; set; }
+        public string TypePayment { get; set; }
+        public string AmoutPayment { get; set; }
     }
 }

@@ -7,6 +7,11 @@
     {
         counter = counter + 1;
         <tr>
+            <td style="text-align:center">
+                <label class="pos-rel">
+                    <input type="checkbox" class="checkboxItem" id="@u.Id" />
+                </label>
+            </td>
             <td class="text-center">@counter</td>
             <td><a onclick="CustomerDetail(@u.Id)">@u.UserName</a></td>
             <td>@u.FullName</td>
@@ -17,6 +22,24 @@
                 { <span class="label label-warning arrowed-right arrowed-in">Kích hoạt</span>}
                 else
                 { <span class="label label-info arrowed">Chưa được duyệt</span>}
+            </td>
+            <td class="text-center">
+                @if (u.EndTimePayment.Date == DateTime.MinValue.Date)
+                {
+                    <span style="color:deepskyblue">Chưa có gói cước</span>
+                }
+                else if (u.EndTimePayment.AddDays(-2) <= DateTime.Now && u.EndTimePayment > DateTime.Now)
+                { 
+                    <span style="color:orange">@u.EndTimePayment.ToString("dd/MM/yyyy")</span>
+                }
+                else if (u.EndTimePayment <= DateTime.Now)
+                {
+                    <span style="color:red">@u.EndTimePayment.ToString("dd/MM/yyyy")</span>
+                }
+                else
+                {
+                    <span style="color: mediumblue">@u.EndTimePayment.ToString("dd/MM/yyyy")</span>
+                }
             </td>
             <td>@u.ManagerBy</td>
             @if (u.IsOnline == true)

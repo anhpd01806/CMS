@@ -22,8 +22,11 @@ namespace CMS.Controllers
             var managerList = new UserBussiness().GetManagerUser();
             managerList.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
             model.ManagerList = managerList.OrderBy(x => x.Value).ToList();
-            model.ManagerId = int.Parse(Session["SS-USERID"].ToString());
+            model.ManagerId = int.Parse(Session["SS-USERID"].ToString()) == 1 ? 0 : int.Parse(Session["SS-USERID"].ToString());
             model.Totalpage = 2;
+            //get status payment
+            model.PaymentStatus = getPaymentStatus();
+            model.StatusId = 0;
             return View(model);
         }
 
@@ -83,7 +86,7 @@ namespace CMS.Controllers
                     Content = content
                 }, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return Json(new
                 {
@@ -93,13 +96,13 @@ namespace CMS.Controllers
 
         }
         [HttpPost]
-        public JsonResult LoadData(string search, string pageIndex, int managerId)
+        public JsonResult LoadData(string search, string pageIndex, int managerId, int statusId)
         {
             try
             {
                 int totalpage = 0;
                 UserViewModel model = new UserViewModel();
-                model.UserList = getCustomerList(ref totalpage, int.Parse(pageIndex), 20, search, managerId);
+                model.UserList = getCustomerList(ref totalpage, int.Parse(pageIndex), 20, search, managerId, statusId);
                 var content = RenderPartialViewToString("~/Views/Customer/CustomerDetail.cshtml", model.UserList);
                 model.Totalpage = totalpage;
                 return Json(new
@@ -236,6 +239,9 @@ namespace CMS.Controllers
         {
             return View();
         }
+        #endregion
+
+        #region ExportExcel
 
         public ActionResult ExportExcel(int userId, int page)
         {
@@ -258,9 +264,36 @@ namespace CMS.Controllers
             var bytes = System.IO.File.ReadAllBytes(filePath);
             return File(bytes, "text/xls", fileName);
         }
+
+        public ActionResult ExportExcelAllCustomer(string listCustomer)
+        {
+            string fileName = string.Format("Customer_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
+            string filePath = Path.Combine(Request.PhysicalApplicationPath, "File\\ExportImport", fileName);
+            var folder = Request.PhysicalApplicationPath + "File\\ExportImport";
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+            int userId = Convert.ToInt32(Session["SS-USERID"]);
+            //var listBlackList = GetAll(listBlackListId);
+            //ExportToExcel(filePath, listBlackList);
+
+            var bytes = System.IO.File.ReadAllBytes(filePath);
+            return File(bytes, "text/xls", fileName);
+        }
         #endregion
 
         #region Private funtion
+        private List<SelectListItem> getPaymentStatus()
+        {
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
+            status.Add(new SelectListItem { Text = "Đang hoạt động", Value = "1" });
+            status.Add(new SelectListItem { Text = "Sắp hết hạn", Value = "2" });
+            status.Add(new SelectListItem { Text = "Đã hết hạn", Value = "3" });
+            status.Add(new SelectListItem { Text = "Chưa có gói cước", Value = "4" });
+            return status;
+        }
         private string getNameRole(List<Role> role, List<Role_User> roleUser, int userId)
         {
             var rs = (from r in role
@@ -271,14 +304,12 @@ namespace CMS.Controllers
         }
 
         //get all khách hàng
-        private List<UserModel> getCustomerList(ref int pageTotal, int pageIndex, int pageSize, string search, int managerId)
+        private List<UserModel> getCustomerList(ref int pageTotal, int pageIndex, int pageSize, string search, int managerId, int statusId)
         {
             var allAdmin = new UserBussiness().GetAdminUser();
-            var allUser = new UserBussiness().GetCustomerUser(managerId).Where(x => x.UserName.Contains(search) || x.FullName.Contains(search)
-                                                                                || x.Phone.Contains(search)).ToList();
+            var allUser = new UserBussiness().GetCustomerUser(ref pageTotal, managerId, statusId, pageIndex, pageSize, search);
             var allRoles = new RoleBussiness().GetRoles();
             var allRolesUser = new RoleUserBussiness().GetAllRoleUser();
-            pageTotal = (int)Math.Ceiling((double)allUser.Count / (double)pageSize);
             return (from a in allUser
                     select new UserModel
                     {
@@ -287,12 +318,18 @@ namespace CMS.Controllers
                         UserName = a.UserName,
                         Phone = a.Phone,
                         Email = a.Email,
-                        IsDelete = a.IsDeleted ?? false,
-                        IsMember = a.IsMember ?? false,
-                        ManagerBy = a.ManagerBy != null ? allAdmin.Where(x => x.Id == a.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "",
+                        IsDelete = a.IsDelete,
+                        IsMember = a.IsMember,
+                        ManagerBy = a.ManagerBy != null ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "",
                         RoleName = getNameRole(allRoles, allRolesUser, a.Id),
-                        IsOnline = checkCustomerOnline(a.Id)
-                    }).OrderBy(x => x.IsMember).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                        IsOnline = checkCustomerOnline(a.Id),
+                        EndTimePayment = getPaymentStatus(a.Id)
+                    }).OrderBy(x => x.EndTimePayment).ToList();
+        }
+
+        private DateTime getPaymentStatus(int userId)
+        {
+            return new PaymentBussiness().GetEndTimeByUserId(userId);
         }
 
         private Boolean checkCustomerOnline(int userId)
@@ -321,9 +358,17 @@ namespace CMS.Controllers
             //get paymen by Id
             rs.Amount = new PaymentBussiness().GetCashPaymentByUserId(cusDetail.Id);
             rs.TimeEnd = new PaymentBussiness().GetTimePaymentByUserId(cusDetail.Id);
+            //get payment by Id 
+            var payment = new PaymentBussiness().GetPaymentByUserId(cusDetail.Id);
+            rs.CashPayment = payment.FirstOrDefault(x => x.PaymentMethodId == 1) != null ? payment.FirstOrDefault(x => x.PaymentMethodId == 1).AmoutPayment : "0";
+            rs.CardPayment = payment.FirstOrDefault(x => x.PaymentMethodId == 2) != null ? payment.FirstOrDefault(x => x.PaymentMethodId == 2).AmoutPayment : "0";
             return rs;
         }
 
+        private List<CustomerDetail> GetAllCustomer()
+        {
+            return null;
+        }
         private List<PaymentHistoryModel> getHistoryPayment(int userId, int page)
         {
             return (from a in new PaymentBussiness().GetPaymentHistoryByUserId(userId, page)
@@ -350,15 +395,18 @@ namespace CMS.Controllers
                 // get handle to the existing worksheet
                 var worksheet = xlPackage.Workbook.Worksheets.Add("Danh sách tin tức");
                 xlPackage.Workbook.CalcMode = ExcelCalcMode.Manual;
+
                 //Create Headers customer Detail
                 var headerCustomer = new string[]
                     {
                         "Họ và tên",
                         "Số ĐT",
                         "Nhân viên theo dõi",
+                        "Đăng nhập gần nhất",
                         "Hết hạn",
                         "Số dư",
-                        "Đăng nhập gần nhất"
+                        "Tiền mặt (T "+DateTime.Now.AddMonths(-1).ToString("MM/yyyy")+")",
+                        "Tiền CK (T "+DateTime.Now.AddMonths(-1).ToString("MM/yyyy")+")"
                     };
 
                 var Detail = new string[]
@@ -366,18 +414,20 @@ namespace CMS.Controllers
                     cusDetail.FullName,
                     cusDetail.UserName,
                     cusDetail.ManagerBy,
+                    cusDetail.LastLogin,
                     cusDetail.TimeEnd,
                     cusDetail.Amount,
-                    cusDetail.LastLogin
+                    cusDetail.CashPayment,
+                    cusDetail.CardPayment
                 };
-                for (var i = 0; i < 3; i++)
+                for (var i = 0; i < 4; i++)
                 {
                     worksheet.Cells[i + 1, 1].Value = headerCustomer[i];
                     worksheet.Cells[i + 1, 2].Value = Detail[i];
                     worksheet.Cells[i + 1, 1].Style.Font.Bold = true;
 
-                    worksheet.Cells[i + 1, 6].Value = headerCustomer[i + 3];
-                    worksheet.Cells[i + 1, 7].Value = Detail[i + 3];
+                    worksheet.Cells[i + 1, 6].Value = headerCustomer[i + 4];
+                    worksheet.Cells[i + 1, 7].Value = Detail[i + 4];
                     worksheet.Cells[i + 1, 6].Style.Font.Bold = true;
                 }
 
@@ -392,10 +442,10 @@ namespace CMS.Controllers
                     };
                 for (var i = 0; i < historyPayment.Length; i++)
                 {
-                    worksheet.Cells[5, i + 1].Value = historyPayment[i];
-                    worksheet.Cells[5, i + 1].Style.Font.Bold = true;
+                    worksheet.Cells[6, i + 1].Value = historyPayment[i];
+                    worksheet.Cells[6, i + 1].Style.Font.Bold = true;
                 }
-                var row = 6;
+                var row = 7;
                 var dem = 0;
                 foreach (var item in paymentHistory)
                 {
