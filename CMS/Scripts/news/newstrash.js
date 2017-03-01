@@ -250,6 +250,67 @@ $(function () {
             }
         }
     });
+    
+    $(document).on("click", ".active-item-list", function () {
+        var selected = [parseInt($(this).attr("data-id"))];
+        if (selected.length == 0) {
+            showmessage("error", "Bạn hãy chọn tin cần khôi phục!");
+        } else {
+            $.post("/newstrash/restorenews", { listNewsId: selected }, function (resp) {
+                if (resp != null) {
+                    if (resp.Status == 1) {
+                        LoadData();
+                        setTimeout(function () {
+                            showmessage("success", "Tin đã được khôi phục thành công!");
+                        }, 1200);
+                    } else {
+                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                    }
+                }
+                ;
+            });
+        }
+        $("#newsdetail").modal("hide");
+    });
+
+    $(document).on("click", ".delete-item-list", function () {
+        var selected = [parseInt($(this).attr("data-id"))];
+        if (selected.length == 0) {
+            showmessage("error", "Bạn hãy chọn tin cần xóa!");
+        } else {
+            bootbox.confirm({
+                title: "Thông báo",
+                message: "Tin này sẽ không được hiển thị trong hệ thống nữa! Bạn có chắc chắn muốn xóa không?",
+                buttons: {
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Đồng ý'
+                    },
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Đóng'
+                    },
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.post("/newstrash/deletenews", { listNewsId: selected }, function (resp) {
+                            if (resp != null) {
+                                if (resp.Status == 1) {
+                                    LoadData();
+                                    setTimeout(function () {
+                                        showmessage("success", "Tin đã được xóa khỏi hệ thống thành công!");
+                                    }, 1200);
+
+                                } else {
+                                    showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                }
+                            }
+                            ;
+                        });
+                    }
+                }
+            });
+        }
+        $("#newsdetail").modal("hide");
+    });
 });
 
 function LoadData() {
