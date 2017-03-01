@@ -62,6 +62,27 @@ namespace CMS.Bussiness
                 return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Skip(page * 20).Take(20).ToList();
         }
 
+        public List<PaymentTotal> GetPaymentByUserId(int id)
+        {
+            var rs = (from a in db.PaymentHistories
+                      join b in db.PaymentMethods
+                      on a.PaymentMethodId equals b.Id
+                      where (a.PaymentMethodId == 1 || a.PaymentMethodId == 2)
+                      && a.CreatedDate.Month == DateTime.Now.AddMonths(-1).Month
+                      group a by new
+                      {
+                          a.PaymentMethodId,
+                          a.PaymentMethod
+                      } into gr
+                      select new PaymentTotal
+                      {
+                          PaymentMethodId = gr.Key.PaymentMethodId,
+                          TypePayment = gr.Key.PaymentMethod.ToString(),
+                          AmoutPayment = string.Format("{0:n0}", gr.Sum(x => x.Amount))
+                      }).ToList();
+            return rs;
+        }
+
         public string GetPaymentMethodById(int id)
         {
             return db.PaymentMethods.FirstOrDefault(x => x.Id == id).Name;
@@ -116,6 +137,45 @@ namespace CMS.Bussiness
             if (cash != null)
                 return string.Format(cash.EndDate.ToString("dd/MM/yyyy"));
             else return "Chưa đăng ký gói cước";
+        }
+
+        public DateTime GetEndTimeByUserId(int userId)
+        {
+            var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            if (cash != null)
+                return cash.EndDate;
+            else return DateTime.MinValue;
+        }
+
+        public string PaymentForCreateNews(long amount, int userId)
+        {
+            try
+            {
+                var paymentAccepted = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+                if (paymentAccepted == null) return "Bạn không có tiền trong tài khoản.";
+                if (amount > paymentAccepted.AmountTotal) return "Tài khoản của bạn không đủ tiền.";
+
+                // insert historypayment
+                var paymentHis = new PaymentHistory
+                {
+                    PaymentMethodId = 5,
+                    CreatedDate = DateTime.Now,
+                    Amount = -amount,
+                    Notes = "Trừ tiền đăng bài",
+                    UserId = userId
+                };
+
+                db.PaymentHistories.InsertOnSubmit(paymentHis);
+                // minus cash on amount
+                paymentAccepted.AmountTotal = paymentAccepted.AmountTotal - amount;
+                db.SubmitChanges();
+
+                return "Bạn đã đăng bài thành công. tài khoản của bạn bị trừ "+ string.Format("{0:n0}", amount) + " vnđ";
+            }
+            catch (Exception)
+            {
+                return "Hệ thống đang gặp sự cố. vui lòng thử lại!";
+            }
         }
     }
 }
