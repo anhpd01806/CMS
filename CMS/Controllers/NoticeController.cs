@@ -79,8 +79,10 @@ namespace CMS.Controllers
         {
             try
             {
-                //update session
-                List<NoticeModel> lstNotify = new NotifyBussiness().GetNotify(false, 1);
+                bool isUser = (bool)Session["SS-USERINFO"];
+                int userId = (int)Session["SS-USERID"];
+            //update session
+            List <NoticeModel> lstNotify = new NotifyBussiness().GetNotify(isUser, userId);
                 Session["NotityUser"] = lstNotify;
                 return Json(true, JsonRequestBehavior.AllowGet);
             }

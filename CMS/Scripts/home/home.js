@@ -489,7 +489,7 @@ $(function () {
                                 notify.name = value.UserName;
                                 //link image avatar
                                 notify.avatar = "/assets/avatars/avatar.png";
-                                notify.time = value.DateSend;
+                                notify.time = moment(value.DateSend).format('DD/MM/YYYY hh:mm:ss');;
                                 socket.emit('send-to-admin', notify);
                             });
                         }

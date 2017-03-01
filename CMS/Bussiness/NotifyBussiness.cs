@@ -37,7 +37,8 @@ namespace CMS.Bussiness
                               Type = c.Type ?? 0,
                               Userid = c.Userid ?? 0,
                               Desription = c.Description,
-                              Title = c.Title
+                              Title = c.Title,
+                              DateSend = c.DateSend ?? DateTime.Now
                           }).FirstOrDefault();
             return notify;
         }

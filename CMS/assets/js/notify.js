@@ -122,7 +122,7 @@ function DetailNotify(id, type) {
             success: function (result) {
                 if (result) {
                     //show modal notify payment account
-                    $('#tit-notify').text(result.Title);
+                    $('#tit-notify').text(result.Title + ' vào lúc :' + moment(result.DateSend).format('hh:mm:ss ngày DD/MM/YYYY'));
                     $('#md-notify-payment').modal('show');
                 }
 
