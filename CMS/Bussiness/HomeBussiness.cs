@@ -95,7 +95,7 @@ namespace CMS.Bussiness
                                      select (c.Words)).ToList();
 
                 var listDelete = (from c in db.News_Trashes
-                                  where c.Isdelete || c.Isdeleted && c.CustomerID.Equals(UserId)
+                                  where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(UserId)
                                      select (c.NewsId)).ToList();
 
                 //Danh sách tin đã lưu hoặc đã ẩn theo user
