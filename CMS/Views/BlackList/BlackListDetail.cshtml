@@ -6,12 +6,12 @@
     foreach (var u in Model)
     {
         <tr>
-            <td>
+            <td style="text-align:center" >
                 <label class="pos-rel">
                     <input type="checkbox" class="checkboxItem" id="@u.Id" />
                 </label>
             </td>
-            <td>@count</td>
+            <td style="text-align:center" >@count</td>
             <td>@u.Words</td>
             <td>@u.Description</td>
             <td><a onClick="window.open('@u.LinkUrl');" href="#">@(!string.IsNullOrEmpty(u.LinkUrl) ? u.LinkUrl.Replace("//","/").Split('/')[1].ToString() : "")</a></td>

@@ -14,7 +14,7 @@ namespace CMS.Controllers
 {
     public class BlackListController : BaseAuthedController
     {
-        private int PageSize = 20;
+        private int PageSize = 300;
         // GET: BlackList
         public ActionResult Index()
         {
@@ -142,13 +142,15 @@ namespace CMS.Controllers
             try
             {
                 int totalpage = 0;
+                int totalCount = 0;
                 BlackListViewModel model = new BlackListViewModel();
-                model.BlackList = GetBlackListLink(ref totalpage, search, PageSize, pageIndex);
+                model.BlackList = GetBlackListLink(ref totalCount,ref totalpage, search, PageSize, pageIndex);
                 var content = RenderPartialViewToString("~/Views/BlackList/BlackListDetail.cshtml", model.BlackList);
                 model.Totalpage = totalpage;
                 return Json(new
                 {
                     TotalPage = model.Totalpage,
+                    totalCount = totalCount,
                     Content = content
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -156,7 +158,8 @@ namespace CMS.Controllers
             {
                 return Json(new
                 {
-                    TotalPage = 0
+                    TotalPage = 0,
+                    totalCount = 0
                 }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -246,9 +249,8 @@ namespace CMS.Controllers
             }
         }
 
-        private List<BlacklistModel> GetBlackListLink(ref int totalPage, string search, int pageSize, int pageIndex)
+        private List<BlacklistModel> GetBlackListLink(ref int totalCount,ref int totalPage, string search, int pageSize, int pageIndex)
         {
-            int totalCount = 0;
             var blackList = new BlackListBussiness().GetBlackListByParam(ref totalCount, search, pageSize, (pageIndex - 1));
             var rs = (from a in blackList
                       select new BlacklistModel
