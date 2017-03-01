@@ -55,7 +55,7 @@ namespace CMS.Bussiness
 
                 //Danh sách tin đã bị xóa
                 var listDelete = (from c in db.News_Trashes
-                                  where c.Isdelete || c.Isdeleted
+                                  where c.Isdelete || c.Isdeleted && c.CustomerID.Equals(UserId)
                                   select (c.NewsId)).ToList();
 
                 var query = from c in db.News
