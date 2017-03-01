@@ -265,7 +265,7 @@ namespace CMS.Controllers
             return File(bytes, "text/xls", fileName);
         }
 
-        public ActionResult ExportExcelAllCustomer(string listCustomer)
+        public ActionResult ExportExcelAllCustomer(string listCustomerId)
         {
             string fileName = string.Format("Customer_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
             string filePath = Path.Combine(Request.PhysicalApplicationPath, "File\\ExportImport", fileName);
@@ -275,8 +275,8 @@ namespace CMS.Controllers
                 Directory.CreateDirectory(folder);
             }
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            //var listBlackList = GetAll(listBlackListId);
-            //ExportToExcel(filePath, listBlackList);
+            var listCustomer = getAllCustomer(listCustomerId);
+            ExportToExcelAllCustomers(filePath, listCustomer);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);
             return File(bytes, "text/xls", fileName);
@@ -365,10 +365,29 @@ namespace CMS.Controllers
             return rs;
         }
 
-        private List<CustomerDetail> GetAllCustomer()
+        private List<UserModel> getAllCustomer(string listCustomer)
         {
-            return null;
+            var allAdmin = new UserBussiness().GetAdminUser();
+            var listCus = new UserBussiness().GetCustomerByListUserId(listCustomer);
+            var allRoles = new RoleBussiness().GetRoles();
+            var allRolesUser = new RoleUserBussiness().GetAllRoleUser();
+            var rs = (from a in listCus
+                      select new UserModel
+                      {
+                          Id = a.Id,
+                          FullName = a.FullName,
+                          UserName = a.UserName,
+                          Phone = a.Phone,
+                          Email = a.Email,
+                          IsDelete = a.IsDelete,
+                          IsMember = a.IsMember,
+                          ManagerBy = a.ManagerBy != null ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "",
+                          RoleName = getNameRole(allRoles, allRolesUser, a.Id),
+                          EndTimePayment = getPaymentStatus(a.Id)
+                      }).OrderBy(x => x.EndTimePayment).ToList();
+            return rs;
         }
+
         private List<PaymentHistoryModel> getHistoryPayment(int userId, int page)
         {
             return (from a in new PaymentBussiness().GetPaymentHistoryByUserId(userId, page)
@@ -393,7 +412,7 @@ namespace CMS.Controllers
                 //xlPackage.DebugMode = true; 
 
                 // get handle to the existing worksheet
-                var worksheet = xlPackage.Workbook.Worksheets.Add("Danh sách tin tức");
+                var worksheet = xlPackage.Workbook.Worksheets.Add("Chi tiết khách hàng");
                 xlPackage.Workbook.CalcMode = ExcelCalcMode.Manual;
 
                 //Create Headers customer Detail
@@ -472,6 +491,79 @@ namespace CMS.Controllers
 
 
                 var nameexcel = "Chi tiết khách hàng" + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff");
+                xlPackage.Workbook.Properties.Title = string.Format("{0}", nameexcel);
+                xlPackage.Workbook.Properties.Author = "Admin-IT";
+                xlPackage.Workbook.Properties.Subject = string.Format("{0} User", "");
+                xlPackage.Workbook.Properties.Category = "User";
+
+                xlPackage.Workbook.Properties.Company = "OZO";
+                xlPackage.Save();
+            }
+        }
+
+        public virtual void ExportToExcelAllCustomers(string filePath, List<UserModel> listCustomer)
+        {
+            var newFile = new FileInfo(filePath);
+
+            // ok, we can run the real code of the sample now
+            using (var xlPackage = new ExcelPackage(newFile))
+            {
+                // uncomment this line if you want the XML written out to the outputDir
+                //xlPackage.DebugMode = true; 
+
+                // get handle to the existing worksheet
+                var worksheet = xlPackage.Workbook.Worksheets.Add("Danh sách khách hàng");
+                xlPackage.Workbook.CalcMode = ExcelCalcMode.Manual;
+
+                //create header and full history payment
+                var CustomerTitle = new string[]
+                    {
+                        "STT",
+                        "Tên đăng nhập",
+                        "Tên khách hàng",
+                        "Trạng thái",
+                        "Hạn sử dụng",
+                        "Quản lý bởi",
+                        "Nhóm quyền"
+                    };
+                for (var i = 0; i < CustomerTitle.Length; i++)
+                {
+                    worksheet.Cells[1, i + 1].Value = CustomerTitle[i];
+                    worksheet.Cells[1, i + 1].Style.Font.Bold = true;
+                }
+                var row = 2;
+                var dem = 0;
+                foreach (var item in listCustomer)
+                {
+                    dem++;
+                    int col = 1;
+
+                    worksheet.Cells[row, col].Value = dem;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.UserName;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.FullName;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.IsDelete == true ? "TK bị khóa" : item.IsMember == true ? "Kích hoạt" : "Chưa được duyệt";
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.EndTimePayment.Date == DateTime.MinValue.Date ? "Chưa có gói cước" : item.EndTimePayment.ToString("dd/MM/yyyy");
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.ManagerBy;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.RoleName;
+                    col++;
+                    //next row
+                    row++;
+                }
+
+
+                var nameexcel = "Danh sách khách hàng" + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff");
                 xlPackage.Workbook.Properties.Title = string.Format("{0}", nameexcel);
                 xlPackage.Workbook.Properties.Author = "Admin-IT";
                 xlPackage.Workbook.Properties.Subject = string.Format("{0} User", "");

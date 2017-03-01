@@ -97,6 +97,8 @@ namespace CMS.ViewModel
         public string LastLogin { get; set; }
         public string CashPayment { get; set; }
         public string CardPayment { get; set; }
+        public string Status { get; set; }
+        public string Role { get; set; }
     }
 
     public class PaymentTotal

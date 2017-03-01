@@ -59,12 +59,31 @@ namespace CMS.Bussiness
             }
             
         }
+        public List<UserModel> GetCustomerByListUserId(string ListUserId)
+        {
+            var arrayId = ListUserId.Split(',');
+            //.Where(x => arrayId.Contains(x.Id.ToString())).ToList();
+            var rs = (from a in db.Users
+                     where arrayId.Contains(a.Id.ToString())
+                     select new UserModel
+                     {
+                         Id = a.Id,
+                         ManagerId = a.ManagerBy ?? 0,
+                         FullName = a.FullName,
+                         UserName = a.UserName,
+                         Phone = a.Phone,
+                         Email = a.Email,
+                         IsDelete = a.IsDeleted ?? false,
+                         IsMember = a.IsMember ?? false
+                     }).ToList();
+            return rs;
+        }
 
         public User GetUserById(int id)
         {
             return db.Users.FirstOrDefault(x => x.Id == id);
         }
-
+        
         public int GetUserByName(string name)
         {
             return db.Users.FirstOrDefault(x => x.UserName == name).Id;

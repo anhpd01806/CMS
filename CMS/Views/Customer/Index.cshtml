@@ -193,7 +193,7 @@
             } else {
                 var url = "/Customer/ExportExcelAllCustomer";
                 $('input:checkbox').removeAttr('checked');
-                location.href = decodeURIComponent(url + "?listCustomer=" + selected);
+                location.href = decodeURIComponent(url + "?listCustomerId=" + selected);
             }
             $('#check-all').prop('checked', false);
         }
@@ -275,7 +275,7 @@
                                     <th style="width:9%">Tên đăng nhập</th>
                                     <th style="width:12%">Tên khách hàng</th>
                                     <th>Trạng thái</th>
-                                    <th>Tài khoản</th>
+                                    <th>Hạn sử dụng</th>
                                     <th>Quản lý bởi</th>
                                     <th>Đang online</th>
                                     <th>Nhóm quyền</th>
