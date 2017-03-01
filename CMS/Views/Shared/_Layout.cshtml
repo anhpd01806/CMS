@@ -621,8 +621,8 @@
     @{
         //int id = 1;
         //int isUser = 1;
-        int id = (int)@Session["SS-USERID"];
-        int isUser = (int)@Session["SS-USERINFO"];
+        int id = Session["SS-USERID"] != null ? int.Parse(Session["SS-USERID"].ToString()) : 1;
+        int isUser = (Boolean)Session["SS-USERINFO"] == true ? 1 : 0;
         //bool isUser = true;
     }
     <input type="hidden" value="@id" id="user-id">

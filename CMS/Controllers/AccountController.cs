@@ -46,9 +46,6 @@ namespace CMS.Controllers
                 string username = "false";
                 HttpCookie reCookie = Request.Cookies["rememberCookies"];
                 if (reCookie != null) { username = Server.HtmlEncode(reCookie.Value); }
-                bool isUser = CheckUserIsUser(int.Parse(username.Split(',')[1].Trim()));
-                GetNotifyUser(isUser, int.Parse(username.Split(',')[1].Trim()));
-                Session.Add("SS-USERINFO", isUser);
                 if (username.Split(',')[0].Trim().ToLower() == "true")
                 {
                     if (!CheckUserLogin(int.Parse(username.Split(',')[1].Trim())))
@@ -56,6 +53,11 @@ namespace CMS.Controllers
                         TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thử lại sau 5 phút.";
                         return View(model);
                     }
+                    // set seesion for notify
+                    bool isUser = CheckUserIsUser(int.Parse(username.Split(',')[1].Trim()));
+                    GetNotifyUser(isUser, int.Parse(username.Split(',')[1].Trim()));
+                    Session.Add("SS-USERINFO", isUser);
+
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
                     CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()), username.Split(',')[3].Trim());
@@ -113,7 +115,7 @@ namespace CMS.Controllers
 
                         bool isUser = (bool)Session["IS-USERS"];
                         GetNotifyUser(isUser, user.Id);
-                        Session.Add("SS-USERINFO", isUser ? 1 : 0);
+                        Session.Add("SS-USERINFO", isUser ? true : false);
                         return RedirectToAction("Index", "Home");
                     }
                     ModelState.AddModelError("CredentialError", "Mật khẩu không đúng hoặc bạn chưa có quyền đăng nhập. vui lòng liên hệ sđt " + Information.HOT_PHONE_NUMBER);
@@ -297,7 +299,7 @@ namespace CMS.Controllers
             }
             else
             {
-                Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && DateTime.Now.Date <= x.EndDate.Date);
+                Session["USER-ACCEPTED"] = db.PaymentAccepteds.Any(x => x.UserId == userId && DateTime.Now <= x.EndDate);
                 Session["IS-USERS"] = true;
             }
         }
