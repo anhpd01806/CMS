@@ -407,5 +407,28 @@ namespace CMS.Controllers
                 return Json(new { Status = 0 });
             }
         }
+
+        public JsonResult Delete(int[] listNewsId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var result = 1;
+                if (listNewsId.Length > 0)
+                {
+                    result = _bussiness.Delete(listNewsId, userId);
+                }
+                else
+                {
+                    result = 2;
+                }
+                return Json(new { Status = result });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
     }
 }

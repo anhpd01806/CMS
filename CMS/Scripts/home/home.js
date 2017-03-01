@@ -187,10 +187,10 @@ $(function () {
         $(document).on("click", ".checkboxItem", function () {
             var count = parseInt($('input:checkbox:checked').length);
             if ($(this).prop('checked')) {
-                $(".btnsave, .btnhide, .btnreport, .btnspam").removeClass("disabled");
+                $(".btnsave, .btnhide, .btnreport, .btnspam, .btndelete").removeClass("disabled");
             } else {
                 if (count < 1) {
-                    $(".btnsave, .btnhide, .btnreport, .btnspam").addClass("disabled");
+                    $(".btnsave, .btnhide, .btnreport, .btnspam, .btndelete").addClass("disabled");
                 }
             }
         });
@@ -320,6 +320,37 @@ $(function () {
 
                             } else {
                                 showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            }
+                        }
+                        ;
+                    });
+                }
+            }
+        });
+
+        $(document).on("click", ".btndelete", function() {
+            if (!$(this).hasClass("disabled")) {
+                var selected = [];
+                $('.checkboxItem:checked').each(function () {
+                    selected.push(parseInt($(this).attr('id')));
+                });
+                if (selected.length == 0) {
+                    showmessage("error", "Bạn hãy chọn tin cần xóa!");
+                } else {
+                    $.post("/home/delete", { listNewsId: selected }, function (resp) {
+                        if (resp != null) {
+                            if (resp.Status == 1) {
+                                LoadData();
+                                setTimeout(function () {
+                                    showmessage("success", "Tin đã được xóa thành công!");
+                                }, 1200);
+
+                            } else {
+                                if (resp.Status == 2) {
+                                    showmessage("error", "Bạn chưa chọn tin nào để xóa!");
+                                } else {
+                                    showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                }
                             }
                         }
                         ;

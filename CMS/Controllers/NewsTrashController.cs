@@ -18,7 +18,7 @@ using CMS.Data;
 
 namespace CMS.Controllers
 {
-    public class NewsTrashController : Controller
+    public class NewsTrashController : BaseAuthedController
     {
         #region member
         private readonly NewsBussiness _newsbussiness = new NewsBussiness();
@@ -98,6 +98,210 @@ namespace CMS.Controllers
             {
                 ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
                 return null;
+            }
+        }
+
+        public JsonResult LoadData(int cateId, int districtId, int newTypeId, int siteId, int backdate, double
+                minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string key)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                int total = 0;
+                var listNews = _newsbussiness.GetListNewDeleteByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
+                ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
+                var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
+                return Json(new
+                {
+                    TotalPage = (int)Math.Ceiling((double)total / (double)pageSize),
+                    Content = content,
+                    TotalRecord = total
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    TotalPage = 0,
+                    Content = "<tr><td colspan='9'>Hệ thống gặp sự cố trong quá trình load dữ liệu<td></tr>"
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetNewsDetail()
+        {
+            try
+            {
+                if (Convert.ToBoolean(Session["USER-ACCEPTED"]))
+                {
+                    var Id = Convert.ToInt32(Request["Id"]);
+                    int userId = Convert.ToInt32(Session["SS-USERID"]);
+                    ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
+                    ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
+                    var news = _homebussiness.GetNewsDetail(Id, userId);
+                    ViewBag.RoleId = _homebussiness.GetRoleByUser(userId);
+                    var content = RenderPartialViewToString("~/Views/NewsTrash/NewDetail.cshtml", news);
+                    return Json(new
+                    {
+                        Pay = 1,
+                        Content = content
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new
+                {
+                    Pay = 0,
+                    Content = String.Empty
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    Pay = 1,
+                    Content = string.Empty
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult ExportExcelV2(string listNewsId)
+        {
+            var newsId = new List<int>();
+            for (int i = 0; i < listNewsId.Split(',').Length; i++)
+            {
+                newsId.Add(Convert.ToInt32(listNewsId.Split(',')[i]));
+            }
+
+            string fileName = string.Format("News_{0}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
+            string filePath = Path.Combine(Request.PhysicalApplicationPath, "File\\ExportImport", fileName);
+            var folder = Request.PhysicalApplicationPath + "File\\ExportImport";
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+            var listNews = _homebussiness.ExportExcel(newsId);
+            ExportToExcel(filePath, listNews);
+
+            var bytes = System.IO.File.ReadAllBytes(filePath);
+            return File(bytes, "text/xls", fileName);
+        }
+
+        [HttpPost]
+        public JsonResult RestoreNews(int[] listNewsId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var result = 1;
+                if (listNewsId.Length > 0)
+                {
+                    result = _newsbussiness.RestoreNews(listNewsId, userId);
+                }
+                return Json(new { Status = result });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeleteNews(int[] listNewsId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var result = 1;
+                if (listNewsId.Length > 0)
+                {
+                    result = _newsbussiness.DeleteNews(listNewsId, userId);
+                }
+                return Json(new { Status = result });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
+
+        public virtual void ExportToExcel(string filePath, IList<NewsModel> listnews)
+        {
+            var newFile = new FileInfo(filePath);
+
+            // ok, we can run the real code of the sample now
+            using (var xlPackage = new ExcelPackage(newFile))
+            {
+                // uncomment this line if you want the XML written out to the outputDir
+                //xlPackage.DebugMode = true; 
+
+                // get handle to the existing worksheet
+                var worksheet = xlPackage.Workbook.Worksheets.Add("Danh sách tin tức");
+                xlPackage.Workbook.CalcMode = ExcelCalcMode.Manual;
+                //Create Headers and format them
+                var properties = new string[]
+                    {
+                        "STT",
+                        "Tiêu đề",
+                        "Nội dung",
+                        "Quận huyện",
+                        "Ngày đăng",
+                        "Giá",
+                        "Điện thoại",
+                        "Loại tin"
+                    };
+                for (var i = 0; i < properties.Length; i++)
+                {
+                    worksheet.Cells[1, i + 1].Value = properties[i];
+                    worksheet.Cells[1, i + 1].Style.Font.Bold = true;
+                }
+
+                var row = 2;
+                var dem = 0;
+                foreach (var item in listnews)
+                {
+                    dem++;
+                    int col = 1;
+
+                    worksheet.Cells[row, col].Value = dem;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.Title;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Contents : "Vui lòng nạp tiền";
+                    col++;
+
+
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.DistictName : "Vui lòng nạp tiền";
+                    col++;
+
+                    worksheet.Cells[row, col].Value = Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyy");
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.PriceText;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Phone : "Vui lòng nạp tiền";
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.StatusName;
+                    col++;
+                    //next row
+                    row++;
+                }
+
+
+                var nameexcel = "Danh sách tin tức" + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff");
+                xlPackage.Workbook.Properties.Title = string.Format("{0}", nameexcel);
+                xlPackage.Workbook.Properties.Author = "Admin-IT";
+                xlPackage.Workbook.Properties.Subject = string.Format("{0} TINTUC", "");
+                xlPackage.Workbook.Properties.Category = "TINTUC";
+
+                xlPackage.Workbook.Properties.Company = "OZO";
+                xlPackage.Save();
             }
         }
 	}

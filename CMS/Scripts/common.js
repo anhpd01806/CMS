@@ -19,5 +19,4 @@ $(document).ready(function () {
         aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
     });
     $('#check-all').parent().removeClass("sorting_asc");
-
 });

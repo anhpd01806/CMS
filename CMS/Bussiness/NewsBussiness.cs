@@ -53,6 +53,11 @@ namespace CMS.Bussiness
                                    where c.CustomerId.Equals(UserId) && c.IsReaded.Value && !c.IsAgency.Value
                                    select (c.NewsId)).ToList();
 
+                //Danh sách tin đã bị xóa
+                var listDelete = (from c in db.News_Trashes
+                                  where c.Isdelete || c.Isdeleted
+                                  select (c.NewsId)).ToList();
+
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
                             join t in db.NewsStatus on c.StatusId equals t.Id
@@ -62,6 +67,7 @@ namespace CMS.Bussiness
                             && !d.IsDeleted && d.Published
                             && news_new.Contains(c.Id)
                             && !listBlacklist.Contains(c.Phone) //không cho hiển thị có số điện thoại giống số điện thoại trong blacklist
+                            && !listDelete.Contains(c.Id)
                             orderby c.StatusId ascending, c.Price descending
                             select new NewsModel
                             {
@@ -492,10 +498,6 @@ namespace CMS.Bussiness
                 var listBlacklist = (from c in db.Blacklists
                                      select (c.Words)).ToList();
 
-                var news_new =  (from c in db.News_Customer_Mappings
-                                           where c.CustomerId.Equals(UserId) && (!c.IsDeleted.Value || !c.IsSaved.Value) && !c.IsAgency.Value
-                                           select (c.NewsId)).ToList(); 
-
                 //Danh sách tin đã đọc theo user
                 var news_isread = (from c in db.News_Customer_Mappings
                                    where c.CustomerId.Equals(UserId) && c.IsReaded.Value && !c.IsAgency.Value
@@ -504,12 +506,9 @@ namespace CMS.Bussiness
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
                             join t in db.NewsStatus on c.StatusId equals t.Id
-                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
                             join nd in db.News_Trashes on c.Id equals nd.NewsId
-                            join s in db.Sites on c.SiteId equals s.ID
-                            where c.CreatedOn.HasValue && !c.IsDeleted && !s.Deleted && s.Published //&& c.Published.HasValue
+                            where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
-                            && news_new.Contains(c.Id)
                             && !listBlacklist.Contains(c.Phone)
                             && nd.Isdelete && !nd.Isdeleted
                             orderby c.StatusId ascending, c.Price descending
@@ -530,8 +529,6 @@ namespace CMS.Bussiness
                                 StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
                                 CusIsReaded = news_isread.Contains(c.Id) ? true : false,
-                                CusIsSaved = ncm.IsSaved,
-                                CusIsDeleted = ncm.IsDeleted,
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = 1,//CountRepeatnews(c.Id, UserId, d.Id),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
@@ -594,6 +591,60 @@ namespace CMS.Bussiness
 
                 total = query.Distinct().ToList().Count;
                 return query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            }
+        }
+
+        public int RestoreNews(int[] listnews, int userId)
+        {
+            try
+            {
+                foreach (var t in listnews)
+                {
+                    var query = (from c in db.News_Trashes
+                        where c.NewsId.Equals(t) && c.CustomerID.Equals(userId) && !c.Isdeleted
+                        select c).ToList();
+                    if (query.Any())
+                    {
+                        foreach (var newsTrash in query)
+                        {
+                            db.News_Trashes.DeleteOnSubmit(newsTrash);
+                        }
+                    }
+                    db.SubmitChanges();
+                }
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int DeleteNews(int[] listnews, int userId)
+        {
+            try
+            {
+                foreach (var t in listnews)
+                {
+                    var query = (from c in db.News_Trashes
+                        where c.NewsId.Equals(t) && c.CustomerID.Equals(userId) && !c.Isdeleted && !c.IsSpam
+                        select c).ToList();
+                    if (query.Any())
+                    {
+                        foreach (var newsTrash in query)
+                        {
+                            newsTrash.Isdelete = false;
+                            newsTrash.Isdeleted = true;
+                            newsTrash.IsSpam = false;
+                        }
+                    }
+                    db.SubmitChanges();
+                }
+                return 1;
+            }
+            catch
+            {
+                return 0;
             }
         }
         #endregion

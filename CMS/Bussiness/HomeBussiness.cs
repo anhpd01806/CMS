@@ -93,6 +93,7 @@ namespace CMS.Bussiness
             {
                 var listBlacklist = (from c in db.Blacklists
                                      select (c.Words)).ToList();
+
                 var listDelete = (from c in db.News_Trashes
                                   where c.Isdelete || c.Isdeleted
                                      select (c.NewsId)).ToList();
