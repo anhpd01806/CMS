@@ -8,10 +8,10 @@
         <elementListCompartment Id="7176bc64-f8b6-4548-a7c7-41a0e1b93acd" absoluteBounds="9.515, 11.835, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="42f34f0c-a391-491f-b6ca-92207e2dca4e" absoluteBounds="6.5, 5.625, 2, 1.7708968098958327">
+    <classShape Id="42f34f0c-a391-491f-b6ca-92207e2dca4e" absoluteBounds="6.25, 6, 2, 1.7708968098958327">
       <DataClassMoniker Name="/CmsDataDataContext/ActivityLog" />
       <nestedChildShapes>
-        <elementListCompartment Id="76ec7beb-a1bf-4e33-af1e-7cce5b437796" absoluteBounds="6.515, 6.085, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="76ec7beb-a1bf-4e33-af1e-7cce5b437796" absoluteBounds="6.265, 6.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="c0d349a0-169e-4170-a25b-ec0ce6271489" absoluteBounds="3.75, 4.75, 2, 1.5785953776041666">
@@ -326,14 +326,14 @@
         <elementListCompartment Id="e22aa072-96c4-41bc-8b4d-7ea1179845a2" absoluteBounds="24.765, 23.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.75 : 5.97679768880208); (6.5 : 5.97679768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(4.75 : 6.32859537760417); (4.75 : 7.13064950170272); (6.25 : 7.13064950170272)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/CmsDataDataContext/ActivityLogType/ActivityLogType_ActivityLog" />
       <nodes>
         <classShapeMoniker Id="c0d349a0-169e-4170-a25b-ec0ce6271489" />
         <classShapeMoniker Id="42f34f0c-a391-491f-b6ca-92207e2dca4e" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 6.72679768880208); (6.5 : 6.72679768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 6.72679768880208); (4.66666666666667 : 6.72679768880208 : JumpStart); (4.83333333333333 : 6.72679768880208 : JumpEnd); (6.25 : 6.72679768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/CmsDataDataContext/Customer/Customer_ActivityLog" />
       <nodes>
         <classShapeMoniker Id="4ebe7045-f0fd-4745-9723-848621706cf1" />
@@ -429,16 +429,22 @@
         <elementListCompartment Id="325e7429-905d-4252-a38e-78eb57ff6d2a" absoluteBounds="3.8899999999999997, 0.96, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="7beac8f4-4274-42c9-a20b-2d5b9fc88bc9" absoluteBounds="7.25, 2.25, 2, 3.1170068359375">
+    <classShape Id="7beac8f4-4274-42c9-a20b-2d5b9fc88bc9" absoluteBounds="7.125, 2.75, 2, 3.1170068359375">
       <DataClassMoniker Name="/CmsDataDataContext/Notify" />
       <nestedChildShapes>
-        <elementListCompartment Id="f521b21d-9777-40b9-87aa-414c3fd52ae6" absoluteBounds="7.265, 2.71, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f521b21d-9777-40b9-87aa-414c3fd52ae6" absoluteBounds="7.14, 3.21, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="8d9def7e-4176-4cc6-919b-d03d78d8278e" absoluteBounds="4.875, 25.5, 2, 5.4246240234375">
       <DataClassMoniker Name="/CmsDataDataContext/User" />
       <nestedChildShapes>
         <elementListCompartment Id="e70eac2e-07ff-49d7-8777-1a85ccf4a873" absoluteBounds="4.89, 25.96, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5f59d8d4-6c4b-446b-aade-1a695e324933" absoluteBounds="6.5, 0.5, 2, 1.9631982421875">
+      <DataClassMoniker Name="/CmsDataDataContext/News_customer_action" />
+      <nestedChildShapes>
+        <elementListCompartment Id="18137dee-6d9f-4a39-a9cb-000c29915dbc" absoluteBounds="6.515, 0.96, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

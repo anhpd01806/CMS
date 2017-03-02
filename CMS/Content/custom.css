@@ -57,7 +57,7 @@ label, .lbl {
 .td-small {
     min-width: 85px;
     text-align: left;
-    max-width: 100px;
+    max-width: 120px;
 }
 
 .td-actions {
@@ -196,5 +196,24 @@ span.error {
 }
 .btnsamenews:hover {
     cursor: pointer;
-    color: #c55f05;
+    color: #bf983b;
+}
+.search_all {
+    overflow: hidden;
+}
+.search_all center{
+    overflow: hidden;
+    max-width: 1070px;
+    margin: 0 auto;
+}
+.btnsearch{
+    background-color: #4267b2 !important;
+    color: white !important;
+}
+.tdcc {
+    text-align: center;
+    min-width: 100px;
+}
+.tdcenter {
+    text-align: center;
 }

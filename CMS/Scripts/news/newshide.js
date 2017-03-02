@@ -42,6 +42,20 @@ $(function () {
         });
 
         var totalpage = parseInt($('#datatable').attr("data-total"));
+        var totalrecord = parseInt($('#datatable').attr("data-totalrecord"));
+
+        if (totalrecord > 0) {
+            $('#listnewstable').DataTable({
+                sDom: 'rt',
+                retrieve: true,
+                bFilter: false,
+                bInfo: false,
+                searching: false,
+                paging: false,
+                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
+            });
+            $('#check-all').parent().removeClass("sorting_asc");
+        }
         if (totalpage > 1) {
             var obj = $('#pagination').twbsPagination({
                 totalPages: totalpage,
@@ -98,7 +112,7 @@ $(function () {
                                     bInfo: false,
                                     searching: false,
                                     paging: false,
-                                    aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                                    aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
                                 });
                                 $('#check-all').parent().removeClass("sorting_asc");
                             }
@@ -156,7 +170,7 @@ $(function () {
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -199,7 +213,7 @@ $(function () {
         });
 
         $(document).on("click", ".detail-item-list", function () {
-            $(this).parents("tr").attr("style", "color: #c55f05;");
+            $(this).parents("tr").attr("style", "color: #bf983b;");
             $(this).parents("tr").find(".label-info").html("Đã xem");
             $(this).parents("tr").find(".label-info").addClass("label-warning");
             $(this).parents("tr").find(".label-info").addClass("arrowed-right");
@@ -246,7 +260,7 @@ $(function () {
         });
 
         $(document).on("click", ".lbltitle", function () {
-            $(this).parents("tr").attr("style", "color: #c55f05;");
+            $(this).parents("tr").attr("style", "color: #bf983b;");
             $(this).parents("tr").find(".label-info").html("Đã xem");
             $(this).parents("tr").find(".label-info").addClass("label-warning");
             $(this).parents("tr").find(".label-info").addClass("arrowed-right");
@@ -605,7 +619,7 @@ $(function () {
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -673,7 +687,7 @@ $(function () {
                                 bInfo: false,
                                 searching: false,
                                 paging: false,
-                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
                             });
                             $('#check-all').parent().removeClass("sorting_asc");
                         }

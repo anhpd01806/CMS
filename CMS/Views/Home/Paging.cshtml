@@ -4,7 +4,7 @@
 {
     foreach (var item in Model)
     {
-        <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #c55f05;" : string.Empty)">
+        <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #bf983b;" : string.Empty)">
             <td>
                 <label class="pos-rel">
                     <input type="checkbox" class="checkboxItem" id="@item.Id" />
@@ -27,10 +27,10 @@
             </td>
             <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
             <td class="td-medium">@item.PriceText</td>
-            <td class="td-small">
+            <td class="td-small" style="text-align: center; min-width: 115px;">
                 @if (Convert.ToBoolean(ViewBag.Accept))
                 {
-                    <span>@item.Phone.Replace(",", ", ").Trim()</span>
+                    <span>@Html.Raw(item.Phone.Replace(",", ", ").Trim() + "<br/>(đã đăng " + item.RepeatTotal + " tin)")</span>
                 }
                 else
                 {
@@ -50,9 +50,30 @@
 
                 }
             </td>
-            <td style="text-align: center">
-                <img src="~/assets/images/approved.gif" />
+            <td class="tdcc">
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" disabled class="ace ace-checkbox-2" type="checkbox" />
+                        <span class="lbl"></span>
+                    </label>
+                </div>
             </td>
+            @*<td style="text-align: center">
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                        <span class="lbl"></span>
+                    </label>
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                        <span class="lbl"></span>
+                    </label>
+                </div>
+            </td>*@
             @*<td class="td-actions">
                 <div class="hidden-phone visible-desktop action-buttons">
                     <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">

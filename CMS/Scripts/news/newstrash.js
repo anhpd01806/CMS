@@ -146,7 +146,7 @@ $(function () {
     });
     
     $(document).on("click", ".lbltitle", function () {
-        $(this).parents("tr").attr("style", "color: #c55f05;");
+        $(this).parents("tr").attr("style", "color: #bf983b;");
         $(this).parents("tr").find(".label-info").html("Đã xem");
         $(this).parents("tr").find(".label-info").addClass("label-warning");
         $(this).parents("tr").find(".label-info").addClass("arrowed-right");

@@ -683,4 +683,14 @@
       <Column Name="IsNotify" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.News_customer_action" Member="News_customer_actions">
+    <Type Name="News_customer_action">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Iscc" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Ischeck" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsSpam" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>

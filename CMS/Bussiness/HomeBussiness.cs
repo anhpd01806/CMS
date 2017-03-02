@@ -96,7 +96,7 @@ namespace CMS.Bussiness
 
                 var listDelete = (from c in db.News_Trashes
                                   where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(UserId)
-                                     select (c.NewsId)).ToList();
+                                  select (c.NewsId)).ToList();
 
                 //Danh sách tin đã lưu hoặc đã ẩn theo user
                 var news_new = (from c in db.News_Customer_Mappings
@@ -140,7 +140,7 @@ namespace CMS.Bussiness
                                 //CusIsSaved = tm.IsSaved,
                                 //CusIsDeleted = tm.IsDeleted,
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = 1,//CountRepeatnews(c.Id, UserId, d.Id),
+                                RepeatTotal = 0,//CountRepeatByPhone(c.Phone, UserId),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
                             };
 
@@ -179,7 +179,7 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(To))
                 {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] +" 23:59:59.999")));
+                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")));
                 }
                 if (MinPrice != -1)
                 {
@@ -200,7 +200,16 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.Distinct().ToList().Count;
-                return query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                var list = query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                var listItem = new List<NewsModel>();
+                foreach (var newsModel in list)
+                {
+                    newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
+                    listItem.Add(newsModel);
+                }
+
+                return listItem;
+
             }
         }
 
@@ -213,30 +222,30 @@ namespace CMS.Bussiness
             }))
             {
                 var query = (from c in db.News
-                            join d in db.Districts on c.DistrictId equals d.Id
-                            join t in db.NewsStatus on c.StatusId equals t.Id
-                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
-                            from tm in temp.DefaultIfEmpty()
-                            where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                            && listNewsId.Contains(c.Id)
-                            orderby c.StatusId ascending, c.Price descending
-                            select new NewsModel
-                            {
-                                Id = c.Id,
-                                Title = c.Title,
-                                CategoryId = c.CategoryId,
-                                Link = c.Link,
-                                Phone = c.Phone,
-                                Price = c.Price,
-                                PriceText = c.PriceText,
-                                DistrictId = d.Id,
-                                DistictName = d.Name,
-                                StatusId = t.Id,
-                                StatusName = t.Name,
-                                CreatedOn = c.CreatedOn,
-                                IsRepeat = c.IsRepeat,
-                                RepeatTotal = 1
-                            }).Distinct().ToList();
+                             join d in db.Districts on c.DistrictId equals d.Id
+                             join t in db.NewsStatus on c.StatusId equals t.Id
+                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                             from tm in temp.DefaultIfEmpty()
+                             where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                             && listNewsId.Contains(c.Id)
+                             orderby c.StatusId ascending, c.Price descending
+                             select new NewsModel
+                             {
+                                 Id = c.Id,
+                                 Title = c.Title,
+                                 CategoryId = c.CategoryId,
+                                 Link = c.Link,
+                                 Phone = c.Phone,
+                                 Price = c.Price,
+                                 PriceText = c.PriceText,
+                                 DistrictId = d.Id,
+                                 DistictName = d.Name,
+                                 StatusId = t.Id,
+                                 StatusName = t.Name,
+                                 CreatedOn = c.CreatedOn,
+                                 IsRepeat = c.IsRepeat,
+                                 RepeatTotal = 1
+                             }).Distinct().ToList();
                 return query;
             }
         }
@@ -263,7 +272,7 @@ namespace CMS.Bussiness
                              Price = c.Price,
                              PriceText = c.PriceText,
                              DistrictId = d.Id,
-                             DistictName = d.Name,                             
+                             DistictName = d.Name,
                              StatusId = t.Id,
                              StatusName = t.Name,
                              CreatedOn = c.CreatedOn,
@@ -464,7 +473,7 @@ namespace CMS.Bussiness
             }
         }
 
-        public int Delete(int [] listNewDelete, int userId)
+        public int Delete(int[] listNewDelete, int userId)
         {
             try
             {
@@ -473,12 +482,12 @@ namespace CMS.Bussiness
                     var query = (from c in db.News_Customer_Mappings
                                  where c.CustomerId.Equals(userId) && c.NewsId.Equals(listNewDelete[i]) && !c.IsAgency.Value
                                  select c).ToList();
-                    if(query.Any())
+                    if (query.Any())
                     {
                         foreach (var item in query)
                         {
                             item.IsDeleted = false;
-                            item.IsSaved = false;                            
+                            item.IsSaved = false;
                         }
                     }
 
@@ -501,7 +510,7 @@ namespace CMS.Bussiness
                 }
                 return 1;
             }
-            catch 
+            catch
             {
                 return 0;
             }
@@ -565,10 +574,28 @@ namespace CMS.Bussiness
             return 0;
         }
 
-        //public int CountRepeatByPhone(string phone)
-        //{
-        //    var query = 
-        //}
+        public int CountRepeatByPhone(string phone, int userID)
+        {
+            try
+            {
+                var listBlacklist = (from c in db.Blacklists
+                                     select (c.Words)).ToList();
+                var listDelete = (from c in db.News_Trashes
+                                  where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(userID)
+                                  select (c.NewsId)).ToList();
+                var query = (from c in db.News
+                             where c.CreatedOn.HasValue && !c.IsDeleted
+                             && c.Phone.Contains(phone)
+                             && !listDelete.Contains(c.Id)
+                             && !listBlacklist.Contains(c.Phone)
+                             select c).ToList();
+                return query.Count;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
         #endregion
 
         #region Role

@@ -89,7 +89,7 @@ namespace CMS.Bussiness
                                 CusIsSaved = ncm.IsSaved,
                                 CusIsDeleted = ncm.IsDeleted,
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = 1,//CountRepeatnews(c.Id, UserId, d.Id),
+                                RepeatTotal = 0,//CountRepeatnews(c.Id, UserId, d.Id),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
                             };
 
@@ -162,7 +162,15 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.Distinct().ToList().Count;
-                return query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                var list = query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                var listItem = new List<NewsModel>();
+                foreach (var newsModel in list)
+                {
+                    newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
+                    listItem.Add(newsModel);
+                }
+
+                return listItem;
             }
         }
 
@@ -717,6 +725,29 @@ namespace CMS.Bussiness
 
             var total = query.Count;
             return total;
+        }
+
+        public int CountRepeatByPhone(string phone, int userID)
+        {
+            try
+            {
+                var listBlacklist = (from c in db.Blacklists
+                                     select (c.Words)).ToList();
+                var listDelete = (from c in db.News_Trashes
+                                  where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(userID)
+                                  select (c.NewsId)).ToList();
+                var query = (from c in db.News
+                             where c.CreatedOn.HasValue && !c.IsDeleted
+                             && c.Phone.Contains(phone)
+                             && !listDelete.Contains(c.Id)
+                             && !listBlacklist.Contains(c.Phone)
+                             select c).ToList();
+                return query.Count;
+            }
+            catch
+            {
+                return 0;
+            }
         }
         #endregion
 

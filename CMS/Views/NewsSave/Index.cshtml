@@ -7,11 +7,11 @@
     <div class="row">
         <div class="search_all">
             <label class="col-xs-1 lblsearch">Tìm kiếm: </label>
-            <div class="col-xs-8">
+            <div class="col-xs-11">
                 <div class="input-group">
                     <input class="form-control txtsearchkey" placeholder="Nhập vào tiêu đề tin, số điện thoại, quận huyện..." type="text" />
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-inverse btn-white btnsearch">
+                        <button type="button" class="btn btn-inverse btn-white btnsearch" style="background-color: #4267b2 !important; color: white !important;">
                             <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
                             Tìm
                         </button>
@@ -147,7 +147,7 @@
         </div>
         <div class="space"></div>
         <div class="hd-fuc">
-            <div class="col-sm-5">
+            <div class="col-sm-9">
                 <button class="btn btn-sm btn-primary btn-small btnremove disabled">
                     <i class="icon-trash bigger-125"></i>
                     Bỏ lưu tin
@@ -156,32 +156,37 @@
                     <i class="icon-eye-close bigger-125"></i>
                     Ẩn tin
                 </button>
+                <button class="btn btn-sm btn-default btndelete disabled">
+                    <i class="icon-trash bigger-125"></i>
+                    Xóa tin
+                </button>
                 @if (!Convert.ToBoolean(ViewBag.User))
                 {
+                    <button class="btn btn-sm btn-inverse btn-small btncc disabled">
+                        <i class="icon-user bigger-125"></i>
+                        Tin chính chủ
+                    </button>
                     <button class="btn btn-sm btn-inverse btn-small btnspam disabled">
                         <i class="icon-warning-sign bigger-125"></i>
                         Chặn môi giới
                     </button>
+                    <button class="btn btn-sm btn-danger btnexport btn-small">
+                        <i class="icon-download-alt bigger-125"></i>
+                        Xuất Excel
+                    </button>
                 }
-                else
+                @*else
                 {
                     <button class="btn btn-sm btn-inverse btn-small btnreport disabled">
                         <i class="icon-warning-sign bigger-125"></i>
                         Báo môi giới
                     </button>
-                }
-                <button class="btn btn-sm btn-default btndelete disabled">
-                    <i class="icon-trash bigger-125"></i>
-                    Xóa tin
-                </button>
-                <button class="btn btn-sm btn-danger btnexport btn-small">
-                    <i class="icon-download-alt bigger-125"></i>
-                    Xuất Excel
-                </button>
+                }*@
             </div>
-            <div class="col-sm-7 viewpage">
+            <div class="col-sm-3 viewpage">
                 <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
-                    Hiển thị <span class="fistrecord">@((Model.pageIndex - 1) * Model.pageSize)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> tin
+                    @*Hiển thị <span class="fistrecord">@((Model.pageIndex - 1) * Model.pageSize)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> tin*@
+                    Tổng số tin : <span class="totalrecord">@(Model.Total)</span>
                 </div>
             </div>
         </div>
@@ -201,7 +206,9 @@
                         <th>Điện thoại</th>
                         <th style="text-align: center">Loại tin</th>
                         <th>Xem</th>
-                        <th style="text-align: center">Chính chủ</th>
+                        <th class="tdcc">Chính chủ</th>
+                        @*<th class="tdcenter">Kiểm tra</th>
+                            <th class="tdcenter">Span</th>*@
                         @*<th style="text-align: center">Tính năng</th>*@
                     </tr>
                 </thead>
@@ -210,7 +217,7 @@
                     {
                         foreach (var item in Model.ListNew)
                         {
-                            <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? " color: #c55f05;" : "")">
+                            <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? " color: #bf983b;" : "")">
                                 <td>
                                     <label class="pos-rel">
                                         <input type="checkbox" class="checkboxItem" id="@item.Id" />
@@ -233,10 +240,10 @@
                                 </td>
                                 <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
                                 <td class="td-medium">@item.PriceText</td>
-                                <td class="td-small">
+                                <td class="td-small" style="text-align: center; min-width: 115px;">
                                     @if (Convert.ToBoolean(ViewBag.Accept))
                                     {
-                                        <span>@item.Phone.Replace(",", ", ").Trim()</span>
+                                        <span>@Html.Raw(item.Phone.Replace(",", ", ").Trim() + "<br/>(đã đăng " + item.RepeatTotal + " tin)")</span>
                                     }
                                     else
                                     {
@@ -256,10 +263,30 @@
 
                                     }
                                 </td>
-                                <td style="text-align: center">
-                                    <img src="~/assets/images/approved.gif" />
+                                <td class="tdcc">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input name="form-field-checkbox" disabled class="ace ace-checkbox-2" type="checkbox" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
                                 </td>
-
+                                @*<td class="tdcenter">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="tdcenter">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </td>*@
                                 @*<td class="td-actions">
                                         <div class="hidden-phone visible-desktop action-buttons">
                                             <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
@@ -296,7 +323,7 @@
                     }
                 </tbody>
             </table>
-            <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-page="1" />
+            <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-totalrecord="@Model.Total" data-page="1" />
             @if (Model.Totalpage > 1)
             {
                 <div class="row page-home">
