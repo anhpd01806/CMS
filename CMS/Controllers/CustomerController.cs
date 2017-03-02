@@ -129,37 +129,44 @@ namespace CMS.Controllers
 
             //get user by userId
             var user = new UserBussiness().GetUserById(id);
-            model.Id = user.Id;
-            model.UserName = user.UserName;
-            model.FullName = user.FullName;
-            model.IsMember = user.IsMember ?? false;
-            model.IsRestore = user.IsDeleted ?? false;
-            model.ManagerBy = user.ManagerBy + "";
-            model.RoleUsers = new RoleBussiness().GetListByUserId(id);
-
-            //get dropdownlist and list role
-            var allRoles = new RoleBussiness().GetRoles();
-            model.ManagerList = new UserBussiness().GetManagerUser();
-            if (allRoles != null)
+            if (user.ManagerBy == null || user.ManagerBy == int.Parse(Session["SS-USERID"].ToString()))
             {
-                List<RoleModel> lstRoles = new List<RoleModel>();
-                foreach (var role in allRoles)
-                {
-                    RoleModel roleView = new RoleModel
-                    {
-                        Id = role.Id,
-                        Name = role.Name
-                    };
-                    if (model.RoleUsers.FirstOrDefault(r => r.RoleId == roleView.Id) != null)
-                    {
-                        roleView.IsChecked = true;
-                    }
-                    lstRoles.Add(roleView);
-                }
-                model.ListRoles = lstRoles;
-            }
+                model.Id = user.Id;
+                model.UserName = user.UserName;
+                model.FullName = user.FullName;
+                model.IsMember = user.IsMember ?? false;
+                model.IsRestore = user.IsDeleted ?? false;
+                model.ManagerBy = user.ManagerBy + "";
+                model.RoleUsers = new RoleBussiness().GetListByUserId(id);
 
-            return View(model);
+                //get dropdownlist and list role
+                var allRoles = new RoleBussiness().GetRoles();
+                model.ManagerList = new UserBussiness().GetManagerUser();
+                if (allRoles != null)
+                {
+                    List<RoleModel> lstRoles = new List<RoleModel>();
+                    foreach (var role in allRoles)
+                    {
+                        RoleModel roleView = new RoleModel
+                        {
+                            Id = role.Id,
+                            Name = role.Name
+                        };
+                        if (model.RoleUsers.FirstOrDefault(r => r.RoleId == roleView.Id) != null)
+                        {
+                            roleView.IsChecked = true;
+                        }
+                        lstRoles.Add(roleView);
+                    }
+                    model.ListRoles = lstRoles;
+                }
+                return View(model);
+            }
+            else
+            {
+                TempData["Error"] = "Bạn không quản lý tài khoản này. vui lòng thử lại.";
+                return RedirectToAction("Index", "Customer");
+            }
         }
 
         [HttpPost]
@@ -167,37 +174,47 @@ namespace CMS.Controllers
         {
             try
             {
-                //update ismember and delete
-                new UserBussiness().Update(model);
-
-                //delte all role in role_users
-                new RoleBussiness().DeleteRoleUserByUserId(model.Id);
-
-                //insert role to role_user
-                List<Role_User> lstRoleUser = new List<Role_User>();
-                if (selectRoles != null)
+                //check staff is mananger customer
+                var user = new UserBussiness().GetUserById(model.Id);
+                if (user.ManagerBy == null || user.ManagerBy == int.Parse(Session["SS-USERID"].ToString()))
                 {
-                    lstRoleUser.AddRange(selectRoles.Select(roleId => new Role_User
+                    //update ismember and delete
+                    new UserBussiness().Update(model);
+
+                    //delte all role in role_users
+                    new RoleBussiness().DeleteRoleUserByUserId(model.Id);
+
+                    //insert role to role_user
+                    List<Role_User> lstRoleUser = new List<Role_User>();
+                    if (selectRoles != null)
                     {
-                        UserId = model.Id,
-                        RoleId = Convert.ToInt32(roleId)
-                    }));
-                    // Insert User to Roles
-                    try
-                    {
-                        foreach (var item in lstRoleUser)
+                        lstRoleUser.AddRange(selectRoles.Select(roleId => new Role_User
                         {
-                            new RoleUserBussiness().Insert(item);
+                            UserId = model.Id,
+                            RoleId = Convert.ToInt32(roleId)
+                        }));
+                        // Insert User to Roles
+                        try
+                        {
+                            foreach (var item in lstRoleUser)
+                            {
+                                new RoleUserBussiness().Insert(item);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            TempData["Error"] = ex;
+                            return RedirectToAction("Index", "Customer");
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        TempData["Error"] = ex;
-                        return RedirectToAction("Index", "Customer");
-                    }
-                }
 
-                TempData["Success"] = Messages_Contants.SUCCESS_UPDATE;
+                    TempData["Success"] = Messages_Contants.SUCCESS_UPDATE;
+                }
+                else
+                {
+                    TempData["Error"] = "Bạn không quản lý tài khoản này. vui lòng thử lại.";
+                    return RedirectToAction("Index", "Customer");
+                }
             }
             catch (Exception)
             {
