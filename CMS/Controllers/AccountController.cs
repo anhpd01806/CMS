@@ -49,13 +49,13 @@ namespace CMS.Controllers
                         return View(model);
                     }
                     // set seesion for notify
-                    bool isUser = CheckUserIsUser(int.Parse(username.Split(',')[1].Trim()));
-                    GetNotifyUser(isUser, int.Parse(username.Split(',')[1].Trim()));
-                    Session.Add("SS-USERINFO", isUser);
-
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
                     CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()), username.Split(',')[3].Trim());
+                    Session["IS-NOTIFY"] = username.Split(',')[4].Trim();
+                    bool isUser = (bool)Session["IS-USERS"];
+                    GetNotifyUser(isUser, int.Parse(username.Split(',')[1].Trim()));
+
                     //update last login user
                     UpdateLastLoginUser(int.Parse(username.Split(',')[1].Trim()));
                     return RedirectToAction("Index", "Home");
@@ -88,6 +88,8 @@ namespace CMS.Controllers
                                                         && x.IsDeleted == false && x.IsMember == true);
                     if (user != null)
                     {
+                        bool isNotify;
+                        isNotify = user.IsNotify??true;
                         //check login user
                         if (!CheckUserLogin(user.Id))
                         {
@@ -104,13 +106,14 @@ namespace CMS.Controllers
                         CheckAcceptedUser(user.Id, user.IsFree.ToString());
                         // set cookies for user
                         HttpCookie rememberCookie = new HttpCookie("rememberCookies");
-                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName) + "," + user.IsFree;
+                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName) + "," + user.IsFree +","+ isNotify;
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
+                        // set sesssion ative notify
+                        Session["IS-NOTIFY"] = isNotify;
 
                         bool isUser = (bool)Session["IS-USERS"];
                         GetNotifyUser(isUser, user.Id);
-                        Session.Add("SS-USERINFO", isUser ? true : false);
                         return RedirectToAction("Index", "Home");
                     }
                     ModelState.AddModelError("CredentialError", "Mật khẩu không đúng hoặc bạn chưa có quyền đăng nhập. vui lòng liên hệ sđt " + Information.HOT_PHONE_NUMBER);

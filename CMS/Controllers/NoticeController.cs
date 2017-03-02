@@ -117,11 +117,28 @@ namespace CMS.Controllers
         {
             try
             {
-                bool isUser = (bool)Session["SS-USERINFO"];
+                bool isUser = (bool)Session["IS-USERS"];
                 int userId = (int)Session["SS-USERID"];
                 //update session
                 List<NoticeModel> lstNotify = new NotifyBussiness().GetNotify(isUser, userId);
                 Session["NotityUser"] = lstNotify;
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult UpdateStatusShowNotify(Boolean ShowNotify)
+        {
+            try
+            {
+                int userId = (int)Session["SS-USERID"];
+                //update shownotify status
+                new NotifyBussiness().UpdateUser(userId, ShowNotify);
+                //update session 
+                Session["IS-NOTIFY"] = ShowNotify;
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)

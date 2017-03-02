@@ -269,6 +269,7 @@
     <script src="~/assets/js/jquery.mCustomScrollbar.js"></script>
     <script src="~/assets/js/bootbox.min.js"></script>
     <script src="~/assets/slimage/js/lightslider.min.js"></script>
+    <script src="~/assets/js/notify.js"></script>
 
     <!-- Modal notify create account-->
     <div id="md-notify-account" class="modal fade" role="dialog">
@@ -623,11 +624,13 @@
         //int id = 1;
         //int isUser = 1;
         int id = Session["SS-USERID"] != null ? int.Parse(Session["SS-USERID"].ToString()) : 1;
-        int isUser = (Boolean)Session["SS-USERINFO"] == true ? 1 : 0;
+        int isUser = (Boolean)Session["IS-USERS"] == true ? 1 : 0;
+        int isNotify = (Boolean)Session["IS-NOTIFY"] ? 1 : 0;
         //bool isUser = true;
     }
     <input type="hidden" value="@id" id="user-id">
     <input type="hidden" value="@isUser" id="isUser">
+    <input type="hidden" value="@isNotify" id="show-notify">
 </body>
 
 </html>

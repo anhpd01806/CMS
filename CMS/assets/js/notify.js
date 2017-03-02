@@ -1,4 +1,35 @@
 $(document).ready(function () {
+    //action show notify 
+    if ($('#show-notify').val() == 1) {
+        showNotify();
+    }
+    else {
+        hideNotify();
+    }
+
+    $('#cbx-show-notify').change(function () {
+        if ($('#cbx-show-notify').is(':checked')) {
+            showNotify();
+        }
+        else {
+            hideNotify();
+        }
+        //update to db 
+        $.ajax({
+            type: "GET",
+            url: "/Notice/UpdateStatusShowNotify",
+            data: { ShowNotify: $('#cbx-show-notify').is(':checked') },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+
+            },
+            error: function (response) {
+                alert('Có lỗi xẩy ra trong quá trình kết nối dữ liệu!');
+            }
+        });
+    });
+
     var userId = $('#user-id').val();
     var isUser = $('#isUser').val();
     var isAdmin = isUser == 0 ? true : false;
@@ -66,6 +97,14 @@ $(document).ready(function () {
     });
 });
 
+function showNotify() {
+    $('#count-notify').addClass('badge-notify')
+    $('#ul-notify').show();
+};
+function hideNotify() {
+    $('#count-notify').removeClass('badge-notify')
+    $('#ul-notify').hide();
+};
 //detail notify account function
 function DetailNotify(id, type) {
     //remove notify

@@ -201,6 +201,23 @@ namespace CMS.Bussiness
             }
         }
 
+        public int UpdateUser(int Id,bool ShowNotify)
+        {
+            try
+            {
+                var user = (from c in db.Users
+                            where c.Id.Equals(Id)
+                            select c).FirstOrDefault();
+                //set view flag = true
+                user.IsNotify = ShowNotify;
+                db.SubmitChanges();
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
         #endregion
 
     }
