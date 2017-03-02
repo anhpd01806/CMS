@@ -13943,6 +13943,8 @@ namespace CMS.Data
 		
 		private System.Nullable<bool> _IsSpam;
 		
+		private System.Nullable<System.DateTime> _DateCreate;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -13959,6 +13961,8 @@ namespace CMS.Data
     partial void OnIscheckChanged();
     partial void OnIsSpamChanging(System.Nullable<bool> value);
     partial void OnIsSpamChanged();
+    partial void OnDateCreateChanging(System.Nullable<System.DateTime> value);
+    partial void OnDateCreateChanged();
     #endregion
 		
 		public News_customer_action()
@@ -14082,6 +14086,26 @@ namespace CMS.Data
 					this._IsSpam = value;
 					this.SendPropertyChanged("IsSpam");
 					this.OnIsSpamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DateCreate
+		{
+			get
+			{
+				return this._DateCreate;
+			}
+			set
+			{
+				if ((this._DateCreate != value))
+				{
+					this.OnDateCreateChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreate = value;
+					this.SendPropertyChanged("DateCreate");
+					this.OnDateCreateChanged();
 				}
 			}
 		}
