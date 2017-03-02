@@ -67,6 +67,14 @@ $(function () {
             }
         });
     }
+
+    $(document).on("change", "#chkIsrepeatNews", function () {
+        if ($(this).prop('checked')) {
+            $(this).val(1);
+        } else {
+            $(this).val(0);
+        }
+    });
     
     $(document).on("click", ".checkboxItem", function () {
         var count = parseInt($('input:checkbox:checked').length);

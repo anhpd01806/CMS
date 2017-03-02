@@ -146,14 +146,22 @@ namespace CMS.Bussiness
                 return cash.EndDate;
             else return DateTime.MinValue;
         }
-
-        public string PaymentForCreateNews(long amount, int userId)
+        /// <summary>
+        /// Status:  0: "Bạn không có tiền trong tài khoản.";
+        ///          1: "Thành công";
+        ///          2: "Tài khoản của bạn không đủ tiền.";
+        ///          3: "Hệ thống đang gặp sự cố. vui lòng thử lại!";
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int PaymentForCreateNews(long amount, int userId)
         {
             try
             {
                 var paymentAccepted = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
-                if (paymentAccepted == null) return "Bạn không có tiền trong tài khoản.";
-                if (amount > paymentAccepted.AmountTotal) return "Tài khoản của bạn không đủ tiền.";
+                if (paymentAccepted == null) return 0;
+                if (amount > paymentAccepted.AmountTotal) return 2;
 
                 // insert historypayment
                 var paymentHis = new PaymentHistory
@@ -170,11 +178,11 @@ namespace CMS.Bussiness
                 paymentAccepted.AmountTotal = paymentAccepted.AmountTotal - amount;
                 db.SubmitChanges();
 
-                return "Bạn đã đăng bài thành công. tài khoản của bạn bị trừ "+ string.Format("{0:n0}", amount) + " vnđ";
+                return 1;
             }
             catch (Exception)
             {
-                return "Hệ thống đang gặp sự cố. vui lòng thử lại!";
+                return 3;
             }
         }
     }

@@ -271,19 +271,18 @@ namespace CMS.Bussiness
             {
                 db.News.InsertOnSubmit(newsItem);
                 db.SubmitChanges();
-
-                var cusNews = new News_Customer_Mapping
-                {
-                    CustomerId = userId,
-                    NewsId = newsItem.Id,
-                    IsSaved = false,
-                    IsDeleted = false,
-                    IsReaded = false,
-                    IsAgency = true,
-                    IsSpam = false,
-                    CreateDate = DateTime.Now
-                };
-                db.News_Customer_Mappings.InsertOnSubmit(cusNews);
+                //var cusNews = new News_Customer_Mapping
+                //{
+                //    CustomerId = userId,
+                //    NewsId = newsItem.Id,
+                //    IsSaved = false,
+                //    IsDeleted = false,
+                //    IsReaded = false,
+                //    IsAgency = true,
+                //    IsSpam = false,
+                //    CreateDate = DateTime.Now
+                //};
+                //db.News_Customer_Mappings.InsertOnSubmit(cusNews);
                 db.SubmitChanges();
 
                 return 1;

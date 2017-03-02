@@ -564,6 +564,11 @@ namespace CMS.Bussiness
             }
             return 0;
         }
+
+        public int CountRepeatByPhone(string phone)
+        {
+            var query = 
+        }
         #endregion
 
         #region Role

@@ -206,33 +206,35 @@ namespace CMS.Controllers
 
                 var newsItem = new New();
                 var count = _newsbussiness.CheckRepeatNews(phone, districtId, userId);
-
-                newsItem.CategoryId = cateId;
-                newsItem.Title = title;
-                newsItem.Contents = content;
-                newsItem.Link = "http://ozo.vn/";
-                newsItem.SiteId = 0;
-                newsItem.DistrictId = districtId;
-                newsItem.ProvinceId = 1;
-                newsItem.DateOld = DateTime.Now;
-                newsItem.IsSpam = false;
-                newsItem.IsUpdated = false;
-                newsItem.IsDeleted = false;
-                newsItem.IsPhone = false;
-                newsItem.IsRepeat = count > 0 ? true : false;
-                newsItem.Phone = phone;
-                newsItem.Price = string.IsNullOrEmpty(price) ? 0 : Convert.ToDecimal(price);
-                newsItem.PriceText = pricetext;
-                newsItem.IsOwner = false;
-                newsItem.PageView = 0;
-                newsItem.CreatedOn = DateTime.Now;
-                newsItem.CreatedBy = userId;
-                newsItem.StatusId = 1;
-
-                var result = _newsbussiness.Createnew(newsItem, userId);
+                var resp = _payment.PaymentForCreateNews(Convert.ToInt32(ConfigWeb.MinPayment), userId);
+                if (resp == 1)
+                {
+                    newsItem.CategoryId = cateId;
+                    newsItem.Title = title;
+                    newsItem.Contents = content;
+                    newsItem.Link = "http://ozo.vn/";
+                    newsItem.SiteId = 0;
+                    newsItem.DistrictId = districtId;
+                    newsItem.ProvinceId = 1;
+                    newsItem.DateOld = DateTime.Now;
+                    newsItem.IsSpam = false;
+                    newsItem.IsUpdated = false;
+                    newsItem.IsDeleted = false;
+                    newsItem.IsPhone = false;
+                    newsItem.IsRepeat = count > 0 ? true : false;
+                    newsItem.Phone = phone;
+                    newsItem.Price = string.IsNullOrEmpty(price) ? 0 : Convert.ToDecimal(price);
+                    newsItem.PriceText = pricetext;
+                    newsItem.IsOwner = false;
+                    newsItem.PageView = 0;
+                    newsItem.CreatedOn = DateTime.Now;
+                    newsItem.CreatedBy = userId;
+                    newsItem.StatusId = 1;
+                    var result = _newsbussiness.Createnew(newsItem, userId);
+                }
                 return Json(new
                 {
-                    type = result
+                    type = resp
                 });
             }
             catch (Exception ex)

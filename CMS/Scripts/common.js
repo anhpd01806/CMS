@@ -9,14 +9,17 @@ function showmessage(status, message) {
     });
 }
 $(document).ready(function () {
-    $('#listnewstable').DataTable({
-        sDom: 'rt',
-        retrieve: true,
-        bFilter: false,
-        bInfo: false,
-        searching: false,
-        paging: false,
-        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
-    });
-    $('#check-all').parent().removeClass("sorting_asc");
+    var totalpage = parseInt($('#datatable').attr("data-total"));
+    if (totalpage > 1) {
+        $('#listnewstable').DataTable({
+            sDom: 'rt',
+            retrieve: true,
+            bFilter: false,
+            bInfo: false,
+            searching: false,
+            paging: false,
+            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+        });
+        $('#check-all').parent().removeClass("sorting_asc");
+    }
 });
