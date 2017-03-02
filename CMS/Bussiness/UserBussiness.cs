@@ -31,12 +31,13 @@ namespace CMS.Bussiness
                           join b in db.PaymentAccepteds
                           on a.Id equals b.UserId into ps
                           from b in ps.DefaultIfEmpty()
-                          where (a.ManagerBy == managerId || managerId == 0)
+                          where (a.ManagerBy == managerId || a.ManagerBy == null || managerId == 0)
                           && (statusId == 0 || (statusId == 1 && b.EndDate.AddDays(-2) > DateTime.Now && b.EndDate != null)
                            || (statusId == 2 && b.EndDate.AddDays(-2) <= DateTime.Now && b.EndDate > DateTime.Now && b.EndDate != null)
                            || (statusId == 3 && b.EndDate <= DateTime.Now && b.EndDate != null)
                            || (statusId == 4 && b.EndDate == null))
                            && (a.UserName.Contains(search) || a.FullName.Contains(search))
+                           && a.IsFree == false
                           select new UserModel
                           {
                               Id = a.Id,

@@ -126,43 +126,51 @@ namespace CMS.Controllers
         public ActionResult Edit(int id)
         {
             UserModel model = new UserModel();
-
-            //get user by userId
-            var user = new UserBussiness().GetUserById(id);
-            if (user.ManagerBy == null || user.ManagerBy == int.Parse(Session["SS-USERID"].ToString()))
+            try
             {
-                model.Id = user.Id;
-                model.UserName = user.UserName;
-                model.FullName = user.FullName;
-                model.IsMember = user.IsMember ?? false;
-                model.IsRestore = user.IsDeleted ?? false;
-                model.ManagerBy = user.ManagerBy + "";
-                model.RoleUsers = new RoleBussiness().GetListByUserId(id);
 
-                //get dropdownlist and list role
-                var allRoles = new RoleBussiness().GetRoles();
-                model.ManagerList = new UserBussiness().GetManagerUser();
-                if (allRoles != null)
+                //get user by userId
+                var user = new UserBussiness().GetUserById(id);
+                if (user.ManagerBy == null || user.ManagerBy == int.Parse(Session["SS-USERID"].ToString()))
                 {
-                    List<RoleModel> lstRoles = new List<RoleModel>();
-                    foreach (var role in allRoles)
+                    model.Id = user.Id;
+                    model.UserName = user.UserName;
+                    model.FullName = user.FullName;
+                    model.IsMember = user.IsMember ?? false;
+                    model.IsRestore = user.IsDeleted ?? false;
+                    model.ManagerBy = user.ManagerBy + "";
+                    model.RoleUsers = new RoleBussiness().GetListByUserId(id);
+
+                    //get dropdownlist and list role
+                    var allRoles = new RoleBussiness().GetRoles();
+                    model.ManagerList = new UserBussiness().GetManagerUser();
+                    if (allRoles != null)
                     {
-                        RoleModel roleView = new RoleModel
+                        List<RoleModel> lstRoles = new List<RoleModel>();
+                        foreach (var role in allRoles)
                         {
-                            Id = role.Id,
-                            Name = role.Name
-                        };
-                        if (model.RoleUsers.FirstOrDefault(r => r.RoleId == roleView.Id) != null)
-                        {
-                            roleView.IsChecked = true;
+                            RoleModel roleView = new RoleModel
+                            {
+                                Id = role.Id,
+                                Name = role.Name
+                            };
+                            if (model.RoleUsers.FirstOrDefault(r => r.RoleId == roleView.Id) != null)
+                            {
+                                roleView.IsChecked = true;
+                            }
+                            lstRoles.Add(roleView);
                         }
-                        lstRoles.Add(roleView);
+                        model.ListRoles = lstRoles;
                     }
-                    model.ListRoles = lstRoles;
+                    return View(model);
                 }
-                return View(model);
+                else
+                {
+                    TempData["Error"] = "Bạn không quản lý tài khoản này. vui lòng thử lại.";
+                    return RedirectToAction("Index", "Customer");
+                }
             }
-            else
+            catch (Exception)
             {
                 TempData["Error"] = "Bạn không quản lý tài khoản này. vui lòng thử lại.";
                 return RedirectToAction("Index", "Customer");
@@ -337,7 +345,7 @@ namespace CMS.Controllers
                         Email = a.Email,
                         IsDelete = a.IsDelete,
                         IsMember = a.IsMember,
-                        ManagerBy = a.ManagerBy != null ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "",
+                        ManagerBy = a.ManagerId != 0 ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "",
                         RoleName = getNameRole(allRoles, allRolesUser, a.Id),
                         IsOnline = checkCustomerOnline(a.Id),
                         EndTimePayment = getPaymentStatus(a.Id)

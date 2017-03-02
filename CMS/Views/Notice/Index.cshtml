@@ -1,8 +1,104 @@
-﻿
+﻿@model CMS.ViewModel.NoticeViewModel
 @{
-    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+@section header{
+    <script type="text/javascript">
 
+        $(document).ready(function () {
+            LoadData(0);
+        });
+
+        function LoadData(page) {
+            $.LoadingOverlay("show");
+            var data = {
+                page: page
+            };
+            $.post("/Notice/LoadData", data, function (resp) {
+                if (resp != null) {
+                    $("#datatable1 tbody").html("");
+                    $("#datatable1 tbody").html(resp.Content);
+                }
+            });
+            $.LoadingOverlay("hide");
+        }
+
+        var page = 1;
+        var count = 21;
+        function LoadMore() {
+            debugger;
+            $.LoadingOverlay("show");
+            var data = {
+                page: page
+            };
+            $.ajax({
+                type: "GET",
+                url: "/Notice/LoadMore",
+                data: data,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $.each(result, function (i, item) {
+                        var url = item.Type == 1 ? "/Customer/Edit/" + item.UserId.ToString() : item.Type == 2 ? "/ReportNews/Index" : "/Payment/RegisterPackage";
+                        $('<tr>').append(
+                        $('<td class="text-center">').text(count),
+                        $('<td>').text(item.DateSend),
+                        $('<td>').text(item.UserName),
+                        $('<td>').html("<a href=\"#\" onclick=\"UpdateViewed('" + url + "'," + item.Id + ")\">" + item.Title + "</a>"),
+                        $('<td>').text(item.Description)).appendTo('#datatable1 > tbody');
+                        count++;
+                    });
+                },
+                error: function (response) {
+                    debugger;
+                    alert('eror');
+                }
+            });
+            page++;
+            $.LoadingOverlay("hide");
+        }
+
+        function UpdateViewed(url, id) {
+            debugger;
+            $.LoadingOverlay("show");
+            var data = {
+                Id: id
+            };
+            $.post("/Notice/UpdateNotify", data, function (resp) {
+                window.location.href = url;
+            });
+            $.LoadingOverlay("hide");
+        }
+    </script>
+}
+@section featured
+{
+    <div class="page-content">
+        <div class="page-content-area">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
+                    <div class="table-header">
+                        Thông báo
+                    </div>
+                    <table id="datatable1" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">STT</th>
+                                <th style="width:15%">Ngày thông báo</th>
+                                <th style="width:15%">Tên đăng nhập</th>
+                                <th style="width:30%">Tiêu đề</th>
+                                <th style="width:35%">Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <div>
+                        <a href="#" onclick="return LoadMore();">Xem thêm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

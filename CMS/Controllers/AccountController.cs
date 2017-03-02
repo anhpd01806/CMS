@@ -34,11 +34,6 @@ namespace CMS.Controllers
             {
                 if (Session["SS-USERID"] != null)
                 {
-                    //int userId = (int)Session["SS-USERID"];
-                    //bool checkUser = (bool)Session["IS-USERS"];
-                    //GetNotifyUser(checkUser, userId);
-                    //Session.Add("SS-USERINFO", checkUser?1:0);
-                    //update last login user
                     return RedirectToAction("Index", "Home");
                 }
                 AccountViewModel model = new AccountViewModel();

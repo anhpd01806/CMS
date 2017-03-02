@@ -1,0 +1,18 @@
+﻿@model List<CMS.ViewModel.NoticeDetailModel>
+@if (Model.Count > 0)
+{
+    int counter = 0;
+    string url = "";
+    foreach (var u in Model)
+    {
+        counter = counter + 1;
+        url = u.Type == 1 ? "/Customer/Edit/" + u.UserId.ToString() : u.Type == 2 ? "/ReportNews/Index" : "/Payment/RegisterPackage";
+        <tr>
+            <td class="text-center">@counter</td>
+            <td>@u.DateSend</td>
+            <td>@u.UserName</td>
+            <td><a href="#" onclick="UpdateViewed('@url',@u.Id)">@u.Title</a></td>
+            <td>@u.Description</td>
+        </tr>
+    }
+}

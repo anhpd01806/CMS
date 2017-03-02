@@ -2929,6 +2929,23 @@
     <Content Include="assets\landingPage\sass\libs\_vars.scss" />
     <Content Include="assets\landingPage\sass\main.scss" />
     <Content Include="assets\landingPage\sass\noscript.scss" />
+    <Content Include="File\ExportImport\BlackList_2017-02-21-14-52-26.xlsx" />
+    <Content Include="File\ExportImport\BlackList_2017-02-25-00-09-04.xlsx" />
+    <Content Include="File\ExportImport\BlackList_2017-02-25-00-09-39.xlsx" />
+    <Content Include="File\ExportImport\BlackList_2017-02-25-00-11-45.xlsx" />
+    <Content Include="File\ExportImport\BlackList_2017-02-27-14-26-49.xlsx" />
+    <Content Include="File\ExportImport\BlackList_2017-03-01-13-45-18.xlsx" />
+    <Content Include="File\ExportImport\Customer_2017-03-01-23-34-31.xlsx" />
+    <Content Include="File\ExportImport\News_2017-02-20-11-26-13.xlsx" />
+    <Content Include="File\ExportImport\News_2017-02-20-14-13-54.xlsx" />
+    <Content Include="File\ExportImport\News_2017-02-22-16-55-04.xlsx" />
+    <Content Include="File\ExportImport\User_2017-02-28-14-23-26.xlsx" />
+    <Content Include="File\ExportImport\User_2017-02-28-14-26-33.xlsx" />
+    <Content Include="File\ExportImport\User_2017-02-28-14-26-51.xlsx" />
+    <Content Include="File\ExportImport\User_2017-02-28-15-19-04.xlsx" />
+    <Content Include="File\ExportImport\User_2017-03-01-22-33-09.xlsx" />
+    <Content Include="File\ExportImport\User_2017-03-01-22-35-52.xlsx" />
+    <Content Include="File\ExportImport\User_2017-03-01-22-36-38.xlsx" />
     <None Include="Properties\PublishProfiles\CMS.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\common.js" />
@@ -2990,6 +3007,7 @@
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\NewsHideController.cs" />
     <Compile Include="Controllers\NewsSaveController.cs" />
+    <Compile Include="Controllers\NewsTrashController.cs" />
     <Compile Include="Controllers\NewsViewedController.cs" />
     <Compile Include="Controllers\NoticeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
@@ -3030,6 +3048,7 @@
     <Compile Include="ViewModel\DistrictViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="ViewModel\NoticeViewModel.cs" />
     <Compile Include="ViewModel\OperationViewModel.cs" />
     <Compile Include="ViewModel\PaymentViewModel.cs" />
     <Compile Include="ViewModel\ProvinceViewModel.cs" />
@@ -3095,6 +3114,9 @@
     <Content Include="Views\Customer\CustomerDetail.cshtml" />
     <Content Include="Views\Customer\DetailInformation.cshtml" />
     <Content Include="Views\Customer\PaymentDetail.cshtml" />
+    <Content Include="Views\NewsTrash\Index.cshtml" />
+    <Content Include="Views\NewsTrash\NewDetail.cshtml" />
+    <Content Include="Views\Notice\NoticeDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
