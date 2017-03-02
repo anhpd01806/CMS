@@ -51,16 +51,18 @@ $(function () {
                         $('#datatable').attr("data-total", resp.TotalPage);
                         $('#datatable').attr("data-page", page);
                         $('#check-all').prop('checked', false);
-                        $('#listnewstable').DataTable({
-                            sDom: 'rt',
-                            retrieve: true,
-                            bFilter: false,
-                            bInfo: false,
-                            searching: false,
-                            paging: false,
-                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
-                        });
-                        $('#check-all').parent().removeClass("sorting_asc");
+                        if (resp.TotalRecord > 0) {
+                            $('#listnewstable').DataTable({
+                                sDom: 'rt',
+                                retrieve: true,
+                                bFilter: false,
+                                bInfo: false,
+                                searching: false,
+                                paging: false,
+                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                            });
+                            $('#check-all').parent().removeClass("sorting_asc");
+                        }
                         $.LoadingOverlay("hide");
                     }
                 });
@@ -126,16 +128,18 @@ $(function () {
                 $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
                 $(".totalrecord").html(resp.TotalRecord);
                 $('#check-all').prop('checked', false);
-                $('#listnewstable').DataTable({
-                    sDom: 'rt',
-                    retrieve: true,
-                    bFilter: false,
-                    bInfo: false,
-                    searching: false,
-                    paging: false,
-                    aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
-                });
-                $('#check-all').parent().removeClass("sorting_asc");
+                if (resp.TotalRecord > 0) {
+                    $('#listnewstable').DataTable({
+                        sDom: 'rt',
+                        retrieve: true,
+                        bFilter: false,
+                        bInfo: false,
+                        searching: false,
+                        paging: false,
+                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                    });
+                    $('#check-all').parent().removeClass("sorting_asc");
+                }
             }
             $.LoadingOverlay("hide");
         });
@@ -376,16 +380,18 @@ function LoadData() {
                 $(".endrecord").html((pageIndex * pageSize) <= resp.TotalRecord ? (pageIndex * pageSize) : resp.TotalRecord);
                 $(".totalrecord").html(resp.TotalRecord);
                 $('#check-all').prop('checked', false);
-                $('#listnewstable').DataTable({
-                    sDom: 'rt',
-                    retrieve: true,
-                    bFilter: false,
-                    bInfo: false,
-                    searching: false,
-                    paging: false,
-                    aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
-                });
-                $('#check-all').parent().removeClass("sorting_asc");
+                if (resp.TotalRecord > 0) {
+                    $('#listnewstable').DataTable({
+                        sDom: 'rt',
+                        retrieve: true,
+                        bFilter: false,
+                        bInfo: false,
+                        searching: false,
+                        paging: false,
+                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                    });
+                    $('#check-all').parent().removeClass("sorting_asc");
+                }
             }
             $.LoadingOverlay("hide");
         });
@@ -442,16 +448,18 @@ function showPagination(pagesCounter) {
                     $('#datatable').attr("data-total", resp.TotalPage);
                     $('#datatable').attr("data-page", page);
                     $('#check-all').prop('checked', false);
-                    $('#listnewstable').DataTable({
-                        sDom: 'rt',
-                        retrieve: true,
-                        bFilter: false,
-                        bInfo: false,
-                        searching: false,
-                        paging: false,
-                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
-                    });
-                    $('#check-all').parent().removeClass("sorting_asc");
+                    if (resp.TotalRecord > 0) {
+                        $('#listnewstable').DataTable({
+                            sDom: 'rt',
+                            retrieve: true,
+                            bFilter: false,
+                            bInfo: false,
+                            searching: false,
+                            paging: false,
+                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                        });
+                        $('#check-all').parent().removeClass("sorting_asc");
+                    }
                     $.LoadingOverlay("hide");
                 }
             });
