@@ -650,17 +650,6 @@
       <Column Name="IsNotify" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.News_customer_action" Member="News_customer_actions">
-    <Type Name="News_customer_action">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Iscc" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Ischeck" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="IsSpam" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="DateCreate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.News" Member="News">
     <Type Name="New">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -692,6 +681,18 @@
       <Column Name="IsOwner" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="AdminComment" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
       <Column Name="PageView" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.News_customer_action" Member="News_customer_actions">
+    <Type Name="News_customer_action">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Iscc" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Ischeck" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsSpam" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsReport" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DateCreate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

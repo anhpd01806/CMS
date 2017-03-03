@@ -195,12 +195,12 @@ namespace CMS.Data
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
-    partial void InsertNews_customer_action(News_customer_action instance);
-    partial void UpdateNews_customer_action(News_customer_action instance);
-    partial void DeleteNews_customer_action(News_customer_action instance);
     partial void InsertNew(New instance);
     partial void UpdateNew(New instance);
     partial void DeleteNew(New instance);
+    partial void InsertNews_customer_action(News_customer_action instance);
+    partial void UpdateNews_customer_action(News_customer_action instance);
+    partial void DeleteNews_customer_action(News_customer_action instance);
     #endregion
 		
 		public CmsDataDataContext() : 
@@ -689,19 +689,19 @@ namespace CMS.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<News_customer_action> News_customer_actions
-		{
-			get
-			{
-				return this.GetTable<News_customer_action>();
-			}
-		}
-		
 		public System.Data.Linq.Table<New> News
 		{
 			get
 			{
 				return this.GetTable<New>();
+			}
+		}
+		
+		public System.Data.Linq.Table<News_customer_action> News_customer_actions
+		{
+			get
+			{
+				return this.GetTable<News_customer_action>();
 			}
 		}
 	}
@@ -13191,212 +13191,6 @@ namespace CMS.Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News_customer_action")]
-	public partial class News_customer_action : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private int _NewsId;
-		
-		private int _CustomerId;
-		
-		private System.Nullable<bool> _Iscc;
-		
-		private System.Nullable<bool> _Ischeck;
-		
-		private System.Nullable<bool> _IsSpam;
-		
-		private System.Nullable<System.DateTime> _DateCreate;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnNewsIdChanging(int value);
-    partial void OnNewsIdChanged();
-    partial void OnCustomerIdChanging(int value);
-    partial void OnCustomerIdChanged();
-    partial void OnIsccChanging(System.Nullable<bool> value);
-    partial void OnIsccChanged();
-    partial void OnIscheckChanging(System.Nullable<bool> value);
-    partial void OnIscheckChanged();
-    partial void OnIsSpamChanging(System.Nullable<bool> value);
-    partial void OnIsSpamChanged();
-    partial void OnDateCreateChanging(System.Nullable<System.DateTime> value);
-    partial void OnDateCreateChanged();
-    #endregion
-		
-		public News_customer_action()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
-		public int NewsId
-		{
-			get
-			{
-				return this._NewsId;
-			}
-			set
-			{
-				if ((this._NewsId != value))
-				{
-					this.OnNewsIdChanging(value);
-					this.SendPropertyChanging();
-					this._NewsId = value;
-					this.SendPropertyChanged("NewsId");
-					this.OnNewsIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerId", DbType="Int NOT NULL")]
-		public int CustomerId
-		{
-			get
-			{
-				return this._CustomerId;
-			}
-			set
-			{
-				if ((this._CustomerId != value))
-				{
-					this.OnCustomerIdChanging(value);
-					this.SendPropertyChanging();
-					this._CustomerId = value;
-					this.SendPropertyChanged("CustomerId");
-					this.OnCustomerIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Iscc", DbType="Bit")]
-		public System.Nullable<bool> Iscc
-		{
-			get
-			{
-				return this._Iscc;
-			}
-			set
-			{
-				if ((this._Iscc != value))
-				{
-					this.OnIsccChanging(value);
-					this.SendPropertyChanging();
-					this._Iscc = value;
-					this.SendPropertyChanged("Iscc");
-					this.OnIsccChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ischeck", DbType="Bit")]
-		public System.Nullable<bool> Ischeck
-		{
-			get
-			{
-				return this._Ischeck;
-			}
-			set
-			{
-				if ((this._Ischeck != value))
-				{
-					this.OnIscheckChanging(value);
-					this.SendPropertyChanging();
-					this._Ischeck = value;
-					this.SendPropertyChanged("Ischeck");
-					this.OnIscheckChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit")]
-		public System.Nullable<bool> IsSpam
-		{
-			get
-			{
-				return this._IsSpam;
-			}
-			set
-			{
-				if ((this._IsSpam != value))
-				{
-					this.OnIsSpamChanging(value);
-					this.SendPropertyChanging();
-					this._IsSpam = value;
-					this.SendPropertyChanged("IsSpam");
-					this.OnIsSpamChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> DateCreate
-		{
-			get
-			{
-				return this._DateCreate;
-			}
-			set
-			{
-				if ((this._DateCreate != value))
-				{
-					this.OnDateCreateChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreate = value;
-					this.SendPropertyChanged("DateCreate");
-					this.OnDateCreateChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News")]
 	public partial class New : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -14106,6 +13900,236 @@ namespace CMS.Data
 					this._PageView = value;
 					this.SendPropertyChanged("PageView");
 					this.OnPageViewChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News_customer_action")]
+	public partial class News_customer_action : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _NewsId;
+		
+		private int _CustomerId;
+		
+		private System.Nullable<bool> _Iscc;
+		
+		private System.Nullable<bool> _Ischeck;
+		
+		private System.Nullable<bool> _IsSpam;
+		
+		private System.Nullable<bool> _IsReport;
+		
+		private System.DateTime _DateCreate;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNewsIdChanging(int value);
+    partial void OnNewsIdChanged();
+    partial void OnCustomerIdChanging(int value);
+    partial void OnCustomerIdChanged();
+    partial void OnIsccChanging(System.Nullable<bool> value);
+    partial void OnIsccChanged();
+    partial void OnIscheckChanging(System.Nullable<bool> value);
+    partial void OnIscheckChanged();
+    partial void OnIsSpamChanging(System.Nullable<bool> value);
+    partial void OnIsSpamChanged();
+    partial void OnIsReportChanging(System.Nullable<bool> value);
+    partial void OnIsReportChanged();
+    partial void OnDateCreateChanging(System.DateTime value);
+    partial void OnDateCreateChanged();
+    #endregion
+		
+		public News_customer_action()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
+		public int NewsId
+		{
+			get
+			{
+				return this._NewsId;
+			}
+			set
+			{
+				if ((this._NewsId != value))
+				{
+					this.OnNewsIdChanging(value);
+					this.SendPropertyChanging();
+					this._NewsId = value;
+					this.SendPropertyChanged("NewsId");
+					this.OnNewsIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerId", DbType="Int NOT NULL")]
+		public int CustomerId
+		{
+			get
+			{
+				return this._CustomerId;
+			}
+			set
+			{
+				if ((this._CustomerId != value))
+				{
+					this.OnCustomerIdChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerId = value;
+					this.SendPropertyChanged("CustomerId");
+					this.OnCustomerIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Iscc", DbType="Bit")]
+		public System.Nullable<bool> Iscc
+		{
+			get
+			{
+				return this._Iscc;
+			}
+			set
+			{
+				if ((this._Iscc != value))
+				{
+					this.OnIsccChanging(value);
+					this.SendPropertyChanging();
+					this._Iscc = value;
+					this.SendPropertyChanged("Iscc");
+					this.OnIsccChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ischeck", DbType="Bit")]
+		public System.Nullable<bool> Ischeck
+		{
+			get
+			{
+				return this._Ischeck;
+			}
+			set
+			{
+				if ((this._Ischeck != value))
+				{
+					this.OnIscheckChanging(value);
+					this.SendPropertyChanging();
+					this._Ischeck = value;
+					this.SendPropertyChanged("Ischeck");
+					this.OnIscheckChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit")]
+		public System.Nullable<bool> IsSpam
+		{
+			get
+			{
+				return this._IsSpam;
+			}
+			set
+			{
+				if ((this._IsSpam != value))
+				{
+					this.OnIsSpamChanging(value);
+					this.SendPropertyChanging();
+					this._IsSpam = value;
+					this.SendPropertyChanged("IsSpam");
+					this.OnIsSpamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsReport", DbType="Bit")]
+		public System.Nullable<bool> IsReport
+		{
+			get
+			{
+				return this._IsReport;
+			}
+			set
+			{
+				if ((this._IsReport != value))
+				{
+					this.OnIsReportChanging(value);
+					this.SendPropertyChanging();
+					this._IsReport = value;
+					this.SendPropertyChanged("IsReport");
+					this.OnIsReportChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreate", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreate
+		{
+			get
+			{
+				return this._DateCreate;
+			}
+			set
+			{
+				if ((this._DateCreate != value))
+				{
+					this.OnDateCreateChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreate = value;
+					this.SendPropertyChanged("DateCreate");
+					this.OnDateCreateChanged();
 				}
 			}
 		}
