@@ -66,7 +66,8 @@ namespace CMS.Bussiness
                             where c.CreatedOn.HasValue && !c.IsDeleted && !s.Deleted && s.Published //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
                             && news_new.Contains(c.Id)
-                            && !listBlacklist.Contains(c.Phone) //không cho hiển thị có số điện thoại giống số điện thoại trong blacklist
+                            //check trong blacklist ko lấy những từ giống
+                            && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
                             && !listDelete.Contains(c.Id)
                             orderby c.StatusId ascending, c.Price descending
                             select new NewsModel
@@ -517,7 +518,7 @@ namespace CMS.Bussiness
                             join nd in db.News_Trashes on c.Id equals nd.NewsId
                             where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
-                            && !listBlacklist.Contains(c.Phone)
+                            && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
                             && nd.Isdelete && !nd.Isdeleted
                             orderby c.StatusId ascending, c.Price descending
                             select new NewsModel
@@ -598,7 +599,16 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.Distinct().ToList().Count;
-                return query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                var list = query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                var listItem = new List<NewsModel>();
+                foreach (var newsModel in list)
+                {
+                    newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
+                    newsModel.Iscc = CheckCC(newsModel.Id);
+                    listItem.Add(newsModel);
+                }
+
+                return listItem;
             }
         }
 

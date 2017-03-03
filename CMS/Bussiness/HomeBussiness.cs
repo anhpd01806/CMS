@@ -121,7 +121,7 @@ namespace CMS.Bussiness
                             && !d.IsDeleted && d.Published
                             && !listDelete.Contains(c.Id)
                             && !news_new.Contains(c.Id)
-                            && !listBlacklist.Contains(c.Phone) //không cho hiển thị có số điện thoại giống số điện thoại trong blacklist                            
+                            && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
                             orderby c.StatusId ascending, c.Price descending
                             select new NewsModel
                             {
@@ -474,6 +474,26 @@ namespace CMS.Bussiness
                     reportItem.CreatedOn = DateTime.Now;
                     reportItem.Type = 1;
                     db.Blacklists.InsertOnSubmit(reportItem);
+
+                    var query = (from c in db.News_customer_actions
+                        where
+                            c.NewsId.Equals(item.Id) && c.CustomerId.Equals(userReport) && c.IsReport.HasValue &&
+                            c.IsReport.Value
+                        select c).ToList();
+                    if (!query.Any())
+                    {
+                        var action = new News_customer_action
+                        {
+                            NewsId = item.Id,
+                            CustomerId = userReport,
+                            Iscc = false,
+                            IsSpam = false,
+                            Ischeck = false,
+                            IsReport = true,
+                            DateCreate = DateTime.Now
+                        };
+                        db.News_customer_actions.InsertOnSubmit(action);
+                    }
                 }
                 db.SubmitChanges();
                 return 1;
