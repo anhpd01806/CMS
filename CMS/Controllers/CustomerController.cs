@@ -131,11 +131,12 @@ namespace CMS.Controllers
 
                 //get user by userId
                 var user = new UserBussiness().GetUserById(id);
-                if (user.ManagerBy == null || user.ManagerBy == int.Parse(Session["SS-USERID"].ToString()))
+                if (user.ManagerBy == null || int.Parse(Session["SS-USERID"].ToString()) == 1 || user.ManagerBy == int.Parse(Session["SS-USERID"].ToString()))
                 {
                     model.Id = user.Id;
                     model.UserName = user.UserName;
                     model.FullName = user.FullName;
+                    model.Notes = user.Notes;
                     model.IsMember = user.IsMember ?? false;
                     model.IsRestore = user.IsDeleted ?? false;
                     model.ManagerBy = user.ManagerBy + "";
@@ -184,7 +185,7 @@ namespace CMS.Controllers
             {
                 //check staff is mananger customer
                 var user = new UserBussiness().GetUserById(model.Id);
-                if (user.ManagerBy == null || user.ManagerBy == int.Parse(Session["SS-USERID"].ToString()))
+                if (user.ManagerBy == null || int.Parse(Session["SS-USERID"].ToString()) == 1 || user.ManagerBy == int.Parse(Session["SS-USERID"].ToString()))
                 {
                     //update ismember and delete
                     new UserBussiness().Update(model);
@@ -380,6 +381,7 @@ namespace CMS.Controllers
             rs.FullName = cusDetail.FullName;
             rs.LastLogin = cusDetail.LastActivityDate != null ? cusDetail.LastActivityDate.ToString() : "";
             rs.ManagerBy = cusDetail.ManagerBy != null ? allAdmin.Where(x => x.Id == cusDetail.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "";
+            rs.Notes = cusDetail.Notes;
             //get paymen by Id
             rs.Amount = new PaymentBussiness().GetCashPaymentByUserId(cusDetail.Id);
             rs.TimeEnd = new PaymentBussiness().GetTimePaymentByUserId(cusDetail.Id);

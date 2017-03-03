@@ -57,6 +57,7 @@ namespace CMS.ViewModel
         public Boolean IsOnline { get; set; }
         public DateTime EndTimePayment { get; set; }
         public int ManagerId { get; set; }
+        public string Notes { get; set; }
     }
 
     public class ChangePasswordViewModel
@@ -99,6 +100,7 @@ namespace CMS.ViewModel
         public string CardPayment { get; set; }
         public string Status { get; set; }
         public string Role { get; set; }
+        public string Notes { get; set; }
     }
 
     public class PaymentTotal

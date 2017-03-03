@@ -147,6 +147,7 @@ namespace CMS.Bussiness
         {
             var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
             user.IsMember = model.IsMember;
+            user.Notes = model.Notes;
             if (model.IsRestore == true) user.IsDeleted = false;//th khôi phục lại tài khoản
             user.ManagerBy = int.Parse(model.ManagerBy);
             db.SubmitChanges();

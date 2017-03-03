@@ -36,6 +36,10 @@
                                 <label>Số điện thoại</label>
                                 @Html.Label(Model.UserName, new { @class = "form-control" })
                             </div>
+                            <div class="form-group">
+                                <label>Ghi chú</label>
+                                @Html.TextBoxFor(m=> m.Notes, new { @class = "form-control" })
+                            </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">

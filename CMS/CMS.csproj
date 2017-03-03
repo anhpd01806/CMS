@@ -3117,6 +3117,10 @@
     <Content Include="Views\NewsTrash\Index.cshtml" />
     <Content Include="Views\NewsTrash\NewDetail.cshtml" />
     <Content Include="Views\Notice\NoticeDetail.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\News\NewsDetail.cshtml" />
+    <Content Include="Views\News\Pagging.cshtml" />
+    <Content Include="Views\NewsHide\NewDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
