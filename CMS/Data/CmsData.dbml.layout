@@ -80,10 +80,10 @@
         <elementListCompartment Id="d6418325-28d2-4714-a5b0-1962a534670d" absoluteBounds="18.765, 4.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="b945155f-24ee-4286-bf92-56484d7bd5c0" absoluteBounds="9.75, 2, 2, 2.347801106770834">
+    <classShape Id="b945155f-24ee-4286-bf92-56484d7bd5c0" absoluteBounds="9.5, 1.25, 2, 2.347801106770834">
       <DataClassMoniker Name="/CmsDataDataContext/Language" />
       <nestedChildShapes>
-        <elementListCompartment Id="6fdecff1-ef6f-4032-a00b-73cae5e64981" absoluteBounds="9.765, 2.46, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="6fdecff1-ef6f-4032-a00b-73cae5e64981" absoluteBounds="9.515, 1.71, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="f8b20923-8a60-45a8-a323-390619afe077" absoluteBounds="18.75, 6.75, 2, 2.7324039713541666">
@@ -341,14 +341,14 @@
         <classShapeMoniker Id="3d541507-3f6c-4c12-a60b-e40957c24e20" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11.75 : 2.28929768880208); (12.5 : 2.28929768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(11.5 : 1.91429768880208); (12.5 : 1.91429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/CmsDataDataContext/Language/Language_LocaleStringResource" />
       <nodes>
         <classShapeMoniker Id="b945155f-24ee-4286-bf92-56484d7bd5c0" />
         <classShapeMoniker Id="2935d0a5-4466-49a2-b2b6-9dfc60078d45" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11.75 : 3.86140055338542); (12.5 : 3.86140055338542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(9.53125 : 3.59780110677083); (9.53125 : 4.08015105338542); (12.5 : 4.08015105338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/CmsDataDataContext/Language/Language_LocalizedProperty" />
       <nodes>
         <classShapeMoniker Id="b945155f-24ee-4286-bf92-56484d7bd5c0" />
@@ -423,10 +423,10 @@
         <elementListCompartment Id="325e7429-905d-4252-a38e-78eb57ff6d2a" absoluteBounds="3.8899999999999997, 0.96, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="7beac8f4-4274-42c9-a20b-2d5b9fc88bc9" absoluteBounds="7.125, 2.75, 2, 3.1170068359375">
+    <classShape Id="7beac8f4-4274-42c9-a20b-2d5b9fc88bc9" absoluteBounds="9.625, 4.625, 2, 3.1170068359375">
       <DataClassMoniker Name="/CmsDataDataContext/Notify" />
       <nestedChildShapes>
-        <elementListCompartment Id="f521b21d-9777-40b9-87aa-414c3fd52ae6" absoluteBounds="7.14, 3.21, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f521b21d-9777-40b9-87aa-414c3fd52ae6" absoluteBounds="9.64, 5.085, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="8d9def7e-4176-4cc6-919b-d03d78d8278e" absoluteBounds="4.875, 25.5, 2, 5.4246240234375">
@@ -441,10 +441,10 @@
         <elementListCompartment Id="91c2e4ce-70ed-4ef1-9b50-04158187a0da" absoluteBounds="19.015, 17.96, 1.9700000000000002, 5.826131184895833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="e33f0ffb-2f81-459b-8957-6816518e7bdd" absoluteBounds="7.875, 0.5, 2, 2.3478011067708335">
+    <classShape Id="e33f0ffb-2f81-459b-8957-6816518e7bdd" absoluteBounds="6.5, 0.5, 2, 2.3478011067708335">
       <DataClassMoniker Name="/CmsDataDataContext/News_customer_action" />
       <nestedChildShapes>
-        <elementListCompartment Id="6d3460f4-299e-4313-a837-11399c615262" absoluteBounds="7.89, 0.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="6d3460f4-299e-4313-a837-11399c615262" absoluteBounds="6.515, 0.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
