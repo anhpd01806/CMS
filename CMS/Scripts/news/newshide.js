@@ -345,6 +345,125 @@ $(function () {
             }
         });
 
+        /*Nút báo tin chính chủ*/
+        $(document).on("click", ".btncc", function () {
+            if (!$(this).hasClass("disabled")) {
+                var selected = [];
+                $('.checkboxItem:checked').each(function () {
+                    selected.push(parseInt($(this).attr('id')));
+                });
+                if (selected.length == 0) {
+                    showmessage("error", "Bạn hãy chọn tin cần báo chính chủ!");
+                } else {
+                    bootbox.confirm({
+                        title: "Thông báo",
+                        message: "Bạn có chắc muốn báo chính chủ tin này không?",
+                        buttons: {
+                            confirm: {
+                                label: '<i class="fa fa-check"></i> Đồng ý'
+                            },
+                            cancel: {
+                                label: '<i class="fa fa-times"></i> Đóng'
+                            },
+                        },
+                        callback: function (result) {
+                            $.post("/home/newsforuser", { listNewsId: selected }, function (resp) {
+                                if (resp != null) {
+                                    if (resp.Status == 1) {
+                                        LoadData();
+                                        setTimeout(function () {
+                                            showmessage("success", "Tin đã được báo thành công!");
+                                        }, 800);
+                                    } else {
+                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                    }
+                                }
+                                ;
+                            });
+                        }
+                    });
+                }
+            }
+        });
+
+        /*Báo chính chủ*/
+        $(document).on("click", ".iscc-item-list", function () {
+            var selected = [parseInt($(this).attr("data-id"))];
+            if (selected.length == 0) {
+                showmessage("error", "Bạn hãy chọn tin chính chủ!");
+            } else {
+                bootbox.confirm({
+                    title: "Thông báo",
+                    message: "Bạn có chắc muốn báo chính chủ tin này không?",
+                    buttons: {
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Đồng ý'
+                        },
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Đóng'
+                        },
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.post("/home/newsforuser", { listNewsId: selected }, function (resp) {
+                                if (resp != null) {
+                                    if (resp.Status == 1) {
+                                        LoadData();
+                                        setTimeout(function () {
+                                            showmessage("success", "Tin đã được báo thành công!");
+                                        }, 800);
+                                    } else {
+                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                    }
+                                }
+                                ;
+                            });
+                            $("#newsdetail").modal("hide");
+                        }
+                    }
+                });
+            }
+        });
+
+        /*hủy tin chính chủ*/
+        $(document).on("click", ".rmiscc-item-list", function () {
+            var selected = [parseInt($(this).attr("data-id"))];
+            if (selected.length == 0) {
+                showmessage("error", "Bạn hãy chọn tin hủy chính chủ!");
+            } else {
+                bootbox.confirm({
+                    title: "Thông báo",
+                    message: "Bạn có chắc muốn hủy chính chủ tin này không?",
+                    buttons: {
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Đồng ý'
+                        },
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Đóng'
+                        },
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.post("/home/Removenewsforuser", { listNewsId: selected }, function (resp) {
+                                if (resp != null) {
+                                    if (resp.Status == 1) {
+                                        LoadData();
+                                        setTimeout(function () {
+                                            showmessage("success", "Tin đã được bỏ thành công!");
+                                        }, 800);
+                                    } else {
+                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                    }
+                                }
+                                ;
+                            });
+                            $("#newsdetail").modal("hide");
+                        }
+                    }
+                });
+            }
+        });
+
         $(document).on("click", ".btnremovehide", function () {
             if (!$(this).hasClass("disabled")) {
                 var selected = [];

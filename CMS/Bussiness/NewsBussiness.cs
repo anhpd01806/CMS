@@ -167,6 +167,7 @@ namespace CMS.Bussiness
                 foreach (var newsModel in list)
                 {
                     newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
+                    newsModel.Iscc = CheckCC(newsModel.Id);
                     listItem.Add(newsModel);
                 }
 
@@ -486,7 +487,7 @@ namespace CMS.Bussiness
                              CreatedOn = c.CreatedOn,
                              Cusname = u.FullName,
                              CusId = u.Id,
-
+                             Iscc = CheckCCByUser(c.Id, UserId)
                          }).FirstOrDefault();
 
             return query;
@@ -748,6 +749,26 @@ namespace CMS.Bussiness
             {
                 return 0;
             }
+        }
+
+        public bool CheckCC(int newsId)
+        {
+            var query = (from c in db.News_customer_actions
+                         where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value
+                         select c).ToList();
+            if (query.Any())
+                return true;
+            return false;
+        }
+
+        public bool CheckCCByUser(int newsId, int userId)
+        {
+            var query = (from c in db.News_customer_actions
+                         where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value && c.CustomerId.Equals(userId)
+                         select c).ToList();
+            if (query.Any())
+                return true;
+            return false;
         }
         #endregion
 

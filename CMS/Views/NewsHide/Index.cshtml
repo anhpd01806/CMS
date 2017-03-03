@@ -156,16 +156,18 @@
                     <i class="icon-eye-open bigger-125"></i>
                     Hiện tin ẩn
                 </button>
-                <button class="btn btn-sm btn-default btndelete disabled">
-                    <i class="icon-trash bigger-125"></i>
-                    Xóa tin
-                </button>
+
                 @if (!Convert.ToBoolean(ViewBag.User))
                 {
-                    <button class="btn btn-sm btn-inverse btn-small btncc disabled">
+                    <button class="btn btn-sm btn-default btndelete disabled">
+                        <i class="icon-trash bigger-125"></i>
+                        Xóa tin
+                    </button>
+                    <button class="btn btn-sm btn-purple btn-small btncc disabled">
                         <i class="icon-user bigger-125"></i>
                         Tin chính chủ
                     </button>
+
                     <button class="btn btn-sm btn-inverse btn-small btnspam disabled">
                         <i class="icon-warning-sign bigger-125"></i>
                         Chặn môi giới
@@ -176,12 +178,12 @@
                     </button>
                 }
                 @*else
-                {
-                    <button class="btn btn-sm btn-inverse btn-small btnreport disabled">
-                        <i class="icon-warning-sign bigger-125"></i>
-                        Báo môi giới
-                    </button>
-                }*@
+                    {
+                        <button class="btn btn-sm btn-inverse btn-small btnreport disabled">
+                            <i class="icon-warning-sign bigger-125"></i>
+                            Báo môi giới
+                        </button>
+                    }*@
             </div>
             <div class="col-sm-3 viewpage">
                 <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
@@ -263,12 +265,14 @@
                                     }
                                 </td>
                                 <td class="tdcc">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="form-field-checkbox" disabled class="ace ace-checkbox-2" type="checkbox" />
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
+                                    @if (item.Iscc)
+                                    {
+                                        <img src="~/assets/images/approved.gif" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/assets/images/delete.gif" />
+                                    }
                                 </td>
                                 @*<td class="tdcenter">
                                         <div class="checkbox">

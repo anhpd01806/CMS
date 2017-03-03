@@ -51,13 +51,16 @@
                 }
             </td>
             <td class="tdcc">
-                <div class="checkbox">
-                    <label>
-                        <input name="form-field-checkbox" disabled class="ace ace-checkbox-2" type="checkbox" />
-                        <span class="lbl"></span>
-                    </label>
-                </div>
+                @if (item.Iscc)
+                {
+                    <img src="~/assets/images/approved.gif" />
+                }
+                else
+                {
+                    <img src="~/assets/images/delete.gif" />
+                }
             </td>
+
             @*<td style="text-align: center">
                 <div class="checkbox">
                     <label>

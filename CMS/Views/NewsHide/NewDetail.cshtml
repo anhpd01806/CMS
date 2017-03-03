@@ -87,6 +87,14 @@
                     else
                     {
                         <button type="button" class="btn btn-warning report-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Báo môi giới</button>
+                        if (Model.Iscc)
+                        {
+                            <button type="button" class="btn btn-purple rmiscc-item-list" data-id="@Model.Id"><i class="fa fa-user-secret"></i> Bỏ tin chính chủ</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-purple iscc-item-list" data-id="@Model.Id"><i class="fa fa-user"></i> Tin chính chủ</button>
+                        }
                     }
                 </div>
                 <div class="col-sm-2">

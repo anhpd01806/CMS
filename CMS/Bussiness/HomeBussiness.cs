@@ -109,7 +109,7 @@ namespace CMS.Bussiness
                                    select (c.NewsId)).ToList();
 
                 //Nếu là admin kiểm tra tin đã được báo chính chủ chưa
-                var newsisactive = (from c in db.News_customer_actions where c.Iscc.HasValue && c.Iscc.Value select c.NewsId).ToList();
+                //var newsisactive = (from c in db.News_customer_actions where c.Iscc.HasValue && c.Iscc.Value select c.NewsId).ToList();
 
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
@@ -647,7 +647,7 @@ namespace CMS.Bussiness
                     var query = (from c in db.News_customer_actions
                         where c.NewsId.Equals(t) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
                         select c).ToList();
-                    if (!query.Any())
+                    if (query.Any())
                     {
                         foreach (var newsCustomerAction in query)
                         {
