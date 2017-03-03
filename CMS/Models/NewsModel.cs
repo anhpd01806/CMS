@@ -102,5 +102,7 @@ namespace CMS.Models
         public bool IsPayment { get; set; }
 
         public string SiteName { get; set; }
+
+        public bool Iscc { get; set;  }
     }
 }

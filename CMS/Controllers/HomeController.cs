@@ -198,6 +198,26 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
+        public JsonResult NewsForUser(int[] listNewsId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var result = 1;
+                if (listNewsId.Length > 0)
+                {
+                    result = _bussiness.NewsforUser(listNewsId, userId);
+                }
+                return Json(new { Status = result });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
+
+        [HttpPost]
         public JsonResult UserHideNews(int[] listNewsId)
         {
             try

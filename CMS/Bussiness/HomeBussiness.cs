@@ -91,6 +91,7 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
+                var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var listBlacklist = (from c in db.Blacklists
                                      select (c.Words)).ToList();
 
@@ -107,6 +108,9 @@ namespace CMS.Bussiness
                 var news_isread = (from c in db.News_Customer_Mappings
                                    where c.CustomerId.Equals(UserId) && c.IsReaded.Value
                                    select (c.NewsId)).ToList();
+
+                //Nếu là admin kiểm tra tin đã được báo chính chủ chưa
+                var newsisactive = (from c in db.News_customer_actions where c.Iscc.HasValue && c.Iscc.Value select c.NewsId).ToList();
 
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
@@ -145,6 +149,12 @@ namespace CMS.Bussiness
                             };
 
                 #region check param
+                //check admin để không load tin đã được duyệt ra nữa
+                if (!checkuser)
+                {
+                    query = query.Where(c => !newsisactive.Contains(c.Id));
+                }
+
                 if (CateId != 0)
                 {
                     query = query.Where(c => c.CategoryId.Equals(CateId));
@@ -592,6 +602,36 @@ namespace CMS.Bussiness
                 return query.Count;
             }
             catch
+            {
+                return 0;
+            }
+        }
+
+        public int NewsforUser(int[] listnews, int userId)
+        {
+            try
+            {
+                for (int i = 0; i < listnews.Length; i++)
+                {
+                    var query = (from c in db.News_customer_actions
+                                 where c.NewsId.Equals(listnews[i]) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
+                                 select c).ToList();
+                    if (!query.Any())
+                    {
+                        var item = new News_customer_action();
+                        item.CustomerId = userId;
+                        item.NewsId = listnews[i];
+                        item.Iscc = true;
+                        item.Ischeck = false;
+                        item.IsSpam = false;
+                        item.DateCreate = DateTime.Now;
+                        db.News_customer_actions.InsertOnSubmit(item);
+                    }
+                    db.SubmitChanges();
+                }
+                return 1;
+            }
+            catch 
             {
                 return 0;
             }
