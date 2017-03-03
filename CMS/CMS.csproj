@@ -2983,6 +2983,7 @@
     <Compile Include="Bussiness\HomeBussiness.cs" />
     <Compile Include="Bussiness\MenuBussiness.cs" />
     <Compile Include="Bussiness\NewsBussiness.cs" />
+    <Compile Include="Bussiness\NewsCustomerActionBussiness.cs" />
     <Compile Include="Bussiness\NotifyBussiness.cs" />
     <Compile Include="Bussiness\OperationBussiness.cs" />
     <Compile Include="Bussiness\PaymentBussiness.cs" />

@@ -61,6 +61,20 @@ namespace CMS.Controllers
                     };
                     new BlackListBussiness().Insert(model);
 
+                    //insert action delete blacklist
+                    var newsAction = new News_customer_action
+                    {
+                        NewsId = news.Id,
+                        CustomerId = int.Parse(Session["SS-USERID"].ToString()),
+                        Iscc = false,
+                        Ischeck = false,
+                        IsSpam = false,
+                        IsReport = true,
+                        DateCreate = DateTime.Now
+                    };
+
+                    new NewsCustomerActionBussiness().InsertActionCustomer(newsAction);
+
                     return Json(new
                     {
                         Result = true
