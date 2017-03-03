@@ -83,7 +83,8 @@ namespace CMS.Controllers
                 #endregion
 
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
-                ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
+                var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
+                ViewBag.User = checkuser;
                 model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
@@ -105,6 +106,7 @@ namespace CMS.Controllers
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
+                var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
@@ -218,6 +220,26 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
+        public JsonResult RemoveNewsForUser(int[] listNewsId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var result = 1;
+                if (listNewsId.Length > 0)
+                {
+                    result = _bussiness.RemoveNewsforUser(listNewsId, userId);
+                }
+                return Json(new { Status = result });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
+
+        [HttpPost]
         public JsonResult UserHideNews(int[] listNewsId)
         {
             try
@@ -265,6 +287,7 @@ namespace CMS.Controllers
             }
             int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
+            var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
             var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
             ExportToExcel(filePath, listNews);
 
@@ -338,7 +361,7 @@ namespace CMS.Controllers
                     worksheet.Cells[row, col].Value = item.Title;
                     col++;
 
-                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Contents : "Vui lòng nạp tiền"; 
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Contents : "Vui lòng nạp tiền";
                     col++;
 
 

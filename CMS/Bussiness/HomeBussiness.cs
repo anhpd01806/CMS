@@ -69,7 +69,7 @@ namespace CMS.Bussiness
                                     Name = c.Name,
                                     ParentCategoryId = c.ParentCategoryId
                                 }).ToList();
-            return listcategory;
+            return listcategory;            
         }
 
         public List<NewsStatusModel> GetlistStatusModel()
@@ -91,7 +91,6 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var listBlacklist = (from c in db.Blacklists
                                      select (c.Words)).ToList();
 
@@ -150,10 +149,10 @@ namespace CMS.Bussiness
 
                 #region check param
                 //check admin để không load tin đã được duyệt ra nữa
-                if (!checkuser)
-                {
-                    query = query.Where(c => !newsisactive.Contains(c.Id));
-                }
+                //if (!checkuser)
+                //{
+                //    query = query.Where(c => !newsisactive.Contains(c.Id));
+                //}
 
                 if (CateId != 0)
                 {
@@ -215,6 +214,7 @@ namespace CMS.Bussiness
                 foreach (var newsModel in list)
                 {
                     newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
+                    newsModel.Iscc = CheckCC(newsModel.Id);
                     listItem.Add(newsModel);
                 }
 
@@ -289,7 +289,8 @@ namespace CMS.Bussiness
                              CategoryId = ct.Id,
                              CateName = ct.Name,
                              ListImage = GetImageByNewsId(c.Id),
-                             SameNews = GetSameNewsByNewsId(c.CategoryId.Value, c.DistrictId.Value, UserId)
+                             SameNews = GetSameNewsByNewsId(c.CategoryId.Value, c.DistrictId.Value, UserId),
+                             Iscc = CheckCCByUser(c.Id, UserId)
                          }).FirstOrDefault();
 
             if (query != null)
@@ -635,6 +636,52 @@ namespace CMS.Bussiness
             {
                 return 0;
             }
+        }
+
+        public int RemoveNewsforUser(int[] listnews, int userId)
+        {
+            try
+            {
+                foreach (var t in listnews)
+                {
+                    var query = (from c in db.News_customer_actions
+                        where c.NewsId.Equals(t) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
+                        select c).ToList();
+                    if (!query.Any())
+                    {
+                        foreach (var newsCustomerAction in query)
+                        {
+                            db.News_customer_actions.DeleteOnSubmit(newsCustomerAction);
+                        }
+                    }
+                    db.SubmitChanges();
+                }
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public bool CheckCC(int newsId)
+        {
+            var query = (from c in db.News_customer_actions
+                where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value
+                select c).ToList();
+            if (query.Any())
+                return true;
+            return false;
+        }
+
+        public bool CheckCCByUser(int newsId, int userId)
+        {
+            var query = (from c in db.News_customer_actions
+                         where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value && c.CustomerId.Equals(userId)
+                         select c).ToList();
+            if (query.Any())
+                return true;
+            return false;
         }
         #endregion
 

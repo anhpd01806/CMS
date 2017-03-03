@@ -51,54 +51,56 @@
                 }
             </td>
             <td class="tdcc">
-                <div class="checkbox">
-                    <label>
-                        <input name="form-field-checkbox" disabled class="ace ace-checkbox-2" type="checkbox" />
-                        <span class="lbl"></span>
-                    </label>
-                </div>
+                @if (item.Iscc)
+                {
+                    <img src="~/assets/images/approved.gif" />
+                }
+                else
+                {
+                    <img src="~/assets/images/delete.gif" />
+                }
             </td>
             @*<td style="text-align: center">
-                <div class="checkbox">
-                    <label>
-                        <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
-                        <span class="lbl"></span>
-                    </label>
-                </div>
-            </td>
-            <td style="text-align: center">
-                <div class="checkbox">
-                    <label>
-                        <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
-                        <span class="lbl"></span>
-                    </label>
-                </div>
-            </td>*@
+                    <div class="checkbox">
+                        <label>
+                            <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+                </td>
+                <td style="text-align: center">
+                    <div class="checkbox">
+                        <label>
+                            <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+                </td>*@
             @*<td class="td-actions">
-                <div class="hidden-phone visible-desktop action-buttons">
-                    <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
-                        <i class="icon-zoom-in bigger-130"></i>
-                    </a>
-                    <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
-                        <i class="icon-save bigger-130"></i>
-                    </a>
-                    <a class="orange hide-item-list" href="javascript:;" title="Ẩn tin" data-id="@item.Id">
-                        <i class="icon-eye-close bigger-130"></i>
-                    </a>
-                    @if (item.IsAdmin)
-                    {
-                        <a class="red spam-item-list" href="javascript:;" title="Chặn môi giới" data-id="@item.Id">
-                            <i class="icon-warning-sign bigger-130"></i>
+                    <div class="hidden-phone visible-desktop action-buttons">
+                        <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
+                            <i class="icon-zoom-in bigger-130"></i>
                         </a>
-                    }
-                    else
-                    {
-                        <a class="red report-item-list" href="javascript:;" title="Báo môi giới" data-id="@item.Id">
-                            <i class="icon-warning-sign bigger-130"></i>
+                        <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
+                            <i class="icon-save bigger-130"></i>
                         </a>
-                    }
-                </div>
-            </td>*@
+                        <a class="orange hide-item-list" href="javascript:;" title="Ẩn tin" data-id="@item.Id">
+                            <i class="icon-eye-close bigger-130"></i>
+                        </a>
+                        @if (item.IsAdmin)
+                        {
+                            <a class="red spam-item-list" href="javascript:;" title="Chặn môi giới" data-id="@item.Id">
+                                <i class="icon-warning-sign bigger-130"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="red report-item-list" href="javascript:;" title="Báo môi giới" data-id="@item.Id">
+                                <i class="icon-warning-sign bigger-130"></i>
+                            </a>
+                        }
+                    </div>
+                </td>*@
         </tr>
     }
 }
