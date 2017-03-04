@@ -5,8 +5,9 @@
 }
 @section header{
     <script type="text/javascript">
-
         $(document).ready(function () {
+            var date = $.datepicker.formatDate('dd/mm/yy', new Date());
+
             $('.delete').click(function (e) {
                 e.preventDefault();
                 $(".delete-selected").removeClass("delete-selected");
@@ -49,6 +50,9 @@
                                 }
                                 $('#TotalPage').attr("data-total", resp.TotalPage);
                                 $('#TotalPage').attr("data-page", page);
+                                $('#hiddenId').val(resp.Id);
+                                $("#StatisticUser").html("");
+                                $("#StatisticUser").html(resp.ActionDetailUser);
                                 $.LoadingOverlay("hide");
                             }
                         });
@@ -79,6 +83,25 @@
                         $.LoadingOverlay("hide");
                     }
                 });
+            });
+
+            $('.date-picker').datepicker({
+                dateFormat: 'dd/mm/yy',
+                autoclose: true,
+                todayHighlight: true
+            });
+            $(".txtFrom").change(function () {
+                var startDate = $(".txtFrom").val();
+                var endDate = $(".txtTo").val();
+                if (endDate == "") { endDate = date }
+                LoadDetail($('#hiddenId').val(), startDate, endDate)
+            });
+            $(".txtTo").change(function () {
+                debugger
+                var startDate = $(".txtFrom").val();
+                var endDate = $(".txtTo").val();
+                if (startDate == "") { startDate = date }
+                LoadDetail($('#hiddenId').val(), startDate, endDate)
             });
         });
 
@@ -118,6 +141,28 @@
                 }
             });
         }
+
+        function AdminDetail(id) {
+            var date = $.datepicker.formatDate('dd/mm/yy', new Date());
+            LoadDetail(id, date, date)
+        }
+
+        function LoadDetail(id, startDate, endDate) {
+            debugger
+            $.LoadingOverlay("show");
+            var data = {
+                id: id, startDate: startDate, endDate: endDate
+            };
+            $.post("/User/LoadStatisticUser", data, function (resp) {
+                if (resp != null) {
+                    debugger
+                    $("#StatisticUser").html("");
+                    $("#StatisticUser").html(resp.Content);
+                    $('#hiddenId').val(id);
+                    $.LoadingOverlay("hide");
+                }
+            });
+        }
     </script>
 }
 @section menu{
@@ -139,6 +184,7 @@
                             <strong>Thông báo:</strong> @TempData["Success"].ToString()
                         </div>
                     }
+                    <input type="hidden"  id="hiddenId" />
                     <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
                     <div class="table-header">
                         Danh sách nhân viên
@@ -160,16 +206,14 @@
                                 <tr>
                                     <th class="col-md-1 text-center" style="width:5%">STT</th>
                                     <th>Tên nhân viên</th>
-                                    <th>Tên đăng nhập</th>
+                                    <th>Số điện thoại</th>
                                     <th>Trạng thái</th>
                                     <th>Quản lý bởi</th>
                                     <th>Nhóm quyền</th>
                                     <th class="text-center"></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                              
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                         <input type="hidden" id="TotalPage" data-total="@Model.Totalpage" data-page="1" />
                         @if (Model.Totalpage > 1)
@@ -184,6 +228,31 @@
                             </div>
                         }
                     </div>
+                    <div class="table-header">
+                        Thống kê báo tin mô giới, tin chính chủ
+                    </div>
+                    <div class="col-xs-6" style="padding-top:1%; padding-bottom:3%">
+                        <div class="control-group">
+                            <div class="input-group col-xs-9">
+                                <input class="form-control date-picker txtFrom" id="TEst" placeholder="Từ ngày" type="text" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-6" style="padding-top:1%; padding-bottom:3%">
+                        <div class="control-group">
+                            <div class="input-group col-xs-9">
+                                <input class="form-control date-picker txtTo" type="text" placeholder="Đến ngày" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="StatisticUser"></div>
                 </div>
             </div>
         </div>

@@ -3122,6 +3122,7 @@
     <Content Include="Views\News\NewsDetail.cshtml" />
     <Content Include="Views\News\Pagging.cshtml" />
     <Content Include="Views\NewsHide\NewDetail.cshtml" />
+    <Content Include="Views\User\ReportStatistic.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

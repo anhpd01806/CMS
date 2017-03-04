@@ -9,7 +9,7 @@
         <tr>
             <td>@counter</td>
             <td>@u.FullName</td>
-            <td>@u.UserName</td>
+            <td><a onclick="AdminDetail(@u.Id)">@u.UserName</a></td>
             <td>
                 @if (u.IsDelete == true)
             { <span class="label label-inverse">TK bị khóa</span>}

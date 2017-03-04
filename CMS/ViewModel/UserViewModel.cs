@@ -16,6 +16,7 @@ namespace CMS.ViewModel
         public List<SelectListItem> PaymentStatus { get; set; }
         public int StatusId { get; set; }
         public CustomerDetail CustomerDetail { get; set; }
+        public NewsCustomerActionModel ActionDetailUser { get; set; }
     }
 
     public class UserModel
@@ -108,5 +109,15 @@ namespace CMS.ViewModel
         public int PaymentMethodId { get; set; }
         public string TypePayment { get; set; }
         public string AmoutPayment { get; set; }
+    }
+
+    public class NewsCustomerActionModel
+    {
+        public int Id { get; set; }
+        public int SumIscc { get; set; }
+        public int SumIsReport { get; set; }
+        public string UserName { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
     }
 }

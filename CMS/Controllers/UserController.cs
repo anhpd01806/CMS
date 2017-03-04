@@ -4,6 +4,7 @@ using CMS.Helper;
 using CMS.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -22,32 +23,6 @@ namespace CMS.Controllers
             model.Totalpage = (int)Math.Ceiling((double)new UserBussiness().GetAllUser().Count / (double)20);
             return View(model);
         }
-
-        [HttpPost]
-        public JsonResult LoadData(string search, string pageIndex)
-        {
-            try
-            {
-                int totalpage = 0;
-                UserViewModel model = new UserViewModel();
-                model.UserList = GetAdminList(ref totalpage, int.Parse(pageIndex), 20, search);
-                var content = RenderPartialViewToString("~/Views/User/AdminDetail.cshtml", model.UserList);
-                model.Totalpage = totalpage;
-                return Json(new
-                {
-                    TotalPage = model.Totalpage,
-                    Content = content
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception)
-            {
-                return Json(new
-                {
-                    TotalPage = 0
-                }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
 
         public ActionResult Create()
         {
@@ -295,6 +270,61 @@ namespace CMS.Controllers
             return RedirectToAction("UserInformation", "User");
         }
 
+        #region Json funtion
+        [HttpPost]
+        public JsonResult LoadData(string search, string pageIndex)
+        {
+            try
+            {
+                int totalpage = 0;
+                UserViewModel model = new UserViewModel();
+                model.UserList = GetAdminList(ref totalpage, int.Parse(pageIndex), 20, search);
+                var content = RenderPartialViewToString("~/Views/User/AdminDetail.cshtml", model.UserList);
+                model.ActionDetailUser = GetCustomerDetail(int.Parse(Session["SS-USERID"].ToString()), DateTime.Now, DateTime.Now);
+                var actionDetailUser = RenderPartialViewToString("~/Views/User/ReportStatistic.cshtml", model.ActionDetailUser);
+                model.Totalpage = totalpage;
+                return Json(new
+                {
+                    TotalPage = model.Totalpage,
+                    Content = content,
+                    ActionDetailUser = actionDetailUser,
+                    Id = int.Parse(Session["SS-USERID"].ToString())
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new
+                {
+                    TotalPage = 0
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult LoadStatisticUser(int id, string startDate, string endDate)
+        {
+            try
+            {
+                UserViewModel model = new UserViewModel();
+                var startTime = DateTime.ParseExact(startDate, "dd/MM/yyyy", null);
+                var endTime = DateTime.ParseExact(endDate.ToString(), "dd/MM/yyyy", null);
+                model.ActionDetailUser = GetCustomerDetail(id, startTime, endTime);
+                var content = RenderPartialViewToString("~/Views/User/ReportStatistic.cshtml", model.ActionDetailUser);
+                return Json(new
+                {
+                    Content = content
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
+
         #region Private funtion
         private string GetNameRole(List<Role> role, List<Role_User> roleUser, int userId)
         {
@@ -324,7 +354,13 @@ namespace CMS.Controllers
                         IsMember = a.IsMember ?? false,
                         ManagerBy = a.ManagerBy != null ? allUser.Where(x => x.Id == a.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "",
                         RoleName = GetNameRole(allRoles, allRolesUser, a.Id)
-                    }).OrderBy(x=>x.IsMember).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                    }).OrderBy(x => x.IsMember).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+        }
+
+        //get Action user by datetime 
+        private NewsCustomerActionModel GetCustomerDetail(int userId, DateTime startDate, DateTime endDate)
+        {
+            return new NewsCustomerActionBussiness().GetCustomerDetail(userId, startDate, endDate);
         }
         #endregion
     }

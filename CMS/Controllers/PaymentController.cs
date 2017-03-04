@@ -88,7 +88,14 @@ namespace CMS.Controllers
         {
             int userId = Convert.ToInt32(Session["SS-USERID"]);
             var rs = new PaymentBussiness().UpdatePaymentAccepted(model, userId);
-            TempData["Success"] = rs;
+            if (rs == "Nạp tiền thành công")
+            {
+                TempData["Success"] = rs;
+                Session["USER-ACCEPTED"] = true;
+            }else
+            {
+                TempData["Error"] = rs;
+            }
             ModelState.Clear();
             model = new PaymentViewModel();
             model.PackageList = new List<SelectListItem>();

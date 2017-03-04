@@ -1,0 +1,26 @@
+﻿@model CMS.ViewModel.NewsCustomerActionModel
+
+
+<table id="DataTable2" class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Tài khoản</th>
+            <th>Từ ngày</th>
+            <th>Đến ngày</th>
+            <th>Tổng báo chính chủ</th>
+            <th>Tổng báo mô giới</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            <tr>
+                <td>@Model.UserName</td>
+                <td>@Model.StartDate</td>
+                <td>@Model.EndDate</td>
+                <td>@Model.SumIscc</td>
+                <td>@Model.SumIsReport</td>
+            </tr>
+        }
+    </tbody>
+</table>
