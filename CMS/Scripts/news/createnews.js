@@ -91,7 +91,7 @@ $(document).ready(function () {
             var districtId = $("#DistricId").val();
             var phone = $("#txtphone").val();
             var price = $("#txtprice").val().replace(/\./g, '');
-            var pricetext = $("#txtpricetext").val();
+            var pricetext = "";
             var content = CKEDITOR.instances['txtcontent'].getData();
             if ($.isNumeric(price)) {
                 var data = {
@@ -109,8 +109,19 @@ $(document).ready(function () {
                             showmessage("success", "Tin đã được đăng thành công chờ quản trị viên duyệt!");
                             setTimeout(function() {
                                 window.location.href = "/home/index";
-                            }, 2000);
+                            }, 1000);
+                        } else {
+                            if (resp.type == 0) {
+                                showmessage("error", "Bạn không đủ tiền trong tài khoản! Vui lòng nạp thêm tiền để tiếp tục đăng tin");
+                            } else {
+                                if (resp.type == 2) {
+                                    showmessage("error", "Bạn không đủ tiền trong tài khoản! Vui lòng nạp thêm tiền để tiếp tục đăng tin");
+                                }else {
+                                    showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                }
+                            }
                         }
+                        
                     } else {
                         showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
                     }

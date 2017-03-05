@@ -85,7 +85,7 @@ namespace CMS.Controllers
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
 
-                model.ListNew = _newsbussiness.GetListNewNotActiveByFilter(0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
+                model.ListNew = _newsbussiness.GetListNewNotActiveByFilter(userId, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);
@@ -204,10 +204,11 @@ namespace CMS.Controllers
                 var pricetext = Request["pricetext"];
                 var content = Request["content"];
 
+                var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var newsItem = new New();
                 var count = _newsbussiness.CheckRepeatNews(phone, districtId, userId);
                 var resp = _payment.PaymentForCreateNews(Convert.ToInt32(ConfigWeb.MinPayment), userId);
-                if (resp == 1)
+                if (resp == 1 || !checkuser)
                 {
                     newsItem.CategoryId = cateId;
                     newsItem.Title = title;
