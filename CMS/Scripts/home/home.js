@@ -571,7 +571,7 @@ $(function () {
             } else {
                 $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
-                        if (resp.Status == 1) {
+                        if (resp.Status != 0) {
                             LoadData();
                             setTimeout(function () {
                                 showmessage("success", "Tin mô giới đã được báo cáo thành công!");

@@ -695,9 +695,9 @@ namespace CMS.Bussiness
                             join t in db.NewsStatus on c.StatusId equals t.Id
                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
                             join s in db.Sites on c.SiteId equals s.ID
-                            where c.CreatedOn.HasValue && !c.IsDeleted && !s.Deleted && s.Published //&& c.Published.HasValue
-                            && !d.IsDeleted && d.Published
-                            && (listBlacklist.Contains(c.Phone) || listBlacklist.Contains(c.Title) || listBlacklist.Contains(c.Contents))
+                            where //c.CreatedOn.HasValue && !c.IsDeleted && !s.Deleted && s.Published //&& c.Published.HasValue
+                            // !d.IsDeleted && d.Published
+                            (listBlacklist.Contains(c.Phone) || listBlacklist.Contains(c.Title) || listBlacklist.Contains(c.Contents))
                             && !listDelete.Contains(c.Id)
                             orderby c.StatusId ascending, c.Price descending
                             select new NewsModel
@@ -785,7 +785,7 @@ namespace CMS.Bussiness
                 foreach (var newsModel in list)
                 {
                     newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
-                    //newsModel.Iscc = CheckCC(newsModel.Id);
+                    newsModel.Iscc = CheckCC(newsModel.Id);
                     listItem.Add(newsModel);
                 }
 

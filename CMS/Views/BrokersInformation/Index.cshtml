@@ -166,21 +166,10 @@
         </div>
         <div class="space"></div>
         <div class="hd-fuc">
-            <div class="col-sm-5 btn-area-action">
-                <button class="btn btn-sm btn-primary btnsave disabled">
-                    <i class="icon-refresh bigger-125"></i>
-                    Khôi phục tin
-                </button>
-                <button class="btn btn-sm btn-success btnhide disabled">
-                    <i class="icon-trash bigger-125"></i>
-                    Xóa tin
-                </button>
-                <button class="btn btn-sm btn-danger btnexport btn-small">
-                    <i class="icon-download-alt bigger-125"></i>
-                    Xuất Excel
-                </button>
+            <div class="col-md-9 col-xs-12 btn-area-action">
+                
             </div>
-            <div class="col-sm-7 viewpage">
+            <div class="col-md-3 col-xs-12 viewpage">
                 <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
                     @*Hiển thị <span class="fistrecord">@((Model.pageIndex - 1) * Model.pageSize)</span>  tới <span class="endrecord">@((Model.pageIndex * Model.pageSize) <= Model.Total ? (Model.pageIndex * Model.pageSize) : Model.Total)</span> trong <span class="totalrecord">@(Model.Total)</span> tin*@
                     Tổng số tin : <span class="totalrecord">@(Model.Total)</span>
@@ -200,10 +189,12 @@
                         <th>Quận huyện</th>
                         <th style="min-width: 105px;">Ngày đăng</th>
                         <th style="min-width: 105px;">Giá</th>
-                        <th>Điện thoại</th>
+                        <th style="text-align: center">Điện thoại</th>
                         <th style="text-align: center">Loại tin</th>
                         <th>Xem</th>
                         <th class="tdcc">Chính chủ</th>
+                        @*<th class="tdcenter">Kiểm tra</th>
+                            <th class="tdcenter">Span</th>*@
                         @*<th style="text-align: center">Tính năng</th>*@
                     </tr>
                 </thead>
@@ -235,10 +226,10 @@
                                 </td>
                                 <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
                                 <td class="td-medium">@item.PriceText</td>
-                                <td class="td-small">
+                                <td class="td-small" style="text-align: center;">
                                     @if (Convert.ToBoolean(ViewBag.Accept))
                                     {
-                                        <span>@item.Phone.Replace(",", ", ").Trim()</span>
+                                        <span>@Html.Raw(item.Phone.Replace(",", ", ").Trim() + "<br/>(đã đăng " + item.RepeatTotal + " tin)")</span>
                                     }
                                     else
                                     {
@@ -267,6 +258,47 @@
                                         <img src="~/assets/images/delete.gif" />
                                     }
                                 </td>
+                                @*<td class="tdcenter">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="tdcenter">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </td>*@
+                                @*<td class="td-actions">
+                                        <div class="hidden-phone visible-desktop action-buttons">
+                                            <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
+                                                <i class="icon-zoom-in bigger-130"></i>
+                                            </a>
+                                            <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
+                                                <i class="icon-save bigger-130"></i>
+                                            </a>
+                                            <a class="orange hide-item-list" href="javascript:;" title="Ẩn tin" data-id="@item.Id">
+                                                <i class="icon-eye-close bigger-130"></i>
+                                            </a>
+                                            @if (item.IsAdmin)
+                                            {
+                                                <a class="red spam-item-list" href="javascript:;" title="Chặn môi giới" data-id="@item.Id">
+                                                    <i class="icon-warning-sign bigger-130"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="red report-item-list" href="javascript:;" title="Báo môi giới" data-id="@item.Id">
+                                                    <i class="icon-warning-sign bigger-130"></i>
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>*@
                             </tr>
                         }
                     }
@@ -278,11 +310,12 @@
                     }
                 </tbody>
             </table>
-            <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-page="1" />
+            <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-totalrecord="@Model.Total" data-page="1" />
 
         </div>
+
         @if (Model.Totalpage > 1)
-            {
+        {
             <div class="row page-home lo-paging">
                 <div class="col-xs-12 col-md-4">
                     <div class="dataTables_length">
@@ -318,4 +351,4 @@
 
 @*Custom script*@
 <script src="~/Scripts/common.js"></script>
-<script src="~/Scripts/news/newstrash.js"></script>
+<script src="~/Scripts/home/brockerinformation.js"></script>

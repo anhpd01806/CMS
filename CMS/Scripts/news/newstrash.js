@@ -69,6 +69,27 @@ $(function () {
             }
         });
     }
+    
+    $('.date-picker').datepicker({
+        dateFormat: 'dd-mm-yy',
+        autoclose: true,
+        todayHighlight: true
+    });
+
+    $(document).on("click", ".btnsearch", function () {
+        LoadData();
+    });
+    $('.txtsearchkey').keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            LoadData();
+        }
+        event.stopPropagation();
+    });
+
+    $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
+        LoadData();
+    });
 
     $(document).on("change", "#chkIsrepeatNews", function () {
         if ($(this).prop('checked')) {

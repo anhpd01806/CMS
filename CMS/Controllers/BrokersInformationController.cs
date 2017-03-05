@@ -15,7 +15,7 @@ using CMS.Data;
 using CMS.Helper;
 namespace CMS.Controllers
 {
-    public class BrokersInformationController : Controller
+    public class BrokersInformationController : BaseAuthedController
     {
         #region member
         private readonly HomeBussiness _bussiness = new HomeBussiness();
@@ -80,8 +80,10 @@ namespace CMS.Controllers
                 }
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
-
-                model.ListNew = _newsbussiness.GetListBrokersInformationByFilter(userId, 0, 0, 0, 0, 0, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
+                ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
+                var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
+                ViewBag.User = checkuser;
+                model.ListNew = _newsbussiness.GetListBrokersInformationByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
                 model.Total = total; 
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);
@@ -90,6 +92,34 @@ namespace CMS.Controllers
             {
                 ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
                 return null;
+            }
+        }
+
+        public JsonResult LoadData(int cateId, int districtId, int newTypeId, int siteId, int backdate, double
+                minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string key)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                int total = 0;
+                var listNews = _newsbussiness.GetListBrokersInformationByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
+                ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
+                var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
+                return Json(new
+                {
+                    TotalPage = (int)Math.Ceiling((double)total / (double)pageSize),
+                    Content = content,
+                    TotalRecord = total
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    TotalPage = 0,
+                    Content = "<tr><td colspan='9'>Hệ thống gặp sự cố trong quá trình load dữ liệu<td></tr>"
+                }, JsonRequestBehavior.AllowGet);
             }
         }
     }
