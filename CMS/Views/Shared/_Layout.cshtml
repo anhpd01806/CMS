@@ -618,9 +618,15 @@
             $('#menu-toggler').click(function () {
                 $('#sidebar').toggle();
             });
+            if(isMobile()){
+                $('#sidebar').hide();
+            };
 
         });
-
+        function isMobile(){
+            try{ document.createEvent("TouchEvent"); return true; }
+            catch(e){ return false; }
+        }
     </script>
     @{
         //int id = 1;

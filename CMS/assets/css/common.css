@@ -17,3 +17,6 @@
     display: inline-block;
     max-width: 84%;
 }
+.lo-txt-left{
+    text-align : left !important;
+}
