@@ -32,16 +32,16 @@
     <!-- Socket js -->
     <script src="http://ozo.vn:8088/socket.io/socket.io.js"></script>
 </head>
-<body class="login-layout light-login">
+<body class="login-layout blur-login">
     <div class="main-container">
         <div class="main-content">
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
                     <div class="login-container">
-                        <div class="center">
+                        <div class="center" style="margin-top: 50px;">
                             <h1>
-                                <i><img style="width: 10%;" src="~/assets/Logo/ozo.png" /></i>
-                                <span class="red">OZO.VN</span>
+                                @*<i><img style="width: 10%;" src="~/assets/Logo/ozo.png" /></i>
+                                <span class="red">OZO.VN</span>*@
                             </h1>
                         </div>
                         <div class="space-6"></div>
@@ -90,7 +90,7 @@
                                                 <div class="space"></div>
                                                 <div class="clearfix">
                                                     <label class="inline">
-                                                        <input name="@Html.NameFor(m=>m.RememberMe)" type="checkbox" class="ace" value="true" id="Status" @if (ViewBag.RememberMe == true) { <text> checked='checked' </text>           } />
+                                                        <input name="@Html.NameFor(m=>m.RememberMe)" type="checkbox" class="ace" value="true" id="Status" @if (ViewBag.RememberMe == true) { <text> checked='checked' </text>            } />
                                                         <span class="lbl"> Nhớ tài khoản</span>
                                                     </label>
                                                     <a href="@Url.Action("ForgotPassword", "Page")" class="elements" style="padding-left: 80px;">
@@ -217,20 +217,20 @@
                                 </div><!-- /.widget-body -->
                             </div><!-- /.signup-box -->
                         </div><!-- /.position-relative -->
-                        <div class="navbar-fixed-top align-right">
-                            <br />
-                            &nbsp;
-                            <a id="btn-login-dark" href="#">Dark</a>
-                            &nbsp;
-                            <span class="blue">/</span>
-                            &nbsp;
-                            <a id="btn-login-blur" href="#">Blur</a>
-                            &nbsp;
-                            <span class="blue">/</span>
-                            &nbsp;
-                            <a id="btn-login-light" href="#">Light</a>
-                            &nbsp; &nbsp; &nbsp;
-                        </div>
+                        @*<div class="navbar-fixed-top align-right">
+                                <br />
+                                &nbsp;
+                                <a id="btn-login-dark" href="#">Dark</a>
+                                &nbsp;
+                                <span class="blue">/</span>
+                                &nbsp;
+                                <a id="btn-login-blur" href="#">Blur</a>
+                                &nbsp;
+                                <span class="blue">/</span>
+                                &nbsp;
+                                <a id="btn-login-light" href="#">Light</a>
+                                &nbsp; &nbsp; &nbsp;
+                            </div>*@
                     </div>
                 </div><!-- /.col -->
             </div><!-- /.row -->
