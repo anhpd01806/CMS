@@ -80,10 +80,10 @@
                                 <td style="text-align: center;">
 
                                     <label class="pos-rel">
-                                        <input type="checkbox" class="checkboxItem" id="@item.Id" data-userId="@item.CusId" />
+                                        <input type="checkbox" class="checkboxItem" id="@item.Id" data-userid="@item.CusId" />
                                     </label>
                                 </td>
-                                <td> <span data-id="@item.Id" class="lbltitle" title="@(item.Contents)">@item.Title</span></td>
+                                <td> <span data-id="@item.Id" class="lbltitle" title="@CMS.Helper.Utils.RemoveHtml(item.Contents).Trim()">@item.Title</span></td>
                                 <td class="td-medium">@item.DistictName</td>
                                 <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
                                 <td class="td-medium">@item.PriceText</td>
@@ -115,32 +115,34 @@
             <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-page="1" />
 
         </div>
-        @if (Model.Totalpage > 1)
+        <div class="pagecus">
+            @if (Model.Totalpage > 1)
             {
-            <div class="row page-home lo-paging">
-                <div class="col-xs-12 col-md-4">
-                    <div class="dataTables_length">
-                        <label>
-                            Hiển thị
-                            <select class="ddlpage">
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="150">150</option>
-                                <option value="200">200</option>
-                            </select>
-                            bảng ghi
-                        </label>
+                <div class="row page-home lo-paging">
+                    <div class="col-xs-12 col-md-4">
+                        <div class="dataTables_length">
+                            <label>
+                                Hiển thị
+                                <select class="ddlpage">
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="150">150</option>
+                                    <option value="200">200</option>
+                                </select>
+                                bảng ghi
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-md-8 lo-paging-0">
-                    <div class="dataTables_paginate homepagging ">
-                        <div class="pagination" id="pagination"></div>
+                    <div class="col-xs-12 col-md-8 lo-paging-0">
+                        <div class="dataTables_paginate homepagging ">
+                            <div class="pagination" id="pagination"></div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-        }
+                </div>
+            }
+        </div>
     </div>
 </div>
 <div id="modaldetail">

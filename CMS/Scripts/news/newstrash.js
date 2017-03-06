@@ -59,7 +59,7 @@ $(function () {
                                 bInfo: false,
                                 searching: false,
                                 paging: false,
-                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
                             });
                             $('#check-all').parent().removeClass("sorting_asc");
                         }
@@ -157,7 +157,7 @@ $(function () {
                         bInfo: false,
                         searching: false,
                         paging: false,
-                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
                     });
                     $('#check-all').parent().removeClass("sorting_asc");
                 }
@@ -344,6 +344,26 @@ $(function () {
         }
         $("#newsdetail").modal("hide");
     });
+
+    $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+        $('#image-gallery').lightSlider({
+            gallery: true,
+            item: 1,
+            thumbItem: 9,
+            slideMargin: 0,
+            speed: 500,
+            auto: true,
+            loop: true,
+            onSliderLoad: function () {
+                $('#image-gallery').removeClass('cS-hidden');
+            }
+        });
+        $(".mCustomScrollbar").mCustomScrollbar();
+    });
+
+    $(document).on("shown.bs.modal", function () {
+        $(".mCustomScrollbar").mCustomScrollbar();
+    });
 });
 
 function LoadData() {
@@ -392,7 +412,12 @@ function LoadData() {
                 $("#listnewstable tbody").html("");
                 $("#listnewstable tbody").html(resp.Content);
                 if (resp.TotalPage > 1) {
-                    $(".page-home").show();
+                    if (typeof $(".page-home").val() != "undefined") {
+                        $(".page-home").show();
+                    } else {
+                        var html = '<div class="row page-home lo-paging"><div class="col-xs-12 col-md-4"><div class="dataTables_length"><label>Hiển thị <select class="ddlpage"><option value="20">20</option><option value="50">50</option><option value="100">100</option><option value="150">150</option><option value="200">200</option></select> bản ghi</label></div></div><div class="col-xs-12 col-md-8 lo-paging-0"><div class="dataTables_paginate homepagging "><div class="pagination" id="pagination"></div></div></div></div>';
+                        $(".pagecus").append(html);
+                    }
                     showPagination(resp.TotalPage);
                 } else {
                     $(".page-home").hide();
@@ -409,7 +434,7 @@ function LoadData() {
                         bInfo: false,
                         searching: false,
                         paging: false,
-                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
                     });
                     $('#check-all').parent().removeClass("sorting_asc");
                 }
@@ -477,7 +502,7 @@ function showPagination(pagesCounter) {
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }]
+                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }

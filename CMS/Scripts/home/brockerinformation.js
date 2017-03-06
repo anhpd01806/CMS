@@ -26,7 +26,7 @@
                 bInfo: false,
                 searching: false,
                 paging: false,
-                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
+                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, null]
             });
             $('#check-all').parent().removeClass("sorting_asc");
         }
@@ -87,7 +87,7 @@
                                     bInfo: false,
                                     searching: false,
                                     paging: false,
-                                    aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
+                                    aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, null]
                                 });
                                 $('#check-all').parent().removeClass("sorting_asc");
                             }
@@ -97,6 +97,31 @@
                 }
             });
         }
+
+        $(document).on("click", ".lbltitle", function () {
+            $(this).parents("tr").attr("style", "color: #bf983b;");
+            $(this).parents("tr").find(".label-info").html("Đã xem");
+            $(this).parents("tr").find(".label-info").addClass("label-warning");
+            $(this).parents("tr").find(".label-info").addClass("arrowed-right");
+            $(this).parents("tr").find(".label-info").addClass("arrowed-in");
+            $(this).parents("tr").find(".label-warning").removeClass("label-info");
+            $(this).parents("tr").find(".label-warning").removeClass("arrowed");
+            $.LoadingOverlay("show");
+            $.get("/brokersinformation/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
+                if (resp != null) {
+                    if (resp.Pay == 1 && resp.Content != "") {
+                        $("#modaldetail").empty();
+                        $("#modaldetail").html(resp.Content);
+                        setTimeout(function () {
+                            $("#newsdetail").modal("show");
+                        }, 500);
+                    } else {
+                        window.location.href = '/Payment/RegisterPackage';
+                    }
+                }
+                $.LoadingOverlay("hide");
+            });
+        });
 
         $(document).on("change", ".ddlpage", function () {
             $.LoadingOverlay("show");
@@ -145,7 +170,7 @@
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
+                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, null]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -168,8 +193,92 @@
 
         $("#check-all").checkAll();
 
+        $(document).on("click", ".btnclose", function () {
+            $("#newsdetail").modal("hide");
+        });
+
+        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+            $('#image-gallery').lightSlider({
+                gallery: true,
+                item: 1,
+                thumbItem: 9,
+                slideMargin: 0,
+                speed: 500,
+                auto: true,
+                loop: true,
+                onSliderLoad: function () {
+                    $('#image-gallery').removeClass('cS-hidden');
+                }
+            });
+            $(".mCustomScrollbar").mCustomScrollbar();
+        });
+
+        $(document).on("shown.bs.modal", function () {
+            $(".mCustomScrollbar").mCustomScrollbar();
+        });
+
         $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
             LoadData();
+        });
+
+        $(document).on("click", ".checkboxItem", function () {
+            var count = parseInt($('input:checkbox:checked').length);
+            if ($(this).prop('checked')) {
+                $(".btnremove, .btnhide, .btnreport, .btnspam, .btndelete").removeClass("disabled");
+            } else {
+                if (count < 1) {
+                    $(".btnremove, .btnhide, .btnreport, .btnspam, .btndelete").addClass("disabled");
+                }
+            }
+        });
+
+        $(document).on("click", ".btnhide", function () {
+            if (!$(this).hasClass("disabled")) {
+                var selected = [];
+                $('.checkboxItem:checked').each(function () {
+                    selected.push(parseInt($(this).attr('id')));
+                });
+                if (selected.length == 0) {
+                    showmessage("error", "Bạn hãy chọn tin cần khôi phục!");
+                } else {
+                    $.post("/BrokersInformation/DeleteBlacklist", { listNewsId: selected }, function (resp) {
+                        if (resp != null) {
+                            if (resp.Status == 1) {
+                                LoadData();
+                                setTimeout(function () {
+                                    showmessage("success", "Tin đã được khôi phục thành công!");
+                                }, 1200);
+
+                            } else {
+                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            }
+                        }
+                        ;
+                    });
+                }
+            }
+        });
+
+        $(document).on("click", ".hide-item-list", function () {
+            var selected = [parseInt($(this).attr("data-id"))];
+            if (selected.length == 0) {
+                showmessage("error", "Bạn hãy chọn tin cần khôi phục!");
+            } else {
+                $.post("/BrokersInformation/DeleteBlacklist", { listNewsId: selected }, function (resp) {
+                    if (resp != null) {
+                        if (resp.Status == 1) {
+                            LoadData();
+                            setTimeout(function () {
+                                showmessage("success", "Tin đã được khôi phục thành công!");
+                            }, 1200);
+
+                        } else {
+                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                        }
+                    };
+                });
+            }
+            $("#newsdetail").modal("hide");
         });
     });
 
@@ -219,7 +328,12 @@
                     $("#listnewstable tbody").html("");
                     $("#listnewstable tbody").html(resp.Content);
                     if (resp.TotalPage > 1) {
-                        $(".page-home").show();
+                        if (typeof $(".page-home").val() != "undefined") {
+                            $(".page-home").show();
+                        } else {
+                            var html = '<div class="row page-home lo-paging"><div class="col-xs-12 col-md-4"><div class="dataTables_length"><label>Hiển thị <select class="ddlpage"><option value="20">20</option><option value="50">50</option><option value="100">100</option><option value="150">150</option><option value="200">200</option></select> bản ghi</label></div></div><div class="col-xs-12 col-md-8 lo-paging-0"><div class="dataTables_paginate homepagging "><div class="pagination" id="pagination"></div></div></div></div>';
+                            $(".pagecus").append(html);
+                        } 
                         showPagination(resp.TotalPage);
                     } else {
                         $(".page-home").hide();
@@ -236,7 +350,7 @@
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
+                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, null]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -304,7 +418,7 @@
                                 bInfo: false,
                                 searching: false,
                                 paging: false,
-                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null]
+                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, { "bSortable": false }, null]
                             });
                             $('#check-all').parent().removeClass("sorting_asc");
                         }

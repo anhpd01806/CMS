@@ -80,6 +80,7 @@ namespace CMS.Controllers
                 }
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
+
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 ViewBag.User = checkuser;
@@ -104,7 +105,7 @@ namespace CMS.Controllers
                 int total = 0;
                 var listNews = _newsbussiness.GetListBrokersInformationByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
-                var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
+                var content = RenderPartialViewToString("~/Views/BrokersInformation/Paging.cshtml", listNews);
                 return Json(new
                 {
                     TotalPage = (int)Math.Ceiling((double)total / (double)pageSize),
@@ -119,6 +120,61 @@ namespace CMS.Controllers
                 {
                     TotalPage = 0,
                     Content = "<tr><td colspan='9'>Hệ thống gặp sự cố trong quá trình load dữ liệu<td></tr>"
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeleteBlacklist(int[] listNewsId)
+        {
+            try
+            {
+                var result = 1;
+                if (listNewsId.Length > 0)
+                {
+                    result = _newsbussiness.DeleteBlacklist(listNewsId);
+                }
+                return Json(new { Status = result });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
+
+        public JsonResult GetNewsDetail()
+        {
+            try
+            {
+                if (Convert.ToBoolean(Session["USER-ACCEPTED"]))
+                {
+                    var Id = Convert.ToInt32(Request["Id"]);
+                    int userId = Convert.ToInt32(Session["SS-USERID"]);
+                    ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
+                    ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
+                    var news = _bussiness.GetNewsDetail(Id, userId);
+                    ViewBag.RoleId = _bussiness.GetRoleByUser(userId);
+                    var content = RenderPartialViewToString("~/Views/BrokersInformation/NewsDetail.cshtml", news);
+                    return Json(new
+                    {
+                        Pay = 1,
+                        Content = content
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new
+                {
+                    Pay = 0,
+                    Content = String.Empty
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    Pay = 1,
+                    Content = string.Empty
                 }, JsonRequestBehavior.AllowGet);
             }
         }

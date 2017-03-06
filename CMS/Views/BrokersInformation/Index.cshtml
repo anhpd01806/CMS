@@ -5,10 +5,9 @@
 }
 <div class="page-content">
     <div class="row">
-        @*<div class="search_all">*@
-        <center>
-            @*<label class="col-xs-1 lblsearch">Tìm kiếm: </label>*@
-            <div class="input-group">
+        <div class="col-xs-12 lo-paging-0">
+            <div class="col-md-2"></div>
+            <div class="input-group col-xs-12 col-md-8 lo-paging-0">
                 <input class="form-control txtsearchkey" placeholder="Nhập vào tiêu đề tin, số điện thoại, quận huyện..." type="text" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-inverse btn-white btnsearch" style="background-color: #4267b2 !important; color: white !important;">
@@ -17,8 +16,7 @@
                     </button>
                 </span>
             </div>
-        </center>
-        @*</div>*@
+        </div>
         <div class="space"></div>
         <div class="widget-box widget-color-dark">
             <div class="widget-header">
@@ -167,7 +165,10 @@
         <div class="space"></div>
         <div class="hd-fuc">
             <div class="col-md-9 col-xs-12 btn-area-action">
-                
+                <button class="btn btn-sm btn-success btnhide disabled">
+                    <i class="icon-refresh bigger-125"></i>
+                    Khôi phục tin
+                </button>
             </div>
             <div class="col-md-3 col-xs-12 viewpage">
                 <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
@@ -190,7 +191,6 @@
                         <th style="min-width: 105px;">Ngày đăng</th>
                         <th style="min-width: 105px;">Giá</th>
                         <th style="text-align: center">Điện thoại</th>
-                        <th style="text-align: center">Loại tin</th>
                         <th>Xem</th>
                         <th class="tdcc">Chính chủ</th>
                         @*<th class="tdcenter">Kiểm tra</th>
@@ -210,7 +210,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <span data-id="@item.Id" class="lbltitle" title="@( Convert.ToBoolean(ViewBag.Accept) ? item.Contents : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
+                                    <span data-id="@item.Id" class="lbltitle" title="@( Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
                                         @item.Title
                                     </span>
                                 </td>
@@ -236,7 +236,6 @@
                                         <span class="error">Vui lòng nạp tiền</span>
                                     }
                                 </td>
-                                <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>
                                 <td>
                                     @if (Convert.ToBoolean(item.CusIsReaded))
                                     {
@@ -313,33 +312,34 @@
             <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-totalrecord="@Model.Total" data-page="1" />
 
         </div>
-
-        @if (Model.Totalpage > 1)
-        {
-            <div class="row page-home lo-paging">
-                <div class="col-xs-12 col-md-4">
-                    <div class="dataTables_length">
-                        <label>
-                            Hiển thị
-                            <select class="ddlpage">
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="150">150</option>
-                                <option value="200">200</option>
-                            </select>
-                            bảng ghi
-                        </label>
+        <div class="pagecus">
+            @if (Model.Totalpage > 1)
+            {
+                <div class="row page-home lo-paging">
+                    <div class="col-xs-12 col-md-4">
+                        <div class="dataTables_length">
+                            <label>
+                                Hiển thị
+                                <select class="ddlpage">
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="150">150</option>
+                                    <option value="200">200</option>
+                                </select>
+                                bảng ghi
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-md-8 lo-paging-0">
-                    <div class="dataTables_paginate homepagging ">
-                        <div class="pagination" id="pagination"></div>
+                    <div class="col-xs-12 col-md-8 lo-paging-0">
+                        <div class="dataTables_paginate homepagging ">
+                            <div class="pagination" id="pagination"></div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-        }
+                </div>
+            }
+        </div>
     </div>
 </div>
 <div id="modaldetail">

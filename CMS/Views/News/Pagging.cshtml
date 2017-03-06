@@ -10,7 +10,7 @@
                     <input type="checkbox" class="checkboxItem" id="@item.Id" />
                 </label>
             </td>
-            <td> <span data-id="@item.Id" class="lbltitle" title="@(item.Contents)">@item.Title</span></td>
+            <td> <span data-id="@item.Id" class="lbltitle" title="@CMS.Helper.Utils.RemoveHtml(item.Contents).Trim()">@item.Title</span></td>
             <td class="td-medium">@item.DistictName</td>
             <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
             <td class="td-medium">@item.PriceText</td>

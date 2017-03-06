@@ -245,7 +245,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <span data-id="@item.Id" class="lbltitle" title="@( Convert.ToBoolean(ViewBag.Accept) ? item.Contents : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
+                                    <span data-id="@item.Id" class="lbltitle" title="@( Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
                                         @item.Title
                                     </span>
                                 </td>
@@ -349,32 +349,34 @@
 
         </div>
 
-        @if (Model.Totalpage > 1)
+        <div class="pagecus">
+            @if (Model.Totalpage > 1)
             {
-            <div class="row page-home lo-paging">
-                <div class="col-xs-12 col-md-4">
-                    <div class="dataTables_length">
-                        <label>
-                            Hiển thị
-                            <select class="ddlpage">
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="150">150</option>
-                                <option value="200">200</option>
-                            </select>
-                            bảng ghi
-                        </label>
+                <div class="row page-home lo-paging">
+                    <div class="col-xs-12 col-md-4">
+                        <div class="dataTables_length">
+                            <label>
+                                Hiển thị
+                                <select class="ddlpage">
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="150">150</option>
+                                    <option value="200">200</option>
+                                </select>
+                                bảng ghi
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-md-8 lo-paging-0">
-                    <div class="dataTables_paginate homepagging ">
-                        <div class="pagination" id="pagination"></div>
+                    <div class="col-xs-12 col-md-8 lo-paging-0">
+                        <div class="dataTables_paginate homepagging ">
+                            <div class="pagination" id="pagination"></div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-        }
+                </div>
+            }
+        </div>
     </div>
 </div>
 <div id="modaldetail">

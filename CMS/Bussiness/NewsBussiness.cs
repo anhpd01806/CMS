@@ -692,12 +692,7 @@ namespace CMS.Bussiness
 
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
-                            join t in db.NewsStatus on c.StatusId equals t.Id
-                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
-                            join s in db.Sites on c.SiteId equals s.ID
-                            where //c.CreatedOn.HasValue && !c.IsDeleted && !s.Deleted && s.Published //&& c.Published.HasValue
-                            // !d.IsDeleted && d.Published
-                            (listBlacklist.Contains(c.Phone) || listBlacklist.Contains(c.Title) || listBlacklist.Contains(c.Contents))
+                            where (listBlacklist.Contains(c.Phone) || listBlacklist.Contains(c.Title) || listBlacklist.Contains(c.Contents))
                             && !listDelete.Contains(c.Id)
                             orderby c.StatusId ascending, c.Price descending
                             select new NewsModel
@@ -713,12 +708,8 @@ namespace CMS.Bussiness
                                 PriceText = c.PriceText,
                                 DistrictId = d.Id,
                                 DistictName = d.Name,
-                                StatusId = t.Id,
-                                StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
                                 CusIsReaded = news_isread.Contains(c.Id) ? true : false,
-                                CusIsSaved = ncm.IsSaved,
-                                CusIsDeleted = ncm.IsDeleted,
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = 0,//CountRepeatnews(c.Id, UserId, d.Id),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
@@ -779,8 +770,8 @@ namespace CMS.Bussiness
                 }
                 #endregion
 
-                total = query.Distinct().ToList().Count;
-                var list = query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                total = query.ToList().Count;
+                var list = query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 var listItem = new List<NewsModel>();
                 foreach (var newsModel in list)
                 {
@@ -790,6 +781,36 @@ namespace CMS.Bussiness
                 }
 
                 return listItem;
+            }
+        }
+
+        public int DeleteBlacklist(int[] listnews)
+        {
+            try
+            {
+                foreach (var t in listnews)
+                {
+                    var query = (from c in db.News
+                        where c.Id.Equals(t)
+                        select c).ToList();
+                    if (query.Any())
+                    {
+                        foreach (var item in query)
+                        {
+                            var qr = (from c in db.Blacklists where c.Words.Equals(item.Phone) select c).ToList();
+                            foreach (var item2 in qr)
+                            {
+                                db.Blacklists.DeleteOnSubmit(item2);
+                            }
+                        }
+                    }
+                    db.SubmitChanges();
+                }
+                return 1;
+            }
+            catch
+            {
+                return 0;
             }
         }
 

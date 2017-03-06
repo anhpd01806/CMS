@@ -12,7 +12,7 @@
                 </label>
             </td>
             <td>
-                <span data-id="@item.Id" class="lbltitle" title="@( Convert.ToBoolean(ViewBag.Accept) ? item.Contents : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
+                <span data-id="@item.Id" class="lbltitle" title="@(Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
                     @item.Title
                 </span>
             </td>
