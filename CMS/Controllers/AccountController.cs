@@ -52,7 +52,7 @@ namespace CMS.Controllers
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
                     CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()), username.Split(',')[3].Trim());
-                    Session["IS-NOTIFY"] = username.Split(',')[4].Trim();
+                    Session.Add("IS-NOTIFY", username.Split(',')[4].Trim());
                     bool isUser = (bool)Session["IS-USERS"];
                     GetNotifyUser(isUser, int.Parse(username.Split(',')[1].Trim()));
 
@@ -89,7 +89,7 @@ namespace CMS.Controllers
                     if (user != null)
                     {
                         bool isNotify;
-                        isNotify = user.IsNotify??true;
+                        isNotify = user.IsNotify ?? true;
                         //check login user
                         if (!CheckUserLogin(user.Id))
                         {
@@ -106,11 +106,11 @@ namespace CMS.Controllers
                         CheckAcceptedUser(user.Id, user.IsFree.ToString());
                         // set cookies for user
                         HttpCookie rememberCookie = new HttpCookie("rememberCookies");
-                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName) + "," + user.IsFree +","+ isNotify;
+                        rememberCookie.Value = model.RememberMe.ToString() + "," + user.Id + "," + HttpUtility.UrlEncode(user.FullName) + "," + user.IsFree + "," + isNotify;
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
                         // set sesssion ative notify
-                        Session["IS-NOTIFY"] = isNotify;
+                        Session.Add("IS-NOTIFY", isNotify);
 
                         bool isUser = (bool)Session["IS-USERS"];
                         GetNotifyUser(isUser, user.Id);

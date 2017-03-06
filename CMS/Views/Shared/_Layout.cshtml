@@ -659,7 +659,8 @@
         //int isUser = 1;
         int id = Session["SS-USERID"] != null ? int.Parse(Session["SS-USERID"].ToString()) : 1;
         int isUser = (Boolean)Session["IS-USERS"] == true ? 1 : 0;
-        int isNotify = (Boolean)Session["IS-NOTIFY"] ? 1 : 0;
+        //int isNotify = (Boolean)Session["IS-NOTIFY"] == true ? 1 : 0;
+        int isNotify = 1;
         //bool isUser = true;
     }
     <input type="hidden" value="@id" id="user-id">
