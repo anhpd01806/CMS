@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function () { 
     //action show notify 
     if ($('#show-notify').val() == 1) {
         showNotify();
