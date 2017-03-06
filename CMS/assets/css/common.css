@@ -1,5 +1,5 @@
 .lo-paging-0{
-	padding:0;
+	padding:0 !important;
 }
 .btn-area-action button {
     margin-bottom:3px;
@@ -19,4 +19,10 @@
 }
 .lo-txt-left{
     text-align : left !important;
+}
+.modal:nth-of-type(even) {
+    z-index: 1042 !important;
+}
+.modal-backdrop.in:nth-of-type(even) {
+    z-index: 1041 !important;
 }

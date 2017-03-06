@@ -1,6 +1,6 @@
 ﻿@model CMS.Models.NewsModel
 
-<div class="modal fade" id="newsdetail" tabindex="-1" role="dialog">
+<div class="modal fade" id="newsdetail" role="dialog">
     <div class="modal-dialog custommodal" role="document">
         <div class="modal-content">
             <div class="modal-header customheader">
@@ -97,10 +97,33 @@
                         }
                     }
 
-
+                    <button type="button" class="btn btn-sm btn-danger btnclose" id="btn-noti-error">Báo xấu</button>
                     <button type="button" class="btn btn-sm btn-danger btnclose">Đóng</button>
 
                 </div>
             </div>
         </div>
     </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        var _MODAL_LAST;
+        $(document).on('show.bs.modal', '.modal', function () {
+            _MODAL_LAST = $(this);
+        });
+        $(document).on('hide.bs.modal', '.modal', function () {
+            if (_MODAL_LAST.attr('id') !== $(this).attr('id')) {
+                return false;
+            } else {
+                _MODAL_LAST = $(this).prevAll('.modal:first');
+            }
+        });
+
+
+        $('#btn-noti-error').click(function () {
+            $('#md-notify').modal('show');
+        });
+    });
+</script>
