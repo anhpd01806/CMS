@@ -69,7 +69,7 @@ namespace CMS.Bussiness
                             //check trong blacklist ko lấy những từ giống
                             && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
                             && !listDelete.Contains(c.Id)
-                            orderby c.StatusId ascending, c.Price descending
+                            orderby c.CreatedOn descending, c.Price descending 
                             select new NewsModel
                             {
                                 Id = c.Id,
@@ -694,7 +694,7 @@ namespace CMS.Bussiness
                             join d in db.Districts on c.DistrictId equals d.Id
                             where (listBlacklist.Contains(c.Phone) || listBlacklist.Contains(c.Title) || listBlacklist.Contains(c.Contents))
                             && !listDelete.Contains(c.Id)
-                            orderby c.StatusId ascending, c.Price descending
+                            orderby c.CreatedOn descending, c.Price descending 
                             select new NewsModel
                             {
                                 Id = c.Id,
@@ -709,6 +709,7 @@ namespace CMS.Bussiness
                                 DistrictId = d.Id,
                                 DistictName = d.Name,
                                 CreatedOn = c.CreatedOn,
+                                StatusId = c.StatusId,
                                 CusIsReaded = news_isread.Contains(c.Id) ? true : false,
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = 0,//CountRepeatnews(c.Id, UserId, d.Id),

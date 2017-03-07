@@ -122,7 +122,7 @@ namespace CMS.Bussiness
                             && !listDelete.Contains(c.Id)
                             && !news_new.Contains(c.Id)
                             && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
-                            orderby c.StatusId ascending, c.Price descending
+                            orderby  c.CreatedOn descending, c.Price descending 
                             select new NewsModel
                             {
                                 Id = c.Id,
