@@ -69,7 +69,6 @@ namespace CMS.Bussiness
                             //check trong blacklist ko lấy những từ giống
                             && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
                             && !listDelete.Contains(c.Id)
-                            orderby c.CreatedOn descending, c.Price descending 
                             select new NewsModel
                             {
                                 Id = c.Id,
@@ -107,6 +106,8 @@ namespace CMS.Bussiness
                     query = query.Where(c => c.CusIsReaded.HasValue && c.CusIsReaded.Value);
                 }
 
+                query.OrderByDescending(c => c.CreatedOn);
+
                 #region check param
                 if (CateId != 0)
                 {
@@ -126,15 +127,7 @@ namespace CMS.Bussiness
                 }
                 if (BackDate != -1)
                 {
-                    if (BackDate == 0)
-                    {
-                        query = query.Where(c => c.CreatedOn == DateTime.Now);
-                    }
-                    else
-                    {
-                        query = query.Where(c => c.CreatedOn >= DateTime.Now.AddDays(-BackDate));
-                    }
-
+                    query = BackDate == 0 ? query.Where(c => c.CreatedOn == Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-BackDate).ToString("yyyy/MM/dd") + " 00:00:00.00"));
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
@@ -163,7 +156,7 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.Distinct().ToList().Count;
-                var list = query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                var list = query.Distinct().OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 var listItem = new List<NewsModel>();
                 foreach (var newsModel in list)
                 {
@@ -520,7 +513,6 @@ namespace CMS.Bussiness
                             && !d.IsDeleted && d.Published
                             && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
                             && nd.Isdelete && !nd.Isdeleted
-                            orderby c.StatusId ascending, c.Price descending
                             select new NewsModel
                             {
                                 Id = c.Id,
@@ -562,15 +554,7 @@ namespace CMS.Bussiness
                 }
                 if (BackDate != -1)
                 {
-                    if (BackDate == 0)
-                    {
-                        query = query.Where(c => c.CreatedOn == DateTime.Now);
-                    }
-                    else
-                    {
-                        query = query.Where(c => c.CreatedOn >= DateTime.Now.AddDays(-BackDate));
-                    }
-
+                    query = BackDate == 0 ? query.Where(c => c.CreatedOn == Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-BackDate).ToString("yyyy/MM/dd") + " 00:00:00.00"));
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
@@ -599,7 +583,8 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.Distinct().ToList().Count;
-                var list = query.Distinct().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                var list = query.Distinct().OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+
                 var listItem = new List<NewsModel>();
                 foreach (var newsModel in list)
                 {
@@ -694,7 +679,7 @@ namespace CMS.Bussiness
                             join d in db.Districts on c.DistrictId equals d.Id
                             where (listBlacklist.Contains(c.Phone) || listBlacklist.Contains(c.Title) || listBlacklist.Contains(c.Contents))
                             && !listDelete.Contains(c.Id)
-                            orderby c.CreatedOn descending, c.Price descending 
+                            orderby c.CreatedOn descending
                             select new NewsModel
                             {
                                 Id = c.Id,
@@ -735,15 +720,7 @@ namespace CMS.Bussiness
                 }
                 if (BackDate != -1)
                 {
-                    if (BackDate == 0)
-                    {
-                        query = query.Where(c => c.CreatedOn == DateTime.Now);
-                    }
-                    else
-                    {
-                        query = query.Where(c => c.CreatedOn >= DateTime.Now.AddDays(-BackDate));
-                    }
-
+                    query = BackDate == 0 ? query.Where(c => c.CreatedOn == Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-BackDate).ToString("yyyy/MM/dd") + " 00:00:00.00"));
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
