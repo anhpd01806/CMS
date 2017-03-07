@@ -1,6 +1,6 @@
 ﻿@model CMS.Models.NewsModel
 
-<div class="modal fade" id="newsdetail" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
+<div class="modal" id="newsdetail" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog custommodal" role="document">
         <div class="modal-content">
             <div class="modal-header customheader">
@@ -105,7 +105,7 @@
                     }
                     else
                     {
-                        <button type="button" class="btn btn-sm btn-danger btnclose" id="btn-noti-error-cancel" data-toggle="modal" data-target="#md-notify" onclick="CancerDangerNewsReport(@Model.Id)">Hủy báo cáo</button>
+                        <button type="button" class="btn btn-sm btn-danger btnclose" id="btn-noti-error-cancel" data-toggle="modal" onclick="CancerDangerNewsReport(@Model.Id)">Hủy báo cáo</button>
                     }
                     <button type="button" class="btn btn-sm btn-danger btnclose">Đóng</button>
 
@@ -115,9 +115,8 @@
     </div>
 
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="md-notify" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
+    <!-- Modal -->
+<div class="modal" id="md-notify" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
 
         <!-- Modal content-->
@@ -141,8 +140,15 @@
 </div>
 
 <script>
+    $(document).ready(function(){
+        $('#newsdetail').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+    });
     function DangerNewsReport(id) {
-        if ($('#reason').text() != '') {
+        if ($('#reason').val().trim() != '') {
             showmessage("error", "Vui lòng nhập nội dung báo cáo!");
         } else {
             $.post("/home/DangerNewsReport", { id: id, reason: $('#reason').val() }, function (resp) {
