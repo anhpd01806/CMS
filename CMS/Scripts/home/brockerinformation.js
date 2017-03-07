@@ -148,7 +148,7 @@
                 minPrice: minPrice, maxPrice: maxPrice,
                 from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
             };
-            $.post("/home/loaddata", data, function (resp) {
+            $.post("/brokersinformation/loaddata", data, function (resp) {
                 if (resp != null) {
                     $("#listnewstable tbody").html("");
                     $("#listnewstable tbody").html(resp.Content);
@@ -395,7 +395,7 @@
                     minPrice: minPrice, maxPrice: maxPrice,
                     from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
                 };
-                $.post("/home/loaddata", data, function (resp) {
+                $.post("/brokersinformation/loaddata", data, function (resp) {
                     if (resp != null) {
                         $("#listnewstable tbody").html("");
                         $("#listnewstable tbody").html(resp.Content);
