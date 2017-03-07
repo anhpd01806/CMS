@@ -135,7 +135,7 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(To))
                 {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")));
+                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")).AddDays(-1));
                 }
                 if (MinPrice != -1)
                 {
@@ -359,7 +359,7 @@ namespace CMS.Bussiness
             }
             if (!string.IsNullOrEmpty(To))
             {
-                query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")));
+                query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")).AddDays(-1));
             }
             if (MinPrice != -1)
             {
@@ -562,7 +562,7 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(To))
                 {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")));
+                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")).AddDays(-1));
                 }
                 if (MinPrice != -1)
                 {
@@ -728,7 +728,7 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(To))
                 {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")));
+                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")).AddDays(-1));
                 }
                 if (MinPrice != -1)
                 {

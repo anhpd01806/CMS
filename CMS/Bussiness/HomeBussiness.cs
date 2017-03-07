@@ -111,7 +111,7 @@ namespace CMS.Bussiness
                 //Nếu là admin kiểm tra tin đã được báo chính chủ chưa
                 //var newsisactive = (from c in db.News_customer_actions where c.Iscc.HasValue && c.Iscc.Value select c.NewsId).ToList();
 
-                var query = from c in db.News
+                var query = (from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
                             join t in db.NewsStatus on c.StatusId equals t.Id
                             join s in db.Sites on c.SiteId equals s.ID
@@ -145,7 +145,7 @@ namespace CMS.Bussiness
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = 0,//CountRepeatByPhone(c.Phone, UserId),
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
-                            };
+                            }).Distinct();
 
                 #region check param
                 //check admin để không load tin đã được duyệt ra nữa
@@ -172,7 +172,7 @@ namespace CMS.Bussiness
                 }
                 if (BackDate != -1)
                 {
-                    query = BackDate == 0 ? query.Where(c => c.CreatedOn == Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-BackDate).ToString("yyyy/MM/dd") + " 00:00:00.00"));
+                    query = BackDate == 0 ? query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 23:59:59.999")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-BackDate).ToString("yyyy/MM/dd") + " 00:00:00.00"));
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
@@ -180,7 +180,7 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(To))
                 {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")));
+                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")).AddDays(-1));
                 }
                 if (MinPrice != -1)
                 {
@@ -200,8 +200,8 @@ namespace CMS.Bussiness
                 }
                 #endregion
 
-                total = query.Distinct().ToList().Count;
-                var list = query.Distinct().OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                total = query.ToList().Count;
+                var list = query.OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 var listItem = new List<NewsModel>();
                 foreach (var newsModel in list)
                 {
