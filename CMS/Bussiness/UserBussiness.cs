@@ -12,7 +12,7 @@ namespace CMS.Bussiness
     public class UserBussiness
     {
         CmsDataDataContext db = new CmsDataDataContext();
-
+        
         public List<User> GetAllUser()
         {
             return db.Users.OrderBy(m => m.Id).ToList();
@@ -155,6 +155,7 @@ namespace CMS.Bussiness
 
         public void UpdateLastLogin(int id)
         {
+            db.CommandTimeout = 2;
             var user = db.Users.FirstOrDefault(x => x.Id == id);
             user.LastLoginDate = DateTime.Now;
             user.LastActivityDate = DateTime.Now;
