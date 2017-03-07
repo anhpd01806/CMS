@@ -283,7 +283,8 @@ namespace CMS.Bussiness
                              CateName = ct.Name,
                              ListImage = GetImageByNewsId(c.Id),
                              SameNews = GetSameNewsByNewsId(c.CategoryId.Value, c.DistrictId.Value, UserId),
-                             Iscc = CheckCCByUser(c.Id, UserId)
+                             Iscc = CheckCCByUser(c.Id, UserId),
+                             PersionalReport = GetNameReasonReport(c.Id)
                          }).FirstOrDefault();
 
             if (query != null)
@@ -435,14 +436,21 @@ namespace CMS.Bussiness
         {
             string rs = "";
             var reasonlst = db.ReasonReportNews.Where(x => x.NewsId == newsId).Take(3).ToList();
-            rs += "<ul>";
-            foreach (var item in reasonlst)
+            if (reasonlst.Any())
             {
-                rs = "<li><span>" + new UserBussiness().GetNameById(item.UserId)
-                    + "(" + item.DateCreate.ToString("dd/MM/yyyy") + ") :"
-                    + item.Note + "</span></li>";
+                rs += "<ul>";
+                foreach (var item in reasonlst)
+                {
+                    rs = "<li><span>" + new UserBussiness().GetNameById(item.UserId)
+                        + "(" + item.DateCreate.ToString("dd/MM/yyyy") + ") :"
+                        + item.Note + "</span></li>";
+                }
+                rs += "/<ul>";
             }
-            rs += "/<ul>";
+            else
+            {
+                rs = "Chưa có ai";
+            }
             return rs;
         }
         public int ReportNews(List<New> listNewsReport, int userReport)
