@@ -473,5 +473,54 @@ namespace CMS.Controllers
                 return Json(new { Status = 0 });
             }
         }
+
+        /// <summary>
+        /// Author: Phạm Đức Anh
+        /// Báo cáo tin
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult DangerNewsReport(int id, string reason)
+        {
+            try
+            {
+                ReasonReportNew model = new ReasonReportNew();
+                model.NewsId = id;
+                model.Note = reason;
+                model.UserId = Convert.ToInt32(Session["SS-USERID"]);
+                new HomeBussiness().InsertReasonReportNews(model);
+                return Json(new { Messages = reason });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
+
+
+        /// <summary>
+        /// Author: Phạm Đức Anh
+        /// Hủy báo tin
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult CancerDangerNewsReport(int id)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                new HomeBussiness().DeleteReasonReportNews(id, userId);
+                return Json(new { Messages = "Xóa thành công" });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new { Status = 0 });
+            }
+        }
     }
 }

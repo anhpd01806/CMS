@@ -104,5 +104,7 @@ namespace CMS.Models
         public string SiteName { get; set; }
 
         public bool Iscc { get; set;  }
+
+        public bool IsReason { get; set; }
     }
 }

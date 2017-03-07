@@ -207,6 +207,7 @@ namespace CMS.Bussiness
                 {
                     newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
                     newsModel.Iscc = CheckCC(newsModel.Id);
+                    newsModel.IsReason = CheckReason(UserId, newsModel.Id);
                     listItem.Add(newsModel);
                 }
 
@@ -686,6 +687,11 @@ namespace CMS.Bussiness
             return false;
         }
 
+        public bool CheckReason(int userId, int newsId)
+        {
+            return db.ReasonReportNews.Any(x => x.UserId == userId && x.NewsId == newsId);
+        }
+
         public bool CheckCCByUser(int newsId, int userId)
         {
             var query = (from c in db.News_customer_actions
@@ -718,6 +724,24 @@ namespace CMS.Bussiness
             catch
             {
                 return 0;
+            }
+        }
+        #endregion
+
+        #region ReasonReportNews
+        public void InsertReasonReportNews(ReasonReportNew model)
+        {
+            db.ReasonReportNews.InsertOnSubmit(model);
+            db.SubmitChanges();
+        }
+
+        public void DeleteReasonReportNews(int newsId, int userId)
+        {
+            var check = db.ReasonReportNews.FirstOrDefault(x => x.UserId == userId && x.NewsId == newsId);
+            if(check != null)
+            {
+                db.ReasonReportNews.DeleteOnSubmit(check);
+                db.SubmitChanges();
             }
         }
         #endregion

@@ -25,13 +25,16 @@
                                 </p>
                             </div>
                             <div class="col-xs-12 col-md-4 modal-detail-right">
-                                <h5><strong>Giá: </strong> <span class="modal-price"> @Model.PriceText</span></h5>
-                                <h5><strong>Liên hệ: </strong> @Model.Phone</h5>
-                                <h5><strong>Ngày đăng: </strong> @Convert.ToDateTime(Model.CreatedOn).ToString("dd-MM-yyyy")</h5>
-                                <h5><strong>Loại tin: </strong> @Model.StatusName</h5>
-                                <h5><strong>Danh mục: </strong> @Model.CateName</h5>
-                                <h5><strong>Khu vực: </strong> @Model.DistictName</h5>
-                                <h5><strong>Nguồn tin: </strong> @(Model.SiteId == 0 ? Html.Raw("<a href='http://ozo.vn' target='_blank'  title='ozo.vn'>ozo.vn</a>") : Html.Raw("<a href='" + Model.Link + "' target='_blank'  title='" + Model.SiteName + "'>" + Model.SiteName + "</a>"))</h5>
+                                <h6><strong>Giá: </strong> <span class="modal-price"> @Model.PriceText</span></h6>
+                                <h6><strong>Liên hệ: </strong> @Model.Phone</h6>
+                                <h6><strong>Ngày đăng: </strong> @Convert.ToDateTime(Model.CreatedOn).ToString("dd-MM-yyyy")</h6>
+                                <h6><strong>Loại tin: </strong> @Model.StatusName</h6>
+                                <h6><strong>Danh mục: </strong> @Model.CateName</h6>
+                                <h6><strong>Khu vực: </strong> @Model.DistictName</h6>
+                                <h6><strong>Nguồn tin: </strong> @(Model.SiteId == 0 ? Html.Raw("<a href='http://ozo.vn' target='_blank'  title='ozo.vn'>ozo.vn</a>") : Html.Raw("<a href='" + Model.Link + "' target='_blank'  title='" + Model.SiteName + "'>" + Model.SiteName + "</a>"))</h6>
+                                <h6><strong>Người báo tin: </strong></h6>
+                                <h7>aaaaaaaa</h7>
+                                <h7>aaaaaaaa</h7>
                             </div>
                             <div class="col-xs-12">
                                 <h5><strong>Tin liên quan:</strong></h5>
@@ -97,7 +100,14 @@
                         }
                     }
 
-                    <button type="button" class="btn btn-sm btn-danger btnclose" id="btn-noti-error" data-toggle="modal" data-target="#md-notify">Báo xấu</button>
+                    @if (!Model.IsReason)
+                    {
+                        <button type="button" class="btn btn-sm btn-danger btnclose" id="btn-noti-error" data-toggle="modal" data-target="#md-notify">Báo cáo</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-sm btn-danger btnclose" id="btn-noti-error-cancel" data-toggle="modal" data-target="#md-notify" onclick="CancerDangerNewsReport(@Model.Id)">Hủy báo cáo</button>
+                    }
                     <button type="button" class="btn btn-sm btn-danger btnclose">Đóng</button>
 
                 </div>
@@ -107,10 +117,48 @@
 
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="md-notify" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Báo tin xấu</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12"><label for="rd-03">Nội dung báo cáo (tối đa 30 ký tự.)</label></div>
+                    <div class="col-xs-12"><input type="text" name="reason" style="width:100%" id="reason" /></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm btn-default" onclick="DangerNewsReport(@Model.Id)">Báo cáo</button>
+                <button type="button" class="btn btn-danger btn-sm btn-default" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script>
-    $(document).ready(function () {
-        $('#btn-noti-error').click(function () {
-            $('#btn-noti-error').text('Hủy báo xấu');
+    function DangerNewsReport(id) {
+        if ($('#reason').text() != '') {
+            showmessage("error", "Vui lòng nhập nội dung báo cáo!");
+        } else {
+            $.post("/home/DangerNewsReport", { id: id, reason: $('#reason').val() }, function (resp) {
+                if (resp != null) {
+                    alert(resp.Messages);
+                };
+            });
+        }
+    };
+
+    function CancerDangerNewsReport(id) {
+        $.post("/home/CancelDangerNewsReport", { id: id }, function (resp) {
+            if (resp != null) {
+                alert(resp.Messages);
+            };
         });
-    });
+    }
 </script>

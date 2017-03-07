@@ -201,6 +201,9 @@ namespace CMS.Data
     partial void InsertNews_customer_action(News_customer_action instance);
     partial void UpdateNews_customer_action(News_customer_action instance);
     partial void DeleteNews_customer_action(News_customer_action instance);
+    partial void InsertReasonReportNew(ReasonReportNew instance);
+    partial void UpdateReasonReportNew(ReasonReportNew instance);
+    partial void DeleteReasonReportNew(ReasonReportNew instance);
     #endregion
 		
 		public CmsDataDataContext() : 
@@ -702,6 +705,14 @@ namespace CMS.Data
 			get
 			{
 				return this.GetTable<News_customer_action>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ReasonReportNew> ReasonReportNews
+		{
+			get
+			{
+				return this.GetTable<ReasonReportNew>();
 			}
 		}
 	}
@@ -14130,6 +14141,140 @@ namespace CMS.Data
 					this._DateCreate = value;
 					this.SendPropertyChanged("DateCreate");
 					this.OnDateCreateChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ReasonReportNews")]
+	public partial class ReasonReportNew : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _NewsId;
+		
+		private int _UserId;
+		
+		private string _Note;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNewsIdChanging(int value);
+    partial void OnNewsIdChanged();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnNoteChanging(string value);
+    partial void OnNoteChanged();
+    #endregion
+		
+		public ReasonReportNew()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
+		public int NewsId
+		{
+			get
+			{
+				return this._NewsId;
+			}
+			set
+			{
+				if ((this._NewsId != value))
+				{
+					this.OnNewsIdChanging(value);
+					this.SendPropertyChanging();
+					this._NewsId = value;
+					this.SendPropertyChanged("NewsId");
+					this.OnNewsIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int NOT NULL")]
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Note", DbType="NVarChar(50)")]
+		public string Note
+		{
+			get
+			{
+				return this._Note;
+			}
+			set
+			{
+				if ((this._Note != value))
+				{
+					this.OnNoteChanging(value);
+					this.SendPropertyChanging();
+					this._Note = value;
+					this.SendPropertyChanged("Note");
+					this.OnNoteChanged();
 				}
 			}
 		}

@@ -327,21 +327,21 @@
         <classShapeMoniker Id="42f34f0c-a391-491f-b6ca-92207e2dca4e" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 6.69837243965344); (4.66666666666667 : 6.69837243965344 : JumpStart); (4.83333333333333 : 6.69837243965344 : JumpEnd); (6.25 : 6.69837243965344)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 6.69837243965344); (6.25 : 6.69837243965344)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/CmsDataDataContext/Customer/Customer_ActivityLog" />
       <nodes>
         <classShapeMoniker Id="4ebe7045-f0fd-4745-9723-848621706cf1" />
         <classShapeMoniker Id="42f34f0c-a391-491f-b6ca-92207e2dca4e" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(1.75 : 3.625); (1.75 : 3.1249995); (3.5 : 3.1249995)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(1.75 : 3.625); (1.75 : 3.1249995); (3.5 : 3.1249995)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/CmsDataDataContext/Customer/Customer_CustomerAddress" />
       <nodes>
         <classShapeMoniker Id="4ebe7045-f0fd-4745-9723-848621706cf1" />
         <classShapeMoniker Id="3d541507-3f6c-4c12-a60b-e40957c24e20" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11.5 : 1.91429768880208); (12.5 : 1.91429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(11.5 : 1.91429768880208); (12.5 : 1.91429768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/CmsDataDataContext/Language/Language_LocaleStringResource" />
       <nodes>
         <classShapeMoniker Id="b945155f-24ee-4286-bf92-56484d7bd5c0" />
@@ -445,6 +445,12 @@
       <DataClassMoniker Name="/CmsDataDataContext/News_customer_action" />
       <nestedChildShapes>
         <elementListCompartment Id="6d3460f4-299e-4313-a837-11399c615262" absoluteBounds="6.515, 0.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d30ec494-e033-479c-940a-762e6b24ce65" absoluteBounds="7, 3.5, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/CmsDataDataContext/ReasonReportNew" />
+      <nestedChildShapes>
+        <elementListCompartment Id="51ee2fb2-cf2c-4e5f-a7d2-ab0d744a5801" absoluteBounds="7.015, 3.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
