@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CMS.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -80,6 +81,8 @@ namespace CMS.Models
         public List<ImageModel> ListImage { get; set; }
 
         public List<NewsModel> SameNews { get; set; }
+
+        public List<ReasonReportNew> ReasonReportNews { get; set; }
 
         public bool? CusIsReaded { get; set; }
 

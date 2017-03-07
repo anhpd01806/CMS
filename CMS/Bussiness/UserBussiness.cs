@@ -90,6 +90,11 @@ namespace CMS.Bussiness
             return db.Users.FirstOrDefault(x => x.UserName == name).Id;
         }
 
+        public string GetNameById (int id)
+        {
+            return db.Users.FirstOrDefault(x => x.Id == id).UserName;
+        }
+
         /// <summary>
         /// Get user with role = admin
         /// </summary>

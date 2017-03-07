@@ -69,7 +69,7 @@ namespace CMS.Bussiness
                                     Name = c.Name,
                                     ParentCategoryId = c.ParentCategoryId
                                 }).ToList();
-            return listcategory;            
+            return listcategory;
         }
 
         public List<NewsStatusModel> GetlistStatusModel()
@@ -431,6 +431,20 @@ namespace CMS.Bussiness
             return query;
         }
 
+        public String GetNameReasonReport(int newsId)
+        {
+            string rs = "";
+            var reasonlst = db.ReasonReportNews.Where(x => x.NewsId == newsId).Take(3).ToList();
+            rs += "<ul>";
+            foreach (var item in reasonlst)
+            {
+                rs = "<li><span>" + new UserBussiness().GetNameById(item.UserId)
+                    + "(" + item.DateCreate.ToString("dd/MM/yyyy") + ") :"
+                    + item.Note + "</span></li>";
+            }
+            rs += "/<ul>";
+            return rs;
+        }
         public int ReportNews(List<New> listNewsReport, int userReport)
         {
             try
@@ -469,10 +483,10 @@ namespace CMS.Bussiness
                     db.Blacklists.InsertOnSubmit(reportItem);
 
                     var query = (from c in db.News_customer_actions
-                        where
-                            c.NewsId.Equals(item.Id) && c.CustomerId.Equals(userReport) && c.IsReport.HasValue &&
-                            c.IsReport.Value
-                        select c).ToList();
+                                 where
+                                     c.NewsId.Equals(item.Id) && c.CustomerId.Equals(userReport) && c.IsReport.HasValue &&
+                                     c.IsReport.Value
+                                 select c).ToList();
                     if (!query.Any())
                     {
                         var action = new News_customer_action
@@ -645,7 +659,7 @@ namespace CMS.Bussiness
                 }
                 return 1;
             }
-            catch 
+            catch
             {
                 return 0;
             }
@@ -658,8 +672,8 @@ namespace CMS.Bussiness
                 foreach (var t in listnews)
                 {
                     var query = (from c in db.News_customer_actions
-                        where c.NewsId.Equals(t) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
-                        select c).ToList();
+                                 where c.NewsId.Equals(t) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
+                                 select c).ToList();
                     if (query.Any())
                     {
                         foreach (var newsCustomerAction in query)
@@ -680,8 +694,8 @@ namespace CMS.Bussiness
         public bool CheckCC(int newsId)
         {
             var query = (from c in db.News_customer_actions
-                where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value
-                select c).ToList();
+                         where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value
+                         select c).ToList();
             if (query.Any())
                 return true;
             return false;
@@ -738,7 +752,7 @@ namespace CMS.Bussiness
         public void DeleteReasonReportNews(int newsId, int userId)
         {
             var check = db.ReasonReportNews.FirstOrDefault(x => x.UserId == userId && x.NewsId == newsId);
-            if(check != null)
+            if (check != null)
             {
                 db.ReasonReportNews.DeleteOnSubmit(check);
                 db.SubmitChanges();

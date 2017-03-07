@@ -14180,6 +14180,8 @@ namespace CMS.Data
 		
 		private string _Note;
 		
+		private System.DateTime _DateCreate;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -14192,6 +14194,8 @@ namespace CMS.Data
     partial void OnUserIdChanged();
     partial void OnNoteChanging(string value);
     partial void OnNoteChanged();
+    partial void OnDateCreateChanging(System.DateTime value);
+    partial void OnDateCreateChanged();
     #endregion
 		
 		public ReasonReportNew()
@@ -14275,6 +14279,26 @@ namespace CMS.Data
 					this._Note = value;
 					this.SendPropertyChanged("Note");
 					this.OnNoteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreate", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreate
+		{
+			get
+			{
+				return this._DateCreate;
+			}
+			set
+			{
+				if ((this._DateCreate != value))
+				{
+					this.OnDateCreateChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreate = value;
+					this.SendPropertyChanged("DateCreate");
+					this.OnDateCreateChanged();
 				}
 			}
 		}

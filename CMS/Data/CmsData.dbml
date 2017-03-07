@@ -701,6 +701,7 @@
       <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Note" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DateCreate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>
