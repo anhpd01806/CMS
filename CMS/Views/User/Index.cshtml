@@ -20,69 +20,15 @@
             });
 
             //phân trang
-            var totalpage = parseInt($('#TotalPage').attr("data-total"));
-            debugger;
-            if (totalpage > 1) {
-                $('#pagination').twbsPagination({
-                    totalPages: totalpage,
-                    visiblePages: 5,
-                    first: 'Trang đầu',
-                    prev: 'Trước',
-                    next: 'Tiếp',
-                    last: 'Trang cuối',
-                    onPageClick: function (event, page) {
-                        $.LoadingOverlay("show");
-                        var search = $('#Seach').val();
-                        var pageIndex = page;
+            LoadData();
 
-                        var data = {
-                            search: search, pageIndex: pageIndex
-                        };
-                        $.post("/User/LoadData", data, function (resp) {
-                            if (resp != null) {
-                                debugger
-                                $("#datatable1 tbody").html("");
-                                $("#datatable1 tbody").html(resp.Content);
-                                if (resp.TotalPage > 1) {
-                                    $(".page-home").show();
-                                } else {
-                                    $(".page-home").hide();
-                                }
-                                $('#TotalPage').attr("data-total", resp.TotalPage);
-                                $('#TotalPage').attr("data-page", page);
-                                $('#hiddenId').val(resp.Id);
-                                $("#StatisticUser").html("");
-                                $("#StatisticUser").html(resp.ActionDetailUser);
-                                $.LoadingOverlay("hide");
-                            }
-                        });
-                    }
-                });
-            }
+            //load deatail when login
+            var date = $.datepicker.formatDate('dd/mm/yy', new Date());
+            LoadDetail(-1, date, date);
 
             //search data
             $('#Seach').focusout(function () {
-                $.LoadingOverlay("show");
-                var search = $('#Seach').val();
-                var pageIndex = 1;
-
-                var data = {
-                    search: search, pageIndex: pageIndex
-                };
-                $.post("/User/LoadData", data, function (resp) {
-                    if (resp != null) {
-                        debugger
-                        $("#datatable1 tbody").html("");
-                        $("#datatable1 tbody").html(resp.Content);
-                        if (resp.TotalPage > 1) {
-                            $(".page-home").show();
-                            showPagination(resp.TotalPage);
-                        } else {
-                            $(".page-home").hide();
-                        }
-                        $.LoadingOverlay("hide");
-                    }
-                });
+                LoadData();
             });
 
             $('.date-picker').datepicker({
@@ -145,6 +91,30 @@
         function AdminDetail(id) {
             var date = $.datepicker.formatDate('dd/mm/yy', new Date());
             LoadDetail(id, date, date)
+        }
+
+        function LoadData(){
+            $.LoadingOverlay("show");
+            var search = $('#Seach').val();
+            var pageIndex = 1;
+
+            var data = {
+                search: search, pageIndex: pageIndex
+            };
+            $.post("/User/LoadData", data, function (resp) {
+                if (resp != null) {
+                    debugger
+                    $("#datatable1 tbody").html("");
+                    $("#datatable1 tbody").html(resp.Content);
+                    if (resp.TotalPage > 1) {
+                        $(".page-home").show();
+                        showPagination(resp.TotalPage);
+                    } else {
+                        $(".page-home").hide();
+                    }
+                    $.LoadingOverlay("hide");
+                }
+            });
         }
 
         function LoadDetail(id, startDate, endDate) {

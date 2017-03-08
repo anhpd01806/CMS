@@ -305,6 +305,7 @@ namespace CMS.Controllers
         {
             try
             {
+                if (id < 0) id = int.Parse(Session["SS-USERID"].ToString());
                 UserViewModel model = new UserViewModel();
                 var startTime = DateTime.ParseExact(startDate, "dd/MM/yyyy", null);
                 var endTime = DateTime.ParseExact(endDate.ToString(), "dd/MM/yyyy", null);

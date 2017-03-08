@@ -14,7 +14,7 @@ namespace CMS.Controllers
 {
     public class BlackListController : BaseAuthedController
     {
-        private int PageSize = 300;
+        private int PageSize = 100;
         // GET: BlackList
         public ActionResult Index()
         {
@@ -72,7 +72,7 @@ namespace CMS.Controllers
                                 black.Type = 1;
                                 new BlackListBussiness().Insert(black);
                             }
-                            catch
+                            catch(Exception ex)
                             {
                                 TempData["Error"] = "Có một hoặc nhiều bản ghi đang sai định dạng.Lưu ý: Số điện thoại không được để trống";
                             }
@@ -205,9 +205,7 @@ namespace CMS.Controllers
                 var properties = new string[]
                     {
                         "STT",
-                        "Số điện thoại",
-                        "Mô tả",
-                        "Link Url"
+                        "Số điện thoại"
                     };
                 for (var i = 0; i < properties.Length; i++)
                 {
@@ -226,12 +224,6 @@ namespace CMS.Controllers
                     col++;
 
                     worksheet.Cells[row, col].Value = item.Words;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = item.Description;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = item.LinkUrl;
                     col++;
                     //next row
                     row++;

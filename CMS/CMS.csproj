@@ -2977,6 +2977,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Bussiness\BlackListBussiness.cs" />
     <Compile Include="Bussiness\CacheBussiness.cs" />
+    <Compile Include="Bussiness\CacheNewsBussiness.cs" />
     <Compile Include="Bussiness\CategoryBussiness.cs" />
     <Compile Include="Bussiness\CategorySiteBussiness.cs" />
     <Compile Include="Bussiness\DistrictBussiness.cs" />
@@ -2994,10 +2995,13 @@
     <Compile Include="Bussiness\RoleUserBussiness.cs" />
     <Compile Include="Bussiness\LinkSiteBussiness.cs" />
     <Compile Include="Bussiness\UserBussiness.cs" />
+    <Compile Include="Cache\CacheController.cs" />
+    <Compile Include="Cache\ICachingReposity.cs" />
     <Compile Include="Common\InMemoryCache.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseAuthedController.cs" />
     <Compile Include="Controllers\BlackListController.cs" />
+    <Compile Include="Controllers\BrokersInformationController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CategorySiteController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
