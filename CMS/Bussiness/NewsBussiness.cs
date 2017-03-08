@@ -55,11 +55,13 @@ namespace CMS.Bussiness
                                   where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(UserId)
                                   select (c.NewsId)).ToList();
 
-                var query = from c in db.News
+                var query = (from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
                             join t in db.NewsStatus on c.StatusId equals t.Id
                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
                             join s in db.Sites on c.SiteId equals s.ID
+                            join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
+                            from nac in temp2.DefaultIfEmpty()
                             where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam && !s.Deleted && s.Published
                             && !d.IsDeleted && d.Published
                             && news_new.Contains(c.Id)
@@ -80,15 +82,14 @@ namespace CMS.Bussiness
                                 StatusId = t.Id,
                                 StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
-                                CusIsReaded = news_isread.Contains(c.Id) ? true : false,
+                                CusIsReaded = news_isread.Contains(c.Id),
                                 CusIsSaved = ncm.IsSaved,
                                 CusIsDeleted = ncm.IsDeleted,
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
-                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false,
-                                Iscc = CheckCC(c.Id),
-                                //IsReason = CheckReason(UserId, c.Id)
-                            };
+                                Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
+                                IsReason = false//CheckReason(UserId, c.Id)
+                            }).Distinct();
 
                 if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsSave))
                 {
@@ -152,8 +153,8 @@ namespace CMS.Bussiness
                 }
                 #endregion
 
-                total = query.Distinct().ToList().Count;
-                return query.Distinct().OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                total = query.ToList().Count;
+                return query.OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -481,6 +482,8 @@ namespace CMS.Bussiness
                             join d in db.Districts on c.DistrictId equals d.Id
                             join t in db.NewsStatus on c.StatusId equals t.Id
                             join nd in db.News_Trashes on c.Id equals nd.NewsId
+                            join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
+                            from nac in temp2.DefaultIfEmpty()
                             where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
                             && nd.Isdelete && !nd.Isdeleted
@@ -500,11 +503,11 @@ namespace CMS.Bussiness
                                 StatusId = t.Id,
                                 StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
-                                CusIsReaded = news_isread.Contains(c.Id) ? true : false,
+                                CusIsReaded = news_isread.Contains(c.Id),
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
-                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false,
-                                Iscc = CheckCC(c.Id)
+                                Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
+                                IsReason = false//CheckReason(UserId, c.Id)
                             }).Distinct();
 
                 #region check param
@@ -624,8 +627,8 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                var listBlacklist = (from c in db.Blacklists
-                                     select (c.Words)).ToList();
+                //var listBlacklist = (from c in db.Blacklists
+                //                     select (c.Words)).ToList();
                 
                 //Danh sách tin đã đọc theo user
                 var news_isread = (from c in db.News_Customer_Mappings
@@ -639,8 +642,9 @@ namespace CMS.Bussiness
 
                 var query = from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
-                            where (listBlacklist.Contains(c.Phone) || listBlacklist.Contains(c.Title) || listBlacklist.Contains(c.Contents))
-                            && !listDelete.Contains(c.Id)
+                            join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
+                            from nac in temp2.DefaultIfEmpty()
+                            where  !listDelete.Contains(c.Id) && c.IsSpam
                             orderby c.CreatedOn descending
                             select new NewsModel
                             {
@@ -657,11 +661,11 @@ namespace CMS.Bussiness
                                 DistictName = d.Name,
                                 CreatedOn = c.CreatedOn,
                                 StatusId = c.StatusId,
-                                CusIsReaded = news_isread.Contains(c.Id) ? true : false,
+                                CusIsReaded = news_isread.Contains(c.Id),
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
-                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false,
-                                Iscc = CheckCC(c.Id)
+                                Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
+                                IsReason = false//CheckReason(UserId, c.Id)
                             };
 
                 #region check param

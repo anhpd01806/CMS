@@ -19,7 +19,6 @@ namespace CMS.Controllers
     public class NewsController : BaseAuthedController
     {
         #region member
-        private readonly HomeBussiness _bussiness = new HomeBussiness();
         private readonly NewsBussiness _newsbussiness = new NewsBussiness();
         private readonly PaymentBussiness _payment = new PaymentBussiness();
         private readonly CacheNewsBussiness _cacheNewsBussiness = new CacheNewsBussiness();

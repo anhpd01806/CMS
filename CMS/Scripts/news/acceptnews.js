@@ -10,32 +10,37 @@
             next: 'Tiếp',
             last: 'Trang cuối',
             onPageClick: function (event, page) {
-                $.LoadingOverlay("show");
-                var key = $.trim($(".txtsearchkey").val());
-                var pageIndex = page;
-                var pageSize = parseInt($(".ddlpage").val());
+                var curentpage = parseInt($('#datatable').attr("data-page"));
+                if (curentpage != page) {
+                    $.LoadingOverlay("show");
+                    var key = $.trim($(".txtsearchkey").val());
+                    var pageIndex = page;
+                    var pageSize = parseInt($(".ddlpage").val());
 
-                var data = {
-                    key: key, pageIndex: pageIndex, pageSize: pageSize
-                };
-                $.post("/news/loaddata", data, function (resp) {
-                    if (resp != null) {
-                        $("#listnewstable tbody").html("");
-                        $("#listnewstable tbody").html(resp.Content);
-                        if (resp.TotalPage > 1) {
-                            $(".page-home").show();
-                        } else {
-                            $(".page-home").hide();
+                    var data = {
+                        key: key,
+                        pageIndex: pageIndex,
+                        pageSize: pageSize
+                    };
+                    $.post("/news/loaddata", data, function(resp) {
+                        if (resp != null) {
+                            $("#listnewstable tbody").html("");
+                            $("#listnewstable tbody").html(resp.Content);
+                            if (resp.TotalPage > 1) {
+                                $(".page-home").show();
+                            } else {
+                                $(".page-home").hide();
+                            }
+                            $(".fistrecord").html(((page - 1) * pageSize) + 1);
+                            $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
+                            $(".totalrecord").html(resp.TotalRecord);
+                            $('#datatable').attr("data-total", resp.TotalPage);
+                            $('#datatable').attr("data-page", page);
+                            $('#check-all').prop('checked', false);
+                            $.LoadingOverlay("hide");
                         }
-                        $(".fistrecord").html(((page - 1) * pageSize) + 1);
-                        $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
-                        $(".totalrecord").html(resp.TotalRecord);
-                        $('#datatable').attr("data-total", resp.TotalPage);
-                        $('#datatable').attr("data-page", page);
-                        $('#check-all').prop('checked', false);
-                        $.LoadingOverlay("hide");
-                    }
-                });
+                    });
+                }
             }
         });
     }
@@ -168,16 +173,16 @@
     });
 
     $(document).on("click", ".lbltitle", function () {
-        $.LoadingOverlay("show");
+        //$.LoadingOverlay("show");
         $.get("/news/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
             if (resp != null) {
                 $("#modaldetail").empty();
                 $("#modaldetail").html(resp.Content);
+                //$.LoadingOverlay("hide");
                 setTimeout(function () {
                     $("#newsdetail").modal("show");
                 }, 500);
             }
-            $.LoadingOverlay("hide");
         });
     });
 
@@ -307,7 +312,7 @@
                     if (typeof $(".page-home").val() != "undefined") {
                         $(".page-home").show();
                     } else {
-                        var html = '<div class="row page-home lo-paging"><div class="col-xs-12 col-md-4"><div class="dataTables_length"><label>Hiển thị <select class="ddlpage"><option value="20">20</option><option value="50">50</option><option value="100">100</option><option value="150">150</option><option value="200">200</option></select> bản ghi</label></div></div><div class="col-xs-12 col-md-8 lo-paging-0"><div class="dataTables_paginate homepagging "><div class="pagination" id="pagination"></div></div></div></div>';
+                        var html = '<div class="row page-home lo-paging"><div class="col-xs-12 col-md-4"><div class="dataTables_length"><label>Hiển thị <select class="ddlpage"><option value="20">20</option><option value="50">50</option><option value="100">100</option><option value="150">150</option><option value="200">200</option></select> tin</label></div></div><div class="col-xs-12 col-md-8 lo-paging-0"><div class="dataTables_paginate homepagging "><div class="pagination" id="pagination"></div></div></div></div>';
                         $(".pagecus").append(html);
                     }
                     showPagination(resp.TotalPage);

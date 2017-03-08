@@ -136,8 +136,8 @@ namespace CMS.Bussiness
                                 CusIsReaded = news_isread.Contains(c.Id),
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
-                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator),
-                                Iscc =  nac.Iscc.HasValue && nac.Iscc.Value
+                                Iscc =  nac.Iscc.HasValue && nac.Iscc.Value,
+                                IsReason = false//CheckReason(UserId, c.Id)
                             }).Distinct();
 
                 #region check param
@@ -440,12 +440,14 @@ namespace CMS.Bussiness
             {
                 foreach (var item in listNewsReport)
                 {
-                    var reportItem = new NewsReport();
-                    reportItem.StatusId = Convert.ToInt32(item.StatusId);
-                    reportItem.NewsId = item.Id;
-                    reportItem.CreateDate = DateTime.Now;
-                    reportItem.Notes = "Tin mô giới: " + item.Title;
-                    reportItem.CustomerId = userReport;
+                    var reportItem = new NewsReport
+                    {
+                        StatusId = Convert.ToInt32(item.StatusId),
+                        NewsId = item.Id,
+                        CreateDate = DateTime.Now,
+                        Notes = "Tin mô giới: " + item.Title,
+                        CustomerId = userReport
+                    };
                     db.NewsReports.InsertOnSubmit(reportItem);
                 }
                 db.SubmitChanges();
@@ -463,12 +465,20 @@ namespace CMS.Bussiness
             {
                 foreach (var item in listNewReport)
                 {
-                    var reportItem = new CMS.Data.Blacklist();
-                    reportItem.Words = item.Phone;
-                    reportItem.Description = "Tin mô giới: " + item.Title;
-                    reportItem.LinkUrl = item.Link;
-                    reportItem.CreatedOn = DateTime.Now;
-                    reportItem.Type = 1;
+                    var newsqr = (from c in db.News
+                        where c.Id.Equals(item.Id)
+                        select c).FirstOrDefault();
+                    if (newsqr != null)
+                        newsqr.IsSpam = true;
+
+                    var reportItem = new Blacklist
+                    {
+                        Words = item.Phone,
+                        Description = "Tin mô giới: " + item.Title,
+                        LinkUrl = item.Link,
+                        CreatedOn = DateTime.Now,
+                        Type = 1
+                    };
                     db.Blacklists.InsertOnSubmit(reportItem);
 
                     var query = (from c in db.News_customer_actions

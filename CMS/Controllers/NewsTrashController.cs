@@ -89,7 +89,7 @@ namespace CMS.Controllers
 
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
-                model.ListNew = _cacheNewsBussiness.GetListNewDeleteByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
+                model.ListNew = _newsbussiness.GetListNewDeleteByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 model.RoleId = _cacheNewsBussiness.GetRoleByUser(userId);
@@ -109,7 +109,7 @@ namespace CMS.Controllers
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _cacheNewsBussiness.GetListNewDeleteByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
+                var listNews = _newsbussiness.GetListNewDeleteByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
                 return Json(new

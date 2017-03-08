@@ -79,12 +79,20 @@
 
             </div>
             <div class="modal-footer">
-                <div class="col-xs-12 btn-area-action">
+                <div class="col-xs-11 btn-area-action">
                     <button type="button" class="btn btn-sm btn-success save-item-list" data-id="@Model.Id"><i class="fa fa-floppy-o"></i> Lưu tin</button>
                     <button type="button" class="btn btn-sm btn-primary hide-item-list" data-id="@Model.Id"><i class="fa fa-eye-slash"></i> Ẩn tin</button>
                     @if (!Convert.ToBoolean(ViewBag.User))
                     {
                         <button type="button" class="btn btn-sm btn-warning spam-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Chặn môi giới</button>
+                        if (Model.Iscc)
+                        {
+                            <button type="button" class="btn btn-sm btn-purple rmiscc-item-list" data-id="@Model.Id"><i class="fa fa-user-secret"></i> Bỏ tin chính chủ</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-sm btn-purple iscc-item-list btnclose" data-id="@Model.Id"><i class="fa fa-user"></i> Chính chủ</button>
+                        }
                     }
                     else
                     {
@@ -107,8 +115,9 @@
                     {
                         <button type="button" class="btn btn-sm btn-danger btnclose" id="btn-noti-error-cancel" data-toggle="modal" onclick="CancerDangerNewsReport(@Model.Id)">Hủy báo cáo</button>
                     }
+                </div>
+                <div class="col-sm-1 pugrbtnclose">
                     <button type="button" class="btn btn-sm btn-danger btnclose">Đóng</button>
-
                 </div>
             </div>
         </div>

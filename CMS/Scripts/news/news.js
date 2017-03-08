@@ -43,7 +43,6 @@ $(function () {
 
         var totalpage = parseInt($('#datatable').attr("data-total"));
         var totalrecord = parseInt($('#datatable').attr("data-totalrecord"));
-
         if (totalrecord > 0) {
             $('#listnewstable').DataTable({
                 sDom: 'rt',
@@ -65,60 +64,72 @@ $(function () {
                 next: 'Tiếp',
                 last: 'Trang cuối',
                 onPageClick: function (event, page) {
-                    $.LoadingOverlay("show");
-                    var cateId = parseInt($(".cateId").val());
-                    var districtId = parseInt($(".districtId").val());
-                    var newTypeId = parseInt($(".newTypeId").val());
-                    var siteId = parseInt($(".siteId").val());
-                    var backdate = parseInt($(".ddlbackdate").val());
-                    var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-                    var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
-                    var from = $(".txtFrom").val();
-                    var to = $(".txtTo").val();
-                    var pageIndex = page;
-                    var pageSize = 20;
-                    if (typeof $(".ddlpage").val() != "undefined") {
-                        pageSize = parseInt($(".ddlpage").val());
-                    }
-                    var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
-                    var key = $.trim($(".txtsearchkey").val());
-
-                    var data = {
-                        cateId: cateId, districtId: districtId, newTypeId: newTypeId,
-                        siteId: siteId, backdate: backdate,
-                        minPrice: minPrice, maxPrice: maxPrice,
-                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
-                    };
-                    $.post("/newssave/loaddata", data, function (resp) {
-                        if (resp != null) {
-                            $("#listnewstable tbody").html("");
-                            $("#listnewstable tbody").html(resp.Content);
-                            if (resp.TotalPage > 1) {
-                                $(".page-home").show();
-                            } else {
-                                $(".page-home").hide();
-                            }
-                            $(".fistrecord").html(((page - 1) * pageSize) + 1);
-                            $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
-                            $(".totalrecord").html(resp.TotalRecord);
-                            $('#datatable').attr("data-total", resp.TotalPage);
-                            $('#datatable').attr("data-page", page);
-                            $('#check-all').prop('checked', false);
-                            if (resp.TotalRecord > 0) {
-                                $('#listnewstable').DataTable({
-                                    sDom: 'rt',
-                                    retrieve: true,
-                                    bFilter: false,
-                                    bInfo: false,
-                                    searching: false,
-                                    paging: false,
-                                    aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
-                                });
-                                $('#check-all').parent().removeClass("sorting_asc");
-                            }
-                            $.LoadingOverlay("hide");
+                    var curentpage = parseInt($('#datatable').attr("data-page"));
+                    if (curentpage != page) {
+                        $.LoadingOverlay("show");
+                        var cateId = parseInt($(".cateId").val());
+                        var districtId = parseInt($(".districtId").val());
+                        var newTypeId = parseInt($(".newTypeId").val());
+                        var siteId = parseInt($(".siteId").val());
+                        var backdate = parseInt($(".ddlbackdate").val());
+                        var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
+                        var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                        var from = $(".txtFrom").val();
+                        var to = $(".txtTo").val();
+                        var pageIndex = page;
+                        var pageSize = 20;
+                        if (typeof $(".ddlpage").val() != "undefined") {
+                            pageSize = parseInt($(".ddlpage").val());
                         }
-                    });
+                        var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
+                        var key = $.trim($(".txtsearchkey").val());
+
+                        var data = {
+                            cateId: cateId,
+                            districtId: districtId,
+                            newTypeId: newTypeId,
+                            siteId: siteId,
+                            backdate: backdate,
+                            minPrice: minPrice,
+                            maxPrice: maxPrice,
+                            from: from,
+                            to: to,
+                            pageIndex: pageIndex,
+                            pageSize: pageSize,
+                            IsRepeat: isrepeat,
+                            key: key
+                        };
+                        $.post("/newssave/loaddata", data, function(resp) {
+                            if (resp != null) {
+                                $("#listnewstable tbody").html("");
+                                $("#listnewstable tbody").html(resp.Content);
+                                if (resp.TotalPage > 1) {
+                                    $(".page-home").show();
+                                } else {
+                                    $(".page-home").hide();
+                                }
+                                $(".fistrecord").html(((page - 1) * pageSize) + 1);
+                                $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
+                                $(".totalrecord").html(resp.TotalRecord);
+                                $('#datatable').attr("data-total", resp.TotalPage);
+                                $('#datatable').attr("data-page", page);
+                                $('#check-all').prop('checked', false);
+                                if (resp.TotalRecord > 0) {
+                                    $('#listnewstable').DataTable({
+                                        sDom: 'rt',
+                                        retrieve: true,
+                                        bFilter: false,
+                                        bInfo: false,
+                                        searching: false,
+                                        paging: false,
+                                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
+                                    });
+                                    $('#check-all').parent().removeClass("sorting_asc");
+                                }
+                                $.LoadingOverlay("hide");
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -267,12 +278,13 @@ $(function () {
             $(this).parents("tr").find(".label-info").addClass("arrowed-in");
             $(this).parents("tr").find(".label-warning").removeClass("label-info");
             $(this).parents("tr").find(".label-warning").removeClass("arrowed");
-            $.LoadingOverlay("show");
+            //$.LoadingOverlay("show");
             $.get("/newssave/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
                     if (resp.Pay == 1 && resp.Content != "") {
                         $("#modaldetail").empty();
                         $("#modaldetail").html(resp.Content);
+                        //$.LoadingOverlay("hide");
                         setTimeout(function () {
                             $("#newsdetail").modal("show");
                         }, 500);
@@ -280,7 +292,6 @@ $(function () {
                         window.location.href = '/Payment/RegisterPackage';
                     }
                 }
-                $.LoadingOverlay("hide");
             });
         });
 
@@ -724,7 +735,7 @@ $(function () {
                         if (typeof $(".page-home").val() != "undefined") {
                             $(".page-home").show();
                         } else {
-                            var html = '<div class="row page-home lo-paging"><div class="col-xs-12 col-md-4"><div class="dataTables_length"><label>Hiển thị <select class="ddlpage"><option value="20">20</option><option value="50">50</option><option value="100">100</option><option value="150">150</option><option value="200">200</option></select> bản ghi</label></div></div><div class="col-xs-12 col-md-8 lo-paging-0"><div class="dataTables_paginate homepagging "><div class="pagination" id="pagination"></div></div></div></div>';
+                            var html = '<div class="row page-home lo-paging"><div class="col-xs-12 col-md-4"><div class="dataTables_length"><label>Hiển thị <select class="ddlpage"><option value="20">20</option><option value="50">50</option><option value="100">100</option><option value="150">150</option><option value="200">200</option></select> tin</label></div></div><div class="col-xs-12 col-md-8 lo-paging-0"><div class="dataTables_paginate homepagging "><div class="pagination" id="pagination"></div></div></div></div>';
                             $(".pagecus").append(html);
                         }
                         showPagination(resp.TotalPage);

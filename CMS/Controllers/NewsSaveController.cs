@@ -84,7 +84,7 @@ namespace CMS.Controllers
 
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
-                model.ListNew = _cacheNewsBussiness.GetListNewStatusByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), false, string.Empty, ref total);
+                model.ListNew = _newsbussiness.GetListNewStatusByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 model.RoleId = _cacheNewsBussiness.GetRoleByUser(userId);
@@ -141,7 +141,7 @@ namespace CMS.Controllers
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _cacheNewsBussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), Convert.ToBoolean(IsRepeat), key, ref total);
+                var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), Convert.ToBoolean(IsRepeat), key, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var content = RenderPartialViewToString("~/Views/NewsSave/Paging.cshtml", listNews);
                 return Json(new
@@ -175,7 +175,7 @@ namespace CMS.Controllers
             }
             int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            var listNews = _cacheNewsBussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), Convert.ToBoolean(IsRepeat), key, ref total);
+            var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), Convert.ToBoolean(IsRepeat), key, ref total);
             ExportToExcel(filePath, listNews);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);
