@@ -489,6 +489,7 @@ namespace CMS.Controllers
                 model.NewsId = id;
                 model.Note = reason;
                 model.UserId = Convert.ToInt32(Session["SS-USERID"]);
+                model.DateCreate = DateTime.Now;
                 new HomeBussiness().InsertReasonReportNews(model);
                 return Json(new { Messages = reason });
             }
