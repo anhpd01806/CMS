@@ -47,10 +47,17 @@ namespace CMS.Controllers
                             var black = new Blacklist();
                             try
                             {
-                                black.Words = workSheet.Cells[rowIterator, 2].Value.ToString();
                                 try
                                 {
-
+                                    black.Words = workSheet.Cells[rowIterator, 2].Value.ToString();
+                                }
+                                catch (Exception)
+                                {
+                                    string test = rowIterator.ToString();
+                                }
+                              
+                                try
+                                {
                                     black.Description = workSheet.Cells[rowIterator, 3].Value.ToString();
                                 }
                                 catch (Exception)
@@ -74,6 +81,7 @@ namespace CMS.Controllers
                             }
                             catch(Exception ex)
                             {
+                                string test = black.Words;
                                 TempData["Error"] = "Có một hoặc nhiều bản ghi đang sai định dạng.Lưu ý: Số điện thoại không được để trống";
                             }
                         }
