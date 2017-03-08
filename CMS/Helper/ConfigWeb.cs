@@ -23,6 +23,8 @@ namespace CMS.Helper
 
         public static string Captcha_Secret_Key = ConfigurationManager.AppSettings["Captcha_Secret_Key"];
 
+        public static string Captcha_SecretUser_Key = ConfigurationManager.AppSettings["Captcha_CreateUser_Key"];
+
         public static string Captcha_Public_Key = ConfigurationManager.AppSettings["Captcha_Public_Key"];
     }
 

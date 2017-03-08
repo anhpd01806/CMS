@@ -49,9 +49,12 @@ namespace CMS.Controllers
                 {
                     //get news by id
                     var news = new NewsBussiness().GetNewsById(id);
-                    //insert phone into blacklist
 
-                    var model = new Blacklist
+                    //update isspam news
+                    new NewsBussiness().UpdateSpam(id);
+
+                     //insert phone into blacklist
+                     var model = new Blacklist
                     {
                         Words = news.Phone,
                         Description = news.Title,
@@ -74,6 +77,9 @@ namespace CMS.Controllers
                     };
 
                     new NewsCustomerActionBussiness().InsertActionCustomer(newsAction);
+
+                    //update count news
+                    new NewsBussiness().UpdateCountNews(news.Phone);
 
                     return Json(new
                     {

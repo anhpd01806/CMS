@@ -171,7 +171,7 @@ namespace CMS.Controllers
             {
                 //check captcha
                 const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
-                string secret = ConfigWeb.Captcha_Secret_Key;
+                string secret = ConfigWeb.Captcha_SecretUser_Key;
                 var response = Request["g-recaptcha-response"];
                 var remoteIp = Request.ServerVariables["REMOTE_ADDR"];
 

@@ -203,7 +203,6 @@ namespace CMS.Controllers
                 var price = Request["price"].Replace(".", "");
                 var pricetext = Request["pricetext"];
                 var content = Request["content"];
-
                 var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var newsItem = new New();
                 var count = _newsbussiness.CheckRepeatNews(phone, districtId, userId);
@@ -213,6 +212,7 @@ namespace CMS.Controllers
                     newsItem.CategoryId = cateId;
                     newsItem.Title = title;
                     newsItem.Contents = content;
+                    newsItem.Summary = content;
                     newsItem.Link = "http://ozo.vn/";
                     newsItem.SiteId = 0;
                     newsItem.DistrictId = districtId;
@@ -231,7 +231,7 @@ namespace CMS.Controllers
                     newsItem.CreatedOn = DateTime.Now;
                     newsItem.CreatedBy = userId;
                     newsItem.StatusId = 1;
-                    var result = _newsbussiness.Createnew(newsItem, userId);
+                    resp = _newsbussiness.Createnew(newsItem, userId);
                 }
                 return Json(new
                 {

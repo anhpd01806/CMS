@@ -266,7 +266,7 @@ namespace CMS.Bussiness
 
                 return 1;
             }
-            catch
+            catch (Exception ex)
             {
                 return 0;
             }
@@ -808,15 +808,15 @@ namespace CMS.Bussiness
 
         public int CheckRepeatNews(string phone, int districId, int userId)
         {
-            var listBlacklist = (from c in db.Blacklists
-                                 select (c.Words)).ToList();
+            //var listBlacklist = (from c in db.Blacklists
+            //                     select (c.Words)).ToList();
             var query = (from c in db.News
                          join d in db.Districts on c.DistrictId equals d.Id
                          where c.CreatedOn.HasValue && !c.IsDeleted
                          && !d.IsDeleted && d.Published
                          && c.DistrictId.Equals(districId)
                          && c.Phone.Contains(phone)
-                         && !listBlacklist.Contains(c.Phone)
+                         //&& !listBlacklist.Contains(c.Phone)
                          select c).ToList();
 
             var total = query.Count;
@@ -870,6 +870,29 @@ namespace CMS.Bussiness
         public New GetNewsById(int id)
         {
             return db.News.FirstOrDefault(x => x.Id == id);
+        }
+
+        public void UpdateSpam(int id)
+        {
+            var news = db.News.FirstOrDefault(x => x.Id == id);
+            news.IsSpam = true;
+            db.SubmitChanges();
+        }
+
+        public void UpdateCountNews(string Phone)
+        {
+            if (!string.IsNullOrEmpty(Phone))
+            {
+                var newsList = db.News.Where(x => x.Phone.Contains(Phone) && x.IsSpam == false).ToList();
+                if (newsList != null)
+                {
+                    foreach (var item in newsList)
+                    {
+                        item.TotalRepeat = newsList.Count();
+                    }
+                    db.SubmitChanges();
+                }
+            }
         }
     }
 }

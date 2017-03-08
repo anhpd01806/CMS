@@ -90,11 +90,11 @@ $(document).ready(function () {
                 title: "Thông báo",
                 message: "Bạn sẽ bị trừ 15k vào tài khoản. bạn có chắc muốn đăng tin này?",
                 buttons: {
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> Đồng ý'
-                    },
                     cancel: {
                         label: '<i class="fa fa-times"></i> Đóng'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Đồng ý'
                     },
                 },
                 callback: function (result) {
@@ -119,10 +119,7 @@ $(document).ready(function () {
                             $.post("/news/createNews", data, function (resp) {
                                 if (resp != null) {
                                     if (resp.type == 1) {
-                                        showmessage("success", "Tin đã được đăng thành công chờ quản trị viên duyệt!");
-                                        setTimeout(function () {
-                                            window.location.href = "/home/index";
-                                        }, 1000);
+                                        showmessage("success", "Tin đã được đăng thành công.");
                                     } else {
                                         if (resp.type == 0) {
                                             showmessage("error", "Bạn không đủ tiền trong tài khoản! Vui lòng nạp thêm tiền để tiếp tục đăng tin");
