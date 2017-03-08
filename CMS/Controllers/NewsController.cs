@@ -22,6 +22,7 @@ namespace CMS.Controllers
         private readonly HomeBussiness _bussiness = new HomeBussiness();
         private readonly NewsBussiness _newsbussiness = new NewsBussiness();
         private readonly PaymentBussiness _payment = new PaymentBussiness();
+        private readonly CacheNewsBussiness _cacheNewsBussiness = new CacheNewsBussiness();
         #endregion
 
 
@@ -36,7 +37,7 @@ namespace CMS.Controllers
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
 
                 #region Get select list category
-                var listCategory = _bussiness.GetListCategory();
+                var listCategory = _cacheNewsBussiness.GetListCategory();
                 var cateListItems = new List<SelectListItem>();
                 cateListItems.Add(new SelectListItem { Text = "Chọn chuyên mục", Value = "0" });
                 foreach (var item in listCategory)
@@ -44,7 +45,7 @@ namespace CMS.Controllers
                     if (item.ParentCategoryId == 0)
                     {
                         cateListItems.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
-                        var listchillcate = _bussiness.GetChilldrenlistCategory(item.Id);
+                        var listchillcate = _cacheNewsBussiness.GetChilldrenlistCategory(item.Id);
                         foreach (var chill in listchillcate)
                         {
                             cateListItems.Add(new SelectListItem { Text = ("\xA0\xA0\xA0" + chill.Name), Value = chill.Id.ToString() });
@@ -55,7 +56,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _bussiness.GetListDistric();
+                var listDistrict = _cacheNewsBussiness.GetListDistric();
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)
@@ -65,7 +66,7 @@ namespace CMS.Controllers
                 model.ListDistric = new SelectList(listdictrictItem, "Value", "Text");
                 #endregion
                 #region Get select list site
-                var listSite = _bussiness.GetListSite();
+                var listSite = _cacheNewsBussiness.GetListSite();
                 var listsiteItem = new List<SelectListItem>();
                 listsiteItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
                 foreach (var item in listSite)
@@ -75,7 +76,7 @@ namespace CMS.Controllers
                 model.ListSite = new SelectList(listsiteItem, "Value", "Text");
                 #endregion
                 #region Get select list status
-                var listStatus = _bussiness.GetlistStatusModel();
+                var listStatus = _cacheNewsBussiness.GetlistStatusModel();
                 var listStatusItem = new List<SelectListItem>();
                 listStatusItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
                 foreach (var item in listStatus)
@@ -104,8 +105,8 @@ namespace CMS.Controllers
                 var Id = Convert.ToInt32(Request["Id"]);
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
-                var news = _newsbussiness.GetNewsDetail(Id, userId);
-                ViewBag.RoleId = _bussiness.GetRoleByUser(userId);
+                var news = _cacheNewsBussiness.GetNewsDetail(Id, userId);
+                ViewBag.RoleId = _cacheNewsBussiness.GetRoleByUser(userId);
                 var content = RenderPartialViewToString("~/Views/News/NewsDetail.cshtml", news);
                 return Json(new
                 {
@@ -131,7 +132,7 @@ namespace CMS.Controllers
                 var model = new HomeViewModel();
 
                 #region Get select list category
-                var listCategory = _bussiness.GetListCategory();
+                var listCategory = _cacheNewsBussiness.GetListCategory();
                 var cateListItems = new List<SelectListItem>();
                 cateListItems.Add(new SelectListItem { Text = "Chọn chuyên mục", Value = "0" });
                 foreach (var item in listCategory)
@@ -139,10 +140,10 @@ namespace CMS.Controllers
                     if (item.ParentCategoryId == 0)
                     {
                         cateListItems.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
-                        var listchillcate = _bussiness.GetChilldrenlistCategory(item.Id);
+                        var listchillcate = _cacheNewsBussiness.GetChilldrenlistCategory(item.Id);
                         foreach (var chill in listchillcate)
                         {
-                            cateListItems.Add(new SelectListItem { Text = ("\xA0\xA0\xA0" + item.Name + " >> " + chill.Name), Value = chill.Id.ToString() });
+                            cateListItems.Add(new SelectListItem { Text = ("\xA0\xA0\xA0" + chill.Name), Value = chill.Id.ToString() });
                         }
                     }
                 }
@@ -150,7 +151,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _bussiness.GetListDistric();
+                var listDistrict = _cacheNewsBussiness.GetListDistric();
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)
@@ -160,7 +161,7 @@ namespace CMS.Controllers
                 model.ListDistric = new SelectList(listdictrictItem, "Value", "Text");
                 #endregion
                 #region Get select list site
-                var listSite = _bussiness.GetListSite();
+                var listSite = _cacheNewsBussiness.GetListSite();
                 var listsiteItem = new List<SelectListItem>();
                 listsiteItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
                 foreach (var item in listSite)
@@ -170,7 +171,7 @@ namespace CMS.Controllers
                 model.ListSite = new SelectList(listsiteItem, "Value", "Text");
                 #endregion
                 #region Get select list status
-                var listStatus = _bussiness.GetlistStatusModel();
+                var listStatus = _cacheNewsBussiness.GetlistStatusModel();
                 var listStatusItem = new List<SelectListItem>();
                 listStatusItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
                 foreach (var item in listStatus)

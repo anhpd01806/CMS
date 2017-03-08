@@ -30,18 +30,21 @@ namespace CMS.Data
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertState(State instance);
-    partial void UpdateState(State instance);
-    partial void DeleteState(State instance);
     partial void InsertActivityLog(ActivityLog instance);
     partial void UpdateActivityLog(ActivityLog instance);
     partial void DeleteActivityLog(ActivityLog instance);
+    partial void InsertState(State instance);
+    partial void UpdateState(State instance);
+    partial void DeleteState(State instance);
     partial void InsertActivityLogType(ActivityLogType instance);
     partial void UpdateActivityLogType(ActivityLogType instance);
     partial void DeleteActivityLogType(ActivityLogType instance);
     partial void InsertAddress(Address instance);
     partial void UpdateAddress(Address instance);
     partial void DeleteAddress(Address instance);
+    partial void InsertBlacklist(Blacklist instance);
+    partial void UpdateBlacklist(Blacklist instance);
+    partial void DeleteBlacklist(Blacklist instance);
     partial void InsertCategory(Category instance);
     partial void UpdateCategory(Category instance);
     partial void DeleteCategory(Category instance);
@@ -90,9 +93,18 @@ namespace CMS.Data
     partial void InsertMessageTemplate(MessageTemplate instance);
     partial void UpdateMessageTemplate(MessageTemplate instance);
     partial void DeleteMessageTemplate(MessageTemplate instance);
+    partial void InsertNew(New instance);
+    partial void UpdateNew(New instance);
+    partial void DeleteNew(New instance);
+    partial void InsertNews_customer_action(News_customer_action instance);
+    partial void UpdateNews_customer_action(News_customer_action instance);
+    partial void DeleteNews_customer_action(News_customer_action instance);
     partial void InsertNews_Customer_Mapping(News_Customer_Mapping instance);
     partial void UpdateNews_Customer_Mapping(News_Customer_Mapping instance);
     partial void DeleteNews_Customer_Mapping(News_Customer_Mapping instance);
+    partial void InsertNews_Trash(News_Trash instance);
+    partial void UpdateNews_Trash(News_Trash instance);
+    partial void DeleteNews_Trash(News_Trash instance);
     partial void InsertNewsLetterSubscription(NewsLetterSubscription instance);
     partial void UpdateNewsLetterSubscription(NewsLetterSubscription instance);
     partial void DeleteNewsLetterSubscription(NewsLetterSubscription instance);
@@ -102,6 +114,9 @@ namespace CMS.Data
     partial void InsertNewsStatus(NewsStatus instance);
     partial void UpdateNewsStatus(NewsStatus instance);
     partial void DeleteNewsStatus(NewsStatus instance);
+    partial void InsertNotify(Notify instance);
+    partial void UpdateNotify(Notify instance);
+    partial void DeleteNotify(Notify instance);
     partial void InsertOperation(Operation instance);
     partial void UpdateOperation(Operation instance);
     partial void DeleteOperation(Operation instance);
@@ -132,6 +147,9 @@ namespace CMS.Data
     partial void InsertQueuedEmail(QueuedEmail instance);
     partial void UpdateQueuedEmail(QueuedEmail instance);
     partial void DeleteQueuedEmail(QueuedEmail instance);
+    partial void InsertReasonReportNew(ReasonReportNew instance);
+    partial void UpdateReasonReportNew(ReasonReportNew instance);
+    partial void DeleteReasonReportNew(ReasonReportNew instance);
     partial void InsertRole(Role instance);
     partial void UpdateRole(Role instance);
     partial void DeleteRole(Role instance);
@@ -153,6 +171,9 @@ namespace CMS.Data
     partial void InsertUrlRecord(UrlRecord instance);
     partial void UpdateUrlRecord(UrlRecord instance);
     partial void DeleteUrlRecord(UrlRecord instance);
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
     partial void InsertAggregatedCounter(AggregatedCounter instance);
     partial void UpdateAggregatedCounter(AggregatedCounter instance);
     partial void DeleteAggregatedCounter(AggregatedCounter instance);
@@ -183,27 +204,6 @@ namespace CMS.Data
     partial void InsertSet(Set instance);
     partial void UpdateSet(Set instance);
     partial void DeleteSet(Set instance);
-    partial void InsertBlacklist(Blacklist instance);
-    partial void UpdateBlacklist(Blacklist instance);
-    partial void DeleteBlacklist(Blacklist instance);
-    partial void InsertNews_Trash(News_Trash instance);
-    partial void UpdateNews_Trash(News_Trash instance);
-    partial void DeleteNews_Trash(News_Trash instance);
-    partial void InsertNotify(Notify instance);
-    partial void UpdateNotify(Notify instance);
-    partial void DeleteNotify(Notify instance);
-    partial void InsertUser(User instance);
-    partial void UpdateUser(User instance);
-    partial void DeleteUser(User instance);
-    partial void InsertNew(New instance);
-    partial void UpdateNew(New instance);
-    partial void DeleteNew(New instance);
-    partial void InsertNews_customer_action(News_customer_action instance);
-    partial void UpdateNews_customer_action(News_customer_action instance);
-    partial void DeleteNews_customer_action(News_customer_action instance);
-    partial void InsertReasonReportNew(ReasonReportNew instance);
-    partial void UpdateReasonReportNew(ReasonReportNew instance);
-    partial void DeleteReasonReportNew(ReasonReportNew instance);
     #endregion
 		
 		public CmsDataDataContext() : 
@@ -236,19 +236,19 @@ namespace CMS.Data
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<State> States
-		{
-			get
-			{
-				return this.GetTable<State>();
-			}
-		}
-		
 		public System.Data.Linq.Table<ActivityLog> ActivityLogs
 		{
 			get
 			{
 				return this.GetTable<ActivityLog>();
+			}
+		}
+		
+		public System.Data.Linq.Table<State> States
+		{
+			get
+			{
+				return this.GetTable<State>();
 			}
 		}
 		
@@ -265,6 +265,14 @@ namespace CMS.Data
 			get
 			{
 				return this.GetTable<Address>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Blacklist> Blacklists
+		{
+			get
+			{
+				return this.GetTable<Blacklist>();
 			}
 		}
 		
@@ -396,11 +404,35 @@ namespace CMS.Data
 			}
 		}
 		
+		public System.Data.Linq.Table<New> News
+		{
+			get
+			{
+				return this.GetTable<New>();
+			}
+		}
+		
+		public System.Data.Linq.Table<News_customer_action> News_customer_actions
+		{
+			get
+			{
+				return this.GetTable<News_customer_action>();
+			}
+		}
+		
 		public System.Data.Linq.Table<News_Customer_Mapping> News_Customer_Mappings
 		{
 			get
 			{
 				return this.GetTable<News_Customer_Mapping>();
+			}
+		}
+		
+		public System.Data.Linq.Table<News_Trash> News_Trashes
+		{
+			get
+			{
+				return this.GetTable<News_Trash>();
 			}
 		}
 		
@@ -425,6 +457,14 @@ namespace CMS.Data
 			get
 			{
 				return this.GetTable<NewsStatus>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Notify> Notifies
+		{
+			get
+			{
+				return this.GetTable<Notify>();
 			}
 		}
 		
@@ -508,6 +548,14 @@ namespace CMS.Data
 			}
 		}
 		
+		public System.Data.Linq.Table<ReasonReportNew> ReasonReportNews
+		{
+			get
+			{
+				return this.GetTable<ReasonReportNew>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Role_Access> Role_Accesses
 		{
 			get
@@ -577,6 +625,14 @@ namespace CMS.Data
 			get
 			{
 				return this.GetTable<UrlRecord>();
+			}
+		}
+		
+		public System.Data.Linq.Table<User> Users
+		{
+			get
+			{
+				return this.GetTable<User>();
 			}
 		}
 		
@@ -657,285 +713,6 @@ namespace CMS.Data
 			get
 			{
 				return this.GetTable<Set>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Blacklist> Blacklists
-		{
-			get
-			{
-				return this.GetTable<Blacklist>();
-			}
-		}
-		
-		public System.Data.Linq.Table<News_Trash> News_Trashes
-		{
-			get
-			{
-				return this.GetTable<News_Trash>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Notify> Notifies
-		{
-			get
-			{
-				return this.GetTable<Notify>();
-			}
-		}
-		
-		public System.Data.Linq.Table<User> Users
-		{
-			get
-			{
-				return this.GetTable<User>();
-			}
-		}
-		
-		public System.Data.Linq.Table<New> News
-		{
-			get
-			{
-				return this.GetTable<New>();
-			}
-		}
-		
-		public System.Data.Linq.Table<News_customer_action> News_customer_actions
-		{
-			get
-			{
-				return this.GetTable<News_customer_action>();
-			}
-		}
-		
-		public System.Data.Linq.Table<ReasonReportNew> ReasonReportNews
-		{
-			get
-			{
-				return this.GetTable<ReasonReportNew>();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="HangFire.State")]
-	public partial class State : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _JobId;
-		
-		private string _Name;
-		
-		private string _Reason;
-		
-		private System.DateTime _CreatedAt;
-		
-		private string _Data;
-		
-		private EntityRef<Job> _Job;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnJobIdChanging(int value);
-    partial void OnJobIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnReasonChanging(string value);
-    partial void OnReasonChanged();
-    partial void OnCreatedAtChanging(System.DateTime value);
-    partial void OnCreatedAtChanged();
-    partial void OnDataChanging(string value);
-    partial void OnDataChanged();
-    #endregion
-		
-		public State()
-		{
-			this._Job = default(EntityRef<Job>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobId", DbType="Int NOT NULL")]
-		public int JobId
-		{
-			get
-			{
-				return this._JobId;
-			}
-			set
-			{
-				if ((this._JobId != value))
-				{
-					if (this._Job.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnJobIdChanging(value);
-					this.SendPropertyChanging();
-					this._JobId = value;
-					this.SendPropertyChanged("JobId");
-					this.OnJobIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reason", DbType="NVarChar(100)")]
-		public string Reason
-		{
-			get
-			{
-				return this._Reason;
-			}
-			set
-			{
-				if ((this._Reason != value))
-				{
-					this.OnReasonChanging(value);
-					this.SendPropertyChanging();
-					this._Reason = value;
-					this.SendPropertyChanged("Reason");
-					this.OnReasonChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedAt
-		{
-			get
-			{
-				return this._CreatedAt;
-			}
-			set
-			{
-				if ((this._CreatedAt != value))
-				{
-					this.OnCreatedAtChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedAt = value;
-					this.SendPropertyChanged("CreatedAt");
-					this.OnCreatedAtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Data", DbType="NVarChar(MAX)")]
-		public string Data
-		{
-			get
-			{
-				return this._Data;
-			}
-			set
-			{
-				if ((this._Data != value))
-				{
-					this.OnDataChanging(value);
-					this.SendPropertyChanging();
-					this._Data = value;
-					this.SendPropertyChanged("Data");
-					this.OnDataChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Job_State", Storage="_Job", ThisKey="JobId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Job Job
-		{
-			get
-			{
-				return this._Job.Entity;
-			}
-			set
-			{
-				Job previousValue = this._Job.Entity;
-				if (((previousValue != value) 
-							|| (this._Job.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Job.Entity = null;
-						previousValue.States.Remove(this);
-					}
-					this._Job.Entity = value;
-					if ((value != null))
-					{
-						value.States.Add(this);
-						this._JobId = value.Id;
-					}
-					else
-					{
-						this._JobId = default(int);
-					}
-					this.SendPropertyChanged("Job");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -1155,6 +932,229 @@ namespace CMS.Data
 						this._CustomerId = default(int);
 					}
 					this.SendPropertyChanged("Customer");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="HangFire.State")]
+	public partial class State : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _JobId;
+		
+		private string _Name;
+		
+		private string _Reason;
+		
+		private System.DateTime _CreatedAt;
+		
+		private string _Data;
+		
+		private EntityRef<Job> _Job;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnJobIdChanging(int value);
+    partial void OnJobIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnReasonChanging(string value);
+    partial void OnReasonChanged();
+    partial void OnCreatedAtChanging(System.DateTime value);
+    partial void OnCreatedAtChanged();
+    partial void OnDataChanging(string value);
+    partial void OnDataChanged();
+    #endregion
+		
+		public State()
+		{
+			this._Job = default(EntityRef<Job>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobId", DbType="Int NOT NULL")]
+		public int JobId
+		{
+			get
+			{
+				return this._JobId;
+			}
+			set
+			{
+				if ((this._JobId != value))
+				{
+					if (this._Job.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnJobIdChanging(value);
+					this.SendPropertyChanging();
+					this._JobId = value;
+					this.SendPropertyChanged("JobId");
+					this.OnJobIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reason", DbType="NVarChar(100)")]
+		public string Reason
+		{
+			get
+			{
+				return this._Reason;
+			}
+			set
+			{
+				if ((this._Reason != value))
+				{
+					this.OnReasonChanging(value);
+					this.SendPropertyChanging();
+					this._Reason = value;
+					this.SendPropertyChanged("Reason");
+					this.OnReasonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this.OnCreatedAtChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedAt = value;
+					this.SendPropertyChanged("CreatedAt");
+					this.OnCreatedAtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Data", DbType="NVarChar(MAX)")]
+		public string Data
+		{
+			get
+			{
+				return this._Data;
+			}
+			set
+			{
+				if ((this._Data != value))
+				{
+					this.OnDataChanging(value);
+					this.SendPropertyChanging();
+					this._Data = value;
+					this.SendPropertyChanged("Data");
+					this.OnDataChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Job_State", Storage="_Job", ThisKey="JobId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Job Job
+		{
+			get
+			{
+				return this._Job.Entity;
+			}
+			set
+			{
+				Job previousValue = this._Job.Entity;
+				if (((previousValue != value) 
+							|| (this._Job.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Job.Entity = null;
+						previousValue.States.Remove(this);
+					}
+					this._Job.Entity = value;
+					if ((value != null))
+					{
+						value.States.Add(this);
+						this._JobId = value.Id;
+					}
+					else
+					{
+						this._JobId = default(int);
+					}
+					this.SendPropertyChanged("Job");
 				}
 			}
 		}
@@ -1595,6 +1595,188 @@ namespace CMS.Data
 					this._FaxNumber = value;
 					this.SendPropertyChanged("FaxNumber");
 					this.OnFaxNumberChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Blacklist")]
+	public partial class Blacklist : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Words;
+		
+		private string _Description;
+		
+		private string _LinkUrl;
+		
+		private System.DateTime _CreatedOn;
+		
+		private int _Type;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnWordsChanging(string value);
+    partial void OnWordsChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnLinkUrlChanging(string value);
+    partial void OnLinkUrlChanged();
+    partial void OnCreatedOnChanging(System.DateTime value);
+    partial void OnCreatedOnChanged();
+    partial void OnTypeChanging(int value);
+    partial void OnTypeChanged();
+    #endregion
+		
+		public Blacklist()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Words", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
+		public string Words
+		{
+			get
+			{
+				return this._Words;
+			}
+			set
+			{
+				if ((this._Words != value))
+				{
+					this.OnWordsChanging(value);
+					this.SendPropertyChanging();
+					this._Words = value;
+					this.SendPropertyChanged("Words");
+					this.OnWordsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(1000)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LinkUrl", DbType="NVarChar(1000)")]
+		public string LinkUrl
+		{
+			get
+			{
+				return this._LinkUrl;
+			}
+			set
+			{
+				if ((this._LinkUrl != value))
+				{
+					this.OnLinkUrlChanging(value);
+					this.SendPropertyChanging();
+					this._LinkUrl = value;
+					this.SendPropertyChanged("LinkUrl");
+					this.OnLinkUrlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="Int NOT NULL")]
+		public int Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
 				}
 			}
 		}
@@ -4290,7 +4472,7 @@ namespace CMS.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ImageUrl", DbType="NVarChar(200)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ImageUrl", DbType="NVarChar(MAX)")]
 		public string ImageUrl
 		{
 			get
@@ -6024,6 +6206,994 @@ namespace CMS.Data
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News")]
+	public partial class New : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Nullable<int> _CategoryId;
+		
+		private string _Title;
+		
+		private string _Contents;
+		
+		private string _Summary;
+		
+		private string _Link;
+		
+		private int _SiteId;
+		
+		private System.Nullable<int> _DistrictId;
+		
+		private System.Nullable<int> _ProvinceId;
+		
+		private string _Phone;
+		
+		private string _PriceText;
+		
+		private System.Nullable<bool> _IsUpdated;
+		
+		private System.Nullable<System.DateTime> _DateOld;
+		
+		private bool _IsSpam;
+		
+		private bool _IsDeleted;
+		
+		private System.Nullable<int> _CreatedBy;
+		
+		private System.Nullable<System.DateTime> _CreatedOn;
+		
+		private System.Nullable<int> _ModifiedBy;
+		
+		private System.Nullable<System.DateTime> _ModifiedOn;
+		
+		private bool _IsPhone;
+		
+		private bool _IsRepeat;
+		
+		private System.Nullable<decimal> _Price;
+		
+		private System.Nullable<decimal> _Area;
+		
+		private System.Nullable<bool> _Published;
+		
+		private System.Nullable<System.DateTime> _PublishedOn;
+		
+		private System.Nullable<int> _StatusId;
+		
+		private bool _IsOwner;
+		
+		private string _AdminComment;
+		
+		private int _PageView;
+		
+		private System.Nullable<int> _TotalRepeat;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCategoryIdChanging(System.Nullable<int> value);
+    partial void OnCategoryIdChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
+    partial void OnContentsChanging(string value);
+    partial void OnContentsChanged();
+    partial void OnSummaryChanging(string value);
+    partial void OnSummaryChanged();
+    partial void OnLinkChanging(string value);
+    partial void OnLinkChanged();
+    partial void OnSiteIdChanging(int value);
+    partial void OnSiteIdChanged();
+    partial void OnDistrictIdChanging(System.Nullable<int> value);
+    partial void OnDistrictIdChanged();
+    partial void OnProvinceIdChanging(System.Nullable<int> value);
+    partial void OnProvinceIdChanged();
+    partial void OnPhoneChanging(string value);
+    partial void OnPhoneChanged();
+    partial void OnPriceTextChanging(string value);
+    partial void OnPriceTextChanged();
+    partial void OnIsUpdatedChanging(System.Nullable<bool> value);
+    partial void OnIsUpdatedChanged();
+    partial void OnDateOldChanging(System.Nullable<System.DateTime> value);
+    partial void OnDateOldChanged();
+    partial void OnIsSpamChanging(bool value);
+    partial void OnIsSpamChanged();
+    partial void OnIsDeletedChanging(bool value);
+    partial void OnIsDeletedChanged();
+    partial void OnCreatedByChanging(System.Nullable<int> value);
+    partial void OnCreatedByChanged();
+    partial void OnCreatedOnChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedOnChanged();
+    partial void OnModifiedByChanging(System.Nullable<int> value);
+    partial void OnModifiedByChanged();
+    partial void OnModifiedOnChanging(System.Nullable<System.DateTime> value);
+    partial void OnModifiedOnChanged();
+    partial void OnIsPhoneChanging(bool value);
+    partial void OnIsPhoneChanged();
+    partial void OnIsRepeatChanging(bool value);
+    partial void OnIsRepeatChanged();
+    partial void OnPriceChanging(System.Nullable<decimal> value);
+    partial void OnPriceChanged();
+    partial void OnAreaChanging(System.Nullable<decimal> value);
+    partial void OnAreaChanged();
+    partial void OnPublishedChanging(System.Nullable<bool> value);
+    partial void OnPublishedChanged();
+    partial void OnPublishedOnChanging(System.Nullable<System.DateTime> value);
+    partial void OnPublishedOnChanged();
+    partial void OnStatusIdChanging(System.Nullable<int> value);
+    partial void OnStatusIdChanged();
+    partial void OnIsOwnerChanging(bool value);
+    partial void OnIsOwnerChanged();
+    partial void OnAdminCommentChanging(string value);
+    partial void OnAdminCommentChanged();
+    partial void OnPageViewChanging(int value);
+    partial void OnPageViewChanged();
+    partial void OnTotalRepeatChanging(System.Nullable<int> value);
+    partial void OnTotalRepeatChanged();
+    #endregion
+		
+		public New()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryId", DbType="Int")]
+		public System.Nullable<int> CategoryId
+		{
+			get
+			{
+				return this._CategoryId;
+			}
+			set
+			{
+				if ((this._CategoryId != value))
+				{
+					this.OnCategoryIdChanging(value);
+					this.SendPropertyChanging();
+					this._CategoryId = value;
+					this.SendPropertyChanged("CategoryId");
+					this.OnCategoryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contents", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Contents
+		{
+			get
+			{
+				return this._Contents;
+			}
+			set
+			{
+				if ((this._Contents != value))
+				{
+					this.OnContentsChanging(value);
+					this.SendPropertyChanging();
+					this._Contents = value;
+					this.SendPropertyChanged("Contents");
+					this.OnContentsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Summary", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Summary
+		{
+			get
+			{
+				return this._Summary;
+			}
+			set
+			{
+				if ((this._Summary != value))
+				{
+					this.OnSummaryChanging(value);
+					this.SendPropertyChanging();
+					this._Summary = value;
+					this.SendPropertyChanged("Summary");
+					this.OnSummaryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Link
+		{
+			get
+			{
+				return this._Link;
+			}
+			set
+			{
+				if ((this._Link != value))
+				{
+					this.OnLinkChanging(value);
+					this.SendPropertyChanging();
+					this._Link = value;
+					this.SendPropertyChanged("Link");
+					this.OnLinkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteId", DbType="Int NOT NULL")]
+		public int SiteId
+		{
+			get
+			{
+				return this._SiteId;
+			}
+			set
+			{
+				if ((this._SiteId != value))
+				{
+					this.OnSiteIdChanging(value);
+					this.SendPropertyChanging();
+					this._SiteId = value;
+					this.SendPropertyChanged("SiteId");
+					this.OnSiteIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistrictId", DbType="Int")]
+		public System.Nullable<int> DistrictId
+		{
+			get
+			{
+				return this._DistrictId;
+			}
+			set
+			{
+				if ((this._DistrictId != value))
+				{
+					this.OnDistrictIdChanging(value);
+					this.SendPropertyChanging();
+					this._DistrictId = value;
+					this.SendPropertyChanged("DistrictId");
+					this.OnDistrictIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProvinceId", DbType="Int")]
+		public System.Nullable<int> ProvinceId
+		{
+			get
+			{
+				return this._ProvinceId;
+			}
+			set
+			{
+				if ((this._ProvinceId != value))
+				{
+					this.OnProvinceIdChanging(value);
+					this.SendPropertyChanging();
+					this._ProvinceId = value;
+					this.SendPropertyChanged("ProvinceId");
+					this.OnProvinceIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(250)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceText", DbType="NVarChar(150)")]
+		public string PriceText
+		{
+			get
+			{
+				return this._PriceText;
+			}
+			set
+			{
+				if ((this._PriceText != value))
+				{
+					this.OnPriceTextChanging(value);
+					this.SendPropertyChanging();
+					this._PriceText = value;
+					this.SendPropertyChanged("PriceText");
+					this.OnPriceTextChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsUpdated", DbType="Bit")]
+		public System.Nullable<bool> IsUpdated
+		{
+			get
+			{
+				return this._IsUpdated;
+			}
+			set
+			{
+				if ((this._IsUpdated != value))
+				{
+					this.OnIsUpdatedChanging(value);
+					this.SendPropertyChanging();
+					this._IsUpdated = value;
+					this.SendPropertyChanged("IsUpdated");
+					this.OnIsUpdatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateOld", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DateOld
+		{
+			get
+			{
+				return this._DateOld;
+			}
+			set
+			{
+				if ((this._DateOld != value))
+				{
+					this.OnDateOldChanging(value);
+					this.SendPropertyChanging();
+					this._DateOld = value;
+					this.SendPropertyChanged("DateOld");
+					this.OnDateOldChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit NOT NULL")]
+		public bool IsSpam
+		{
+			get
+			{
+				return this._IsSpam;
+			}
+			set
+			{
+				if ((this._IsSpam != value))
+				{
+					this.OnIsSpamChanging(value);
+					this.SendPropertyChanging();
+					this._IsSpam = value;
+					this.SendPropertyChanged("IsSpam");
+					this.OnIsSpamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Bit NOT NULL")]
+		public bool IsDeleted
+		{
+			get
+			{
+				return this._IsDeleted;
+			}
+			set
+			{
+				if ((this._IsDeleted != value))
+				{
+					this.OnIsDeletedChanging(value);
+					this.SendPropertyChanging();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int")]
+		public System.Nullable<int> CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedBy", DbType="Int")]
+		public System.Nullable<int> ModifiedBy
+		{
+			get
+			{
+				return this._ModifiedBy;
+			}
+			set
+			{
+				if ((this._ModifiedBy != value))
+				{
+					this.OnModifiedByChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedBy = value;
+					this.SendPropertyChanged("ModifiedBy");
+					this.OnModifiedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			get
+			{
+				return this._ModifiedOn;
+			}
+			set
+			{
+				if ((this._ModifiedOn != value))
+				{
+					this.OnModifiedOnChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedOn = value;
+					this.SendPropertyChanged("ModifiedOn");
+					this.OnModifiedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPhone", DbType="Bit NOT NULL")]
+		public bool IsPhone
+		{
+			get
+			{
+				return this._IsPhone;
+			}
+			set
+			{
+				if ((this._IsPhone != value))
+				{
+					this.OnIsPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._IsPhone = value;
+					this.SendPropertyChanged("IsPhone");
+					this.OnIsPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRepeat", DbType="Bit NOT NULL")]
+		public bool IsRepeat
+		{
+			get
+			{
+				return this._IsRepeat;
+			}
+			set
+			{
+				if ((this._IsRepeat != value))
+				{
+					this.OnIsRepeatChanging(value);
+					this.SendPropertyChanging();
+					this._IsRepeat = value;
+					this.SendPropertyChanged("IsRepeat");
+					this.OnIsRepeatChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Area", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> Area
+		{
+			get
+			{
+				return this._Area;
+			}
+			set
+			{
+				if ((this._Area != value))
+				{
+					this.OnAreaChanging(value);
+					this.SendPropertyChanging();
+					this._Area = value;
+					this.SendPropertyChanged("Area");
+					this.OnAreaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Published", DbType="Bit")]
+		public System.Nullable<bool> Published
+		{
+			get
+			{
+				return this._Published;
+			}
+			set
+			{
+				if ((this._Published != value))
+				{
+					this.OnPublishedChanging(value);
+					this.SendPropertyChanging();
+					this._Published = value;
+					this.SendPropertyChanged("Published");
+					this.OnPublishedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublishedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> PublishedOn
+		{
+			get
+			{
+				return this._PublishedOn;
+			}
+			set
+			{
+				if ((this._PublishedOn != value))
+				{
+					this.OnPublishedOnChanging(value);
+					this.SendPropertyChanging();
+					this._PublishedOn = value;
+					this.SendPropertyChanged("PublishedOn");
+					this.OnPublishedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusId", DbType="Int")]
+		public System.Nullable<int> StatusId
+		{
+			get
+			{
+				return this._StatusId;
+			}
+			set
+			{
+				if ((this._StatusId != value))
+				{
+					this.OnStatusIdChanging(value);
+					this.SendPropertyChanging();
+					this._StatusId = value;
+					this.SendPropertyChanged("StatusId");
+					this.OnStatusIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOwner", DbType="Bit NOT NULL")]
+		public bool IsOwner
+		{
+			get
+			{
+				return this._IsOwner;
+			}
+			set
+			{
+				if ((this._IsOwner != value))
+				{
+					this.OnIsOwnerChanging(value);
+					this.SendPropertyChanging();
+					this._IsOwner = value;
+					this.SendPropertyChanged("IsOwner");
+					this.OnIsOwnerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdminComment", DbType="NVarChar(250)")]
+		public string AdminComment
+		{
+			get
+			{
+				return this._AdminComment;
+			}
+			set
+			{
+				if ((this._AdminComment != value))
+				{
+					this.OnAdminCommentChanging(value);
+					this.SendPropertyChanging();
+					this._AdminComment = value;
+					this.SendPropertyChanged("AdminComment");
+					this.OnAdminCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PageView", DbType="Int NOT NULL")]
+		public int PageView
+		{
+			get
+			{
+				return this._PageView;
+			}
+			set
+			{
+				if ((this._PageView != value))
+				{
+					this.OnPageViewChanging(value);
+					this.SendPropertyChanging();
+					this._PageView = value;
+					this.SendPropertyChanged("PageView");
+					this.OnPageViewChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalRepeat", DbType="Int")]
+		public System.Nullable<int> TotalRepeat
+		{
+			get
+			{
+				return this._TotalRepeat;
+			}
+			set
+			{
+				if ((this._TotalRepeat != value))
+				{
+					this.OnTotalRepeatChanging(value);
+					this.SendPropertyChanging();
+					this._TotalRepeat = value;
+					this.SendPropertyChanged("TotalRepeat");
+					this.OnTotalRepeatChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News_customer_action")]
+	public partial class News_customer_action : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _NewsId;
+		
+		private int _CustomerId;
+		
+		private System.Nullable<bool> _Iscc;
+		
+		private System.Nullable<bool> _Ischeck;
+		
+		private System.Nullable<bool> _IsSpam;
+		
+		private System.Nullable<bool> _IsReport;
+		
+		private System.DateTime _DateCreate;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNewsIdChanging(int value);
+    partial void OnNewsIdChanged();
+    partial void OnCustomerIdChanging(int value);
+    partial void OnCustomerIdChanged();
+    partial void OnIsccChanging(System.Nullable<bool> value);
+    partial void OnIsccChanged();
+    partial void OnIscheckChanging(System.Nullable<bool> value);
+    partial void OnIscheckChanged();
+    partial void OnIsSpamChanging(System.Nullable<bool> value);
+    partial void OnIsSpamChanged();
+    partial void OnIsReportChanging(System.Nullable<bool> value);
+    partial void OnIsReportChanged();
+    partial void OnDateCreateChanging(System.DateTime value);
+    partial void OnDateCreateChanged();
+    #endregion
+		
+		public News_customer_action()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
+		public int NewsId
+		{
+			get
+			{
+				return this._NewsId;
+			}
+			set
+			{
+				if ((this._NewsId != value))
+				{
+					this.OnNewsIdChanging(value);
+					this.SendPropertyChanging();
+					this._NewsId = value;
+					this.SendPropertyChanged("NewsId");
+					this.OnNewsIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerId", DbType="Int NOT NULL")]
+		public int CustomerId
+		{
+			get
+			{
+				return this._CustomerId;
+			}
+			set
+			{
+				if ((this._CustomerId != value))
+				{
+					this.OnCustomerIdChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerId = value;
+					this.SendPropertyChanged("CustomerId");
+					this.OnCustomerIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Iscc", DbType="Bit")]
+		public System.Nullable<bool> Iscc
+		{
+			get
+			{
+				return this._Iscc;
+			}
+			set
+			{
+				if ((this._Iscc != value))
+				{
+					this.OnIsccChanging(value);
+					this.SendPropertyChanging();
+					this._Iscc = value;
+					this.SendPropertyChanged("Iscc");
+					this.OnIsccChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ischeck", DbType="Bit")]
+		public System.Nullable<bool> Ischeck
+		{
+			get
+			{
+				return this._Ischeck;
+			}
+			set
+			{
+				if ((this._Ischeck != value))
+				{
+					this.OnIscheckChanging(value);
+					this.SendPropertyChanging();
+					this._Ischeck = value;
+					this.SendPropertyChanged("Ischeck");
+					this.OnIscheckChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit")]
+		public System.Nullable<bool> IsSpam
+		{
+			get
+			{
+				return this._IsSpam;
+			}
+			set
+			{
+				if ((this._IsSpam != value))
+				{
+					this.OnIsSpamChanging(value);
+					this.SendPropertyChanging();
+					this._IsSpam = value;
+					this.SendPropertyChanged("IsSpam");
+					this.OnIsSpamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsReport", DbType="Bit")]
+		public System.Nullable<bool> IsReport
+		{
+			get
+			{
+				return this._IsReport;
+			}
+			set
+			{
+				if ((this._IsReport != value))
+				{
+					this.OnIsReportChanging(value);
+					this.SendPropertyChanging();
+					this._IsReport = value;
+					this.SendPropertyChanged("IsReport");
+					this.OnIsReportChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreate", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreate
+		{
+			get
+			{
+				return this._DateCreate;
+			}
+			set
+			{
+				if ((this._DateCreate != value))
+				{
+					this.OnDateCreateChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreate = value;
+					this.SendPropertyChanged("DateCreate");
+					this.OnDateCreateChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News_Customer_Mapping")]
 	public partial class News_Customer_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -6277,6 +7447,188 @@ namespace CMS.Data
 					this._Note = value;
 					this.SendPropertyChanged("Note");
 					this.OnNoteChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News_Trash")]
+	public partial class News_Trash : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _NewsId;
+		
+		private int _CustomerID;
+		
+		private bool _Isdelete;
+		
+		private bool _IsSpam;
+		
+		private bool _Isdeleted;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNewsIdChanging(int value);
+    partial void OnNewsIdChanged();
+    partial void OnCustomerIDChanging(int value);
+    partial void OnCustomerIDChanged();
+    partial void OnIsdeleteChanging(bool value);
+    partial void OnIsdeleteChanged();
+    partial void OnIsSpamChanging(bool value);
+    partial void OnIsSpamChanged();
+    partial void OnIsdeletedChanging(bool value);
+    partial void OnIsdeletedChanged();
+    #endregion
+		
+		public News_Trash()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
+		public int NewsId
+		{
+			get
+			{
+				return this._NewsId;
+			}
+			set
+			{
+				if ((this._NewsId != value))
+				{
+					this.OnNewsIdChanging(value);
+					this.SendPropertyChanging();
+					this._NewsId = value;
+					this.SendPropertyChanged("NewsId");
+					this.OnNewsIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="Int NOT NULL")]
+		public int CustomerID
+		{
+			get
+			{
+				return this._CustomerID;
+			}
+			set
+			{
+				if ((this._CustomerID != value))
+				{
+					this.OnCustomerIDChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerID = value;
+					this.SendPropertyChanged("CustomerID");
+					this.OnCustomerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Isdelete", DbType="Bit NOT NULL")]
+		public bool Isdelete
+		{
+			get
+			{
+				return this._Isdelete;
+			}
+			set
+			{
+				if ((this._Isdelete != value))
+				{
+					this.OnIsdeleteChanging(value);
+					this.SendPropertyChanging();
+					this._Isdelete = value;
+					this.SendPropertyChanged("Isdelete");
+					this.OnIsdeleteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit NOT NULL")]
+		public bool IsSpam
+		{
+			get
+			{
+				return this._IsSpam;
+			}
+			set
+			{
+				if ((this._IsSpam != value))
+				{
+					this.OnIsSpamChanging(value);
+					this.SendPropertyChanging();
+					this._IsSpam = value;
+					this.SendPropertyChanged("IsSpam");
+					this.OnIsSpamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Isdeleted", DbType="Bit NOT NULL")]
+		public bool Isdeleted
+		{
+			get
+			{
+				return this._Isdeleted;
+			}
+			set
+			{
+				if ((this._Isdeleted != value))
+				{
+					this.OnIsdeletedChanging(value);
+					this.SendPropertyChanging();
+					this._Isdeleted = value;
+					this.SendPropertyChanged("Isdeleted");
+					this.OnIsdeletedChanged();
 				}
 			}
 		}
@@ -6727,6 +8079,332 @@ namespace CMS.Data
 					this._Name = value;
 					this.SendPropertyChanged("Name");
 					this.OnNameChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Notify")]
+	public partial class Notify : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Nullable<int> _Userid;
+		
+		private System.Nullable<int> _Newsid;
+		
+		private System.Nullable<System.DateTime> _DateSend;
+		
+		private string _UserName;
+		
+		private string _Title;
+		
+		private System.Nullable<int> _Type;
+		
+		private System.Nullable<bool> _Accepted;
+		
+		private System.Nullable<bool> _ViewFlag;
+		
+		private System.Nullable<int> _SendTo;
+		
+		private System.Nullable<bool> _SendFlag;
+		
+		private string _Description;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnUseridChanging(System.Nullable<int> value);
+    partial void OnUseridChanged();
+    partial void OnNewsidChanging(System.Nullable<int> value);
+    partial void OnNewsidChanged();
+    partial void OnDateSendChanging(System.Nullable<System.DateTime> value);
+    partial void OnDateSendChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
+    partial void OnTypeChanging(System.Nullable<int> value);
+    partial void OnTypeChanged();
+    partial void OnAcceptedChanging(System.Nullable<bool> value);
+    partial void OnAcceptedChanged();
+    partial void OnViewFlagChanging(System.Nullable<bool> value);
+    partial void OnViewFlagChanged();
+    partial void OnSendToChanging(System.Nullable<int> value);
+    partial void OnSendToChanged();
+    partial void OnSendFlagChanging(System.Nullable<bool> value);
+    partial void OnSendFlagChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public Notify()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Userid", DbType="Int")]
+		public System.Nullable<int> Userid
+		{
+			get
+			{
+				return this._Userid;
+			}
+			set
+			{
+				if ((this._Userid != value))
+				{
+					this.OnUseridChanging(value);
+					this.SendPropertyChanging();
+					this._Userid = value;
+					this.SendPropertyChanged("Userid");
+					this.OnUseridChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Newsid", DbType="Int")]
+		public System.Nullable<int> Newsid
+		{
+			get
+			{
+				return this._Newsid;
+			}
+			set
+			{
+				if ((this._Newsid != value))
+				{
+					this.OnNewsidChanging(value);
+					this.SendPropertyChanging();
+					this._Newsid = value;
+					this.SendPropertyChanged("Newsid");
+					this.OnNewsidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateSend", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DateSend
+		{
+			get
+			{
+				return this._DateSend;
+			}
+			set
+			{
+				if ((this._DateSend != value))
+				{
+					this.OnDateSendChanging(value);
+					this.SendPropertyChanging();
+					this._DateSend = value;
+					this.SendPropertyChanged("DateSend");
+					this.OnDateSendChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(250)")]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(250)")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="Int")]
+		public System.Nullable<int> Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Accepted", DbType="Bit")]
+		public System.Nullable<bool> Accepted
+		{
+			get
+			{
+				return this._Accepted;
+			}
+			set
+			{
+				if ((this._Accepted != value))
+				{
+					this.OnAcceptedChanging(value);
+					this.SendPropertyChanging();
+					this._Accepted = value;
+					this.SendPropertyChanged("Accepted");
+					this.OnAcceptedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ViewFlag", DbType="Bit")]
+		public System.Nullable<bool> ViewFlag
+		{
+			get
+			{
+				return this._ViewFlag;
+			}
+			set
+			{
+				if ((this._ViewFlag != value))
+				{
+					this.OnViewFlagChanging(value);
+					this.SendPropertyChanging();
+					this._ViewFlag = value;
+					this.SendPropertyChanged("ViewFlag");
+					this.OnViewFlagChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendTo", DbType="Int")]
+		public System.Nullable<int> SendTo
+		{
+			get
+			{
+				return this._SendTo;
+			}
+			set
+			{
+				if ((this._SendTo != value))
+				{
+					this.OnSendToChanging(value);
+					this.SendPropertyChanging();
+					this._SendTo = value;
+					this.SendPropertyChanged("SendTo");
+					this.OnSendToChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendFlag", DbType="Bit")]
+		public System.Nullable<bool> SendFlag
+		{
+			get
+			{
+				return this._SendFlag;
+			}
+			set
+			{
+				if ((this._SendFlag != value))
+				{
+					this.OnSendFlagChanging(value);
+					this.SendPropertyChanging();
+					this._SendFlag = value;
+					this.SendPropertyChanged("SendFlag");
+					this.OnSendFlagChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
 				}
 			}
 		}
@@ -8956,6 +10634,164 @@ namespace CMS.Data
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ReasonReportNews")]
+	public partial class ReasonReportNew : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _NewsId;
+		
+		private int _UserId;
+		
+		private string _Note;
+		
+		private System.DateTime _DateCreate;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNewsIdChanging(int value);
+    partial void OnNewsIdChanged();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnNoteChanging(string value);
+    partial void OnNoteChanged();
+    partial void OnDateCreateChanging(System.DateTime value);
+    partial void OnDateCreateChanged();
+    #endregion
+		
+		public ReasonReportNew()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
+		public int NewsId
+		{
+			get
+			{
+				return this._NewsId;
+			}
+			set
+			{
+				if ((this._NewsId != value))
+				{
+					this.OnNewsIdChanging(value);
+					this.SendPropertyChanging();
+					this._NewsId = value;
+					this.SendPropertyChanged("NewsId");
+					this.OnNewsIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int NOT NULL")]
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Note", DbType="NVarChar(50)")]
+		public string Note
+		{
+			get
+			{
+				return this._Note;
+			}
+			set
+			{
+				if ((this._Note != value))
+				{
+					this.OnNoteChanging(value);
+					this.SendPropertyChanging();
+					this._Note = value;
+					this.SendPropertyChanged("Note");
+					this.OnNoteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreate", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreate
+		{
+			get
+			{
+				return this._DateCreate;
+			}
+			set
+			{
+				if ((this._DateCreate != value))
+				{
+					this.OnDateCreateChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreate = value;
+					this.SendPropertyChanged("DateCreate");
+					this.OnDateCreateChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Role_Access")]
 	public partial class Role_Access
 	{
@@ -10437,6 +12273,620 @@ namespace CMS.Data
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Guid _CustomerGuid;
+		
+		private string _UserName;
+		
+		private string _Email;
+		
+		private string _Phone;
+		
+		private string _Password;
+		
+		private System.Nullable<bool> _IsDeleted;
+		
+		private string _LastIpAddress;
+		
+		private System.Nullable<int> _CreatedBy;
+		
+		private System.Nullable<System.DateTime> _CreatedOn;
+		
+		private System.Nullable<int> _ModifiedBy;
+		
+		private System.Nullable<int> _ModifiedOn;
+		
+		private System.Nullable<System.DateTime> _LastLoginDate;
+		
+		private System.Nullable<System.DateTime> _LastActivityDate;
+		
+		private string _Notes;
+		
+		private System.Nullable<int> _ManagerBy;
+		
+		private System.Nullable<bool> _IsMember;
+		
+		private System.Nullable<bool> _IsExpired;
+		
+		private System.Nullable<bool> _IsLoggedIn;
+		
+		private string _FullName;
+		
+		private string _Address;
+		
+		private System.Nullable<bool> _Sex;
+		
+		private System.Nullable<bool> _IsFree;
+		
+		private System.Nullable<bool> _IsNotify;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCustomerGuidChanging(System.Guid value);
+    partial void OnCustomerGuidChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnPhoneChanging(string value);
+    partial void OnPhoneChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    partial void OnIsDeletedChanging(System.Nullable<bool> value);
+    partial void OnIsDeletedChanged();
+    partial void OnLastIpAddressChanging(string value);
+    partial void OnLastIpAddressChanged();
+    partial void OnCreatedByChanging(System.Nullable<int> value);
+    partial void OnCreatedByChanged();
+    partial void OnCreatedOnChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedOnChanged();
+    partial void OnModifiedByChanging(System.Nullable<int> value);
+    partial void OnModifiedByChanged();
+    partial void OnModifiedOnChanging(System.Nullable<int> value);
+    partial void OnModifiedOnChanged();
+    partial void OnLastLoginDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastLoginDateChanged();
+    partial void OnLastActivityDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastActivityDateChanged();
+    partial void OnNotesChanging(string value);
+    partial void OnNotesChanged();
+    partial void OnManagerByChanging(System.Nullable<int> value);
+    partial void OnManagerByChanged();
+    partial void OnIsMemberChanging(System.Nullable<bool> value);
+    partial void OnIsMemberChanged();
+    partial void OnIsExpiredChanging(System.Nullable<bool> value);
+    partial void OnIsExpiredChanged();
+    partial void OnIsLoggedInChanging(System.Nullable<bool> value);
+    partial void OnIsLoggedInChanged();
+    partial void OnFullNameChanging(string value);
+    partial void OnFullNameChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnSexChanging(System.Nullable<bool> value);
+    partial void OnSexChanged();
+    partial void OnIsFreeChanging(System.Nullable<bool> value);
+    partial void OnIsFreeChanged();
+    partial void OnIsNotifyChanging(System.Nullable<bool> value);
+    partial void OnIsNotifyChanged();
+    #endregion
+		
+		public User()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerGuid", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid CustomerGuid
+		{
+			get
+			{
+				return this._CustomerGuid;
+			}
+			set
+			{
+				if ((this._CustomerGuid != value))
+				{
+					this.OnCustomerGuidChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerGuid = value;
+					this.SendPropertyChanged("CustomerGuid");
+					this.OnCustomerGuidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(1000)")]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(1000)")]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(50)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(MAX)")]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Bit")]
+		public System.Nullable<bool> IsDeleted
+		{
+			get
+			{
+				return this._IsDeleted;
+			}
+			set
+			{
+				if ((this._IsDeleted != value))
+				{
+					this.OnIsDeletedChanging(value);
+					this.SendPropertyChanging();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastIpAddress", DbType="NVarChar(MAX)")]
+		public string LastIpAddress
+		{
+			get
+			{
+				return this._LastIpAddress;
+			}
+			set
+			{
+				if ((this._LastIpAddress != value))
+				{
+					this.OnLastIpAddressChanging(value);
+					this.SendPropertyChanging();
+					this._LastIpAddress = value;
+					this.SendPropertyChanged("LastIpAddress");
+					this.OnLastIpAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int")]
+		public System.Nullable<int> CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedBy", DbType="Int")]
+		public System.Nullable<int> ModifiedBy
+		{
+			get
+			{
+				return this._ModifiedBy;
+			}
+			set
+			{
+				if ((this._ModifiedBy != value))
+				{
+					this.OnModifiedByChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedBy = value;
+					this.SendPropertyChanged("ModifiedBy");
+					this.OnModifiedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedOn", DbType="Int")]
+		public System.Nullable<int> ModifiedOn
+		{
+			get
+			{
+				return this._ModifiedOn;
+			}
+			set
+			{
+				if ((this._ModifiedOn != value))
+				{
+					this.OnModifiedOnChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedOn = value;
+					this.SendPropertyChanged("ModifiedOn");
+					this.OnModifiedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastLoginDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastLoginDate
+		{
+			get
+			{
+				return this._LastLoginDate;
+			}
+			set
+			{
+				if ((this._LastLoginDate != value))
+				{
+					this.OnLastLoginDateChanging(value);
+					this.SendPropertyChanging();
+					this._LastLoginDate = value;
+					this.SendPropertyChanged("LastLoginDate");
+					this.OnLastLoginDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastActivityDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastActivityDate
+		{
+			get
+			{
+				return this._LastActivityDate;
+			}
+			set
+			{
+				if ((this._LastActivityDate != value))
+				{
+					this.OnLastActivityDateChanging(value);
+					this.SendPropertyChanging();
+					this._LastActivityDate = value;
+					this.SendPropertyChanged("LastActivityDate");
+					this.OnLastActivityDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="NVarChar(MAX)")]
+		public string Notes
+		{
+			get
+			{
+				return this._Notes;
+			}
+			set
+			{
+				if ((this._Notes != value))
+				{
+					this.OnNotesChanging(value);
+					this.SendPropertyChanging();
+					this._Notes = value;
+					this.SendPropertyChanged("Notes");
+					this.OnNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerBy", DbType="Int")]
+		public System.Nullable<int> ManagerBy
+		{
+			get
+			{
+				return this._ManagerBy;
+			}
+			set
+			{
+				if ((this._ManagerBy != value))
+				{
+					this.OnManagerByChanging(value);
+					this.SendPropertyChanging();
+					this._ManagerBy = value;
+					this.SendPropertyChanged("ManagerBy");
+					this.OnManagerByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsMember", DbType="Bit")]
+		public System.Nullable<bool> IsMember
+		{
+			get
+			{
+				return this._IsMember;
+			}
+			set
+			{
+				if ((this._IsMember != value))
+				{
+					this.OnIsMemberChanging(value);
+					this.SendPropertyChanging();
+					this._IsMember = value;
+					this.SendPropertyChanged("IsMember");
+					this.OnIsMemberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsExpired", DbType="Bit")]
+		public System.Nullable<bool> IsExpired
+		{
+			get
+			{
+				return this._IsExpired;
+			}
+			set
+			{
+				if ((this._IsExpired != value))
+				{
+					this.OnIsExpiredChanging(value);
+					this.SendPropertyChanging();
+					this._IsExpired = value;
+					this.SendPropertyChanged("IsExpired");
+					this.OnIsExpiredChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLoggedIn", DbType="Bit")]
+		public System.Nullable<bool> IsLoggedIn
+		{
+			get
+			{
+				return this._IsLoggedIn;
+			}
+			set
+			{
+				if ((this._IsLoggedIn != value))
+				{
+					this.OnIsLoggedInChanging(value);
+					this.SendPropertyChanging();
+					this._IsLoggedIn = value;
+					this.SendPropertyChanged("IsLoggedIn");
+					this.OnIsLoggedInChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullName", DbType="NVarChar(1000)")]
+		public string FullName
+		{
+			get
+			{
+				return this._FullName;
+			}
+			set
+			{
+				if ((this._FullName != value))
+				{
+					this.OnFullNameChanging(value);
+					this.SendPropertyChanging();
+					this._FullName = value;
+					this.SendPropertyChanged("FullName");
+					this.OnFullNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(MAX)")]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this.OnAddressChanging(value);
+					this.SendPropertyChanging();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sex", DbType="Bit")]
+		public System.Nullable<bool> Sex
+		{
+			get
+			{
+				return this._Sex;
+			}
+			set
+			{
+				if ((this._Sex != value))
+				{
+					this.OnSexChanging(value);
+					this.SendPropertyChanging();
+					this._Sex = value;
+					this.SendPropertyChanged("Sex");
+					this.OnSexChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFree", DbType="Bit")]
+		public System.Nullable<bool> IsFree
+		{
+			get
+			{
+				return this._IsFree;
+			}
+			set
+			{
+				if ((this._IsFree != value))
+				{
+					this.OnIsFreeChanging(value);
+					this.SendPropertyChanging();
+					this._IsFree = value;
+					this.SendPropertyChanged("IsFree");
+					this.OnIsFreeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsNotify", DbType="Bit")]
+		public System.Nullable<bool> IsNotify
+		{
+			get
+			{
+				return this._IsNotify;
+			}
+			set
+			{
+				if ((this._IsNotify != value))
+				{
+					this.OnIsNotifyChanging(value);
+					this.SendPropertyChanging();
+					this._IsNotify = value;
+					this.SendPropertyChanged("IsNotify");
+					this.OnIsNotifyChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="HangFire.AggregatedCounter")]
 	public partial class AggregatedCounter : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -11873,2432 +14323,6 @@ namespace CMS.Data
 					this._ExpireAt = value;
 					this.SendPropertyChanged("ExpireAt");
 					this.OnExpireAtChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Blacklist")]
-	public partial class Blacklist : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _Words;
-		
-		private string _Description;
-		
-		private string _LinkUrl;
-		
-		private System.DateTime _CreatedOn;
-		
-		private int _Type;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnWordsChanging(string value);
-    partial void OnWordsChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
-    partial void OnLinkUrlChanging(string value);
-    partial void OnLinkUrlChanged();
-    partial void OnCreatedOnChanging(System.DateTime value);
-    partial void OnCreatedOnChanged();
-    partial void OnTypeChanging(int value);
-    partial void OnTypeChanged();
-    #endregion
-		
-		public Blacklist()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Words", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
-		public string Words
-		{
-			get
-			{
-				return this._Words;
-			}
-			set
-			{
-				if ((this._Words != value))
-				{
-					this.OnWordsChanging(value);
-					this.SendPropertyChanging();
-					this._Words = value;
-					this.SendPropertyChanged("Words");
-					this.OnWordsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(1000)")]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LinkUrl", DbType="NVarChar(1000)")]
-		public string LinkUrl
-		{
-			get
-			{
-				return this._LinkUrl;
-			}
-			set
-			{
-				if ((this._LinkUrl != value))
-				{
-					this.OnLinkUrlChanging(value);
-					this.SendPropertyChanging();
-					this._LinkUrl = value;
-					this.SendPropertyChanged("LinkUrl");
-					this.OnLinkUrlChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedOn
-		{
-			get
-			{
-				return this._CreatedOn;
-			}
-			set
-			{
-				if ((this._CreatedOn != value))
-				{
-					this.OnCreatedOnChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedOn = value;
-					this.SendPropertyChanged("CreatedOn");
-					this.OnCreatedOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="Int NOT NULL")]
-		public int Type
-		{
-			get
-			{
-				return this._Type;
-			}
-			set
-			{
-				if ((this._Type != value))
-				{
-					this.OnTypeChanging(value);
-					this.SendPropertyChanging();
-					this._Type = value;
-					this.SendPropertyChanged("Type");
-					this.OnTypeChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News_Trash")]
-	public partial class News_Trash : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private int _NewsId;
-		
-		private int _CustomerID;
-		
-		private bool _Isdelete;
-		
-		private bool _IsSpam;
-		
-		private bool _Isdeleted;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnNewsIdChanging(int value);
-    partial void OnNewsIdChanged();
-    partial void OnCustomerIDChanging(int value);
-    partial void OnCustomerIDChanged();
-    partial void OnIsdeleteChanging(bool value);
-    partial void OnIsdeleteChanged();
-    partial void OnIsSpamChanging(bool value);
-    partial void OnIsSpamChanged();
-    partial void OnIsdeletedChanging(bool value);
-    partial void OnIsdeletedChanged();
-    #endregion
-		
-		public News_Trash()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
-		public int NewsId
-		{
-			get
-			{
-				return this._NewsId;
-			}
-			set
-			{
-				if ((this._NewsId != value))
-				{
-					this.OnNewsIdChanging(value);
-					this.SendPropertyChanging();
-					this._NewsId = value;
-					this.SendPropertyChanged("NewsId");
-					this.OnNewsIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="Int NOT NULL")]
-		public int CustomerID
-		{
-			get
-			{
-				return this._CustomerID;
-			}
-			set
-			{
-				if ((this._CustomerID != value))
-				{
-					this.OnCustomerIDChanging(value);
-					this.SendPropertyChanging();
-					this._CustomerID = value;
-					this.SendPropertyChanged("CustomerID");
-					this.OnCustomerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Isdelete", DbType="Bit NOT NULL")]
-		public bool Isdelete
-		{
-			get
-			{
-				return this._Isdelete;
-			}
-			set
-			{
-				if ((this._Isdelete != value))
-				{
-					this.OnIsdeleteChanging(value);
-					this.SendPropertyChanging();
-					this._Isdelete = value;
-					this.SendPropertyChanged("Isdelete");
-					this.OnIsdeleteChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit NOT NULL")]
-		public bool IsSpam
-		{
-			get
-			{
-				return this._IsSpam;
-			}
-			set
-			{
-				if ((this._IsSpam != value))
-				{
-					this.OnIsSpamChanging(value);
-					this.SendPropertyChanging();
-					this._IsSpam = value;
-					this.SendPropertyChanged("IsSpam");
-					this.OnIsSpamChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Isdeleted", DbType="Bit NOT NULL")]
-		public bool Isdeleted
-		{
-			get
-			{
-				return this._Isdeleted;
-			}
-			set
-			{
-				if ((this._Isdeleted != value))
-				{
-					this.OnIsdeletedChanging(value);
-					this.SendPropertyChanging();
-					this._Isdeleted = value;
-					this.SendPropertyChanged("Isdeleted");
-					this.OnIsdeletedChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Notify")]
-	public partial class Notify : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private System.Nullable<int> _Userid;
-		
-		private System.Nullable<int> _Newsid;
-		
-		private System.Nullable<System.DateTime> _DateSend;
-		
-		private string _UserName;
-		
-		private string _Title;
-		
-		private System.Nullable<int> _Type;
-		
-		private System.Nullable<bool> _Accepted;
-		
-		private System.Nullable<bool> _ViewFlag;
-		
-		private System.Nullable<int> _SendTo;
-		
-		private System.Nullable<bool> _SendFlag;
-		
-		private string _Description;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnUseridChanging(System.Nullable<int> value);
-    partial void OnUseridChanged();
-    partial void OnNewsidChanging(System.Nullable<int> value);
-    partial void OnNewsidChanged();
-    partial void OnDateSendChanging(System.Nullable<System.DateTime> value);
-    partial void OnDateSendChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnTitleChanging(string value);
-    partial void OnTitleChanged();
-    partial void OnTypeChanging(System.Nullable<int> value);
-    partial void OnTypeChanged();
-    partial void OnAcceptedChanging(System.Nullable<bool> value);
-    partial void OnAcceptedChanged();
-    partial void OnViewFlagChanging(System.Nullable<bool> value);
-    partial void OnViewFlagChanged();
-    partial void OnSendToChanging(System.Nullable<int> value);
-    partial void OnSendToChanged();
-    partial void OnSendFlagChanging(System.Nullable<bool> value);
-    partial void OnSendFlagChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
-    #endregion
-		
-		public Notify()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Userid", DbType="Int")]
-		public System.Nullable<int> Userid
-		{
-			get
-			{
-				return this._Userid;
-			}
-			set
-			{
-				if ((this._Userid != value))
-				{
-					this.OnUseridChanging(value);
-					this.SendPropertyChanging();
-					this._Userid = value;
-					this.SendPropertyChanged("Userid");
-					this.OnUseridChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Newsid", DbType="Int")]
-		public System.Nullable<int> Newsid
-		{
-			get
-			{
-				return this._Newsid;
-			}
-			set
-			{
-				if ((this._Newsid != value))
-				{
-					this.OnNewsidChanging(value);
-					this.SendPropertyChanging();
-					this._Newsid = value;
-					this.SendPropertyChanged("Newsid");
-					this.OnNewsidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateSend", DbType="DateTime")]
-		public System.Nullable<System.DateTime> DateSend
-		{
-			get
-			{
-				return this._DateSend;
-			}
-			set
-			{
-				if ((this._DateSend != value))
-				{
-					this.OnDateSendChanging(value);
-					this.SendPropertyChanging();
-					this._DateSend = value;
-					this.SendPropertyChanged("DateSend");
-					this.OnDateSendChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(250)")]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(250)")]
-		public string Title
-		{
-			get
-			{
-				return this._Title;
-			}
-			set
-			{
-				if ((this._Title != value))
-				{
-					this.OnTitleChanging(value);
-					this.SendPropertyChanging();
-					this._Title = value;
-					this.SendPropertyChanged("Title");
-					this.OnTitleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="Int")]
-		public System.Nullable<int> Type
-		{
-			get
-			{
-				return this._Type;
-			}
-			set
-			{
-				if ((this._Type != value))
-				{
-					this.OnTypeChanging(value);
-					this.SendPropertyChanging();
-					this._Type = value;
-					this.SendPropertyChanged("Type");
-					this.OnTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Accepted", DbType="Bit")]
-		public System.Nullable<bool> Accepted
-		{
-			get
-			{
-				return this._Accepted;
-			}
-			set
-			{
-				if ((this._Accepted != value))
-				{
-					this.OnAcceptedChanging(value);
-					this.SendPropertyChanging();
-					this._Accepted = value;
-					this.SendPropertyChanged("Accepted");
-					this.OnAcceptedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ViewFlag", DbType="Bit")]
-		public System.Nullable<bool> ViewFlag
-		{
-			get
-			{
-				return this._ViewFlag;
-			}
-			set
-			{
-				if ((this._ViewFlag != value))
-				{
-					this.OnViewFlagChanging(value);
-					this.SendPropertyChanging();
-					this._ViewFlag = value;
-					this.SendPropertyChanged("ViewFlag");
-					this.OnViewFlagChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendTo", DbType="Int")]
-		public System.Nullable<int> SendTo
-		{
-			get
-			{
-				return this._SendTo;
-			}
-			set
-			{
-				if ((this._SendTo != value))
-				{
-					this.OnSendToChanging(value);
-					this.SendPropertyChanging();
-					this._SendTo = value;
-					this.SendPropertyChanged("SendTo");
-					this.OnSendToChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendFlag", DbType="Bit")]
-		public System.Nullable<bool> SendFlag
-		{
-			get
-			{
-				return this._SendFlag;
-			}
-			set
-			{
-				if ((this._SendFlag != value))
-				{
-					this.OnSendFlagChanging(value);
-					this.SendPropertyChanging();
-					this._SendFlag = value;
-					this.SendPropertyChanged("SendFlag");
-					this.OnSendFlagChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
-	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private System.Guid _CustomerGuid;
-		
-		private string _UserName;
-		
-		private string _Email;
-		
-		private string _Phone;
-		
-		private string _Password;
-		
-		private System.Nullable<bool> _IsDeleted;
-		
-		private string _LastIpAddress;
-		
-		private System.Nullable<int> _CreatedBy;
-		
-		private System.Nullable<System.DateTime> _CreatedOn;
-		
-		private System.Nullable<int> _ModifiedBy;
-		
-		private System.Nullable<int> _ModifiedOn;
-		
-		private System.Nullable<System.DateTime> _LastLoginDate;
-		
-		private System.Nullable<System.DateTime> _LastActivityDate;
-		
-		private string _Notes;
-		
-		private System.Nullable<int> _ManagerBy;
-		
-		private System.Nullable<bool> _IsMember;
-		
-		private System.Nullable<bool> _IsExpired;
-		
-		private System.Nullable<bool> _IsLoggedIn;
-		
-		private string _FullName;
-		
-		private string _Address;
-		
-		private System.Nullable<bool> _Sex;
-		
-		private System.Nullable<bool> _IsFree;
-		
-		private System.Nullable<bool> _IsNotify;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnCustomerGuidChanging(System.Guid value);
-    partial void OnCustomerGuidChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnEmailChanging(string value);
-    partial void OnEmailChanged();
-    partial void OnPhoneChanging(string value);
-    partial void OnPhoneChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    partial void OnIsDeletedChanging(System.Nullable<bool> value);
-    partial void OnIsDeletedChanged();
-    partial void OnLastIpAddressChanging(string value);
-    partial void OnLastIpAddressChanged();
-    partial void OnCreatedByChanging(System.Nullable<int> value);
-    partial void OnCreatedByChanged();
-    partial void OnCreatedOnChanging(System.Nullable<System.DateTime> value);
-    partial void OnCreatedOnChanged();
-    partial void OnModifiedByChanging(System.Nullable<int> value);
-    partial void OnModifiedByChanged();
-    partial void OnModifiedOnChanging(System.Nullable<int> value);
-    partial void OnModifiedOnChanged();
-    partial void OnLastLoginDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnLastLoginDateChanged();
-    partial void OnLastActivityDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnLastActivityDateChanged();
-    partial void OnNotesChanging(string value);
-    partial void OnNotesChanged();
-    partial void OnManagerByChanging(System.Nullable<int> value);
-    partial void OnManagerByChanged();
-    partial void OnIsMemberChanging(System.Nullable<bool> value);
-    partial void OnIsMemberChanged();
-    partial void OnIsExpiredChanging(System.Nullable<bool> value);
-    partial void OnIsExpiredChanged();
-    partial void OnIsLoggedInChanging(System.Nullable<bool> value);
-    partial void OnIsLoggedInChanged();
-    partial void OnFullNameChanging(string value);
-    partial void OnFullNameChanged();
-    partial void OnAddressChanging(string value);
-    partial void OnAddressChanged();
-    partial void OnSexChanging(System.Nullable<bool> value);
-    partial void OnSexChanged();
-    partial void OnIsFreeChanging(System.Nullable<bool> value);
-    partial void OnIsFreeChanged();
-    partial void OnIsNotifyChanging(System.Nullable<bool> value);
-    partial void OnIsNotifyChanged();
-    #endregion
-		
-		public User()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerGuid", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid CustomerGuid
-		{
-			get
-			{
-				return this._CustomerGuid;
-			}
-			set
-			{
-				if ((this._CustomerGuid != value))
-				{
-					this.OnCustomerGuidChanging(value);
-					this.SendPropertyChanging();
-					this._CustomerGuid = value;
-					this.SendPropertyChanged("CustomerGuid");
-					this.OnCustomerGuidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(1000)")]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(1000)")]
-		public string Email
-		{
-			get
-			{
-				return this._Email;
-			}
-			set
-			{
-				if ((this._Email != value))
-				{
-					this.OnEmailChanging(value);
-					this.SendPropertyChanging();
-					this._Email = value;
-					this.SendPropertyChanged("Email");
-					this.OnEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(50)")]
-		public string Phone
-		{
-			get
-			{
-				return this._Phone;
-			}
-			set
-			{
-				if ((this._Phone != value))
-				{
-					this.OnPhoneChanging(value);
-					this.SendPropertyChanging();
-					this._Phone = value;
-					this.SendPropertyChanged("Phone");
-					this.OnPhoneChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(MAX)")]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Bit")]
-		public System.Nullable<bool> IsDeleted
-		{
-			get
-			{
-				return this._IsDeleted;
-			}
-			set
-			{
-				if ((this._IsDeleted != value))
-				{
-					this.OnIsDeletedChanging(value);
-					this.SendPropertyChanging();
-					this._IsDeleted = value;
-					this.SendPropertyChanged("IsDeleted");
-					this.OnIsDeletedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastIpAddress", DbType="NVarChar(MAX)")]
-		public string LastIpAddress
-		{
-			get
-			{
-				return this._LastIpAddress;
-			}
-			set
-			{
-				if ((this._LastIpAddress != value))
-				{
-					this.OnLastIpAddressChanging(value);
-					this.SendPropertyChanging();
-					this._LastIpAddress = value;
-					this.SendPropertyChanged("LastIpAddress");
-					this.OnLastIpAddressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int")]
-		public System.Nullable<int> CreatedBy
-		{
-			get
-			{
-				return this._CreatedBy;
-			}
-			set
-			{
-				if ((this._CreatedBy != value))
-				{
-					this.OnCreatedByChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedBy = value;
-					this.SendPropertyChanged("CreatedBy");
-					this.OnCreatedByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CreatedOn
-		{
-			get
-			{
-				return this._CreatedOn;
-			}
-			set
-			{
-				if ((this._CreatedOn != value))
-				{
-					this.OnCreatedOnChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedOn = value;
-					this.SendPropertyChanged("CreatedOn");
-					this.OnCreatedOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedBy", DbType="Int")]
-		public System.Nullable<int> ModifiedBy
-		{
-			get
-			{
-				return this._ModifiedBy;
-			}
-			set
-			{
-				if ((this._ModifiedBy != value))
-				{
-					this.OnModifiedByChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedBy = value;
-					this.SendPropertyChanged("ModifiedBy");
-					this.OnModifiedByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedOn", DbType="Int")]
-		public System.Nullable<int> ModifiedOn
-		{
-			get
-			{
-				return this._ModifiedOn;
-			}
-			set
-			{
-				if ((this._ModifiedOn != value))
-				{
-					this.OnModifiedOnChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedOn = value;
-					this.SendPropertyChanged("ModifiedOn");
-					this.OnModifiedOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastLoginDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LastLoginDate
-		{
-			get
-			{
-				return this._LastLoginDate;
-			}
-			set
-			{
-				if ((this._LastLoginDate != value))
-				{
-					this.OnLastLoginDateChanging(value);
-					this.SendPropertyChanging();
-					this._LastLoginDate = value;
-					this.SendPropertyChanged("LastLoginDate");
-					this.OnLastLoginDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastActivityDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LastActivityDate
-		{
-			get
-			{
-				return this._LastActivityDate;
-			}
-			set
-			{
-				if ((this._LastActivityDate != value))
-				{
-					this.OnLastActivityDateChanging(value);
-					this.SendPropertyChanging();
-					this._LastActivityDate = value;
-					this.SendPropertyChanged("LastActivityDate");
-					this.OnLastActivityDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="NVarChar(MAX)")]
-		public string Notes
-		{
-			get
-			{
-				return this._Notes;
-			}
-			set
-			{
-				if ((this._Notes != value))
-				{
-					this.OnNotesChanging(value);
-					this.SendPropertyChanging();
-					this._Notes = value;
-					this.SendPropertyChanged("Notes");
-					this.OnNotesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerBy", DbType="Int")]
-		public System.Nullable<int> ManagerBy
-		{
-			get
-			{
-				return this._ManagerBy;
-			}
-			set
-			{
-				if ((this._ManagerBy != value))
-				{
-					this.OnManagerByChanging(value);
-					this.SendPropertyChanging();
-					this._ManagerBy = value;
-					this.SendPropertyChanged("ManagerBy");
-					this.OnManagerByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsMember", DbType="Bit")]
-		public System.Nullable<bool> IsMember
-		{
-			get
-			{
-				return this._IsMember;
-			}
-			set
-			{
-				if ((this._IsMember != value))
-				{
-					this.OnIsMemberChanging(value);
-					this.SendPropertyChanging();
-					this._IsMember = value;
-					this.SendPropertyChanged("IsMember");
-					this.OnIsMemberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsExpired", DbType="Bit")]
-		public System.Nullable<bool> IsExpired
-		{
-			get
-			{
-				return this._IsExpired;
-			}
-			set
-			{
-				if ((this._IsExpired != value))
-				{
-					this.OnIsExpiredChanging(value);
-					this.SendPropertyChanging();
-					this._IsExpired = value;
-					this.SendPropertyChanged("IsExpired");
-					this.OnIsExpiredChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLoggedIn", DbType="Bit")]
-		public System.Nullable<bool> IsLoggedIn
-		{
-			get
-			{
-				return this._IsLoggedIn;
-			}
-			set
-			{
-				if ((this._IsLoggedIn != value))
-				{
-					this.OnIsLoggedInChanging(value);
-					this.SendPropertyChanging();
-					this._IsLoggedIn = value;
-					this.SendPropertyChanged("IsLoggedIn");
-					this.OnIsLoggedInChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullName", DbType="NVarChar(1000)")]
-		public string FullName
-		{
-			get
-			{
-				return this._FullName;
-			}
-			set
-			{
-				if ((this._FullName != value))
-				{
-					this.OnFullNameChanging(value);
-					this.SendPropertyChanging();
-					this._FullName = value;
-					this.SendPropertyChanged("FullName");
-					this.OnFullNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(MAX)")]
-		public string Address
-		{
-			get
-			{
-				return this._Address;
-			}
-			set
-			{
-				if ((this._Address != value))
-				{
-					this.OnAddressChanging(value);
-					this.SendPropertyChanging();
-					this._Address = value;
-					this.SendPropertyChanged("Address");
-					this.OnAddressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sex", DbType="Bit")]
-		public System.Nullable<bool> Sex
-		{
-			get
-			{
-				return this._Sex;
-			}
-			set
-			{
-				if ((this._Sex != value))
-				{
-					this.OnSexChanging(value);
-					this.SendPropertyChanging();
-					this._Sex = value;
-					this.SendPropertyChanged("Sex");
-					this.OnSexChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFree", DbType="Bit")]
-		public System.Nullable<bool> IsFree
-		{
-			get
-			{
-				return this._IsFree;
-			}
-			set
-			{
-				if ((this._IsFree != value))
-				{
-					this.OnIsFreeChanging(value);
-					this.SendPropertyChanging();
-					this._IsFree = value;
-					this.SendPropertyChanged("IsFree");
-					this.OnIsFreeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsNotify", DbType="Bit")]
-		public System.Nullable<bool> IsNotify
-		{
-			get
-			{
-				return this._IsNotify;
-			}
-			set
-			{
-				if ((this._IsNotify != value))
-				{
-					this.OnIsNotifyChanging(value);
-					this.SendPropertyChanging();
-					this._IsNotify = value;
-					this.SendPropertyChanged("IsNotify");
-					this.OnIsNotifyChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News")]
-	public partial class New : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private System.Nullable<int> _CategoryId;
-		
-		private string _Title;
-		
-		private string _Contents;
-		
-		private string _Summary;
-		
-		private string _Link;
-		
-		private int _SiteId;
-		
-		private System.Nullable<int> _DistrictId;
-		
-		private System.Nullable<int> _ProvinceId;
-		
-		private string _Phone;
-		
-		private string _PriceText;
-		
-		private System.Nullable<bool> _IsUpdated;
-		
-		private System.Nullable<System.DateTime> _DateOld;
-		
-		private bool _IsSpam;
-		
-		private bool _IsDeleted;
-		
-		private System.Nullable<int> _CreatedBy;
-		
-		private System.Nullable<System.DateTime> _CreatedOn;
-		
-		private System.Nullable<int> _ModifiedBy;
-		
-		private System.Nullable<System.DateTime> _ModifiedOn;
-		
-		private bool _IsPhone;
-		
-		private bool _IsRepeat;
-		
-		private System.Nullable<decimal> _Price;
-		
-		private System.Nullable<decimal> _Area;
-		
-		private System.Nullable<bool> _Published;
-		
-		private System.Nullable<System.DateTime> _PublishedOn;
-		
-		private System.Nullable<int> _StatusId;
-		
-		private bool _IsOwner;
-		
-		private string _AdminComment;
-		
-		private int _PageView;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnCategoryIdChanging(System.Nullable<int> value);
-    partial void OnCategoryIdChanged();
-    partial void OnTitleChanging(string value);
-    partial void OnTitleChanged();
-    partial void OnContentsChanging(string value);
-    partial void OnContentsChanged();
-    partial void OnSummaryChanging(string value);
-    partial void OnSummaryChanged();
-    partial void OnLinkChanging(string value);
-    partial void OnLinkChanged();
-    partial void OnSiteIdChanging(int value);
-    partial void OnSiteIdChanged();
-    partial void OnDistrictIdChanging(System.Nullable<int> value);
-    partial void OnDistrictIdChanged();
-    partial void OnProvinceIdChanging(System.Nullable<int> value);
-    partial void OnProvinceIdChanged();
-    partial void OnPhoneChanging(string value);
-    partial void OnPhoneChanged();
-    partial void OnPriceTextChanging(string value);
-    partial void OnPriceTextChanged();
-    partial void OnIsUpdatedChanging(System.Nullable<bool> value);
-    partial void OnIsUpdatedChanged();
-    partial void OnDateOldChanging(System.Nullable<System.DateTime> value);
-    partial void OnDateOldChanged();
-    partial void OnIsSpamChanging(bool value);
-    partial void OnIsSpamChanged();
-    partial void OnIsDeletedChanging(bool value);
-    partial void OnIsDeletedChanged();
-    partial void OnCreatedByChanging(System.Nullable<int> value);
-    partial void OnCreatedByChanged();
-    partial void OnCreatedOnChanging(System.Nullable<System.DateTime> value);
-    partial void OnCreatedOnChanged();
-    partial void OnModifiedByChanging(System.Nullable<int> value);
-    partial void OnModifiedByChanged();
-    partial void OnModifiedOnChanging(System.Nullable<System.DateTime> value);
-    partial void OnModifiedOnChanged();
-    partial void OnIsPhoneChanging(bool value);
-    partial void OnIsPhoneChanged();
-    partial void OnIsRepeatChanging(bool value);
-    partial void OnIsRepeatChanged();
-    partial void OnPriceChanging(System.Nullable<decimal> value);
-    partial void OnPriceChanged();
-    partial void OnAreaChanging(System.Nullable<decimal> value);
-    partial void OnAreaChanged();
-    partial void OnPublishedChanging(System.Nullable<bool> value);
-    partial void OnPublishedChanged();
-    partial void OnPublishedOnChanging(System.Nullable<System.DateTime> value);
-    partial void OnPublishedOnChanged();
-    partial void OnStatusIdChanging(System.Nullable<int> value);
-    partial void OnStatusIdChanged();
-    partial void OnIsOwnerChanging(bool value);
-    partial void OnIsOwnerChanged();
-    partial void OnAdminCommentChanging(string value);
-    partial void OnAdminCommentChanged();
-    partial void OnPageViewChanging(int value);
-    partial void OnPageViewChanged();
-    #endregion
-		
-		public New()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryId", DbType="Int")]
-		public System.Nullable<int> CategoryId
-		{
-			get
-			{
-				return this._CategoryId;
-			}
-			set
-			{
-				if ((this._CategoryId != value))
-				{
-					this.OnCategoryIdChanging(value);
-					this.SendPropertyChanging();
-					this._CategoryId = value;
-					this.SendPropertyChanged("CategoryId");
-					this.OnCategoryIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Title
-		{
-			get
-			{
-				return this._Title;
-			}
-			set
-			{
-				if ((this._Title != value))
-				{
-					this.OnTitleChanging(value);
-					this.SendPropertyChanging();
-					this._Title = value;
-					this.SendPropertyChanged("Title");
-					this.OnTitleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contents", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Contents
-		{
-			get
-			{
-				return this._Contents;
-			}
-			set
-			{
-				if ((this._Contents != value))
-				{
-					this.OnContentsChanging(value);
-					this.SendPropertyChanging();
-					this._Contents = value;
-					this.SendPropertyChanged("Contents");
-					this.OnContentsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Summary", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Summary
-		{
-			get
-			{
-				return this._Summary;
-			}
-			set
-			{
-				if ((this._Summary != value))
-				{
-					this.OnSummaryChanging(value);
-					this.SendPropertyChanging();
-					this._Summary = value;
-					this.SendPropertyChanged("Summary");
-					this.OnSummaryChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Link
-		{
-			get
-			{
-				return this._Link;
-			}
-			set
-			{
-				if ((this._Link != value))
-				{
-					this.OnLinkChanging(value);
-					this.SendPropertyChanging();
-					this._Link = value;
-					this.SendPropertyChanged("Link");
-					this.OnLinkChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteId", DbType="Int NOT NULL")]
-		public int SiteId
-		{
-			get
-			{
-				return this._SiteId;
-			}
-			set
-			{
-				if ((this._SiteId != value))
-				{
-					this.OnSiteIdChanging(value);
-					this.SendPropertyChanging();
-					this._SiteId = value;
-					this.SendPropertyChanged("SiteId");
-					this.OnSiteIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistrictId", DbType="Int")]
-		public System.Nullable<int> DistrictId
-		{
-			get
-			{
-				return this._DistrictId;
-			}
-			set
-			{
-				if ((this._DistrictId != value))
-				{
-					this.OnDistrictIdChanging(value);
-					this.SendPropertyChanging();
-					this._DistrictId = value;
-					this.SendPropertyChanged("DistrictId");
-					this.OnDistrictIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProvinceId", DbType="Int")]
-		public System.Nullable<int> ProvinceId
-		{
-			get
-			{
-				return this._ProvinceId;
-			}
-			set
-			{
-				if ((this._ProvinceId != value))
-				{
-					this.OnProvinceIdChanging(value);
-					this.SendPropertyChanging();
-					this._ProvinceId = value;
-					this.SendPropertyChanged("ProvinceId");
-					this.OnProvinceIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(250)")]
-		public string Phone
-		{
-			get
-			{
-				return this._Phone;
-			}
-			set
-			{
-				if ((this._Phone != value))
-				{
-					this.OnPhoneChanging(value);
-					this.SendPropertyChanging();
-					this._Phone = value;
-					this.SendPropertyChanged("Phone");
-					this.OnPhoneChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceText", DbType="NVarChar(150)")]
-		public string PriceText
-		{
-			get
-			{
-				return this._PriceText;
-			}
-			set
-			{
-				if ((this._PriceText != value))
-				{
-					this.OnPriceTextChanging(value);
-					this.SendPropertyChanging();
-					this._PriceText = value;
-					this.SendPropertyChanged("PriceText");
-					this.OnPriceTextChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsUpdated", DbType="Bit")]
-		public System.Nullable<bool> IsUpdated
-		{
-			get
-			{
-				return this._IsUpdated;
-			}
-			set
-			{
-				if ((this._IsUpdated != value))
-				{
-					this.OnIsUpdatedChanging(value);
-					this.SendPropertyChanging();
-					this._IsUpdated = value;
-					this.SendPropertyChanged("IsUpdated");
-					this.OnIsUpdatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateOld", DbType="DateTime")]
-		public System.Nullable<System.DateTime> DateOld
-		{
-			get
-			{
-				return this._DateOld;
-			}
-			set
-			{
-				if ((this._DateOld != value))
-				{
-					this.OnDateOldChanging(value);
-					this.SendPropertyChanging();
-					this._DateOld = value;
-					this.SendPropertyChanged("DateOld");
-					this.OnDateOldChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit NOT NULL")]
-		public bool IsSpam
-		{
-			get
-			{
-				return this._IsSpam;
-			}
-			set
-			{
-				if ((this._IsSpam != value))
-				{
-					this.OnIsSpamChanging(value);
-					this.SendPropertyChanging();
-					this._IsSpam = value;
-					this.SendPropertyChanged("IsSpam");
-					this.OnIsSpamChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Bit NOT NULL")]
-		public bool IsDeleted
-		{
-			get
-			{
-				return this._IsDeleted;
-			}
-			set
-			{
-				if ((this._IsDeleted != value))
-				{
-					this.OnIsDeletedChanging(value);
-					this.SendPropertyChanging();
-					this._IsDeleted = value;
-					this.SendPropertyChanged("IsDeleted");
-					this.OnIsDeletedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int")]
-		public System.Nullable<int> CreatedBy
-		{
-			get
-			{
-				return this._CreatedBy;
-			}
-			set
-			{
-				if ((this._CreatedBy != value))
-				{
-					this.OnCreatedByChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedBy = value;
-					this.SendPropertyChanged("CreatedBy");
-					this.OnCreatedByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CreatedOn
-		{
-			get
-			{
-				return this._CreatedOn;
-			}
-			set
-			{
-				if ((this._CreatedOn != value))
-				{
-					this.OnCreatedOnChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedOn = value;
-					this.SendPropertyChanged("CreatedOn");
-					this.OnCreatedOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedBy", DbType="Int")]
-		public System.Nullable<int> ModifiedBy
-		{
-			get
-			{
-				return this._ModifiedBy;
-			}
-			set
-			{
-				if ((this._ModifiedBy != value))
-				{
-					this.OnModifiedByChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedBy = value;
-					this.SendPropertyChanged("ModifiedBy");
-					this.OnModifiedByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedOn", DbType="DateTime")]
-		public System.Nullable<System.DateTime> ModifiedOn
-		{
-			get
-			{
-				return this._ModifiedOn;
-			}
-			set
-			{
-				if ((this._ModifiedOn != value))
-				{
-					this.OnModifiedOnChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedOn = value;
-					this.SendPropertyChanged("ModifiedOn");
-					this.OnModifiedOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPhone", DbType="Bit NOT NULL")]
-		public bool IsPhone
-		{
-			get
-			{
-				return this._IsPhone;
-			}
-			set
-			{
-				if ((this._IsPhone != value))
-				{
-					this.OnIsPhoneChanging(value);
-					this.SendPropertyChanging();
-					this._IsPhone = value;
-					this.SendPropertyChanged("IsPhone");
-					this.OnIsPhoneChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRepeat", DbType="Bit NOT NULL")]
-		public bool IsRepeat
-		{
-			get
-			{
-				return this._IsRepeat;
-			}
-			set
-			{
-				if ((this._IsRepeat != value))
-				{
-					this.OnIsRepeatChanging(value);
-					this.SendPropertyChanging();
-					this._IsRepeat = value;
-					this.SendPropertyChanged("IsRepeat");
-					this.OnIsRepeatChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(18,2)")]
-		public System.Nullable<decimal> Price
-		{
-			get
-			{
-				return this._Price;
-			}
-			set
-			{
-				if ((this._Price != value))
-				{
-					this.OnPriceChanging(value);
-					this.SendPropertyChanging();
-					this._Price = value;
-					this.SendPropertyChanged("Price");
-					this.OnPriceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Area", DbType="Decimal(18,2)")]
-		public System.Nullable<decimal> Area
-		{
-			get
-			{
-				return this._Area;
-			}
-			set
-			{
-				if ((this._Area != value))
-				{
-					this.OnAreaChanging(value);
-					this.SendPropertyChanging();
-					this._Area = value;
-					this.SendPropertyChanged("Area");
-					this.OnAreaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Published", DbType="Bit")]
-		public System.Nullable<bool> Published
-		{
-			get
-			{
-				return this._Published;
-			}
-			set
-			{
-				if ((this._Published != value))
-				{
-					this.OnPublishedChanging(value);
-					this.SendPropertyChanging();
-					this._Published = value;
-					this.SendPropertyChanged("Published");
-					this.OnPublishedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublishedOn", DbType="DateTime")]
-		public System.Nullable<System.DateTime> PublishedOn
-		{
-			get
-			{
-				return this._PublishedOn;
-			}
-			set
-			{
-				if ((this._PublishedOn != value))
-				{
-					this.OnPublishedOnChanging(value);
-					this.SendPropertyChanging();
-					this._PublishedOn = value;
-					this.SendPropertyChanged("PublishedOn");
-					this.OnPublishedOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusId", DbType="Int")]
-		public System.Nullable<int> StatusId
-		{
-			get
-			{
-				return this._StatusId;
-			}
-			set
-			{
-				if ((this._StatusId != value))
-				{
-					this.OnStatusIdChanging(value);
-					this.SendPropertyChanging();
-					this._StatusId = value;
-					this.SendPropertyChanged("StatusId");
-					this.OnStatusIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOwner", DbType="Bit NOT NULL")]
-		public bool IsOwner
-		{
-			get
-			{
-				return this._IsOwner;
-			}
-			set
-			{
-				if ((this._IsOwner != value))
-				{
-					this.OnIsOwnerChanging(value);
-					this.SendPropertyChanging();
-					this._IsOwner = value;
-					this.SendPropertyChanged("IsOwner");
-					this.OnIsOwnerChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdminComment", DbType="NVarChar(250)")]
-		public string AdminComment
-		{
-			get
-			{
-				return this._AdminComment;
-			}
-			set
-			{
-				if ((this._AdminComment != value))
-				{
-					this.OnAdminCommentChanging(value);
-					this.SendPropertyChanging();
-					this._AdminComment = value;
-					this.SendPropertyChanged("AdminComment");
-					this.OnAdminCommentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PageView", DbType="Int NOT NULL")]
-		public int PageView
-		{
-			get
-			{
-				return this._PageView;
-			}
-			set
-			{
-				if ((this._PageView != value))
-				{
-					this.OnPageViewChanging(value);
-					this.SendPropertyChanging();
-					this._PageView = value;
-					this.SendPropertyChanged("PageView");
-					this.OnPageViewChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.News_customer_action")]
-	public partial class News_customer_action : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private int _NewsId;
-		
-		private int _CustomerId;
-		
-		private System.Nullable<bool> _Iscc;
-		
-		private System.Nullable<bool> _Ischeck;
-		
-		private System.Nullable<bool> _IsSpam;
-		
-		private System.Nullable<bool> _IsReport;
-		
-		private System.DateTime _DateCreate;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnNewsIdChanging(int value);
-    partial void OnNewsIdChanged();
-    partial void OnCustomerIdChanging(int value);
-    partial void OnCustomerIdChanged();
-    partial void OnIsccChanging(System.Nullable<bool> value);
-    partial void OnIsccChanged();
-    partial void OnIscheckChanging(System.Nullable<bool> value);
-    partial void OnIscheckChanged();
-    partial void OnIsSpamChanging(System.Nullable<bool> value);
-    partial void OnIsSpamChanged();
-    partial void OnIsReportChanging(System.Nullable<bool> value);
-    partial void OnIsReportChanged();
-    partial void OnDateCreateChanging(System.DateTime value);
-    partial void OnDateCreateChanged();
-    #endregion
-		
-		public News_customer_action()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
-		public int NewsId
-		{
-			get
-			{
-				return this._NewsId;
-			}
-			set
-			{
-				if ((this._NewsId != value))
-				{
-					this.OnNewsIdChanging(value);
-					this.SendPropertyChanging();
-					this._NewsId = value;
-					this.SendPropertyChanged("NewsId");
-					this.OnNewsIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerId", DbType="Int NOT NULL")]
-		public int CustomerId
-		{
-			get
-			{
-				return this._CustomerId;
-			}
-			set
-			{
-				if ((this._CustomerId != value))
-				{
-					this.OnCustomerIdChanging(value);
-					this.SendPropertyChanging();
-					this._CustomerId = value;
-					this.SendPropertyChanged("CustomerId");
-					this.OnCustomerIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Iscc", DbType="Bit")]
-		public System.Nullable<bool> Iscc
-		{
-			get
-			{
-				return this._Iscc;
-			}
-			set
-			{
-				if ((this._Iscc != value))
-				{
-					this.OnIsccChanging(value);
-					this.SendPropertyChanging();
-					this._Iscc = value;
-					this.SendPropertyChanged("Iscc");
-					this.OnIsccChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ischeck", DbType="Bit")]
-		public System.Nullable<bool> Ischeck
-		{
-			get
-			{
-				return this._Ischeck;
-			}
-			set
-			{
-				if ((this._Ischeck != value))
-				{
-					this.OnIscheckChanging(value);
-					this.SendPropertyChanging();
-					this._Ischeck = value;
-					this.SendPropertyChanged("Ischeck");
-					this.OnIscheckChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit")]
-		public System.Nullable<bool> IsSpam
-		{
-			get
-			{
-				return this._IsSpam;
-			}
-			set
-			{
-				if ((this._IsSpam != value))
-				{
-					this.OnIsSpamChanging(value);
-					this.SendPropertyChanging();
-					this._IsSpam = value;
-					this.SendPropertyChanged("IsSpam");
-					this.OnIsSpamChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsReport", DbType="Bit")]
-		public System.Nullable<bool> IsReport
-		{
-			get
-			{
-				return this._IsReport;
-			}
-			set
-			{
-				if ((this._IsReport != value))
-				{
-					this.OnIsReportChanging(value);
-					this.SendPropertyChanging();
-					this._IsReport = value;
-					this.SendPropertyChanged("IsReport");
-					this.OnIsReportChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreate", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreate
-		{
-			get
-			{
-				return this._DateCreate;
-			}
-			set
-			{
-				if ((this._DateCreate != value))
-				{
-					this.OnDateCreateChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreate = value;
-					this.SendPropertyChanged("DateCreate");
-					this.OnDateCreateChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ReasonReportNews")]
-	public partial class ReasonReportNew : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _NewsId;
-		
-		private int _UserId;
-		
-		private string _Note;
-		
-		private System.DateTime _DateCreate;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnNewsIdChanging(int value);
-    partial void OnNewsIdChanged();
-    partial void OnUserIdChanging(int value);
-    partial void OnUserIdChanged();
-    partial void OnNoteChanging(string value);
-    partial void OnNoteChanged();
-    partial void OnDateCreateChanging(System.DateTime value);
-    partial void OnDateCreateChanged();
-    #endregion
-		
-		public ReasonReportNew()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsId", DbType="Int NOT NULL")]
-		public int NewsId
-		{
-			get
-			{
-				return this._NewsId;
-			}
-			set
-			{
-				if ((this._NewsId != value))
-				{
-					this.OnNewsIdChanging(value);
-					this.SendPropertyChanging();
-					this._NewsId = value;
-					this.SendPropertyChanged("NewsId");
-					this.OnNewsIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int NOT NULL")]
-		public int UserId
-		{
-			get
-			{
-				return this._UserId;
-			}
-			set
-			{
-				if ((this._UserId != value))
-				{
-					this.OnUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._UserId = value;
-					this.SendPropertyChanged("UserId");
-					this.OnUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Note", DbType="NVarChar(50)")]
-		public string Note
-		{
-			get
-			{
-				return this._Note;
-			}
-			set
-			{
-				if ((this._Note != value))
-				{
-					this.OnNoteChanging(value);
-					this.SendPropertyChanging();
-					this._Note = value;
-					this.SendPropertyChanged("Note");
-					this.OnNoteChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreate", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreate
-		{
-			get
-			{
-				return this._DateCreate;
-			}
-			set
-			{
-				if ((this._DateCreate != value))
-				{
-					this.OnDateCreateChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreate = value;
-					this.SendPropertyChanged("DateCreate");
-					this.OnDateCreateChanged();
 				}
 			}
 		}

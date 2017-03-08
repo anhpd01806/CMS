@@ -20,6 +20,7 @@ namespace CMS.Controllers
         #region member
         private readonly NewsBussiness _newsbussiness = new NewsBussiness();
         private readonly HomeBussiness _homebussiness = new HomeBussiness();
+        private readonly CacheNewsBussiness _cacheNewsBussiness = new CacheNewsBussiness();
         #endregion
         public ActionResult Index()
         {
@@ -32,7 +33,7 @@ namespace CMS.Controllers
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
 
                 #region Get select list category
-                var listCategory = _homebussiness.GetListCategory();
+                var listCategory = _cacheNewsBussiness.GetListCategory();
                 var cateListItems = new List<SelectListItem>();
                 cateListItems.Add(new SelectListItem { Text = "Chọn chuyên mục", Value = "0" });
                 foreach (var item in listCategory)
@@ -40,7 +41,7 @@ namespace CMS.Controllers
                     if (item.ParentCategoryId == 0)
                     {
                         cateListItems.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
-                        var listchillcate = _homebussiness.GetChilldrenlistCategory(item.Id);
+                        var listchillcate = _cacheNewsBussiness.GetChilldrenlistCategory(item.Id);
                         foreach (var chill in listchillcate)
                         {
                             cateListItems.Add(new SelectListItem { Text = ("\xA0\xA0\xA0" + chill.Name), Value = chill.Id.ToString() });
@@ -51,7 +52,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _homebussiness.GetListDistric();
+                var listDistrict = _cacheNewsBussiness.GetListDistric();
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)
@@ -61,7 +62,7 @@ namespace CMS.Controllers
                 model.ListDistric = new SelectList(listdictrictItem, "Value", "Text");
                 #endregion
                 #region Get select list site
-                var listSite = _homebussiness.GetListSite();
+                var listSite = _cacheNewsBussiness.GetListSite();
                 var listsiteItem = new List<SelectListItem>();
                 listsiteItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
                 foreach (var item in listSite)
@@ -71,7 +72,7 @@ namespace CMS.Controllers
                 model.ListSite = new SelectList(listsiteItem, "Value", "Text");
                 #endregion
                 #region Get select list status
-                var listStatus = _homebussiness.GetlistStatusModel();
+                var listStatus = _cacheNewsBussiness.GetlistStatusModel();
                 var listStatusItem = new List<SelectListItem>();
                 listStatusItem.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
                 foreach (var item in listStatus)
@@ -83,10 +84,10 @@ namespace CMS.Controllers
 
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
-                model.ListNew = _newsbussiness.GetListNewStatusByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave),false, string.Empty, ref total);
+                model.ListNew = _cacheNewsBussiness.GetListNewStatusByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), false, string.Empty, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
-                model.RoleId = _newsbussiness.GetRoleByUser(userId);
+                model.RoleId = _cacheNewsBussiness.GetRoleByUser(userId);
                 return View(model);
             }
             catch (Exception ex)
@@ -106,8 +107,8 @@ namespace CMS.Controllers
                     int userId = Convert.ToInt32(Session["SS-USERID"]);
                     ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                     ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
-                    var news = _homebussiness.GetNewsDetail(Id, userId);
-                    ViewBag.RoleId = _homebussiness.GetRoleByUser(userId);
+                    var news = _cacheNewsBussiness.GetNewsDetail(Id, userId);
+                    ViewBag.RoleId = _cacheNewsBussiness.GetRoleByUser(userId);
                     var content = RenderPartialViewToString("~/Views/NewsSave/NewDetail.cshtml", news);
                     return Json(new
                     {
@@ -140,7 +141,7 @@ namespace CMS.Controllers
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), Convert.ToBoolean(IsRepeat), key, ref total);
+                var listNews = _cacheNewsBussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), Convert.ToBoolean(IsRepeat), key, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var content = RenderPartialViewToString("~/Views/NewsSave/Paging.cshtml", listNews);
                 return Json(new
@@ -174,7 +175,7 @@ namespace CMS.Controllers
             }
             int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), Convert.ToBoolean(IsRepeat), key, ref total);
+            var listNews = _cacheNewsBussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsSave), Convert.ToBoolean(IsRepeat), key, ref total);
             ExportToExcel(filePath, listNews);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);

@@ -30,9 +30,6 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                var listBlacklist = (from c in db.Blacklists
-                                     select (c.Words)).ToList();
-
                 var news_new = new List<int>();
 
                 if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
@@ -63,11 +60,9 @@ namespace CMS.Bussiness
                             join t in db.NewsStatus on c.StatusId equals t.Id
                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
                             join s in db.Sites on c.SiteId equals s.ID
-                            where c.CreatedOn.HasValue && !c.IsDeleted && !s.Deleted && s.Published //&& c.Published.HasValue
+                            where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam && !s.Deleted && s.Published
                             && !d.IsDeleted && d.Published
                             && news_new.Contains(c.Id)
-                            //check trong blacklist ko lấy những từ giống
-                            && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
                             && !listDelete.Contains(c.Id)
                             select new NewsModel
                             {
@@ -89,8 +84,10 @@ namespace CMS.Bussiness
                                 CusIsSaved = ncm.IsSaved,
                                 CusIsDeleted = ncm.IsDeleted,
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = 0,//CountRepeatnews(c.Id, UserId, d.Id),
-                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
+                                RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false,
+                                Iscc = CheckCC(c.Id),
+                                //IsReason = CheckReason(UserId, c.Id)
                             };
 
                 if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsSave))
@@ -156,16 +153,7 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.Distinct().ToList().Count;
-                var list = query.Distinct().OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-                var listItem = new List<NewsModel>();
-                foreach (var newsModel in list)
-                {
-                    newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
-                    newsModel.Iscc = CheckCC(newsModel.Id);
-                    listItem.Add(newsModel);
-                }
-
-                return listItem;
+                return query.Distinct().OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -273,19 +261,6 @@ namespace CMS.Bussiness
             try
             {
                 db.News.InsertOnSubmit(newsItem);
-                db.SubmitChanges();
-                //var cusNews = new News_Customer_Mapping
-                //{
-                //    CustomerId = userId,
-                //    NewsId = newsItem.Id,
-                //    IsSaved = false,
-                //    IsDeleted = false,
-                //    IsReaded = false,
-                //    IsAgency = true,
-                //    IsSpam = false,
-                //    CreateDate = DateTime.Now
-                //};
-                //db.News_Customer_Mappings.InsertOnSubmit(cusNews);
                 db.SubmitChanges();
 
                 return 1;
@@ -497,21 +472,17 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                var listBlacklist = (from c in db.Blacklists
-                                     select (c.Words)).ToList();
-
                 //Danh sách tin đã đọc theo user
                 var news_isread = (from c in db.News_Customer_Mappings
                                    where c.CustomerId.Equals(UserId) && c.IsReaded.Value && !c.IsAgency.Value
                                    select (c.NewsId)).ToList();
 
-                var query = from c in db.News
+                var query = (from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
                             join t in db.NewsStatus on c.StatusId equals t.Id
                             join nd in db.News_Trashes on c.Id equals nd.NewsId
-                            where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                            where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
-                            && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
                             && nd.Isdelete && !nd.Isdeleted
                             select new NewsModel
                             {
@@ -531,9 +502,10 @@ namespace CMS.Bussiness
                                 CreatedOn = c.CreatedOn,
                                 CusIsReaded = news_isread.Contains(c.Id) ? true : false,
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = 1,//CountRepeatnews(c.Id, UserId, d.Id),
-                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
-                            };
+                                RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false,
+                                Iscc = CheckCC(c.Id)
+                            }).Distinct();
 
                 #region check param
                 if (CateId != 0)
@@ -582,18 +554,8 @@ namespace CMS.Bussiness
                 }
                 #endregion
 
-                total = query.Distinct().ToList().Count;
-                var list = query.Distinct().OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-
-                var listItem = new List<NewsModel>();
-                foreach (var newsModel in list)
-                {
-                    newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
-                    newsModel.Iscc = CheckCC(newsModel.Id);
-                    listItem.Add(newsModel);
-                }
-
-                return listItem;
+                total = query.ToList().Count;
+                return query.OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -697,8 +659,9 @@ namespace CMS.Bussiness
                                 StatusId = c.StatusId,
                                 CusIsReaded = news_isread.Contains(c.Id) ? true : false,
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = 0,//CountRepeatnews(c.Id, UserId, d.Id),
-                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
+                                RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false,
+                                Iscc = CheckCC(c.Id)
                             };
 
                 #region check param
@@ -749,16 +712,7 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.ToList().Count;
-                var list = query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-                var listItem = new List<NewsModel>();
-                foreach (var newsModel in list)
-                {
-                    newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
-                    newsModel.Iscc = CheckCC(newsModel.Id);
-                    listItem.Add(newsModel);
-                }
-
-                return listItem;
+                return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 

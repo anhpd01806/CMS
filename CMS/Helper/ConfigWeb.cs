@@ -8,6 +8,11 @@ namespace CMS.Helper
 {
     public class ConfigWeb
     {
+
+        public static int TimeExpire = Convert.ToInt32(ConfigurationManager.AppSettings["TimeExpireCache"]);
+
+        public static int EnableCache = Convert.ToInt32(ConfigurationManager.AppSettings["EnableCache"]);
+
         public static int PageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
 
         public static string DayPackage = ConfigurationManager.AppSettings["DayPackage"];

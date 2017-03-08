@@ -1,16 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="CMS" Class="CmsDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=115.146.127.104;Initial Catalog=CMS;Persist Security Info=True;User ID=cms_user" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="CMSConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="HangFire.State" Member="States">
-    <Type Name="State">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="JobId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="Reason" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Data" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Association Name="Job_State" Member="Job" ThisKey="JobId" OtherKey="Id" Type="Job" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.ActivityLog" Member="ActivityLogs">
     <Type Name="ActivityLog">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -20,6 +9,17 @@
       <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="ActivityLogType_ActivityLog" Member="ActivityLogType" ThisKey="ActivityLogTypeId" OtherKey="Id" Type="ActivityLogType" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="Customer_ActivityLog" Member="Customer" ThisKey="CustomerId" OtherKey="Id" Type="Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="HangFire.State" Member="States">
+    <Type Name="State">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="JobId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Reason" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Data" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Job_State" Member="Job" ThisKey="JobId" OtherKey="Id" Type="Job" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.ActivityLogType" Member="ActivityLogTypes">
@@ -43,6 +43,16 @@
       <Column Name="ZipPostalCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="FaxNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Blacklist" Member="Blacklists">
+    <Type Name="Blacklist">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Words" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="LinkUrl" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.Category" Member="Categories">
@@ -175,7 +185,7 @@
     <Type Name="Image">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="NewsId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ImageUrl" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="ImageUrl" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Language" Member="Languages">
@@ -263,6 +273,52 @@
       <Column Name="DelayPeriodId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
+  <Table Name="dbo.News" Member="News">
+    <Type Name="New">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Contents" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Summary" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Link" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="SiteId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DistrictId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProvinceId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="PriceText" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="IsUpdated" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DateOld" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsSpam" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsDeleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModifiedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsPhone" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsRepeat" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="Area" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PublishedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="StatusId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsOwner" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AdminComment" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="PageView" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalRepeat" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.News_customer_action" Member="News_customer_actions">
+    <Type Name="News_customer_action">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Iscc" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Ischeck" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsSpam" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsReport" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DateCreate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
   <Table Name="dbo.News_Customer_Mapping" Member="News_Customer_Mappings">
     <Type Name="News_Customer_Mapping">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -275,6 +331,16 @@
       <Column Name="IsSpam" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Note" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.News_Trash" Member="News_Trashes">
+    <Type Name="News_Trash">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Isdelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsSpam" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Isdeleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.NewsLetterSubscription" Member="NewsLetterSubscriptions">
@@ -301,6 +367,22 @@
     <Type Name="NewsStatus">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Notify" Member="Notifies">
+    <Type Name="Notify">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Userid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Newsid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DateSend" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Type" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Accepted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ViewFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SendTo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SendFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Operations" Member="Operations">
@@ -416,6 +498,15 @@
       <Association Name="EmailAccount_QueuedEmail" Member="EmailAccount" ThisKey="EmailAccountId" OtherKey="Id" Type="EmailAccount" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.ReasonReportNews" Member="ReasonReportNews">
+    <Type Name="ReasonReportNew">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Note" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DateCreate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
   <Table Name="dbo.Role_Access" Member="Role_Accesses">
     <Type Name="Role_Access">
       <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -502,6 +593,34 @@
       <Column Name="LanguageId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerGuid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="IsDeleted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LastIpAddress" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModifiedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModifiedOn" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LastLoginDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastActivityDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ManagerBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsMember" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsExpired" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsLoggedIn" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Sex" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsFree" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsNotify" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
   <Table Name="HangFire.AggregatedCounter" Member="AggregatedCounters">
     <Type Name="AggregatedCounter">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -584,124 +703,6 @@
       <Column Name="Score" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
       <Column Name="Value" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="ExpireAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Blacklist" Member="Blacklists">
-    <Type Name="Blacklist">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Words" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
-      <Column Name="LinkUrl" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
-      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.News_Trash" Member="News_Trashes">
-    <Type Name="News_Trash">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Isdelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsSpam" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="Isdeleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Notify" Member="Notifies">
-    <Type Name="Notify">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Userid" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Newsid" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="DateSend" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="UserName" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
-      <Column Name="Title" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
-      <Column Name="Type" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Accepted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="ViewFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="SendTo" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="SendFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Users" Member="Users">
-    <Type Name="User">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="CustomerGuid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="UserName" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
-      <Column Name="Email" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
-      <Column Name="Phone" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="IsDeleted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="LastIpAddress" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="ModifiedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ModifiedOn" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="LastLoginDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="LastActivityDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Notes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ManagerBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="IsMember" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="IsExpired" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="IsLoggedIn" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="FullName" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
-      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="Sex" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="IsFree" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="IsNotify" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.News" Member="News">
-    <Type Name="New">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="CategoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Title" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Contents" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Summary" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Link" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="SiteId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DistrictId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ProvinceId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Phone" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
-      <Column Name="PriceText" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
-      <Column Name="IsUpdated" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="DateOld" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="IsSpam" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsDeleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="ModifiedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ModifiedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="IsPhone" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsRepeat" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
-      <Column Name="Area" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
-      <Column Name="Published" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="PublishedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="StatusId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="IsOwner" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="AdminComment" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
-      <Column Name="PageView" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.News_customer_action" Member="News_customer_actions">
-    <Type Name="News_customer_action">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Iscc" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Ischeck" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="IsSpam" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="IsReport" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="DateCreate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ReasonReportNews" Member="ReasonReportNews">
-    <Type Name="ReasonReportNew">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="NewsId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Note" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="DateCreate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

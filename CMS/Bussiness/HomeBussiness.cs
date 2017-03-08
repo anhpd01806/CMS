@@ -91,9 +91,6 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                var listBlacklist = (from c in db.Blacklists
-                                     select (c.Words)).ToList();
-
                 var listDelete = (from c in db.News_Trashes
                                   where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(UserId)
                                   select (c.NewsId)).ToList();
@@ -108,21 +105,18 @@ namespace CMS.Bussiness
                                    where c.CustomerId.Equals(UserId) && c.IsReaded.Value
                                    select (c.NewsId)).ToList();
 
-                //Nếu là admin kiểm tra tin đã được báo chính chủ chưa
-                //var newsisactive = (from c in db.News_customer_actions where c.Iscc.HasValue && c.Iscc.Value select c.NewsId).ToList();
-
                 var query = (from c in db.News
                             join d in db.Districts on c.DistrictId equals d.Id
                             join t in db.NewsStatus on c.StatusId equals t.Id
                             join s in db.Sites on c.SiteId equals s.ID
-                            //join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
-                            //from tm in temp.DefaultIfEmpty()
-                            where c.CreatedOn.HasValue && !c.IsDeleted && !s.Deleted && s.Published //&& c.Published.HasValue
+                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                            from tm in temp.DefaultIfEmpty()
+                            join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
+                            from nac in temp2.DefaultIfEmpty()
+                             where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam && !s.Deleted && s.Published //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
                             && !listDelete.Contains(c.Id)
                             && !news_new.Contains(c.Id)
-                            && (!listBlacklist.Contains(c.Phone) || !listBlacklist.Contains(c.Title) || !listBlacklist.Contains(c.Contents))
-                            //orderby  c.CreatedOn descending
                             select new NewsModel
                             {
                                 Id = c.Id,
@@ -139,12 +133,12 @@ namespace CMS.Bussiness
                                 StatusId = t.Id,
                                 StatusName = t.Name,
                                 CreatedOn = c.CreatedOn,
-                                CusIsReaded = news_isread.Contains(c.Id) ? true : false,  //CheckReadByUser(UserId, c.Id),
-                                //CusIsSaved = tm.IsSaved,
-                                //CusIsDeleted = tm.IsDeleted,
+                                CusIsReaded = news_isread.Contains(c.Id),
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = 0,//CountRepeatByPhone(c.Phone, UserId),
-                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator) ? true : false
+                                RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator),
+                                Iscc =  nac.Iscc.HasValue && nac.Iscc.Value,
+                                IsReason = CheckReason(UserId, c.Id)
                             }).Distinct();
 
                 #region check param
@@ -201,18 +195,7 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.ToList().Count;
-                var list = query.OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-                var listItem = new List<NewsModel>();
-                foreach (var newsModel in list)
-                {
-                    newsModel.RepeatTotal = CountRepeatByPhone(newsModel.Phone, UserId);
-                    newsModel.Iscc = CheckCC(newsModel.Id);
-                    newsModel.IsReason = CheckReason(UserId, newsModel.Id);
-                    listItem.Add(newsModel);
-                }
-
-                return listItem;
-
+                return query.OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 
