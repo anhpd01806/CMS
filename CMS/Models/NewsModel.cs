@@ -108,8 +108,8 @@ namespace CMS.Models
 
         public bool Iscc { get; set;  }
 
-        public bool IsReason { get; set; }
-
         public string PersionalReport { get; set; }
+
+        public bool IsReason { get; set; }
     }
 }

@@ -137,8 +137,7 @@ namespace CMS.Bussiness
                                 IsRepeat = c.IsRepeat,
                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
                                 IsAdmin = GetRoleByUser(UserId) == Convert.ToInt32(CmsRole.Administrator),
-                                Iscc =  nac.Iscc.HasValue && nac.Iscc.Value,
-                                IsReason = CheckReason(UserId, c.Id)
+                                Iscc =  nac.Iscc.HasValue && nac.Iscc.Value
                             }).Distinct();
 
                 #region check param
@@ -267,7 +266,8 @@ namespace CMS.Bussiness
                              ListImage = GetImageByNewsId(c.Id),
                              SameNews = GetSameNewsByNewsId(c.CategoryId.Value, c.DistrictId.Value, UserId),
                              Iscc = CheckCCByUser(c.Id, UserId),
-                             PersionalReport = GetNameReasonReport(c.Id)
+                             PersionalReport = GetNameReasonReport(c.Id),
+                             IsReason = CheckReason(UserId, c.Id)
                          }).FirstOrDefault();
 
             if (query != null)
@@ -421,14 +421,12 @@ namespace CMS.Bussiness
             var reasonlst = db.ReasonReportNews.Where(x => x.NewsId == newsId).Take(3).ToList();
             if (reasonlst.Any())
             {
-                rs += "<ul>";
                 foreach (var item in reasonlst)
                 {
-                    rs = "<li><span>" + new UserBussiness().GetNameById(item.UserId)
+                    rs += "<li><span>" + new UserBussiness().GetNameById(item.UserId)
                         + "(" + item.DateCreate.ToString("dd/MM/yyyy") + ") :"
                         + item.Note + "</span></li>";
                 }
-                rs += "/<ul>";
             }
             else
             {

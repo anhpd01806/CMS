@@ -52,7 +52,7 @@ namespace CMS.Controllers
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
                     CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()), username.Split(',')[3].Trim());
-                    Session.Add("IS-NOTIFY", username.Split(',')[4].Trim());
+                    Session["IS-NOTIFY"] = bool.Parse(username.Split(',')[4].Trim());
                     bool isUser = (bool)Session["IS-USERS"];
                     GetNotifyUser(isUser, int.Parse(username.Split(',')[1].Trim()));
 
@@ -110,7 +110,7 @@ namespace CMS.Controllers
                         rememberCookie.Expires = DateTime.Now.AddDays(3);
                         Response.Cookies.Add(rememberCookie);
                         // set sesssion ative notify
-                        Session.Add("IS-NOTIFY", isNotify);
+                        Session["IS-NOTIFY"] = isNotify;
 
                         bool isUser = (bool)Session["IS-USERS"];
                         GetNotifyUser(isUser, user.Id);

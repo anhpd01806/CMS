@@ -3127,6 +3127,9 @@
     <Content Include="Views\News\Pagging.cshtml" />
     <Content Include="Views\NewsHide\NewDetail.cshtml" />
     <Content Include="Views\User\ReportStatistic.cshtml" />
+    <Content Include="Views\BrokersInformation\Index.cshtml" />
+    <Content Include="Views\BrokersInformation\NewsDetail.cshtml" />
+    <Content Include="Views\BrokersInformation\Paging.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
