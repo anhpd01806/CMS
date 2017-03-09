@@ -655,6 +655,7 @@ namespace CMS.Bussiness
                                   select (c.NewsId)).ToList();
 
                 var query = from c in db.News
+                            join s in db.Sites on c.SiteId equals s.ID
                             join d in db.Districts on c.DistrictId equals d.Id
                             join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
                             from nac in temp2.DefaultIfEmpty()
@@ -673,6 +674,7 @@ namespace CMS.Bussiness
                                 PriceText = c.PriceText,
                                 DistrictId = d.Id,
                                 DistictName = d.Name,
+                                SiteName = s.Name,
                                 CreatedOn = c.CreatedOn,
                                 StatusId = c.StatusId,
                                 CusIsReaded = news_isread.Contains(c.Id),

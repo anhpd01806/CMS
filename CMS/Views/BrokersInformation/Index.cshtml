@@ -196,8 +196,8 @@
                         <th style="min-width: 105px;" data-name="CreatedOn">Ngày đăng</th>
                         <th style="min-width: 105px;" data-name="Price">Giá</th>
                         <th style="text-align: center">Điện thoại</th>
-                        <th>Xem</th>
-                        <th class="tdcc">Chi tiết</th>
+                        @*<th>Xem</th>*@
+                        <th class="tdcc">Nguồn tin</th>
                         @*<th class="tdcenter">Kiểm tra</th>
                             <th class="tdcenter">Span</th>*@
                         @*<th style="text-align: center">Tính năng</th>*@
@@ -241,7 +241,7 @@
                                         <span class="error">Vui lòng nạp tiền</span>
                                     }
                                 </td>
-                                <td>
+                                @*<td>
                                     @if (Convert.ToBoolean(item.CusIsReaded))
                                     {
                                         <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
@@ -251,10 +251,10 @@
                                         <span class="label label-info arrowed">Chưa xem</span>
 
                                     }
-                                </td>
+                                </td>*@
                                 <td class="tdcc">
-                                    <a class="orange" href="@item.Link" title="@item.Title">
-                                        <i class="icon-zoom-in bigger-130"></i>
+                                    <a href="@item.Link" target="_blank" title="@item.Title">
+                                        @item.SiteName
                                     </a>
                                     @*@if (item.Iscc)
                                     {

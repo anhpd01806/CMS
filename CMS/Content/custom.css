@@ -258,3 +258,6 @@ span.error {
 .tdcc a {
     text-decoration: none;    
 }
+.avbar-header {
+    min-width: 55px;
+}

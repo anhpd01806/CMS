@@ -511,12 +511,10 @@ namespace CMS.Bussiness
                                 db.News_customer_actions.InsertOnSubmit(action);
                             }
                             db.SubmitChanges();
-                            return 1;
                         }
-                        return 2;
                     }
                 }
-                return 3;
+                return 1;
             }
             catch
             {

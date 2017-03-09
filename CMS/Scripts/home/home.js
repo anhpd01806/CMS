@@ -636,28 +636,48 @@ $(function () {
             if (selected.length == 0) {
                 showmessage("error", "Bạn hãy chọn tin cần ẩn!");
             } else {
-                $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
-                    if (resp != null) {
-                        LoadData();
-                        setTimeout(function () {
-                            showmessage("success", "Tin mô giới đã được báo cáo thành công!");
-                        }, 1200);
-                        //send notify to admin
-                        var socket = io.connect('http://ozo.vn:8088');
-                        $.each(resp, function (i, value) {
-                            var notify = {};
-                            notify.title = value.Title;
-                            //notify id
-                            notify.id = value.Id;
-                            notify.type = value.Type;
-                            //user name
-                            notify.name = value.UserName;
-                            //link image avatar
-                            notify.avatar = "/assets/avatars/avatar.png";
-                            notify.time = moment(value.DateSend).format('DD/MM/YYYY hh:mm:ss');;
-                            socket.emit('send-to-admin', notify);
-                        });
-                    };
+                bootbox.confirm({
+                    title: "Thông báo",
+                    message: "Bạn có chắc chắn muốn báo môi giới những tin này không?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Đóng'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Đồng ý'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
+                                if (resp != null) {
+                                    LoadData();
+                                    setTimeout(function () {
+                                        showmessage("success", "Tin môi giới đã được báo cáo thành công!");
+                                    }, 1200);
+                                    //send notify to admin
+                                    var socket = io.connect('http://ozo.vn:8088');
+                                    $.each(resp, function (i, value) {
+                                        var notify = {};
+                                        notify.title = value.Title;
+                                        //notify id
+                                        notify.id = value.Id;
+                                        notify.type = value.Type;
+                                        //user name
+                                        notify.name = value.UserName;
+                                        //link image avatar
+                                        notify.avatar = "/assets/avatars/avatar.png";
+                                        notify.time = moment(value.DateSend).format('DD/MM/YYYY hh:mm:ss');;
+                                        socket.emit('send-to-admin', notify);
+                                    });
+                                }
+                                else {
+                                    showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                }
+                                ;
+                            });
+                        }
+                    }
                 });
             }
             $("#newsdetail").modal("hide");
@@ -678,7 +698,7 @@ $(function () {
             }
         });
 
-        $(document).on("click", ".btnreport", function () {
+        $(document).on("click", ".btnreport", function () {            
             if (!$(this).hasClass("disabled")) {
                 var selected = [];
                 $('.checkboxItem:checked').each(function () {
@@ -687,32 +707,48 @@ $(function () {
                 if (selected.length == 0) {
                     showmessage("error", "Bạn hãy chọn tin cần ẩn!");
                 } else {
-                    $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
-                        if (resp != null) {
-                            LoadData();
-                            setTimeout(function () {
-                                showmessage("success", "Tin mô giới đã được báo cáo thành công!");
-                            }, 1200);
-                            //send notify to admin
-                            var socket = io.connect('http://ozo.vn:8088');
-                            $.each(resp, function (i, value) {
-                                var notify = {};
-                                notify.title = value.Title;
-                                //notify id
-                                notify.id = value.Id;
-                                notify.type = value.Type;
-                                //user name
-                                notify.name = value.UserName;
-                                //link image avatar
-                                notify.avatar = "/assets/avatars/avatar.png";
-                                notify.time = moment(value.DateSend).format('DD/MM/YYYY hh:mm:ss');;
-                                socket.emit('send-to-admin', notify);
-                            });
+                    bootbox.confirm({
+                        title: "Thông báo",
+                        message: "Bạn có chắc chắn muốn báo môi giới những tin này không?",
+                        buttons: {
+                            cancel: {
+                                label: '<i class="fa fa-times"></i> Đóng'
+                            },
+                            confirm: {
+                                label: '<i class="fa fa-check"></i> Đồng ý'
+                            }
+                        },
+                        callback: function (result) {
+                            if (result) {
+                                $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
+                                    if (resp != null) {
+                                        LoadData();
+                                        setTimeout(function () {
+                                            showmessage("success", "Tin môi giới đã được báo cáo thành công!");
+                                        }, 1200);
+                                        //send notify to admin
+                                        var socket = io.connect('http://ozo.vn:8088');
+                                        $.each(resp, function (i, value) {
+                                            var notify = {};
+                                            notify.title = value.Title;
+                                            //notify id
+                                            notify.id = value.Id;
+                                            notify.type = value.Type;
+                                            //user name
+                                            notify.name = value.UserName;
+                                            //link image avatar
+                                            notify.avatar = "/assets/avatars/avatar.png";
+                                            notify.time = moment(value.DateSend).format('DD/MM/YYYY hh:mm:ss');;
+                                            socket.emit('send-to-admin', notify);
+                                        });
+                                    }
+                                    else {
+                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                    }
+                                    ;
+                                });
+                            }
                         }
-                        else {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
-                        }
-                        ;
                     });
                 }
             }
