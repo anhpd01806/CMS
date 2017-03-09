@@ -160,7 +160,6 @@ namespace CMS.Bussiness
 
         public void UpdateLastLogin(int id)
         {
-            db.CommandTimeout = 3;
             var user = db.Users.FirstOrDefault(x => x.Id == id);
             user.LastLoginDate = DateTime.Now;
             user.LastActivityDate = DateTime.Now;

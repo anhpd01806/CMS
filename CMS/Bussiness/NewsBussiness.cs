@@ -729,14 +729,16 @@ namespace CMS.Bussiness
                     var query = (from c in db.News
                         where c.Id.Equals(t)
                         select c).ToList();
+
                     if (query.Any())
                     {
                         foreach (var item in query)
                         {
-                            var qr = (from c in db.Blacklists where c.Words.Equals(item.Phone) select c).ToList();
-                            foreach (var item2 in qr)
+                            item.IsSpam = false;
+                            var qr = (from c in db.Blacklists where c.Words.Equals(item.Phone) select c).FirstOrDefault();
+                            if (qr != null)
                             {
-                                db.Blacklists.DeleteOnSubmit(item2);
+                                db.Blacklists.DeleteOnSubmit(qr);
                             }
                         }
                     }

@@ -214,7 +214,7 @@ namespace CMS.Controllers
                     newsItem.Contents = content;
                     newsItem.Summary = content;
                     newsItem.Link = "http://ozo.vn/";
-                    newsItem.SiteId = 0;
+                    newsItem.SiteId = ConfigWeb.OzoId;
                     newsItem.DistrictId = districtId;
                     newsItem.ProvinceId = 1;
                     newsItem.DateOld = DateTime.Now;

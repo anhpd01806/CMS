@@ -220,14 +220,14 @@
                             <input type="checkbox" id="check-all" />
                             <span class="lbl"></span>
                         </th>
-                        <th>Tiêu đề</th>
+                        <th data-name="Title">Tiêu đề</th>
                         <th>Quận huyện</th>
-                        <th style="min-width: 105px;">Ngày đăng</th>
-                        <th style="min-width: 105px;">Giá</th>
+                        <th style="min-width: 105px;" data-name="CreatedOn">Ngày đăng</th>
+                        <th style="min-width: 105px;" data-name="Price">Giá</th>
                         <th style="text-align: center">Điện thoại</th>
-                        <th style="text-align: center">Loại tin</th>
+                        <th style="text-align: center" data-name="StatusId">Loại tin</th>
                         <th>Xem</th>
-                        <th class="tdcc">Chính chủ</th>
+                        <th class="tdcc" data-name="Iscc">Chính chủ</th>
                         @*<th class="tdcenter">Kiểm tra</th>
                             <th class="tdcenter">Span</th>*@
                         @*<th style="text-align: center">Tính năng</th>*@
@@ -264,7 +264,7 @@
                                 <td class="td-small" style="text-align: center;">
                                     @if (Convert.ToBoolean(ViewBag.Accept))
                                     {
-                                        <span>@Html.Raw(item.Phone.Replace(",", ", ").Trim() + "<br/>(đã đăng " + item.RepeatTotal + " tin)")</span>
+                                        <span>@Html.Raw(item.Phone.Replace(",", ", ").Trim() + "<br/>(" + item.RepeatTotal + " tin)")</span>
                                     }
                                     else
                                     {
