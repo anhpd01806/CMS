@@ -81,7 +81,7 @@ $(function () {
                         $.LoadingOverlay("show");
                         var cateId = parseInt($(".cateId").val());
                         var districtId = parseInt($(".districtId").val());
-                        var newTypeId = parseInt($(".newTypeId").val());
+                        var newTypeId = 0;
                         var siteId = parseInt($(".siteId").val());
                         var backdate = parseInt($(".ddlbackdate").val());
                         var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -96,11 +96,23 @@ $(function () {
                         var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                         var key = $.trim($(".txtsearchkey").val());
 
+                        var NameOrder = "";
+                        var descending = false;
+
+                        $("#listnewstable th").each(function () {
+                            if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                                NameOrder = $(this).attr("data-name");
+                                if ($(this).hasClass("order_desc")) {
+                                    descending = true;
+                                }
+                            }
+                        });
+
                         var data = {
                             cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                             siteId: siteId, backdate: backdate,
                             minPrice: minPrice, maxPrice: maxPrice,
-                            from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder : "", descending : false
+                            from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
                         };
                         $.post("/home/loaddata", data, function (resp) {
                             if (resp != null) {
@@ -141,7 +153,7 @@ $(function () {
             $.LoadingOverlay("show");
             var cateId = parseInt($(".cateId").val());
             var districtId = parseInt($(".districtId").val());
-            var newTypeId = parseInt($(".newTypeId").val());
+            var newTypeId = 0;
             var siteId = parseInt($(".siteId").val());
             var backdate = parseInt($(".ddlbackdate").val());
             var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -682,7 +694,7 @@ $(function () {
 
         //Change search filter
 
-        $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
+        $(".cateId, .districtId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
             LoadData();
         });
 
@@ -708,14 +720,13 @@ $(function () {
 
         $(document).on("click", "#listnewstable th", function () {
             if ($(this).hasClass("order_desc")) {
-                $("#listnewstable th").removeClass("order");
+                $("#listnewstable th").removeClass("order_desc");
                 $(this).addClass("order_asc");
             } else {
                 if ($(this).hasClass("order_asc")) {
-                    $("#listnewstable th").removeClass("order");
+                    $("#listnewstable th").removeClass("order_asc");
                     $(this).addClass("order_desc");
                 } else {
-                    $("#listnewstable th").removeClass("order");
                     $(this).addClass("order_asc");
                 }
             }
@@ -726,7 +737,7 @@ $(function () {
     function LoadData() {
         var cateId = parseInt($(".cateId").val());
         var districtId = parseInt($(".districtId").val());
-        var newTypeId = parseInt($(".newTypeId").val());
+        var newTypeId = 0;
         var siteId = parseInt($(".siteId").val());
         var backdate = parseInt($(".ddlbackdate").val());
         var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -817,7 +828,7 @@ $(function () {
                 $.LoadingOverlay("show");
                 var cateId = parseInt($(".cateId").val());
                 var districtId = parseInt($(".districtId").val());
-                var newTypeId = parseInt($(".newTypeId").val());
+                var newTypeId = 0;
                 var siteId = parseInt($(".siteId").val());
                 var backdate = parseInt($(".ddlbackdate").val());
                 var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -831,12 +842,24 @@ $(function () {
                 }
                 var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                 var key = $.trim($(".txtsearchkey").val());
+                
+                var NameOrder = "";
+                var descending = false;
+
+                $("#listnewstable th").each(function () {
+                    if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                        NameOrder = $(this).attr("data-name");
+                        if ($(this).hasClass("order_desc")) {
+                            descending = true;
+                        }
+                    }
+                });
 
                 var data = {
                     cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                     siteId: siteId, backdate: backdate,
                     minPrice: minPrice, maxPrice: maxPrice,
-                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: "", descending: false
+                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
                 };
                 $.post("/home/loaddata", data, function (resp) {
                     if (resp != null) {
@@ -904,7 +927,7 @@ $(function () {
                 if (result) {
                     var cateId = parseInt($(".cateId").val());
                     var districtId = parseInt($(".districtId").val());
-                    var newTypeId = parseInt($(".newTypeId").val());
+                    var newTypeId = 0;
                     var siteId = parseInt($(".siteId").val());
                     var backdate = parseInt($(".ddlbackdate").val());
                     var minPrice = parseFloat(checkminprice($(".ddlprice").val()));

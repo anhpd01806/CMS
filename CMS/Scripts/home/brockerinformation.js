@@ -45,7 +45,7 @@
                         $.LoadingOverlay("show");
                         var cateId = parseInt($(".cateId").val());
                         var districtId = parseInt($(".districtId").val());
-                        var newTypeId = parseInt($(".newTypeId").val());
+                        var newTypeId = 0;
                         var siteId = parseInt($(".siteId").val());
                         var backdate = parseInt($(".ddlbackdate").val());
                         var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -139,7 +139,7 @@
             $.LoadingOverlay("show");
             var cateId = parseInt($(".cateId").val());
             var districtId = parseInt($(".districtId").val());
-            var newTypeId = parseInt($(".newTypeId").val());
+            var newTypeId = 0;
             var siteId = parseInt($(".siteId").val());
             var backdate = parseInt($(".ddlbackdate").val());
             var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -229,7 +229,7 @@
             $(".mCustomScrollbar").mCustomScrollbar();
         });
 
-        $(".cateId, .districtId, .newTypeId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
+        $(".cateId, .districtId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
             LoadData();
         });
 
@@ -297,7 +297,7 @@
     function LoadData() {
         var cateId = parseInt($(".cateId").val());
         var districtId = parseInt($(".districtId").val());
-        var newTypeId = parseInt($(".newTypeId").val());
+        var newTypeId = 0;
         var siteId = parseInt($(".siteId").val());
         var backdate = parseInt($(".ddlbackdate").val());
         var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -386,7 +386,7 @@
                 $.LoadingOverlay("show");
                 var cateId = parseInt($(".cateId").val());
                 var districtId = parseInt($(".districtId").val());
-                var newTypeId = parseInt($(".newTypeId").val());
+                var newTypeId = 0;
                 var siteId = parseInt($(".siteId").val());
                 var backdate = parseInt($(".ddlbackdate").val());
                 var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
