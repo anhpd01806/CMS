@@ -201,7 +201,6 @@ namespace CMS.Controllers
                 var districtId = Convert.ToInt32(Request["districtId"]);
                 var phone = Request["phone"];
                 var price = Request["price"].Replace(".", "");
-                var pricetext = Request["pricetext"];
                 var content = Request["content"];
                 var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var newsItem = new New();
@@ -225,7 +224,7 @@ namespace CMS.Controllers
                     newsItem.IsRepeat = count > 0 ? true : false;
                     newsItem.Phone = phone;
                     newsItem.Price = string.IsNullOrEmpty(price) ? 0 : Convert.ToDecimal(price);
-                    newsItem.PriceText = pricetext;
+                    newsItem.PriceText = ConvertPrice(newsItem.Price.ToString());
                     newsItem.IsOwner = false;
                     newsItem.PageView = 0;
                     newsItem.CreatedOn = DateTime.Now;
@@ -292,6 +291,30 @@ namespace CMS.Controllers
                 {
                     Status = 0
                 });
+            }
+        }
+
+        private static string ConvertPrice(string price)
+        {
+            try
+            {
+                StringBuilder PriceStr = new StringBuilder();
+                if (price.Length > 9)
+                {
+                    PriceStr.Append(price.Substring(0, price.Length - 9) + " tỷ ");
+                    double milionPrice = int.Parse(price.Substring(price.Length - 9));
+                    if (milionPrice > 0) PriceStr.Append(string.Format("{0:n0}", Math.Round((milionPrice / 1000000), 1)) + " triệu");
+                }
+                else
+                {
+                    double milionPrice = int.Parse(price);
+                    PriceStr.Append(string.Format("{0:n1}", Math.Round((milionPrice / 1000000), 1)) + " triệu");
+                }
+                return PriceStr.ToString();
+            }
+            catch (Exception)
+            {
+                return "";
             }
         }
     }
