@@ -85,7 +85,8 @@ $(document).ready(function () {
             }
         },
         submitHandler: function () {
-
+            var price = $("#txtprice").val().replace(/\./g, '');
+            if ($.isNumeric(price)) {
             bootbox.confirm({
                 title: "Thông báo",
                 message: "Bạn sẽ bị trừ 15k vào tài khoản. bạn có chắc muốn đăng tin này?",
@@ -99,12 +100,12 @@ $(document).ready(function () {
                 },
                 callback: function (result) {
                     if (result) {
-                        if ($.isNumeric(price)) {
+                        
                         var title = $.trim($("#txttitle").val());
                         var cateId = $("#CategoryId").val();
                         var districtId = $("#DistricId").val();
                         var phone = $("#txtphone").val();
-                        var price = $("#txtprice").val().replace(/\./g, '');
+                        
                         var pricetext = "";
                         var content = CKEDITOR.instances['txtcontent'].getData();
                         
@@ -138,13 +139,14 @@ $(document).ready(function () {
                                 }
                             });
                         
-                        } else {
-                            showmessage("error", "Giá tiền phải là số!");
-                            return false;
-                        }
+                        
                     } 
                 }
             });
+            } else {
+                showmessage("error", "Giá tiền phải là số!");
+                return false;
+            }
         }
     });
 
