@@ -185,28 +185,28 @@ namespace CMS.Bussiness
 
         public NewsModel GetNewsDetail(int Id, int UserId)
         {
-            if (ConfigWeb.EnableCache == 1)
-            {
-                var param = String.Format("GetNewsDetail{0}{1}", Id, UserId);
-                if (cache.KeyExistsCache(param))
-                {
-                    var lst = (NewsModel)cache.GetCache(param);
-                    if (lst == null)
-                    {
-                        cache.DeleteCache(param);
-                        var retval = _homeBussiness.GetNewsDetail(Id, UserId);
-                        cache.Set(param, retval, ConfigWeb.TimeExpire);
-                        return retval;
-                    }
-                    return lst;
-                }
-                else
-                {
-                    var lst = _homeBussiness.GetNewsDetail(Id, UserId);
-                    cache.Set(param, lst, ConfigWeb.TimeExpire);
-                    return lst;
-                }
-            }
+            //if (ConfigWeb.EnableCache == 1)
+            //{
+            //    var param = String.Format("GetNewsDetail{0}{1}", Id, UserId);
+            //    if (cache.KeyExistsCache(param))
+            //    {
+            //        var lst = (NewsModel)cache.GetCache(param);
+            //        if (lst == null)
+            //        {
+            //            cache.DeleteCache(param);
+            //            var retval = _homeBussiness.GetNewsDetail(Id, UserId);
+            //            cache.Set(param, retval, ConfigWeb.TimeExpire);
+            //            return retval;
+            //        }
+            //        return lst;
+            //    }
+            //    else
+            //    {
+            //        var lst = _homeBussiness.GetNewsDetail(Id, UserId);
+            //        cache.Set(param, lst, ConfigWeb.TimeExpire);
+            //        return lst;
+            //    }
+            //}
             return _homeBussiness.GetNewsDetail(Id, UserId);
         }
     }

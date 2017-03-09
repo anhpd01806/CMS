@@ -272,7 +272,7 @@ namespace CMS.Bussiness
                              CategoryId = ct.Id,
                              CateName = ct.Name,
                              ListImage = GetImageByNewsId(c.Id),
-                             SameNews = GetSameNewsByNewsId(c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
+                             SameNews = GetSameNewsByNewsId(Id, c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
                              Iscc = CheckCCByUser(c.Id, UserId),
                              PersionalReport = GetNameReasonReport(c.Id),
                              IsReason = CheckReason(UserId, c.Id)
@@ -387,22 +387,20 @@ namespace CMS.Bussiness
             return query;
         }
 
-        public List<NewsModel> GetSameNewsByNewsId(int CateId, int DistricId, string phone, int UserId)
+        public List<NewsModel> GetSameNewsByNewsId(int Id, int CateId, int DistricId, string phone, int UserId)
         {
-            var news_new = (from c in db.News_Customer_Mappings
-                            where c.CustomerId.Equals(UserId)
-                            select (c.NewsId)).ToList();
-
             var query = (from c in db.News
                          join d in db.Districts on c.DistrictId equals d.Id
                          join t in db.NewsStatus on c.StatusId equals t.Id
                          join st in db.Sites on c.SiteId equals st.ID
-                         where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                         && !d.IsDeleted && d.Published
-                         && !news_new.Contains(c.Id)
+                         where 
+                         //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                         //&& !d.IsDeleted && d.Published
+                         //&& !news_new.Contains(c.Id)
                          //&& c.CategoryId.Equals(CateId)
                          //&& c.DistrictId.Equals(DistricId)
-                         && c.Phone.Contains(phone) && c.Phone != ""
+                         c.Phone.Contains(phone) && c.Phone != ""
+                         && !c.Id.Equals(Id)
                          orderby c.StatusId ascending, c.Price descending
                          select new NewsModel
                          {
