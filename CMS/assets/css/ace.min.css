@@ -1611,7 +1611,7 @@ pre.prettyprint {
     }
 
 .user-info {
-    max-width: 100px;
+    min-width: 112px;
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -7935,7 +7935,7 @@ button.btn:active {
 
     .dropdown-menu.dropdown-close.dropdown-menu-right {
         left: auto;
-        right: -5px;
+        right: -1px;
     }
 
 .dropdown-menu.dropdown-closer {

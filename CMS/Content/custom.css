@@ -241,3 +241,6 @@ span.error {
 .btn-area-action {
     text-align: left;
 }
+.user-menu {
+    min-width: 203px;
+}
