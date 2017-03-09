@@ -622,6 +622,7 @@ $(function () {
             } else {
                 var url = "/home/exportexcelv2";
                 location.href = decodeURIComponent(url + "?listNewsId=" + selected);
+                $('#check-all').prop('checked', false);
             }
         });
 
@@ -941,9 +942,22 @@ $(function () {
                     var pageSize = parseInt($(".ddlpage").val());
                     var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                     var key = $.trim($(".txtsearchkey").val());
+                    
+                    var NameOrder = "";
+                    var descending = false;
+
+                    $("#listnewstable th").each(function () {
+                        if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                            NameOrder = $(this).attr("data-name");
+                            if ($(this).hasClass("order_desc")) {
+                                descending = true;
+                            }
+                        }
+                    });
 
                     var url = "/home/exportexcel";
-                    location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat + "&key=" + key);
+                    location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat + "&key=" + key + "&NameOrder=" + NameOrder + "&descending=" + descending);
+                    $('#check-all').prop('checked', false);
                 }
             }
         });

@@ -324,6 +324,21 @@
                 LoadData();
             }
         });
+        
+        $(document).on("click", ".btnexport", function () {
+            var selected = "";
+            $('.checkboxItem:checked').each(function () {
+                selected += $(this).attr('id') + ",";
+            });
+            selected = selected.slice(0, -1);
+            if (selected.length == 0) {
+                showboxcomfirm("Thông báo", "Bạn chưa chọn tin nào! Bạn có muốn xuất hết danh sách tin tức đang được hiển thị không?");
+            } else {
+                var url = "/home/exportexcelv2";
+                location.href = decodeURIComponent(url + "?listNewsId=" + selected);
+                $('#check-all').prop('checked', false);
+            }
+        });
     });
 
     function LoadData() {
@@ -519,7 +534,35 @@
             },
             callback: function (result) {
                 if (result) {
+                    var cateId = parseInt($(".cateId").val());
+                    var districtId = parseInt($(".districtId").val());
+                    var newTypeId = 0;
+                    var siteId = parseInt($(".siteId").val());
+                    var backdate = parseInt($(".ddlbackdate").val());
+                    var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
+                    var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                    var from = $(".txtFrom").val();
+                    var to = $(".txtTo").val();
+                    var pageIndex = parseInt($('#datatable').attr("data-page"));
+                    var pageSize = parseInt($(".ddlpage").val());
+                    var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
+                    var key = $.trim($(".txtsearchkey").val());
                     
+                    var NameOrder = "";
+                    var descending = false;
+
+                    $("#listnewstable th").each(function () {
+                        if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                            NameOrder = $(this).attr("data-name");
+                            if ($(this).hasClass("order_desc")) {
+                                descending = true;
+                            }
+                        }
+                    });
+
+                    var url = "/brokersinformation/exportexcel";
+                    location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat + "&key=" + key + "&NameOrder=" + NameOrder + "&descending=" + descending);
+                    $('#check-all').prop('checked', false);
                 }
             }
         });
