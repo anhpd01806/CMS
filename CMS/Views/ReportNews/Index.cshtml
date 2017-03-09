@@ -47,7 +47,7 @@
             $.post("/ReportNews/CancelReportNews", data, function (resp) {
                 if (resp.Result == true) {
                     FindInfomation();
-                    showmessage("success", "Đã hủy tin báo mô giới!");
+                    showmessage("success", "Đã hủy tin báo môi giới!");
                 }
             });
             $.LoadingOverlay("hide");
@@ -83,15 +83,15 @@
 
                 </div>
                 <div class="col-xs-12">
-                    <h3 class="header smaller lighter blue">Danh sách tin mô giới</h3>
+                    <h3 class="header smaller lighter blue">Danh sách tin môi giới</h3>
                     <div id="datatable1_wrapper" class="dataTables_wrapper form-inline no-footer">
                         <table id="datatable1" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th class="col-md-1 text-center">STT</th>
                                     <th>Tiêu đề</th>
-                                    <th>Ngày báo mô giới</th>
-                                    <th>Người báo mô giới</th>
+                                    <th>Ngày báo môi giới</th>
+                                    <th>Người báo môi giới</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

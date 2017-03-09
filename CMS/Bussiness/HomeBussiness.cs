@@ -452,7 +452,7 @@ namespace CMS.Bussiness
                         StatusId = Convert.ToInt32(item.StatusId),
                         NewsId = item.Id,
                         CreateDate = DateTime.Now,
-                        Notes = "Tin mô giới: " + item.Title,
+                        Notes = "Tin môi giới: " + item.Title,
                         CustomerId = userReport
                     };
                     db.NewsReports.InsertOnSubmit(reportItem);
@@ -484,7 +484,7 @@ namespace CMS.Bussiness
                             var reportItem = new Blacklist
                             {
                                 Words = item.Phone,
-                                Description = "Tin mô giới: " + item.Title,
+                                Description = "Tin môi giới: " + item.Title,
                                 LinkUrl = item.Link,
                                 CreatedOn = DateTime.Now,
                                 Type = 1

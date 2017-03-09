@@ -183,7 +183,7 @@ namespace CMS.Bussiness
                         Userid = userReport,
                         SendFlag = true,
                         DateSend = DateTime.Now,
-                        Title = "Báo tin mô giới",
+                        Title = "Báo tin môi giới",
                         Accepted = false,
                         ViewFlag = false,
                         Description = item.Title,

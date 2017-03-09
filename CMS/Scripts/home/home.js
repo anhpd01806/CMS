@@ -611,7 +611,7 @@ $(function () {
                         if (resp.Status == 1) {
                             LoadData();
                             setTimeout(function () {
-                                showmessage("success", "Tin mô giới đã được cho vào danh sách đen!");
+                                showmessage("success", "Tin môi giới đã được cho vào danh sách đen!");
                             }, 1200);
 
                         } else {
@@ -768,7 +768,7 @@ $(function () {
                             if (resp.Status == 1) {
                                 LoadData();
                                 setTimeout(function () {
-                                    showmessage("success", "Tin mô giới đã được cho vào danh sách đen!");
+                                    showmessage("success", "Tin môi giới đã được cho vào danh sách đen!");
                                 }, 1200);
 
                             } else {

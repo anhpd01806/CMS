@@ -1,7 +1,7 @@
 ﻿@model CMS.ViewModel.NewsReportModel
 
 
-<h3 class="header smaller lighter blue">Nội dung tin mô giới</h3>
+<h3 class="header smaller lighter blue">Nội dung tin môi giới</h3>
 <div class="form col-md-6" role="form">
     @Html.HiddenFor(x=>x.NewsId)
     <div class="form-group">
@@ -9,11 +9,11 @@
         <label> @Model.Notes</label>
     </div>
     <div class="form-group">
-        <label style="color: blue;font-weight: bold;">Người báo mô giới: </label>
+        <label style="color: blue;font-weight: bold;">Người báo môi giới: </label>
         <label>@Html.Raw(Model.Users)</label>
     </div>
     <div class="form-group">
-        <label style="color: blue;font-weight: bold;">Ngày báo mô giới: </label>
+        <label style="color: blue;font-weight: bold;">Ngày báo môi giới: </label>
         <label>@Model.CreateDate.ToString("dd/MM/yyyy")</label>
     </div>
 </div>
@@ -29,5 +29,5 @@
 </div>
 <div class="col-md-12 footer-button">
     <button class="btn btn-primary" onclick="DeleteReportNews(); return false;">Chặn mô giới</button>
-    <button class="btn btn-primary" onclick="CancelReportNews(); return false;">Không phải tin mô giới</button>
+    <button class="btn btn-primary" onclick="CancelReportNews(); return false;">Không phải tin môi giới</button>
 </div>
