@@ -205,7 +205,11 @@ namespace CMS.Controllers
                 var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var newsItem = new New();
                 var count = _newsbussiness.CheckRepeatNews(phone, districtId, userId);
-                var resp = _payment.PaymentForCreateNews(Convert.ToInt32(ConfigWeb.MinPayment), userId);
+                int resp = 1;
+                if (checkuser) //nếu là user thì kiểm tra tiền trong tài khoản
+                {
+                    resp = _payment.PaymentForCreateNews(Convert.ToInt32(ConfigWeb.MinPayment), userId);
+                }
                 if (resp == 1 || !checkuser)
                 {
                     newsItem.CategoryId = cateId;
@@ -230,6 +234,7 @@ namespace CMS.Controllers
                     newsItem.CreatedOn = DateTime.Now;
                     newsItem.CreatedBy = userId;
                     newsItem.StatusId = 1;
+                    newsItem.TotalRepeat = count + 1;
                     resp = _newsbussiness.Createnew(newsItem, userId);
                 }
                 return Json(new
