@@ -402,7 +402,7 @@ namespace CMS.Bussiness
                          && !news_new.Contains(c.Id)
                          //&& c.CategoryId.Equals(CateId)
                          //&& c.DistrictId.Equals(DistricId)
-                         && c.Phone.Contains(phone) && !string.IsNullOrEmpty(c.Phone)
+                         && c.Phone.Contains(phone) && c.Phone != ""
                          orderby c.StatusId ascending, c.Price descending
                          select new NewsModel
                          {
