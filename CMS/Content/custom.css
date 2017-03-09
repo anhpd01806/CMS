@@ -255,3 +255,6 @@ span.error {
     border-radius: 5px;
     padding: 20px 0;
 }
+.tdcc a {
+    text-decoration: none;    
+}

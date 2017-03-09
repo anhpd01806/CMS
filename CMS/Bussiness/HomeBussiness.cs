@@ -475,41 +475,48 @@ namespace CMS.Bussiness
                     var newsqr = (from c in db.News
                                   where c.Id.Equals(item.Id)
                                   select c).FirstOrDefault();
+
                     if (newsqr != null)
-                        newsqr.IsSpam = true;
-
-                    var reportItem = new Blacklist
                     {
-                        Words = item.Phone,
-                        Description = "Tin mô giới: " + item.Title,
-                        LinkUrl = item.Link,
-                        CreatedOn = DateTime.Now,
-                        Type = 1
-                    };
-                    db.Blacklists.InsertOnSubmit(reportItem);
-
-                    var query = (from c in db.News_customer_actions
-                                 where
-                                     c.NewsId.Equals(item.Id) && c.CustomerId.Equals(userReport) && c.IsReport.HasValue &&
-                                     c.IsReport.Value
-                                 select c).ToList();
-                    if (!query.Any())
-                    {
-                        var action = new News_customer_action
+                        if (!string.IsNullOrEmpty(newsqr.Phone))
                         {
-                            NewsId = item.Id,
-                            CustomerId = userReport,
-                            Iscc = false,
-                            IsSpam = false,
-                            Ischeck = false,
-                            IsReport = true,
-                            DateCreate = DateTime.Now
-                        };
-                        db.News_customer_actions.InsertOnSubmit(action);
+                            newsqr.IsSpam = true;
+                            var reportItem = new Blacklist
+                            {
+                                Words = item.Phone,
+                                Description = "Tin mô giới: " + item.Title,
+                                LinkUrl = item.Link,
+                                CreatedOn = DateTime.Now,
+                                Type = 1
+                            };
+                            db.Blacklists.InsertOnSubmit(reportItem);
+
+                            var query = (from c in db.News_customer_actions
+                                         where
+                                             c.NewsId.Equals(item.Id) && c.CustomerId.Equals(userReport) && c.IsReport.HasValue &&
+                                             c.IsReport.Value
+                                         select c).ToList();
+                            if (!query.Any())
+                            {
+                                var action = new News_customer_action
+                                {
+                                    NewsId = item.Id,
+                                    CustomerId = userReport,
+                                    Iscc = false,
+                                    IsSpam = false,
+                                    Ischeck = false,
+                                    IsReport = true,
+                                    DateCreate = DateTime.Now
+                                };
+                                db.News_customer_actions.InsertOnSubmit(action);
+                            }
+                            db.SubmitChanges();
+                            return 1;
+                        }
+                        return 2;
                     }
                 }
-                db.SubmitChanges();
-                return 1;
+                return 3;
             }
             catch
             {

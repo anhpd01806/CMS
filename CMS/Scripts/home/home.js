@@ -363,6 +363,7 @@ $(function () {
             }
         });
 
+        /*Xóa tin*/
         $(document).on("click", ".btndelete", function () {
             if (!$(this).hasClass("disabled")) {
                 var selected = [];
@@ -391,6 +392,50 @@ $(function () {
                         ;
                     });
                 }
+            }
+        });
+        
+        /*Xóa tin popup*/
+        $(document).on("click", ".delete-item-list", function () {
+            var selected = [parseInt($(this).attr("data-id"))];
+            if (selected.length == 0) {
+                showmessage("error", "Bạn hãy chọn tin cần xóa!");
+            } else {
+                bootbox.confirm({
+                    title: "Thông báo",
+                    message: "Bạn có chắc muốn xóa này không?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Đóng'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Đồng ý'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.post("/home/delete", { listNewsId: selected }, function (resp) {
+                                if (resp != null) {
+                                    if (resp.Status == 1) {
+                                        LoadData();
+                                        setTimeout(function () {
+                                            showmessage("success", "Tin đã được xóa thành công!");
+                                        }, 1200);
+
+                                    } else {
+                                        if (resp.Status == 2) {
+                                            showmessage("error", "Bạn chưa chọn tin nào để xóa!");
+                                        } else {
+                                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                        }
+                                    }
+                                }
+                                ;
+                            });
+                            $("#newsdetail").modal("hide");
+                        }
+                    }
+                });
             }
         });
 
@@ -570,10 +615,17 @@ $(function () {
                             }, 1200);
 
                         } else {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            if (resp.Status == 2) {
+                                showmessage("success", "Tin không được cho vào danh sách đen! Số điện thoại đang bị trống!");
+                            } else {
+                                if (resp.Status == 3) {
+                                    showmessage("success", "Không tìm thấy tin cần cho chặn!");
+                                } else {
+                                    showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                }
+                            }
                         }
-                    }
-                    ;
+                    };
                 });
             }
             $("#newsdetail").modal("hide");
@@ -684,10 +736,17 @@ $(function () {
                                 }, 1200);
 
                             } else {
-                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                if (resp.Status == 2) {
+                                    showmessage("success", "Tin không được cho vào danh sách đen! Số điện thoại đang bị trống!");
+                                } else {
+                                    if (resp.Status == 3) {
+                                        showmessage("success", "Không tìm thấy tin cần cho chặn!");
+                                    } else {
+                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                    }
+                                }
                             }
-                        }
-                        ;
+                        };
                     });
                 }
             }
