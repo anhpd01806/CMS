@@ -188,7 +188,7 @@ span.error {
     margin: 0;
 }
 .txtwarring {
-    padding-left: 11%;
+    padding-left: 15px;
     margin-bottom: 15px;
     display: inline-block;
     color: red;
@@ -243,4 +243,15 @@ span.error {
 }
 .user-menu {
     min-width: 203px;
+}
+.left-createnews {
+    padding-left: 0;
+}
+.right-createnews {
+    max-width: 627px;
+    height: 185px;
+    background-color: rgba(204, 204, 204, 0.13);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px 0;
 }

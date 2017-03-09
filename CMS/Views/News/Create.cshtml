@@ -15,9 +15,46 @@
 </div>
 
 <div class="row">
-    <span class="txtwarring">(*) Lệ phí mỗi lần đăng tin là 15.000<sup>đ</sup></span>
+    
     <div class="col-xs-12">
         <form class="form-horizontal" id="frmnews" role="form">
+            <div class="row clearfix">
+                <div class="col-xs-12 col-sm-5 left-createnews">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Danh mục tin (<span class="requied">*</span>)</label>
+
+                        <div class="col-sm-9">
+                            @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "col-xs-12 col-sm-12 ddlfrm cateId" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Quận huyện (<span class="requied">*</span>)</label>
+
+                        <div class="col-sm-9">
+                            @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "col-xs-12 col-sm-12 ddlfrm districtId" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Điện thoại (<span class="requied">*</span>)</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="txtphone" placeholder="Nhập vào số điện thoại" name="phone" class="col-xs-12 col-sm-12 ddlfrm txtphone" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Giá (<span class="requied">*</span>)</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="txtprice" placeholder="Nhập vào giá" name="price" class="col-xs-12 col-sm-12 ddlfrm txtprice" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-7 right-createnews">
+                    <span class="txtwarring">(*) Lệ phí mỗi lần đăng tin là 15.000<sup>đ</sup></span>
+                </div>
+            </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Tiêu đề tin (<span class="requied">*</span>) </label>
 
@@ -25,45 +62,6 @@
                     <input type="text" id="txttitle" placeholder="Nhập vào tiêu đề tin" name="title" class="col-xs-12 col-sm-12" />
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Danh mục tin (<span class="requied">*</span>)</label>
-
-                <div class="col-sm-9">
-                    @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "col-xs-12 col-sm-12 ddlfrm cateId" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Quận huyện (<span class="requied">*</span>)</label>
-
-                <div class="col-sm-9">
-                    @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "col-xs-12 col-sm-12 ddlfrm districtId" })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Điện thoại (<span class="requied">*</span>)</label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="txtphone" placeholder="Nhập vào số điện thoại" name="phone" class="col-xs-12 col-sm-12 ddlfrm txtphone" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Giá (<span class="requied">*</span>)</label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="txtprice" placeholder="Nhập vào giá" name="price" class="col-xs-12 col-sm-12 ddlfrm txtprice" />
-                </div>
-            </div>
-
-            @*<div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Giá bằng chữ (<span class="requied">*</span>)</label>
-
-                <div class="col-sm-9">
-                    <input type="text" id="txtpricetext" placeholder="Nhập vào giá bằng chữ" name="pricetext" class="col-xs-12 col-sm-12 ddlfrm txtpricetext" />
-                </div>
-            </div>*@
-
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Nội dung (<span class="requied">*</span>)</label>
 
@@ -75,7 +73,7 @@
                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
                 <div class="col-sm-9">
                     <input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">
-                    @*6LdaxRQUAAAAAEzTtuyPn-Fw1FXwssvfxcOxQ8pG*@
+                    @*6LcgwBYUAAAAACh_dbcdd-K36mHfgW_zdXQW2C_p*@
                     <div class="g-recaptcha" data-sitekey="6LdaxRQUAAAAAEzTtuyPn-Fw1FXwssvfxcOxQ8pG"></div>
                 </div>
             </div>
@@ -85,7 +83,7 @@
                 <div class="col-xs-11 col-md-11">
                     <button class="btn btn-info btnsave btn-sm" type="submit">
                         <i class="ace-icon fa fa-check bigger-110"></i>
-                        Lưu tin
+                        Đăng tin
                     </button>
                     <button class="btn btn-sm" type="reset">
                         <i class="ace-icon fa fa-undo bigger-110"></i>
