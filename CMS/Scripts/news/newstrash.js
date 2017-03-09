@@ -283,12 +283,12 @@ $(function () {
                     title: "Thông báo",
                     message: "Những tin này sẽ không được hiển thị trong hệ thống nữa! Bạn có chắc chắn muốn xóa không?",
                     buttons: {
-                        confirm: {
-                            label: '<i class="fa fa-check"></i> Đồng ý'
-                        },
                         cancel: {
                             label: '<i class="fa fa-times"></i> Đóng'
                         },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Đồng ý'
+                        }
                     },
                     callback: function (result) {
                         if (result) {
@@ -344,12 +344,12 @@ $(function () {
                 title: "Thông báo",
                 message: "Tin này sẽ không được hiển thị trong hệ thống nữa! Bạn có chắc chắn muốn xóa không?",
                 buttons: {
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> Đồng ý'
-                    },
                     cancel: {
                         label: '<i class="fa fa-times"></i> Đóng'
                     },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Đồng ý'
+                    }
                 },
                 callback: function (result) {
                     if (result) {
@@ -596,12 +596,12 @@ function showboxcomfirm(title, message) {
         title: title,
         message: message,
         buttons: {
-            confirm: {
-                label: '<i class="fa fa-check"></i> Đồng ý'
-            },
             cancel: {
                 label: '<i class="fa fa-times"></i> Đóng'
             },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Đồng ý'
+            }
         },
         callback: function (result) {
             if (result) {

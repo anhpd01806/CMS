@@ -412,12 +412,12 @@ $(function () {
                         title: "Thông báo",
                         message: "Bạn có chắc muốn báo chính chủ tin này không?",
                         buttons: {
-                            confirm: {
-                                label: '<i class="fa fa-check"></i> Đồng ý'
-                            },
                             cancel: {
                                 label: '<i class="fa fa-times"></i> Đóng'
                             },
+                            confirm: {
+                                label: '<i class="fa fa-check"></i> Đồng ý'
+                            }
                         },
                         callback: function (result) {
                             $.post("/home/newsforuser", { listNewsId: selected }, function (resp) {
@@ -449,12 +449,12 @@ $(function () {
                     title: "Thông báo",
                     message: "Bạn có chắc muốn báo chính chủ tin này không?",
                     buttons: {
-                        confirm: {
-                            label: '<i class="fa fa-check"></i> Đồng ý'
-                        },
                         cancel: {
                             label: '<i class="fa fa-times"></i> Đóng'
                         },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Đồng ý'
+                        }
                     },
                     callback: function (result) {
                         if (result) {
@@ -488,12 +488,12 @@ $(function () {
                     title: "Thông báo",
                     message: "Bạn có chắc muốn hủy chính chủ tin này không?",
                     buttons: {
-                        confirm: {
-                            label: '<i class="fa fa-check"></i> Đồng ý'
-                        },
                         cancel: {
                             label: '<i class="fa fa-times"></i> Đóng'
                         },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Đồng ý'
+                        }
                     },
                     callback: function (result) {
                         if (result) {
@@ -904,12 +904,12 @@ $(function () {
             title: title,
             message: message,
             buttons: {
-                confirm: {
-                    label: '<i class="fa fa-check"></i> Đồng ý'
-                },
                 cancel: {
                     label: '<i class="fa fa-times"></i> Đóng'
                 },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Đồng ý'
+                }
             },
             callback: function (result) {
                 
