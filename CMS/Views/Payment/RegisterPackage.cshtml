@@ -69,9 +69,9 @@
                         }
                         <input id="hdUserName" type="hidden" value="@Session["SS-USERNAME"].ToString()" />
                         <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
-                        <div class="form col-md-6" role="form">
+                        <div class="form col-md-3" role="form">
                             <div class="form-group">
-                                <label>Chọn gói cước</label>
+                                <label>Chọn gói cước (20k/ngày,45k/tháng)</label>
                                 @Html.DropDownListFor(m => m.Payment, Model.PackageList, new { @class = "form-control" })
                             </div>
                         </div>

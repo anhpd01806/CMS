@@ -1,4 +1,4 @@
-$(document).ready(function () { 
+$(document).ready(function () {
     //action show notify 
     if ($('#show-notify').val() == 1) {
         showNotify();
@@ -202,5 +202,56 @@ function DetailNotify(id, type) {
             }
         });
     }
+};
+
+function DangerNewsReport(id) {
+    $(".modal-backdrop").remove();
+    $('#md-notify').modal('hide');
+    if ($('#reason').val().trim() == '') {
+        //showmessage("error", "Vui lòng nhập nội dung báo cáo.");
+        return false;
+    }
+
+    if ($('#reason').val().length > 20) {
+        showmessage("error", "Vui lòng nhập nhỏ hơn 20 ký tự.");
+        return false;
+    }
+    $.post("/home/DangerNewsReport", { id: id, reason: $('#reason').val() }, function (resp) {
+        if (resp != null) {
+            showModalDetail(id)
+            //alert(resp.Messages);
+        };
+    });
+};
+
+function CancerDangerNewsReport(id) {
+    $.post("/home/CancerDangerNewsReport", { id: id }, function (resp) {
+        if (resp != null) {
+            showModalDetail(id);
+            //alert(resp.Messages);
+        };
+    });
+}
+
+function showModalDetail(id) {
+    $.LoadingOverlay("show");
+    $.get("/home/getnewsdetail", { Id: id }, function (resp) {
+        if (resp != null) {
+            if (resp.Pay == 1 && resp.Content != "") {
+                if (resp.Pay == 1 && resp.Content != "") {
+                    $("#modaldetail").empty();
+                    $("#modaldetail").html(resp.Content);
+                    setTimeout(function () {
+                        $("#newsdetail").modal("show");
+                    }, 500);
+                } else {
+                    window.location.href = '/Payment/RegisterPackage';
+                }
+            } else {
+                window.location.href = '/Payment/RegisterPackage';
+            }
+        }
+        $.LoadingOverlay("hide");
+    });
 };
 

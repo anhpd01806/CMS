@@ -1,7 +1,7 @@
 ﻿@model CMS.Models.NewsModel
 
 <div class="modal fade" id="newsdetail" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog custommodal" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header customheader">
                 <h3><i class="fa fa-search-plus"></i> Nội dung chi tiết tin</h3>
@@ -38,7 +38,7 @@
                             <div class="col-xs-12">
                                 @if (Model.SameNews.Any())
                                 {
-                                    <h5><strong>Tin liên quan:</strong></h5>
+                                    <h5><strong>Tin cùng người đăng:</strong></h5>
                                     int i = 1;
                                     foreach (var item in Model.SameNews)
                                     {
@@ -138,8 +138,8 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xs-12"><label for="rd-03">Nội dung báo cáo (tối đa 30 ký tự.)</label></div>
-                    <div class="col-xs-12"><input type="text" name="reason" style="width:100%" id="reason" /></div>
+                    <div class="col-xs-12"><label for="rd-03">Nội dung báo cáo (tối đa 20 ký tự.)</label></div>
+                    <div class="col-xs-12"><input type="text" name="reason" style="width:100%" id="reason" maxlength="20"/></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -151,37 +151,3 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function(){
-        $('#newsdetail').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
-
-    });
-    function DangerNewsReport(id) {
-        debugger;
-        if ($('#reason').val() == '') {
-            showmessage("error", "Vui lòng nhập nội dung báo cáo.");
-            return false;
-        }
-
-        if($('#reason').val().length < 30){
-            showmessage("error", "Vui lòng nhập nhỏ hơn 30 ký tự.");
-            return false;
-        }
-        $.post("/home/DangerNewsReport", { id: id, reason: $('#reason').val() }, function (resp) {
-            if (resp != null) {
-                alert(resp.Messages);
-            };
-        });
-    };
-
-    function CancerDangerNewsReport(id) {
-        $.post("/home/CancerDangerNewsReport", { id: id }, function (resp) {
-            if (resp != null) {
-                alert(resp.Messages);
-            };
-        });
-    }
-</script>
