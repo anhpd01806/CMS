@@ -33,20 +33,23 @@ $(function () {
                     var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                     var key = $.trim($(".txtsearchkey").val());
 
+                    var NameOrder = "";
+                    var descending = false;
+
+                    $("#listnewstable th").each(function () {
+                        if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                            NameOrder = $(this).attr("data-name");
+                            if ($(this).hasClass("order_desc")) {
+                                descending = true;
+                            }
+                        }
+                    });
+
                     var data = {
-                        cateId: cateId,
-                        districtId: districtId,
-                        newTypeId: newTypeId,
-                        siteId: siteId,
-                        backdate: backdate,
-                        minPrice: minPrice,
-                        maxPrice: maxPrice,
-                        from: from,
-                        to: to,
-                        pageIndex: pageIndex,
-                        pageSize: pageSize,
-                        IsRepeat: isrepeat,
-                        key: key
+                        cateId: cateId, districtId: districtId, newTypeId: newTypeId,
+                        siteId: siteId, backdate: backdate,
+                        minPrice: minPrice, maxPrice: maxPrice,
+                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
                     };
                     $.post("/newstrash/loaddata", data, function(resp) {
                         if (resp != null) {
@@ -142,11 +145,23 @@ $(function () {
         var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
         var key = $.trim($(".txtsearchkey").val());
 
+        var NameOrder = "";
+        var descending = false;
+
+        $("#listnewstable th").each(function () {
+            if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                NameOrder = $(this).attr("data-name");
+                if ($(this).hasClass("order_desc")) {
+                    descending = true;
+                }
+            }
+        });
+
         var data = {
             cateId: cateId, districtId: districtId, newTypeId: newTypeId,
             siteId: siteId, backdate: backdate,
             minPrice: minPrice, maxPrice: maxPrice,
-            from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
+            from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
         };
         $.post("/newstrash/loaddata", data, function (resp) {
             if (resp != null) {
@@ -377,6 +392,23 @@ $(function () {
     $(document).on("shown.bs.modal", function () {
         $(".mCustomScrollbar").mCustomScrollbar();
     });
+    
+    $(document).on("click", "#listnewstable th", function () {
+        if (!$(this).hasClass("order")) {
+            if ($(this).hasClass("order_desc")) {
+                $("#listnewstable th").removeClass("order_desc");
+                $(this).addClass("order_asc");
+            } else {
+                if ($(this).hasClass("order_asc")) {
+                    $("#listnewstable th").removeClass("order_asc");
+                    $(this).addClass("order_desc");
+                } else {
+                    $(this).addClass("order_asc");
+                }
+            }
+            LoadData();
+        }
+    });
 });
 
 function LoadData() {
@@ -404,20 +436,23 @@ function LoadData() {
         showmessage("error", "Ngày bắt đầu không được lớn hơn ngày kết thúc!");
     } else {
 
+        var NameOrder = "";
+        var descending = false;
+
+        $("#listnewstable th").each(function () {
+            if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                NameOrder = $(this).attr("data-name");
+                if ($(this).hasClass("order_desc")) {
+                    descending = true;
+                }
+            }
+        });
+
         var data = {
-            cateId: cateId,
-            districtId: districtId,
-            newTypeId: newTypeId,
-            siteId: siteId,
-            backdate: backdate,
-            minPrice: minPrice,
-            maxPrice: maxPrice,
-            from: from,
-            to: to,
-            pageIndex: pageIndex,
-            pageSize: pageSize,
-            IsRepeat: isrepeat,
-            key: key
+            cateId: cateId, districtId: districtId, newTypeId: newTypeId,
+            siteId: siteId, backdate: backdate,
+            minPrice: minPrice, maxPrice: maxPrice,
+            from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
         };
         $.LoadingOverlay("show");
         $.post("/newstrash/loaddata", data, function (resp) {
@@ -454,6 +489,7 @@ function LoadData() {
             }
             $.LoadingOverlay("hide");
         });
+        $("#check-all").checkAll();
     }
 }
 
@@ -486,11 +522,23 @@ function showPagination(pagesCounter) {
             var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
             var key = $.trim($(".txtsearchkey").val());
 
+            var NameOrder = "";
+            var descending = false;
+
+            $("#listnewstable th").each(function () {
+                if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                    NameOrder = $(this).attr("data-name");
+                    if ($(this).hasClass("order_desc")) {
+                        descending = true;
+                    }
+                }
+            });
+
             var data = {
                 cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                 siteId: siteId, backdate: backdate,
                 minPrice: minPrice, maxPrice: maxPrice,
-                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
+                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
             };
             $.post("/newstrash/loaddata", data, function (resp) {
                 if (resp != null) {

@@ -84,7 +84,7 @@ namespace CMS.Controllers
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 ViewBag.User = checkuser;
-                model.ListNew = _newsbussiness.GetListBrokersInformationByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
+                model.ListNew = _newsbussiness.GetListBrokersInformationByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, string.Empty, false, ref total);
                 model.Total = total; 
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);
@@ -97,13 +97,13 @@ namespace CMS.Controllers
         }
 
         public JsonResult LoadData(int cateId, int districtId, int newTypeId, int siteId, int backdate, double
-                minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string key)
+                minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string NameOrder, bool descending, string key)
         {
             try
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _newsbussiness.GetListBrokersInformationByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, ref total);
+                var listNews = _newsbussiness.GetListBrokersInformationByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var content = RenderPartialViewToString("~/Views/BrokersInformation/Paging.cshtml", listNews);
                 return Json(new

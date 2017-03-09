@@ -62,7 +62,7 @@ $(function () {
                 bInfo: false,
                 searching: false,
                 paging: false,
-                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
+                aoColumns: [{ "bSortable": false}, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
             });
             $('#check-all').parent().removeClass("sorting_asc");
         }
@@ -719,18 +719,20 @@ $(function () {
         });
 
         $(document).on("click", "#listnewstable th", function () {
-            if ($(this).hasClass("order_desc")) {
-                $("#listnewstable th").removeClass("order_desc");
-                $(this).addClass("order_asc");
-            } else {
-                if ($(this).hasClass("order_asc")) {
-                    $("#listnewstable th").removeClass("order_asc");
-                    $(this).addClass("order_desc");
-                } else {
+            if (!$(this).hasClass("order")) {
+                if ($(this).hasClass("order_desc")) {
+                    $("#listnewstable th").removeClass("order_desc");
                     $(this).addClass("order_asc");
+                } else {
+                    if ($(this).hasClass("order_asc")) {
+                        $("#listnewstable th").removeClass("order_asc");
+                        $(this).addClass("order_desc");
+                    } else {
+                        $(this).addClass("order_asc");
+                    }
                 }
+                LoadData();
             }
-            LoadData();
         });
     });
 
@@ -811,6 +813,7 @@ $(function () {
                 }
                 $.LoadingOverlay("hide");
             });
+            $("#check-all").checkAll();
         }
     }
 

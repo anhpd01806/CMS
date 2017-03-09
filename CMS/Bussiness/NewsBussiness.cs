@@ -23,7 +23,7 @@ namespace CMS.Bussiness
         #region News save
 
         public List<NewsModel> GetListNewStatusByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
-            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, int newsStatus, bool IsRepeat, string key, ref int total)
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, int newsStatus, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
         {
             using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
             {
@@ -104,8 +104,6 @@ namespace CMS.Bussiness
                     query = query.Where(c => c.CusIsReaded.HasValue && c.CusIsReaded.Value);
                 }
 
-                query.OrderByDescending(c => c.CreatedOn);
-
                 #region check param
                 if (CateId != 0)
                 {
@@ -154,7 +152,15 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.ToList().Count;
-                return query.OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                if (string.IsNullOrEmpty(NameOrder))
+                {
+                    query = query.OrderByDescending(c => c.CreatedOn);
+                }
+                else
+                {
+                    query = descending ? QueryableHelper.OrderByDescending(query, NameOrder) : QueryableHelper.OrderBy(query, NameOrder);
+                }
+                return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -466,7 +472,7 @@ namespace CMS.Bussiness
 
         #region News delete
         public List<NewsModel> GetListNewDeleteByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
-            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, ref int total)
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
         {
             using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
             {
@@ -558,7 +564,15 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.ToList().Count;
-                return query.OrderByDescending(c => c.CreatedOn).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                if (string.IsNullOrEmpty(NameOrder))
+                {
+                    query = query.OrderByDescending(c => c.CreatedOn);
+                }
+                else
+                {
+                    query = descending ? QueryableHelper.OrderByDescending(query, NameOrder) : QueryableHelper.OrderBy(query, NameOrder);
+                }
+                return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -620,7 +634,7 @@ namespace CMS.Bussiness
         #region Brokers Information
 
         public List<NewsModel> GetListBrokersInformationByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
-            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, ref int total)
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
         {
             using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
             {
@@ -716,6 +730,14 @@ namespace CMS.Bussiness
                 #endregion
 
                 total = query.ToList().Count;
+                if (string.IsNullOrEmpty(NameOrder))
+                {
+                    query = query.OrderByDescending(c => c.CreatedOn);
+                }
+                else
+                {
+                    query = descending ? QueryableHelper.OrderByDescending(query, NameOrder) : QueryableHelper.OrderBy(query, NameOrder);
+                }
                 return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
