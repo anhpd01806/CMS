@@ -100,7 +100,7 @@ $(function () {
                             cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                             siteId: siteId, backdate: backdate,
                             minPrice: minPrice, maxPrice: maxPrice,
-                            from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
+                            from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder : "", descending : false
                         };
                         $.post("/home/loaddata", data, function (resp) {
                             if (resp != null) {
@@ -160,7 +160,7 @@ $(function () {
                 cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                 siteId: siteId, backdate: backdate,
                 minPrice: minPrice, maxPrice: maxPrice,
-                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
+                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: "", descending: false
             };
             $.post("/home/loaddata", data, function (resp) {
                 if (resp != null) {
@@ -574,17 +574,26 @@ $(function () {
             } else {
                 $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
-                        if (resp.Status != 0) {
-                            LoadData();
-                            setTimeout(function () {
-                                showmessage("success", "Tin mô giới đã được báo cáo thành công!");
-                            }, 1200);
-
-                        } else {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
-                        }
-                    }
-                    ;
+                        LoadData();
+                        setTimeout(function () {
+                            showmessage("success", "Tin mô giới đã được báo cáo thành công!");
+                        }, 1200);
+                        //send notify to admin
+                        var socket = io.connect('http://ozo.vn:8088');
+                        $.each(resp, function (i, value) {
+                            var notify = {};
+                            notify.title = value.Title;
+                            //notify id
+                            notify.id = value.Id;
+                            notify.type = value.Type;
+                            //user name
+                            notify.name = value.UserName;
+                            //link image avatar
+                            notify.avatar = "/assets/avatars/avatar.png";
+                            notify.time = moment(value.DateSend).format('DD/MM/YYYY hh:mm:ss');;
+                            socket.emit('send-to-admin', notify);
+                        });
+                    };
                 });
             }
             $("#newsdetail").modal("hide");
@@ -696,6 +705,22 @@ $(function () {
         $(document).on("shown.bs.modal", function () {
             $(".mCustomScrollbar").mCustomScrollbar();
         });
+
+        $(document).on("click", "#listnewstable th", function () {
+            if ($(this).hasClass("order_desc")) {
+                $("#listnewstable th").removeClass("order");
+                $(this).addClass("order_asc");
+            } else {
+                if ($(this).hasClass("order_asc")) {
+                    $("#listnewstable th").removeClass("order");
+                    $(this).addClass("order_desc");
+                } else {
+                    $("#listnewstable th").removeClass("order");
+                    $(this).addClass("order_asc");
+                }
+            }
+            LoadData();
+        });
     });
 
     function LoadData() {
@@ -715,6 +740,17 @@ $(function () {
         }
         var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
         var key = $.trim($(".txtsearchkey").val());
+        var NameOrder = "";
+        var descending = false;
+
+        $("#listnewstable th").each(function() {
+            if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                NameOrder = $(this).attr("data-name");
+                if ($(this).hasClass("order_desc")) {
+                    descending = true;
+                }
+            }
+        });
 
         var datefrom = new Date(from.split('-')[1] + "/" + from.split('-')[0] + "/" + from.split('-')[2]);
         var dateto = new Date(to.split('-')[1] + "/" + to.split('-')[0] + "/" + to.split('-')[2]);
@@ -724,19 +760,10 @@ $(function () {
         } else {
 
             var data = {
-                cateId: cateId,
-                districtId: districtId,
-                newTypeId: newTypeId,
-                siteId: siteId,
-                backdate: backdate,
-                minPrice: minPrice,
-                maxPrice: maxPrice,
-                from: from,
-                to: to,
-                pageIndex: pageIndex,
-                pageSize: pageSize,
-                IsRepeat: isrepeat,
-                key: key
+                cateId: cateId, districtId: districtId, newTypeId: newTypeId,
+                siteId: siteId, backdate: backdate,
+                minPrice: minPrice, maxPrice: maxPrice,
+                from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
             };
             $.LoadingOverlay("show");
             $.post("/home/loaddata", data, function (resp) {
@@ -809,7 +836,7 @@ $(function () {
                     cateId: cateId, districtId: districtId, newTypeId: newTypeId,
                     siteId: siteId, backdate: backdate,
                     minPrice: minPrice, maxPrice: maxPrice,
-                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key
+                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: "", descending: false
                 };
                 $.post("/home/loaddata", data, function (resp) {
                     if (resp != null) {
