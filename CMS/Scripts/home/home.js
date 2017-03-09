@@ -285,7 +285,7 @@ $(function () {
             $(this).parents("tr").find(".label-info").addClass("arrowed-in");
             $(this).parents("tr").find(".label-warning").removeClass("label-info");
             $(this).parents("tr").find(".label-warning").removeClass("arrowed");
-            //$.LoadingOverlay("show");
+            $.LoadingOverlay("show");
             $.get("/home/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
                     if (resp.Pay == 1 && resp.Content != "") {
@@ -293,7 +293,7 @@ $(function () {
                             $("#modaldetail").empty();
                             $("#modaldetail").html(resp.Content);
                             setTimeout(function () {
-                                //$.LoadingOverlay("hide");
+                                $.LoadingOverlay("hide");
                                 $("#newsdetail").modal("show");
                             }, 500);
                         } else {

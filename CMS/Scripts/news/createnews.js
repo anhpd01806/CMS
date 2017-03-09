@@ -99,6 +99,7 @@ $(document).ready(function () {
                 },
                 callback: function (result) {
                     if (result) {
+                        if ($.isNumeric(price)) {
                         var title = $.trim($("#txttitle").val());
                         var cateId = $("#CategoryId").val();
                         var districtId = $("#DistricId").val();
@@ -106,7 +107,7 @@ $(document).ready(function () {
                         var price = $("#txtprice").val().replace(/\./g, '');
                         var pricetext = "";
                         var content = CKEDITOR.instances['txtcontent'].getData();
-                        if ($.isNumeric(price)) {
+                        
                             var data = {
                                 title: title,
                                 cateId: cateId,
@@ -136,11 +137,12 @@ $(document).ready(function () {
                                     showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
                                 }
                             });
+                        
                         } else {
                             showmessage("error", "Giá tiền phải là số!");
                             return false;
                         }
-                    }
+                    } 
                 }
             });
         }

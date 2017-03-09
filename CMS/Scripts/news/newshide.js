@@ -294,13 +294,13 @@ $(function () {
             $(this).parents("tr").find(".label-info").addClass("arrowed-in");
             $(this).parents("tr").find(".label-warning").removeClass("label-info");
             $(this).parents("tr").find(".label-warning").removeClass("arrowed");
-            //$.LoadingOverlay("show");
+            $.LoadingOverlay("show");
             $.get("/newshide/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
                 if (resp != null) {
                     if (resp.Pay == 1 && resp.Content != "") {
                         $("#modaldetail").empty();
                         $("#modaldetail").html(resp.Content);
-                        //$.LoadingOverlay("hide");
+                        $.LoadingOverlay("hide");
                         setTimeout(function () {
                             $("#newsdetail").modal("show");
                         }, 500);

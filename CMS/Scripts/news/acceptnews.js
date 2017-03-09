@@ -173,12 +173,12 @@
     });
 
     $(document).on("click", ".lbltitle", function () {
-        //$.LoadingOverlay("show");
+        $.LoadingOverlay("show");
         $.get("/news/getnewsdetail", { Id: parseInt($(this).attr("data-id")) }, function (resp) {
             if (resp != null) {
                 $("#modaldetail").empty();
                 $("#modaldetail").html(resp.Content);
-                //$.LoadingOverlay("hide");
+                $.LoadingOverlay("hide");
                 setTimeout(function () {
                     $("#newsdetail").modal("show");
                 }, 500);
