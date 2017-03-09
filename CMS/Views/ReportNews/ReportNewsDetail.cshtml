@@ -12,7 +12,7 @@
         <tr>
             <td class="text-center">@counter</td>
             <td><a onclick="ChangeFirstRandom(@news.NewsId)">@Html.Raw(news.Notes)</a></td>
-            <td>@news.CreateDate</td>
+            <td>@news.CreateDate.ToString("dd/MM/yyyy")</td>
             <td>@news.Users</td>
         </tr>
     }

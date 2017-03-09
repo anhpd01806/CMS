@@ -12,7 +12,7 @@ namespace CMS.Bussiness
     public class UserBussiness
     {
         CmsDataDataContext db = new CmsDataDataContext();
-        
+
         public List<User> GetAllUser()
         {
             return db.Users.OrderBy(m => m.Id).ToList();
@@ -58,25 +58,25 @@ namespace CMS.Bussiness
                 return null;
                 throw;
             }
-            
+
         }
         public List<UserModel> GetCustomerByListUserId(string ListUserId)
         {
             var arrayId = ListUserId.Split(',');
             //.Where(x => arrayId.Contains(x.Id.ToString())).ToList();
             var rs = (from a in db.Users
-                     where arrayId.Contains(a.Id.ToString())
-                     select new UserModel
-                     {
-                         Id = a.Id,
-                         ManagerId = a.ManagerBy ?? 0,
-                         FullName = a.FullName,
-                         UserName = a.UserName,
-                         Phone = a.Phone,
-                         Email = a.Email,
-                         IsDelete = a.IsDeleted ?? false,
-                         IsMember = a.IsMember ?? false
-                     }).ToList();
+                      where arrayId.Contains(a.Id.ToString())
+                      select new UserModel
+                      {
+                          Id = a.Id,
+                          ManagerId = a.ManagerBy ?? 0,
+                          FullName = a.FullName,
+                          UserName = a.UserName,
+                          Phone = a.Phone,
+                          Email = a.Email,
+                          IsDelete = a.IsDeleted ?? false,
+                          IsMember = a.IsMember ?? false
+                      }).ToList();
             return rs;
         }
 
@@ -84,13 +84,13 @@ namespace CMS.Bussiness
         {
             return db.Users.FirstOrDefault(x => x.Id == id);
         }
-        
+
         public int GetUserByName(string name)
         {
             return db.Users.FirstOrDefault(x => x.UserName == name).Id;
         }
 
-        public string GetNameById (int id)
+        public string GetNameById(int id)
         {
             return db.Users.FirstOrDefault(x => x.Id == id).UserName;
         }
@@ -153,7 +153,7 @@ namespace CMS.Bussiness
             var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
             user.IsMember = model.IsMember;
             user.Notes = model.Notes;
-            if (model.IsRestore == true) user.IsDeleted = false;//th khôi phục lại tài khoản
+            user.IsDeleted = model.IsRestore;//th khôi phục lại tài khoản
             user.ManagerBy = int.Parse(model.ManagerBy);
             db.SubmitChanges();
         }

@@ -46,17 +46,18 @@
                                         <label>Kích hoạt thành viên </label>
                                         @Html.CheckBoxFor(m => m.IsMember)
                                     </div>
-                                </div>
-                                @if (Model.IsRestore == true)
-                                {
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Bạn có muốn khôi phục lại tài khoản?</label>
-                                            @Html.CheckBoxFor(m => m.IsRestore)
-                                        </div>
+                                    <div class="form-group">
+                                        <a href="/Customer/ResertPassword/@Model.Id" class="button">Reset mật khẩu</a>
                                     </div>
-                                }
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Khóa tài khoản?</label>
+                                        @Html.CheckBoxFor(m => m.IsRestore)
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                         <div class="col-md-6 form" role="form">
                             <div class="form-group">

@@ -3033,6 +3033,7 @@
     <Compile Include="Helper\ConfigWeb.cs" />
     <Compile Include="Helper\Contants.cs" />
     <Compile Include="Helper\Helpers.cs" />
+    <Compile Include="Helper\QueryableHelper.cs" />
     <Compile Include="Helper\Utils.cs" />
     <Compile Include="Models\BlacklistModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />

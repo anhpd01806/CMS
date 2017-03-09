@@ -17,7 +17,7 @@ namespace CMS.ViewModel
         public int StatusId { get; set; }
         public int NewsId { get; set; }
         public int CustomerId { get; set; }
-        public string CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
         public string Notes { get; set; }
         public string Users { get; set; }
         public string Description { get; set; }

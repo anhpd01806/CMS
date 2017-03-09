@@ -10,7 +10,7 @@
         url = u.Type == 1 ? "/Customer/Edit/" + u.UserId.ToString() : u.Type == 2 ? "/ReportNews/Index" : "/Payment/RegisterPackage";
         <tr>
             <td class="text-center">@counter</td>
-            <td>@u.DateSend</td>
+            <td>@u.DateSend.ToString("dd/MM/yyyy")</td>
             <td>@u.UserName</td>
             <td><a href="#" onclick="UpdateViewed('@url',@u.Id)">@u.Title</a></td>
             <td>@u.Description</td>

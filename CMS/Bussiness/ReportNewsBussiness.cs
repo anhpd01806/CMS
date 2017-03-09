@@ -27,7 +27,7 @@ namespace CMS.Bussiness
                                     NewsId = a.NewsId,
                                     Users = b.UserName,
                                     Notes = a.Notes,
-                                    CreateDate = a.CreateDate.Date.ToString(),
+                                    CreateDate = a.CreateDate,
                                     Description = c.Contents,
                                     Phone = c.Phone
                                 }).Take(30).ToList();

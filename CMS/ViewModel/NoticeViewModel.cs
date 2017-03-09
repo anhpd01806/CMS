@@ -14,7 +14,7 @@ namespace CMS.ViewModel
     {
         public int UserId { get; set; }
         public int Id { get; set; }
-        public string DateSend { get; set; }
+        public DateTime DateSend { get; set; }
         public string UserName { get; set; }
         public string Title { get; set; }
         public int Type { get; set; }

@@ -39,7 +39,7 @@ namespace CMS.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
-        
+
         public JsonResult LoadMore(int page)
         {
             try
@@ -158,7 +158,7 @@ namespace CMS.Controllers
                       {
                           Id = a.Id,
                           UserId = a.Userid ?? 0,
-                          DateSend = a.DateSend != null ? a.DateSend.ToString() : "",
+                          DateSend = a.DateSend ?? DateTime.Now,
                           UserName = a.UserName,
                           Title = a.Title,
                           Type = a.Type ?? 0,
