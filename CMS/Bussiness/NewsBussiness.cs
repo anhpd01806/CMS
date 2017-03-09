@@ -269,8 +269,8 @@ namespace CMS.Bussiness
             {
                 var query = "INSERT INTO News (CategoryId,Title,Contents,Summary,Link,SiteId,DistrictId,ProvinceId,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn,StatusId,Phone,IsUpdated,DateOld,IsDeleted,IsPhone,PriceText,IsRepeat,Area,Price,IsSpam,TotalRepeat)" +
                            "VALUES(" + newsItem.CategoryId + ", N'" + newsItem.Title + "', N'" + newsItem.Contents + "', N'" + newsItem.Contents + "', '" + newsItem.Link + "', " + newsItem.SiteId + ", " + newsItem.DistrictId +
-                           "," + newsItem.ProvinceId + "," + (newsItem.CreatedBy ?? 0) + ",'" + (newsItem.CreatedOn ?? DateTime.Now) + "'," + (newsItem.ModifiedBy ?? 0) + ",'" + (newsItem.ModifiedOn ?? DateTime.Now) + "' ," + (newsItem.StatusId ?? 0) + ",'" + newsItem.Phone + "',0,'" + newsItem.CreatedOn +
-                           "',0," + (newsItem.IsPhone ? 1 : 0) + ",N'" + newsItem.PriceText + "',0," + newsItem.Area + "," + newsItem.Price + ",0,1);";
+                           "," + newsItem.ProvinceId + "," + (newsItem.CreatedBy ?? 0) + ",'" + (newsItem.CreatedOn ?? DateTime.Now) + "'," + (newsItem.ModifiedBy ?? 0) + ",'" + (newsItem.ModifiedOn ?? DateTime.Now) + "' ," + (newsItem.StatusId ?? 0) + ",'" + newsItem.Phone + "',0,'" + (newsItem.CreatedOn??DateTime.Now) +
+                           "',0," + (newsItem.IsPhone ? 1 : 0) + ",N'" + newsItem.PriceText + "',0," + (newsItem.Area??0) + "," + newsItem.Price + ",0,1);";
 
                 db.ExecuteCommand(query);
 
