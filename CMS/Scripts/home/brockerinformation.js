@@ -337,6 +337,7 @@
                 var url = "/home/exportexcelv2";
                 location.href = decodeURIComponent(url + "?listNewsId=" + selected);
                 $('#check-all').prop('checked', false);
+                $(".checkboxItem").prop('checked', false);
             }
         });
     });
@@ -563,6 +564,7 @@
                     var url = "/brokersinformation/exportexcel";
                     location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat + "&key=" + key + "&NameOrder=" + NameOrder + "&descending=" + descending);
                     $('#check-all').prop('checked', false);
+                    $(".checkboxItem").prop('checked', false);
                 }
             }
         });

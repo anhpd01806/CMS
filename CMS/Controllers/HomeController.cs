@@ -333,7 +333,6 @@ namespace CMS.Controllers
                 var properties = new string[]
                     {
                         "STT",
-                        "Tiêu đề",
                         "Nội dung",
                         "Quận huyện",
                         "Ngày đăng",
@@ -357,10 +356,8 @@ namespace CMS.Controllers
                     worksheet.Cells[row, col].Value = dem;
                     col++;
 
-                    worksheet.Cells[row, col].Value = item.Title;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Contents : "Vui lòng nạp tiền";
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? (item.Title + "\r\n" + CMS.Helper.Utils.RemoveHtml(item.Contents).Trim()) : "Vui lòng nạp tiền";
+                     worksheet.Cells[row, col].Style.WrapText = true;
                     col++;
 
 

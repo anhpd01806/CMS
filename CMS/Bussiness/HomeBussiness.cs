@@ -165,7 +165,7 @@ namespace CMS.Bussiness
                 }
                 if (BackDate != -1)
                 {
-                    query = BackDate == 0 ? query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 23:59:59.999")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-BackDate).ToString("yyyy/MM/dd") + " 00:00:00.00"));
+                    query = BackDate == 0 ? query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 23:59:59.999")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate)).ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate+1)).ToString("yyyy/MM/dd") + " 23:59:59.999"));
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
@@ -197,7 +197,14 @@ namespace CMS.Bussiness
                 total = list.Count;
                 if (string.IsNullOrEmpty(NameOrder))
                 {
-                    query = query.OrderByDescending(c => c.CreatedOn);
+                    if (!IsRepeat)
+                    {
+                        query = query.OrderByDescending(c => c.CreatedOn);
+                    }
+                    else
+                    {
+                        query = query.OrderByDescending(c => c.Phone);
+                    }
                 }
                 else
                 {
@@ -229,6 +236,7 @@ namespace CMS.Bussiness
                                  Title = c.Title,
                                  CategoryId = c.CategoryId,
                                  Link = c.Link,
+                                 Contents = c.Contents,
                                  Phone = c.Phone,
                                  Price = c.Price,
                                  PriceText = c.PriceText,
