@@ -10,7 +10,7 @@
         <div class="col-xs-12 lo-paging-0">
             <div class="col-md-2"></div>
             <div class="input-group col-xs-12 col-md-8 lo-paging-0">
-                <input class="form-control txtsearchkey" placeholder="Nhập vào tiêu đề tin, số điện thoại, quận huyện..." type="text" />
+                <input class="form-control txtsearchkey" placeholder="Nhập nội dung cần tìm..." type="text" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-inverse btn-white btnsearch" style="background-color: #4267b2 !important; color: white !important;">
                         <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
@@ -24,7 +24,7 @@
         <div class="space"></div>
         <div class="widget-box widget-color-dark">
             <div class="widget-header">
-                <h6 class="widget-title"> <i class="icon-filter"></i> Lọc tin tức</h6>
+                <h6 class="widget-title"> <i class="icon-filter"></i> Lọc tin Bất Động Sản</h6>
 
                 <div class="widget-toolbar widget-color-dark">
                     <a href="#" data-action="collapse">
@@ -87,7 +87,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-xs-12 col-md-4">
                                     <div class="control-group">
                                         <div class="col-xs-5">
@@ -168,30 +168,30 @@
         <div class="space"></div>
         <div class="hd-fuc">
             <div class="col-md-9 col-xs-12 btn-area-action">
-                <button class="btn btn-sm btn-primary btnsave disabled">
+                <button class="btn btn-sm btn-primary btn-blue btnsave disabled">
                     <i class="icon-save bigger-125"></i>
                     Lưu tin
                 </button>
-                <button class="btn btn-sm btn-success btnhide disabled">
+                <button class="btn btn-sm btn-default btnhide disabled">
                     <i class="icon-eye-close bigger-125"></i>
                     Ẩn tin
                 </button>
 
                 @if (!Convert.ToBoolean(ViewBag.User))
-            {
-                    <button class="btn btn-sm btn-default btndelete disabled">
+                {
+                    <button class="btn btn-sm btn-danger btndelete disabled">
                         <i class="icon-trash bigger-125"></i>
                         Xóa tin
                     </button>
-                    <button class="btn btn-sm btn-purple btn-small btncc disabled">
+                    <button class="btn btn-sm btn-info btn-blue btncc disabled">
                         <i class="icon-user bigger-125"></i>
                         Chính chủ
                     </button>
-                    <button class="btn btn-sm btn-inverse btnspam disabled">
+                    <button class="btn btn-sm btn-danger btnspam disabled">
                         <i class="icon-warning-sign bigger-125"></i>
                         Chặn môi giới
                     </button>
-                    <button class="btn btn-sm btn-danger btnexport">
+                    <button class="btn btn-sm btn-success btnexport">
                         <i class="icon-download-alt bigger-125"></i>
                         Xuất Excel
                     </button>

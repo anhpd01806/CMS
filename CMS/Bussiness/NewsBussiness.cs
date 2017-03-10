@@ -143,7 +143,7 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(key))
                 {
-                    query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.DistictName.Contains(key));
+                    query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.Contents.Contains(key) || c.DistictName.Contains(key) || c.PriceText.Contains(key));
                 }
                 if (!IsRepeat)
                 {
@@ -558,7 +558,7 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(key))
                 {
-                    query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.DistictName.Contains(key));
+                    query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.Contents.Contains(key) || c.DistictName.Contains(key) || c.PriceText.Contains(key));
                 }
                 if (!IsRepeat)
                 {
@@ -733,7 +733,7 @@ namespace CMS.Bussiness
                 }
                 if (!string.IsNullOrEmpty(key))
                 {
-                    query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.DistictName.Contains(key));
+                    query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.Contents.Contains(key) || c.DistictName.Contains(key) || c.PriceText.Contains(key));
                 }
                 if (!IsRepeat)
                 {

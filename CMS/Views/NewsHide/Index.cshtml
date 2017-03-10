@@ -9,7 +9,7 @@
         <div class="col-xs-12 lo-paging-0">
             <div class="col-md-2"></div>
             <div class="input-group col-xs-12 col-md-8 lo-paging-0">
-                <input class="form-control txtsearchkey" placeholder="Nhập vào tiêu đề tin, số điện thoại, quận huyện..." type="text" />
+                <input class="form-control txtsearchkey" placeholder="Nhập nội dung cần tìm..." type="text" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-inverse btn-white btnsearch" style="background-color: #4267b2 !important; color: white !important;">
                         <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
@@ -22,7 +22,7 @@
         <div class="space"></div>
         <div class="widget-box widget-color-dark">
             <div class="widget-header">
-                <h6 class="widget-title"> <i class="icon-filter"></i> Lọc tin tức</h6>
+                <h6 class="widget-title"> <i class="icon-filter"></i> Lọc tin Bất Động Sản</h6>
 
                 <div class="widget-toolbar widget-color-dark">
                     <a href="#" data-action="collapse">
@@ -85,7 +85,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-xs-12 col-md-4">
                                     <div class="control-group">
                                         <div class="col-xs-5">
@@ -170,38 +170,38 @@
                     <i class="icon-save bigger-125"></i>
                     Lưu tin
                 </button>
-                <button class="btn btn-sm btn-success btn-small btnremovehide disabled">
+                <button class="btn btn-sm btn-default btn-small btnremovehide disabled">
                     <i class="icon-eye-open bigger-125"></i>
                     Hiện tin ẩn
                 </button>
 
                 @if (!Convert.ToBoolean(ViewBag.User))
                 {
-                <button class="btn btn-sm btn-default btndelete disabled">
-                    <i class="icon-trash bigger-125"></i>
-                    Xóa tin
-                </button>
-                <button class="btn btn-sm btn-purple btn-small btncc disabled">
-                    <i class="icon-user bigger-125"></i>
-                    Chính chủ
-                </button>
+                    <button class="btn btn-sm btn-danger btndelete disabled">
+                        <i class="icon-trash bigger-125"></i>
+                        Xóa tin
+                    </button>
+                    <button class="btn btn-sm btn-info btn-small btncc disabled">
+                        <i class="icon-user bigger-125"></i>
+                        Chính chủ
+                    </button>
 
-                <button class="btn btn-sm btn-inverse btn-small btnspam disabled">
-                    <i class="icon-warning-sign bigger-125"></i>
-                    Chặn môi giới
-                </button>
-                <button class="btn btn-sm btn-danger btnexport btn-small">
-                    <i class="icon-download-alt bigger-125"></i>
-                    Xuất Excel
-                </button>
+                    <button class="btn btn-sm btn-danger btn-small btnspam disabled">
+                        <i class="icon-warning-sign bigger-125"></i>
+                        Chặn môi giới
+                    </button>
+                    <button class="btn btn-sm btn-success btnexport btn-small">
+                        <i class="icon-download-alt bigger-125"></i>
+                        Xuất Excel
+                    </button>
                 }
                 @*else
-                {
-                <button class="btn btn-sm btn-inverse btn-small btnreport disabled">
-                <i class="icon-warning-sign bigger-125"></i>
-                Báo môi giới
-                </button>
-                }*@
+                    {
+                    <button class="btn btn-sm btn-inverse btn-small btnreport disabled">
+                    <i class="icon-warning-sign bigger-125"></i>
+                    Báo môi giới
+                    </button>
+                    }*@
             </div>
             <div class="col-sm-3 viewpage">
                 <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
@@ -228,115 +228,115 @@
                         <th>Xem</th>
                         <th class="tdcc" data-name="Iscc">Chính chủ</th>
                         @*<th class="tdcenter">Kiểm tra</th>
-                        <th class="tdcenter">Span</th>*@
+                            <th class="tdcenter">Span</th>*@
                         @*<th style="text-align: center">Tính năng</th>*@
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model.ListNew.Any())
                     {
-                    foreach (var item in Model.ListNew)
-                    {
-                    <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? " color: #bf983b;" : "")">
-                        <td>
-                            <label class="pos-rel">
-                                <input type="checkbox" class="checkboxItem" id="@item.Id" />
-                            </label>
-                        </td>
-                        <td>
-                            <span data-id="@item.Id" class="lbltitle" title="@( Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
-                                @item.Title
-                            </span>
-                        </td>
-                        <td class="td-medium">
-                            @if (Convert.ToBoolean(ViewBag.Accept))
-                            {
-                            <span>@item.DistictName</span>
-                            }
-                            else
-                            {
-                            <span class="error">Vui lòng nạp tiền</span>
-                            }
-                        </td>
-                        <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
-                        <td class="td-medium">@item.PriceText</td>
-                        <td class="td-small" style="text-align: center; min-width: 115px;">
-                            @if (Convert.ToBoolean(ViewBag.Accept))
-                            {
-                            <span>@Html.Raw(item.Phone.Replace(",", ", ").Trim() + "<br/>(" + item.RepeatTotal + " tin)")</span>
-                            }
-                            else
-                            {
-                            <span class="error">Vui lòng nạp tiền</span>
-                            }
-                        </td>
-                        <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>
-                        <td>
-                            @if (Convert.ToBoolean(item.CusIsReaded))
-                            {
-                            <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
-                            }
-                            else
-                            {
-                            <span class="label label-info arrowed">Chưa xem</span>
+                        foreach (var item in Model.ListNew)
+                        {
+                            <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? " color: #bf983b;" : "")">
+                                <td>
+                                    <label class="pos-rel">
+                                        <input type="checkbox" class="checkboxItem" id="@item.Id" />
+                                    </label>
+                                </td>
+                                <td>
+                                    <span data-id="@item.Id" class="lbltitle" title="@( Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
+                                        @item.Title
+                                    </span>
+                                </td>
+                                <td class="td-medium">
+                                    @if (Convert.ToBoolean(ViewBag.Accept))
+                                    {
+                                        <span>@item.DistictName</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="error">Vui lòng nạp tiền</span>
+                                    }
+                                </td>
+                                <td class="td-small">@(Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))</td>
+                                <td class="td-medium">@item.PriceText</td>
+                                <td class="td-small" style="text-align: center; min-width: 115px;">
+                                    @if (Convert.ToBoolean(ViewBag.Accept))
+                                    {
+                                        <span>@Html.Raw(item.Phone.Replace(",", ", ").Trim() + "<br/>(" + item.RepeatTotal + " tin)")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="error">Vui lòng nạp tiền</span>
+                                    }
+                                </td>
+                                <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>
+                                <td>
+                                    @if (Convert.ToBoolean(item.CusIsReaded))
+                                    {
+                                        <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-info arrowed">Chưa xem</span>
 
-                            }
-                        </td>
-                        <td class="tdcc">
-                            @if (item.Iscc)
-                            {
-                                <img class="icon icons8-Checked" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADcElEQVRoQ+2Zu24TQRSG/7OEWKEApwhSnCKXjiaJm3hdxdQREFokBLwBj+BHyBsAQqLF3GqSynaa2KGgS+wijkSaDR0C9qCxveDL3HZ3YhQp087M2e+fc5nLEi55o0vOjysB/9uDVx6IPFA9rS558DaZsQ1wFkxZENa7/YwGiAOAAiJUQoR7xfliy4X3Unugflp/wiGe/4W1pWI0yMNOYb7wynaKbFxiAV1w5jJAS2kAAG4RUTmpkNgCRKhQ6L2NveImlYwGe+HDuKEVS8D+t/318Cd/BiFr4knUzwi863R34/ZGw3a+tYDq6f5TYn5hazjNOCZ6VpzfeGljw0pAd+V/8YGNQVdjvCnK23jCKKAf8wcXFjYqxYyAvTBvygmjgNpJXcD36vmkG6PhLxTyus9qBUwy7oMfAbKZ8dpgygetgFqndpy+zpvd1jw7xIejT7i3soW1udWRCdzyc/6yyopSwKRWP4KPAFfnVnF/ZWuIV+cFpYBJxP4ofET9+M4jLN5c/CdCkwtSAd3Kw96x2fnJR6jg5WEEMIXLsoqkEHCxm1Zc+O6BVrG5SQXUOrUKQA+Sr696ZhL4njV+5+f87VHLcg906rsEbLoWkBxeXCmwV8wVSlYCbBO4/b09nGwaxWngew6Qb2qKEKqzafXfH33E4dkXRe0enp0avm/OzxXGeBMJiOAjTFXlEP2u4IUtewEn9QYIazIviLB5/fXNWJdMhEt4MJr+QmHsTJYoiW3AbMaYwnSwP14SW5RRHaD4sDjbjDZdqJnFxCmjlrcvlQgZTDr4mBtZnKOEjYi08GJBMjPTs/nZfGC1D4hBNU0ijxrRiXABr0pgweHsOC0T4QRecw7SChCd1U6tRaCBc60+1QZFOIMHt4s5X/l45vxKKUSINn6zMtcZ2YhUV8q4uZAMUTNLsXkNzjC+SvQrkngpu+UcUG/wPDMzvSSrPLEEiMGX+mErUjupS774ninuY3sgmtD3xO4FhtO5N0UlmyfFiMmYA6Nh2n9qrKhOq4nzhNHM3JgumWLeeic2gYiQAoflOPuEtEyC2yCvbPsa7UzAUG6ELH4xSe8PyoVgNNmjnaTgiUNIBSRCC7hWIg63GZQlhvjJ1xMlYAkBgQMmrwL83jW9OpsiwLkA2w+6Hhc7iV0DpLV3JSDtCqadf+k98AexqL9A8fyQVgAAAABJRU5ErkJggg==" width="30" height="30" />
-                            }
-                        </td>
-                        @*<td class="tdcenter">
-                        <div class="checkbox">
-                        <label>
-                        <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
-                        <span class="lbl"></span>
-                        </label>
-                        </div>
-                        </td>
-                        <td class="tdcenter">
-                        <div class="checkbox">
-                        <label>
-                        <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
-                        <span class="lbl"></span>
-                        </label>
-                        </div>
-                        </td>*@
-                        @*<td class="td-actions">
-                        <div class="hidden-phone visible-desktop action-buttons">
-                        <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
-                        <i class="icon-zoom-in bigger-130"></i>
-                        </a>
-                        <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
-                        <i class="icon-save bigger-130"></i>
-                        </a>
-                        <a class="orange remove-hide-item-list" href="javascript:;" title="Bỏ ẩn tin" data-id="@item.Id">
-                        <i class="icon-eye-open bigger-130"></i>
-                        </a>
-                        @if (item.IsAdmin)
-                        {
-                        <a class="red spam-item-list" href="javascript:;" title="Chặn môi giới" data-id="@item.Id">
-                        <i class="icon-warning-sign bigger-130"></i>
-                        </a>
+                                    }
+                                </td>
+                                <td class="tdcc">
+                                    @if (item.Iscc)
+                                    {
+                                        <img class="icon icons8-Checked" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADcElEQVRoQ+2Zu24TQRSG/7OEWKEApwhSnCKXjiaJm3hdxdQREFokBLwBj+BHyBsAQqLF3GqSynaa2KGgS+wijkSaDR0C9qCxveDL3HZ3YhQp087M2e+fc5nLEi55o0vOjysB/9uDVx6IPFA9rS558DaZsQ1wFkxZENa7/YwGiAOAAiJUQoR7xfliy4X3Unugflp/wiGe/4W1pWI0yMNOYb7wynaKbFxiAV1w5jJAS2kAAG4RUTmpkNgCRKhQ6L2NveImlYwGe+HDuKEVS8D+t/318Cd/BiFr4knUzwi863R34/ZGw3a+tYDq6f5TYn5hazjNOCZ6VpzfeGljw0pAd+V/8YGNQVdjvCnK23jCKKAf8wcXFjYqxYyAvTBvygmjgNpJXcD36vmkG6PhLxTyus9qBUwy7oMfAbKZ8dpgygetgFqndpy+zpvd1jw7xIejT7i3soW1udWRCdzyc/6yyopSwKRWP4KPAFfnVnF/ZWuIV+cFpYBJxP4ofET9+M4jLN5c/CdCkwtSAd3Kw96x2fnJR6jg5WEEMIXLsoqkEHCxm1Zc+O6BVrG5SQXUOrUKQA+Sr696ZhL4njV+5+f87VHLcg906rsEbLoWkBxeXCmwV8wVSlYCbBO4/b09nGwaxWngew6Qb2qKEKqzafXfH33E4dkXRe0enp0avm/OzxXGeBMJiOAjTFXlEP2u4IUtewEn9QYIazIviLB5/fXNWJdMhEt4MJr+QmHsTJYoiW3AbMaYwnSwP14SW5RRHaD4sDjbjDZdqJnFxCmjlrcvlQgZTDr4mBtZnKOEjYi08GJBMjPTs/nZfGC1D4hBNU0ijxrRiXABr0pgweHsOC0T4QRecw7SChCd1U6tRaCBc60+1QZFOIMHt4s5X/l45vxKKUSINn6zMtcZ2YhUV8q4uZAMUTNLsXkNzjC+SvQrkngpu+UcUG/wPDMzvSSrPLEEiMGX+mErUjupS774ninuY3sgmtD3xO4FhtO5N0UlmyfFiMmYA6Nh2n9qrKhOq4nzhNHM3JgumWLeeic2gYiQAoflOPuEtEyC2yCvbPsa7UzAUG6ELH4xSe8PyoVgNNmjnaTgiUNIBSRCC7hWIg63GZQlhvjJ1xMlYAkBgQMmrwL83jW9OpsiwLkA2w+6Hhc7iV0DpLV3JSDtCqadf+k98AexqL9A8fyQVgAAAABJRU5ErkJggg==" width="30" height="30" />
+                                    }
+                                </td>
+                                @*<td class="tdcenter">
+                                    <div class="checkbox">
+                                    <label>
+                                    <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                                    <span class="lbl"></span>
+                                    </label>
+                                    </div>
+                                    </td>
+                                    <td class="tdcenter">
+                                    <div class="checkbox">
+                                    <label>
+                                    <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox" />
+                                    <span class="lbl"></span>
+                                    </label>
+                                    </div>
+                                    </td>*@
+                                @*<td class="td-actions">
+                                    <div class="hidden-phone visible-desktop action-buttons">
+                                    <a class="blue detail-item-list" href="javascript:;" title="Xem chi tiết" data-id="@item.Id">
+                                    <i class="icon-zoom-in bigger-130"></i>
+                                    </a>
+                                    <a class="green save-item-list" href="javascript:;" title="Lưu tin" data-id="@item.Id">
+                                    <i class="icon-save bigger-130"></i>
+                                    </a>
+                                    <a class="orange remove-hide-item-list" href="javascript:;" title="Bỏ ẩn tin" data-id="@item.Id">
+                                    <i class="icon-eye-open bigger-130"></i>
+                                    </a>
+                                    @if (item.IsAdmin)
+                                    {
+                                    <a class="red spam-item-list" href="javascript:;" title="Chặn môi giới" data-id="@item.Id">
+                                    <i class="icon-warning-sign bigger-130"></i>
+                                    </a>
+                                    }
+                                    else
+                                    {
+                                    <a class="red report-item-list" href="javascript:;" title="Báo môi giới" data-id="@item.Id">
+                                    <i class="icon-warning-sign bigger-130"></i>
+                                    </a>
+                                    }
+                                    </div>
+                                    </td>*@
+                            </tr>
                         }
-                        else
-                        {
-                        <a class="red report-item-list" href="javascript:;" title="Báo môi giới" data-id="@item.Id">
-                        <i class="icon-warning-sign bigger-130"></i>
-                        </a>
-                        }
-                        </div>
-                        </td>*@
-                    </tr>
-                    }
                     }
                     else
                     {
-                    <tr>
-                        <td colspan="9" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
-                    </tr>
+                        <tr>
+                            <td colspan="9" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -346,29 +346,29 @@
         <div class="pagecus">
             @if (Model.Totalpage > 1)
             {
-            <div class="row page-home lo-paging">
-                <div class="col-xs-12 col-md-4">
-                    <div class="dataTables_length">
-                        <label>
-                            Hiển thị
-                            <select class="ddlpage">
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="150">150</option>
-                                <option value="200">200</option>
-                            </select>
-                            tin
-                        </label>
+                <div class="row page-home lo-paging">
+                    <div class="col-xs-12 col-md-4">
+                        <div class="dataTables_length">
+                            <label>
+                                Hiển thị
+                                <select class="ddlpage">
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="150">150</option>
+                                    <option value="200">200</option>
+                                </select>
+                                tin
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-md-8 lo-paging-0">
-                    <div class="dataTables_paginate homepagging ">
-                        <div class="pagination" id="pagination"></div>
+                    <div class="col-xs-12 col-md-8 lo-paging-0">
+                        <div class="dataTables_paginate homepagging ">
+                            <div class="pagination" id="pagination"></div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
+                </div>
             }
         </div>
     </div>
