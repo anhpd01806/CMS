@@ -28,20 +28,28 @@ namespace CMS.Bussiness
 
         public void Insert(Blacklist model)
         {
-            var blaclist = db.Blacklists.FirstOrDefault(x => x.Words == model.Words);
-            if (blaclist != null)
-                blaclist.Description = model.Description;
-            else
-                db.Blacklists.InsertOnSubmit(model);
-            db.SubmitChanges();
+            using (var db2 = new CmsDataDataContext())
+            {
+                var blaclist = db.Blacklists.FirstOrDefault(x => x.Words == model.Words);
+                if (blaclist != null)
+                    blaclist.Description = model.Description;
+                else
+                    db2.Blacklists.InsertOnSubmit(model);
+
+                db2.SubmitChanges();
+            }
+
         }
 
         public void Delete(string id)
         {
-            var arrayId = id.Split(',');
-            var blackList = db.Blacklists.Where(x => arrayId.Contains(x.Id.ToString())).ToList();
-            db.Blacklists.DeleteAllOnSubmit(blackList);
-            db.SubmitChanges();
+            using (var db2 = new CmsDataDataContext())
+            {
+                var arrayId = id.Split(',');
+                var blackList = db.Blacklists.Where(x => arrayId.Contains(x.Id.ToString())).ToList();
+                db2.Blacklists.DeleteAllOnSubmit(blackList);
+                db2.SubmitChanges();
+            }
         }
     }
 }
