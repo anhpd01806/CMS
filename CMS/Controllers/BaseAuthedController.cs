@@ -47,6 +47,7 @@ namespace WebBackendPlus.Controllers
             ViewBag.BreadScrumb = GetBreadCrumb(controller, action, ref titleForm);
             ViewBag.TitleForm = titleForm;
             var userInfo = (User)Session["SS-USER"];
+            ViewBag.Manager =  new NewsBussiness().GetDetailManagerUser(userId);
             ViewBag.FullName = Session["SS-FULLNAME"] != null? Session["SS-FULLNAME"] : userInfo.FullName != null ? userInfo.FullName : userInfo.UserName;
             ViewBag.CashAmount = new PaymentBussiness().GetCashPaymentByUserId(userId);
             ViewBag.EndDate = new PaymentBussiness().GetTimePaymentByUserId(userId);

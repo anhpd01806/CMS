@@ -56,40 +56,40 @@ namespace CMS.Bussiness
                                   select (c.NewsId)).ToList();
 
                 var query = (from c in db.News
-                            join d in db.Districts on c.DistrictId equals d.Id
-                            join t in db.NewsStatus on c.StatusId equals t.Id
-                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
-                            join s in db.Sites on c.SiteId equals s.ID
-                            join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
-                            from nac in temp2.DefaultIfEmpty()
-                            where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam && !s.Deleted && s.Published
-                            && !d.IsDeleted && d.Published
-                            && news_new.Contains(c.Id)
-                            && !listDelete.Contains(c.Id)
-                            select new NewsModel
-                            {
-                                Id = c.Id,
-                                Title = c.Title,
-                                CategoryId = c.CategoryId,
-                                SiteId = c.SiteId,
-                                Contents = c.Contents,
-                                Link = c.Link,
-                                Phone = c.Phone,
-                                Price = c.Price,
-                                PriceText = c.PriceText,
-                                DistrictId = d.Id,
-                                DistictName = d.Name,
-                                StatusId = t.Id,
-                                StatusName = t.Name,
-                                CreatedOn = c.CreatedOn,
-                                CusIsReaded = news_isread.Contains(c.Id),
-                                CusIsSaved = ncm.IsSaved,
-                                CusIsDeleted = ncm.IsDeleted,
-                                IsRepeat = c.IsRepeat,
-                                RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
-                                Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
-                                IsReason = false//CheckReason(UserId, c.Id)
-                            }).Distinct();
+                             join d in db.Districts on c.DistrictId equals d.Id
+                             join t in db.NewsStatus on c.StatusId equals t.Id
+                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
+                             join s in db.Sites on c.SiteId equals s.ID
+                             join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
+                             from nac in temp2.DefaultIfEmpty()
+                             where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam && !s.Deleted && s.Published
+                             && !d.IsDeleted && d.Published
+                             && news_new.Contains(c.Id)
+                             && !listDelete.Contains(c.Id)
+                             select new NewsModel
+                             {
+                                 Id = c.Id,
+                                 Title = c.Title,
+                                 CategoryId = c.CategoryId,
+                                 SiteId = c.SiteId,
+                                 Contents = c.Contents,
+                                 Link = c.Link,
+                                 Phone = c.Phone,
+                                 Price = c.Price,
+                                 PriceText = c.PriceText,
+                                 DistrictId = d.Id,
+                                 DistictName = d.Name,
+                                 StatusId = t.Id,
+                                 StatusName = t.Name,
+                                 CreatedOn = c.CreatedOn,
+                                 CusIsReaded = news_isread.Contains(c.Id),
+                                 CusIsSaved = ncm.IsSaved,
+                                 CusIsDeleted = ncm.IsDeleted,
+                                 IsRepeat = c.IsRepeat,
+                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                 Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
+                                 IsReason = false//CheckReason(UserId, c.Id)
+                             }).Distinct();
 
                 if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsSave))
                 {
@@ -269,8 +269,8 @@ namespace CMS.Bussiness
             {
                 var query = "INSERT INTO News (CategoryId,Title,Contents,Summary,Link,SiteId,DistrictId,ProvinceId,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn,StatusId,Phone,IsUpdated,DateOld,IsDeleted,IsPhone,PriceText,IsRepeat,Area,Price,IsSpam,TotalRepeat)" +
                            "VALUES(" + newsItem.CategoryId + ", N'" + newsItem.Title + "', N'" + newsItem.Contents + "', N'" + newsItem.Contents + "', '" + newsItem.Link + "', " + newsItem.SiteId + ", " + newsItem.DistrictId +
-                           "," + newsItem.ProvinceId + "," + (newsItem.CreatedBy ?? 0) + ",'" + (newsItem.CreatedOn ?? DateTime.Now) + "'," + (newsItem.ModifiedBy ?? 0) + ",'" + (newsItem.ModifiedOn ?? DateTime.Now) + "' ," + (newsItem.StatusId ?? 0) + ",'" + newsItem.Phone + "',0,'" + (newsItem.CreatedOn??DateTime.Now) +
-                           "',0," + (newsItem.IsPhone ? 1 : 0) + ",N'" + newsItem.PriceText + "',0," + (newsItem.Area??0) + "," + newsItem.Price + ",0,1);";
+                           "," + newsItem.ProvinceId + "," + (newsItem.CreatedBy ?? 0) + ",'" + (newsItem.CreatedOn ?? DateTime.Now) + "'," + (newsItem.ModifiedBy ?? 0) + ",'" + (newsItem.ModifiedOn ?? DateTime.Now) + "' ," + (newsItem.StatusId ?? 0) + ",'" + newsItem.Phone + "',0,'" + (newsItem.CreatedOn ?? DateTime.Now) +
+                           "',0," + (newsItem.IsPhone ? 1 : 0) + ",N'" + newsItem.PriceText + "',0," + (newsItem.Area ?? 0) + "," + newsItem.Price + ",0,1);";
 
                 db.ExecuteCommand(query);
 
@@ -489,36 +489,36 @@ namespace CMS.Bussiness
                                    select (c.NewsId)).ToList();
 
                 var query = (from c in db.News
-                            join d in db.Districts on c.DistrictId equals d.Id
-                            join t in db.NewsStatus on c.StatusId equals t.Id
-                            join nd in db.News_Trashes on c.Id equals nd.NewsId
-                            join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
-                            from nac in temp2.DefaultIfEmpty()
-                            where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam //&& c.Published.HasValue
-                            && !d.IsDeleted && d.Published
-                            && nd.Isdelete && !nd.Isdeleted
-                            select new NewsModel
-                            {
-                                Id = c.Id,
-                                Title = c.Title,
-                                CategoryId = c.CategoryId,
-                                SiteId = c.SiteId,
-                                Contents = c.Contents,
-                                Link = c.Link,
-                                Phone = c.Phone,
-                                Price = c.Price,
-                                PriceText = c.PriceText,
-                                DistrictId = d.Id,
-                                DistictName = d.Name,
-                                StatusId = t.Id,
-                                StatusName = t.Name,
-                                CreatedOn = c.CreatedOn,
-                                CusIsReaded = news_isread.Contains(c.Id),
-                                IsRepeat = c.IsRepeat,
-                                RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
-                                Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
-                                IsReason = false//CheckReason(UserId, c.Id)
-                            }).Distinct();
+                             join d in db.Districts on c.DistrictId equals d.Id
+                             join t in db.NewsStatus on c.StatusId equals t.Id
+                             join nd in db.News_Trashes on c.Id equals nd.NewsId
+                             join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
+                             from nac in temp2.DefaultIfEmpty()
+                             where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam //&& c.Published.HasValue
+                             && !d.IsDeleted && d.Published
+                             && nd.Isdelete && !nd.Isdeleted
+                             select new NewsModel
+                             {
+                                 Id = c.Id,
+                                 Title = c.Title,
+                                 CategoryId = c.CategoryId,
+                                 SiteId = c.SiteId,
+                                 Contents = c.Contents,
+                                 Link = c.Link,
+                                 Phone = c.Phone,
+                                 Price = c.Price,
+                                 PriceText = c.PriceText,
+                                 DistrictId = d.Id,
+                                 DistictName = d.Name,
+                                 StatusId = t.Id,
+                                 StatusName = t.Name,
+                                 CreatedOn = c.CreatedOn,
+                                 CusIsReaded = news_isread.Contains(c.Id),
+                                 IsRepeat = c.IsRepeat,
+                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                 Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
+                                 IsReason = false//CheckReason(UserId, c.Id)
+                             }).Distinct();
 
                 #region check param
                 if (CateId != 0)
@@ -587,8 +587,8 @@ namespace CMS.Bussiness
                 foreach (var t in listnews)
                 {
                     var query = (from c in db.News_Trashes
-                        where c.NewsId.Equals(t) && c.CustomerID.Equals(userId) && !c.Isdeleted
-                        select c).ToList();
+                                 where c.NewsId.Equals(t) && c.CustomerID.Equals(userId) && !c.Isdeleted
+                                 select c).ToList();
                     if (query.Any())
                     {
                         foreach (var newsTrash in query)
@@ -613,8 +613,8 @@ namespace CMS.Bussiness
                 foreach (var t in listnews)
                 {
                     var query = (from c in db.News_Trashes
-                        where c.NewsId.Equals(t) && c.CustomerID.Equals(userId) && !c.Isdeleted && !c.IsSpam
-                        select c).ToList();
+                                 where c.NewsId.Equals(t) && c.CustomerID.Equals(userId) && !c.Isdeleted && !c.IsSpam
+                                 select c).ToList();
                     if (query.Any())
                     {
                         foreach (var newsTrash in query)
@@ -647,7 +647,7 @@ namespace CMS.Bussiness
             {
                 //var listBlacklist = (from c in db.Blacklists
                 //                     select (c.Words)).ToList();
-                
+
                 //Danh sách tin đã đọc theo user
                 var news_isread = (from c in db.News_Customer_Mappings
                                    where c.CustomerId.Equals(UserId) && c.IsReaded.Value && !c.IsAgency.Value
@@ -663,7 +663,7 @@ namespace CMS.Bussiness
                             join d in db.Districts on c.DistrictId equals d.Id
                             join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
                             from nac in temp2.DefaultIfEmpty()
-                            where  !listDelete.Contains(c.Id) && c.IsSpam
+                            where !listDelete.Contains(c.Id) && c.IsSpam
                             orderby c.CreatedOn descending
                             select new NewsModel
                             {
@@ -755,8 +755,8 @@ namespace CMS.Bussiness
                 foreach (var t in listnews)
                 {
                     var query = (from c in db.News
-                        where c.Id.Equals(t)
-                        select c).ToList();
+                                 where c.Id.Equals(t)
+                                 select c).ToList();
 
                     if (query.Any())
                     {
@@ -923,6 +923,21 @@ namespace CMS.Bussiness
                     db.SubmitChanges();
                 }
             }
+        }
+
+        public string GetDetailManagerUser(int userId)
+        {
+            var user = (from c in db.Users where c.Id.Equals(userId) select c).FirstOrDefault();
+            if (user != null)
+            {
+                if (user.ManagerBy != null)
+                {
+                    var manager = (from c in db.Users where c.Id.Equals(user.ManagerBy) select c).FirstOrDefault();
+                    if (manager != null)
+                        return manager.UserName;
+                }
+            }
+            return string.Empty;
         }
     }
 }

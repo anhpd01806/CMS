@@ -246,73 +246,70 @@ namespace CMS.Bussiness
 
         public NewsModel GetNewsDetail(int Id, int UserId)
         {
-            using (var db2 = new CmsDataDataContext())
+            var query = (from c in db.News
+                         join d in db.Districts on c.DistrictId equals d.Id
+                         join t in db.NewsStatus on c.StatusId equals t.Id
+                         join ct in db.Categories on c.CategoryId equals ct.Id
+                         join st in db.Sites on c.SiteId equals st.ID
+                         where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                               && !d.IsDeleted && d.Published
+                               && c.Id.Equals(Id)
+                         select new NewsModel
+                         {
+                             Id = c.Id,
+                             Title = c.Title,
+                             Link = c.Link,
+                             SiteId = c.SiteId,
+                             SiteName = st.Name,
+                             Phone = c.Phone,
+                             Contents = c.Contents,
+                             Price = c.Price,
+                             PriceText = c.PriceText,
+                             DistrictId = d.Id,
+                             DistictName = d.Name,
+                             StatusId = t.Id,
+                             StatusName = t.Name,
+                             CreatedOn = c.CreatedOn,
+                             CategoryId = ct.Id,
+                             CateName = ct.Name,
+                             ListImage = GetImageByNewsId(c.Id),
+                             SameNews = GetSameNewsByNewsId(Id, c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
+                             Iscc = CheckCCByUser(c.Id, UserId),
+                             PersionalReport = GetNameReasonReport(c.Id),
+                             IsReason = CheckReason(UserId, c.Id)
+                         }).FirstOrDefault();
+
+            if (query != null)
             {
-                var query = (from c in db.News
-                    join d in db.Districts on c.DistrictId equals d.Id
-                    join t in db.NewsStatus on c.StatusId equals t.Id
-                    join ct in db.Categories on c.CategoryId equals ct.Id
-                    join st in db.Sites on c.SiteId equals st.ID
-                    where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                          && !d.IsDeleted && d.Published
-                          && c.Id.Equals(Id)
-                    select new NewsModel
-                    {
-                        Id = c.Id,
-                        Title = c.Title,
-                        Link = c.Link,
-                        SiteId = c.SiteId,
-                        SiteName = st.Name,
-                        Phone = c.Phone,
-                        Contents = c.Contents,
-                        Price = c.Price,
-                        PriceText = c.PriceText,
-                        DistrictId = d.Id,
-                        DistictName = d.Name,
-                        StatusId = t.Id,
-                        StatusName = t.Name,
-                        CreatedOn = c.CreatedOn,
-                        CategoryId = ct.Id,
-                        CateName = ct.Name,
-                        ListImage = GetImageByNewsId(c.Id),
-                        SameNews = GetSameNewsByNewsId(Id, c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
-                        Iscc = CheckCCByUser(c.Id, UserId),
-                        PersionalReport = GetNameReasonReport(c.Id),
-                        IsReason = CheckReason(UserId, c.Id)
-                    }).FirstOrDefault();
 
-                if (query != null)
+                var getnewsave = (from c in db.News_Customer_Mappings
+                                  where c.NewsId.Equals(Id) && c.CustomerId.Equals(UserId)
+                                  select c).ToList();
+                if (!getnewsave.Any())
                 {
+                    var newItem = new News_Customer_Mapping();
+                    newItem.CustomerId = UserId;
+                    newItem.NewsId =
+                        newItem.NewsId = Id;
+                    newItem.IsSaved = false;
+                    newItem.IsDeleted = false;
+                    newItem.IsReaded = true;
+                    newItem.IsAgency = false;
+                    newItem.IsSpam = false;
+                    newItem.CreateDate = DateTime.Now;
+                    db.News_Customer_Mappings.InsertOnSubmit(newItem);
 
-                    var getnewsave = (from c in db.News_Customer_Mappings
-                        where c.NewsId.Equals(Id) && c.CustomerId.Equals(UserId)
-                        select c).ToList();
-                    if (!getnewsave.Any())
-                    {
-                        var newItem = new News_Customer_Mapping();
-                        newItem.CustomerId = UserId;
-                        newItem.NewsId =
-                            newItem.NewsId = Id;
-                        newItem.IsSaved = false;
-                        newItem.IsDeleted = false;
-                        newItem.IsReaded = true;
-                        newItem.IsAgency = false;
-                        newItem.IsSpam = false;
-                        newItem.CreateDate = DateTime.Now;
-                        db2.News_Customer_Mappings.InsertOnSubmit(newItem);
-
-                    }
-                    else
-                    {
-                        foreach (var newsCustomerMapping in getnewsave)
-                        {
-                            newsCustomerMapping.IsReaded = true;
-                        }
-                    }
-                    db2.SubmitChanges();
                 }
-                return query;
+                else
+                {
+                    foreach (var newsCustomerMapping in getnewsave)
+                    {
+                        newsCustomerMapping.IsReaded = true;
+                    }
+                }
+                db.SubmitChanges();
             }
+            return query;
         }
 
         public New GetNewsDetail(int Id)
@@ -326,66 +323,60 @@ namespace CMS.Bussiness
 
         public int SaveNewByUserId(List<News_Customer_Mapping> cusNews, int userId)
         {
-            using (var db2 = new CmsDataDataContext())
+            try
             {
-                try
+                foreach (var item in cusNews)
                 {
-                    foreach (var item in cusNews)
+                    var query = (from c in db.News_Customer_Mappings
+                                 where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
+                                 select c).FirstOrDefault();
+                    if (query == null)
                     {
-                        var query = (from c in db.News_Customer_Mappings
-                            where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
-                            select c).FirstOrDefault();
-                        if (query == null)
-                        {
-                            db2.News_Customer_Mappings.InsertOnSubmit(item);
-                        }
-                        else
-                        {
-                            query.IsSaved = true;
-                            query.IsDeleted = false;
-                        }
+                        db.News_Customer_Mappings.InsertOnSubmit(item);
                     }
-                    db2.SubmitChanges();
-                    return 1;
+                    else
+                    {
+                        query.IsSaved = true;
+                        query.IsDeleted = false;
+                    }
                 }
-                catch
-                {
-                    return 0;
-                }
+                db.SubmitChanges();
+                return 1;
+            }
+            catch
+            {
+                return 0;
             }
         }
 
         public int HideNewByUserId(List<News_Customer_Mapping> cusNews, int userId)
         {
-            using (var db2 = new CmsDataDataContext())
+            try
             {
-                try
+                foreach (var item in cusNews)
                 {
-                    foreach (var item in cusNews)
+                    var query = (from c in db.News_Customer_Mappings
+                                 where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
+                                 select c).ToList();
+                    if (!query.Any())
                     {
-                        var query = (from c in db.News_Customer_Mappings
-                            where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
-                            select c).ToList();
-                        if (!query.Any())
+                        db.News_Customer_Mappings.InsertOnSubmit(item);
+                    }
+                    else
+                    {
+                        foreach (var newsCustomerMapping in query)
                         {
-                            db2.News_Customer_Mappings.InsertOnSubmit(item);
-                        }
-                        else
-                        {
-                            foreach (var newsCustomerMapping in query)
-                            {
-                                newsCustomerMapping.IsDeleted = true;
-                                newsCustomerMapping.IsSaved = false;
-                            }
+                            newsCustomerMapping.IsDeleted = true;
+                            newsCustomerMapping.IsSaved = false;
                         }
                     }
-                    db2.SubmitChanges();
-                    return 1;
                 }
-                catch
-                {
-                    return 0;
-                }
+                db.SubmitChanges();
+                return 1;
+            }
+            catch
+            {
+                return 0;
             }
         }
 
@@ -403,12 +394,12 @@ namespace CMS.Bussiness
                          join d in db.Districts on c.DistrictId equals d.Id
                          join t in db.NewsStatus on c.StatusId equals t.Id
                          join st in db.Sites on c.SiteId equals st.ID
-                         where 
-                         //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                         //&& !d.IsDeleted && d.Published
-                         //&& !news_new.Contains(c.Id)
-                         //&& c.CategoryId.Equals(CateId)
-                         //&& c.DistrictId.Equals(DistricId)
+                         where
+                             //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                             //&& !d.IsDeleted && d.Published
+                             //&& !news_new.Contains(c.Id)
+                             //&& c.CategoryId.Equals(CateId)
+                             //&& c.DistrictId.Equals(DistricId)
                          c.Phone.Contains(phone) && c.Phone != ""
                          && !c.Id.Equals(Id)
                          orderby c.StatusId ascending, c.Price descending
@@ -467,10 +458,7 @@ namespace CMS.Bussiness
                     };
                     db.NewsReports.InsertOnSubmit(reportItem);
                 }
-                using (var db2 = new CmsDataDataContext())
-                {
-                    db2.SubmitChanges();
-                }
+                db.SubmitChanges();
                 return 1;
             }
             catch
@@ -523,10 +511,7 @@ namespace CMS.Bussiness
                                 };
                                 db.News_customer_actions.InsertOnSubmit(action);
                             }
-                            using (var db2 = new CmsDataDataContext())
-                            {
-                                db2.SubmitChanges();
-                            }
+                            db.SubmitChanges();
                         }
                     }
                 }
@@ -571,10 +556,7 @@ namespace CMS.Bussiness
                         };
                         db.News_Trashes.InsertOnSubmit(itemtrash);
                     }
-                    using (var db2 = new CmsDataDataContext())
-                    {
-                        db2.SubmitChanges();
-                    }
+                    db.SubmitChanges();
                 }
                 return 1;
             }
@@ -685,10 +667,7 @@ namespace CMS.Bussiness
                         item.DateCreate = DateTime.Now;
                         db.News_customer_actions.InsertOnSubmit(item);
                     }
-                    using (var db2 = new CmsDataDataContext())
-                    {
-                        db2.SubmitChanges();
-                    }
+                    db.SubmitChanges();
                 }
                 return 1;
             }
@@ -714,10 +693,7 @@ namespace CMS.Bussiness
                             db.News_customer_actions.DeleteOnSubmit(newsCustomerAction);
                         }
                     }
-                    using (var db2 = new CmsDataDataContext())
-                    {
-                        db2.SubmitChanges();
-                    }
+                    db.SubmitChanges();
                 }
                 return 1;
             }
@@ -782,10 +758,7 @@ namespace CMS.Bussiness
         public void InsertReasonReportNews(ReasonReportNew model)
         {
             db.ReasonReportNews.InsertOnSubmit(model);
-            using (var db2 = new CmsDataDataContext())
-            {
-                db2.SubmitChanges();
-            }
+            db.SubmitChanges();
         }
 
         public void DeleteReasonReportNews(int newsId, int userId)
@@ -794,10 +767,7 @@ namespace CMS.Bussiness
             if (check != null)
             {
                 db.ReasonReportNews.DeleteOnSubmit(check);
-                using (var db2 = new CmsDataDataContext())
-                {
-                    db2.SubmitChanges();
-                }
+                db.SubmitChanges();
             }
         }
         #endregion

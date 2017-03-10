@@ -53,7 +53,7 @@ $(function () {
 
         var totalpage = parseInt($('#datatable').attr("data-total"));
         var totalrecord = parseInt($('#datatable').attr("data-totalrecord"));
-        
+
         if (totalrecord > 0) {
             $('#listnewstable').DataTable({
                 sDom: 'rt',
@@ -62,7 +62,7 @@ $(function () {
                 bInfo: false,
                 searching: false,
                 paging: false,
-                aoColumns: [{ "bSortable": false}, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
+                aoColumns: [{ "bSortable": false }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
             });
             $('#check-all').parent().removeClass("sorting_asc");
         }
@@ -81,7 +81,7 @@ $(function () {
                         $.LoadingOverlay("show");
                         var cateId = parseInt($(".cateId").val());
                         var districtId = parseInt($(".districtId").val());
-                        var newTypeId = 0;
+                        var newTypeId = parseInt($(".newTypeId").val());
                         var siteId = parseInt($(".siteId").val());
                         var backdate = parseInt($(".ddlbackdate").val());
                         var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -153,7 +153,7 @@ $(function () {
             $.LoadingOverlay("show");
             var cateId = parseInt($(".cateId").val());
             var districtId = parseInt($(".districtId").val());
-            var newTypeId = 0;
+            var newTypeId = parseInt($(".newTypeId").val());
             var siteId = parseInt($(".siteId").val());
             var backdate = parseInt($(".ddlbackdate").val());
             var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -394,7 +394,7 @@ $(function () {
                 }
             }
         });
-        
+
         /*Xóa tin popup*/
         $(document).on("click", ".delete-item-list", function () {
             var selected = [parseInt($(this).attr("data-id"))];
@@ -698,7 +698,7 @@ $(function () {
             }
         });
 
-        $(document).on("click", ".btnreport", function () {            
+        $(document).on("click", ".btnreport", function () {
             if (!$(this).hasClass("disabled")) {
                 var selected = [];
                 $('.checkboxItem:checked').each(function () {
@@ -790,7 +790,7 @@ $(function () {
 
         //Change search filter
 
-        $(".cateId, .districtId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
+        $(".cateId, .districtId, .siteId, .newTypeId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
             LoadData();
         });
 
@@ -835,7 +835,7 @@ $(function () {
     function LoadData() {
         var cateId = parseInt($(".cateId").val());
         var districtId = parseInt($(".districtId").val());
-        var newTypeId = 0;
+        var newTypeId = parseInt($(".newTypeId").val());
         var siteId = parseInt($(".siteId").val());
         var backdate = parseInt($(".ddlbackdate").val());
         var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -852,7 +852,7 @@ $(function () {
         var NameOrder = "";
         var descending = false;
 
-        $("#listnewstable th").each(function() {
+        $("#listnewstable th").each(function () {
             if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
                 NameOrder = $(this).attr("data-name");
                 if ($(this).hasClass("order_desc")) {
@@ -927,7 +927,7 @@ $(function () {
                 $.LoadingOverlay("show");
                 var cateId = parseInt($(".cateId").val());
                 var districtId = parseInt($(".districtId").val());
-                var newTypeId = 0;
+                var newTypeId = parseInt($(".newTypeId").val());
                 var siteId = parseInt($(".siteId").val());
                 var backdate = parseInt($(".ddlbackdate").val());
                 var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -941,7 +941,7 @@ $(function () {
                 }
                 var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                 var key = $.trim($(".txtsearchkey").val());
-                
+
                 var NameOrder = "";
                 var descending = false;
 
@@ -1015,18 +1015,18 @@ $(function () {
             title: title,
             message: message,
             buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Đóng'
-                },
                 confirm: {
                     label: '<i class="fa fa-check"></i> Đồng ý'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Đóng'
                 }
             },
             callback: function (result) {
                 if (result) {
                     var cateId = parseInt($(".cateId").val());
                     var districtId = parseInt($(".districtId").val());
-                    var newTypeId = 0;
+                    var newTypeId = parseInt($(".newTypeId").val());
                     var siteId = parseInt($(".siteId").val());
                     var backdate = parseInt($(".ddlbackdate").val());
                     var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -1037,7 +1037,7 @@ $(function () {
                     var pageSize = parseInt($(".ddlpage").val());
                     var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
                     var key = $.trim($(".txtsearchkey").val());
-                    
+
                     var NameOrder = "";
                     var descending = false;
 

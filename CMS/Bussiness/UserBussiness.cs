@@ -114,10 +114,7 @@ namespace CMS.Bussiness
         public int Insert(User user)
         {
             db.Users.InsertOnSubmit(user);
-            using (var db2 = new CmsDataDataContext())
-            {
-                db2.SubmitChanges();
-            }
+            db.SubmitChanges();
             return user.Id;
         }
 
@@ -125,19 +122,13 @@ namespace CMS.Bussiness
         {
             var user = db.Users.FirstOrDefault(x => x.Id == id);
             user.Password = Helpers.md5(user.UserName.Trim() + "ozo123456");
-            using (var db2 = new CmsDataDataContext())
-            {
-                db2.SubmitChanges();
-            }
+            db.SubmitChanges();
         }
         public void Delete(int id)
         {
             var user = db.Users.FirstOrDefault(x => x.Id == id);
             user.IsDeleted = true;
-            using (var db2 = new CmsDataDataContext())
-            {
-                db2.SubmitChanges();
-            }
+            db.SubmitChanges();
         }
 
         public Boolean ChangePassword(int id, string password, string oldPassword)
@@ -145,10 +136,7 @@ namespace CMS.Bussiness
             var user = db.Users.FirstOrDefault(x => x.Id == id);
             if (user.Password != Helpers.md5(user.UserName.Trim() + "ozo" + oldPassword.Trim())) return false;
             user.Password = Helpers.md5(user.UserName.Trim() + "ozo" + password.Trim());
-            using (var db2 = new CmsDataDataContext())
-            {
-                db2.SubmitChanges();
-            }
+            db.SubmitChanges();
             return true;
         }
 
@@ -157,10 +145,7 @@ namespace CMS.Bussiness
             var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
             user.IsMember = true;
             user.ManagerBy = int.Parse(model.ManagerBy);
-            using (var db2 = new CmsDataDataContext())
-            {
-                db2.SubmitChanges();
-            }
+            db.SubmitChanges();
         }
 
         public void Update(UserModel model)
@@ -170,10 +155,7 @@ namespace CMS.Bussiness
             user.Notes = model.Notes;
             user.IsDeleted = model.IsRestore;//th khôi phục lại tài khoản
             user.ManagerBy = int.Parse(model.ManagerBy);
-            using (var db2 = new CmsDataDataContext())
-            {
-                db2.SubmitChanges();
-            }
+            db.SubmitChanges();
         }
 
         public void UpdateLastLogin(int id)
@@ -181,10 +163,7 @@ namespace CMS.Bussiness
             var user = db.Users.FirstOrDefault(x => x.Id == id);
             user.LastLoginDate = DateTime.Now;
             user.LastActivityDate = DateTime.Now;
-            using (var db2 = new CmsDataDataContext())
-            {
-                db2.SubmitChanges();
-            }
+            db.SubmitChanges();
         }
 
         public void UpdateProfile(UserModel model)
@@ -194,10 +173,7 @@ namespace CMS.Bussiness
             user.Sex = model.Sex;
             user.Phone = model.Phone;
             user.Email = model.Email;
-            using (var db2 = new CmsDataDataContext())
-            {
-                db2.SubmitChanges();
-            }
+            db.SubmitChanges();
         }
     }
 }

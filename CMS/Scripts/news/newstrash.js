@@ -18,7 +18,7 @@ $(function () {
                     $.LoadingOverlay("show");
                     var cateId = parseInt($(".cateId").val());
                     var districtId = parseInt($(".districtId").val());
-                    var newTypeId = 0;
+                    var newTypeId = parseInt($(".newTypeId").val());
                     var siteId = parseInt($(".siteId").val());
                     var backdate = parseInt($(".ddlbackdate").val());
                     var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -103,7 +103,7 @@ $(function () {
         event.stopPropagation();
     });
 
-    $(".cateId, .districtId, .siteId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
+    $(".cateId, .districtId, .siteId, .newTypeId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
         LoadData();
     });
 
@@ -130,7 +130,7 @@ $(function () {
         $.LoadingOverlay("show");
         var cateId = parseInt($(".cateId").val());
         var districtId = parseInt($(".districtId").val());
-        var newTypeId = 0;
+        var newTypeId = parseInt($(".newTypeId").val());
         var siteId = parseInt($(".siteId").val());
         var backdate = parseInt($(".ddlbackdate").val());
         var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -415,7 +415,7 @@ $(function () {
 function LoadData() {
     var cateId = parseInt($(".cateId").val());
     var districtId = parseInt($(".districtId").val());
-    var newTypeId = 0;
+    var newTypeId = parseInt($(".newTypeId").val());
     var siteId = parseInt($(".siteId").val());
     var backdate = parseInt($(".ddlbackdate").val());
     var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -508,7 +508,7 @@ function showPagination(pagesCounter) {
             $.LoadingOverlay("show");
             var cateId = parseInt($(".cateId").val());
             var districtId = parseInt($(".districtId").val());
-            var newTypeId = 0;
+            var newTypeId = parseInt($(".newTypeId").val());
             var siteId = parseInt($(".siteId").val());
             var backdate = parseInt($(".ddlbackdate").val());
             var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -607,7 +607,7 @@ function showboxcomfirm(title, message) {
             if (result) {
                 var cateId = parseInt($(".cateId").val());
                 var districtId = parseInt($(".districtId").val());
-                var newTypeId = 0;
+                var newTypeId = parseInt($(".newTypeId").val());
                 var siteId = parseInt($(".siteId").val());
                 var backdate = parseInt($(".ddlbackdate").val());
                 var minPrice = parseFloat(checkminprice($(".ddlprice").val()));

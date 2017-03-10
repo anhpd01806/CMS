@@ -180,6 +180,9 @@ namespace CMS.Controllers
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
                 #endregion
 
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                ViewBag.TotalMoney = new PaymentBussiness().GetCashPaymentByUserId(userId);
+                ViewBag.Manager = _newsbussiness.GetDetailManagerUser(userId);
                 return View(model);
             }
             catch (Exception ex)

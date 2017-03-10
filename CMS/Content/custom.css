@@ -191,8 +191,7 @@ span.error {
     padding-left: 15px;
     margin-bottom: 15px;
     display: inline-block;
-    color: red;
-    font-size: 14px;
+    font-size: 15px;
 }
 .btnsamenews:hover {
     cursor: pointer;
@@ -260,4 +259,22 @@ span.error {
 }
 .avbar-header {
     min-width: 55px;
+}
+/*.right-createnews {
+    font-size: 15px;
+    color: red;
+}
+.right-createnews .col-xs-3 {
+    text-align: right;
+}*/
+.sidebar .sidebar-shortcuts-large {
+    line-height: 30px;
+}
+.sidebar .sidebar-shortcuts-large p{
+    margin : 0;
+    padding-left: 15px;
+}
+.sidebar .sidebar-shortcuts-large small{
+    font-size: 14px;
+    margin-left: 16px;
 }
