@@ -272,20 +272,58 @@ namespace CMS.Bussiness
 
         public int Createnew(New newsItem, int userId)
         {
-            try
+            using (var db2 = new CmsDataDataContext())
             {
-                var query = "INSERT INTO News (CategoryId,Title,Contents,Summary,Link,SiteId,DistrictId,ProvinceId,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn,StatusId,Phone,IsUpdated,DateOld,IsDeleted,IsPhone,PriceText,IsRepeat,Area,Price,IsSpam,TotalRepeat)" +
-                           "VALUES(" + newsItem.CategoryId + ", N'" + newsItem.Title + "', N'" + newsItem.Contents + "', N'" + newsItem.Contents + "', '" + newsItem.Link + "', " + newsItem.SiteId + ", " + newsItem.DistrictId +
-                           "," + newsItem.ProvinceId + "," + (newsItem.CreatedBy ?? 0) + ",'" + (newsItem.CreatedOn ?? DateTime.Now) + "'," + (newsItem.ModifiedBy ?? 0) + ",'" + (newsItem.ModifiedOn ?? DateTime.Now) + "' ," + (newsItem.StatusId ?? 0) + ",'" + newsItem.Phone + "',0,'" + (newsItem.CreatedOn ?? DateTime.Now) +
-                           "',0," + (newsItem.IsPhone ? 1 : 0) + ",N'" + newsItem.PriceText + "',0," + (newsItem.Area ?? 0) + "," + newsItem.Price + ",0,1);";
+                try
+                {
+                    var query =
+                        "INSERT INTO News (CategoryId,Title,Contents,Summary,Link,SiteId,DistrictId,ProvinceId,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn,StatusId,Phone,IsUpdated,DateOld,IsDeleted,IsPhone,PriceText,IsRepeat,Area,Price,IsSpam,TotalRepeat)" +
+                        "VALUES(" + newsItem.CategoryId + ", N'" + newsItem.Title + "', N'" + newsItem.Contents +
+                        "', N'" + newsItem.Contents + "', '" + newsItem.Link + "', " + newsItem.SiteId + ", " +
+                        newsItem.DistrictId +
+                        "," + newsItem.ProvinceId + "," + (newsItem.CreatedBy ?? 0) + ",'" +
+                        (newsItem.CreatedOn ?? DateTime.Now) + "'," + (newsItem.ModifiedBy ?? 0) + ",'" +
+                        (newsItem.ModifiedOn ?? DateTime.Now) + "' ," + (newsItem.StatusId ?? 0) + ",'" + newsItem.Phone +
+                        "',0,'" + (newsItem.CreatedOn ?? DateTime.Now) +
+                        "',0," + (newsItem.IsPhone ? 1 : 0) + ",N'" + newsItem.PriceText + "',0," + (newsItem.Area ?? 0) +
+                        "," + newsItem.Price + ",0,1);";
 
-                db.ExecuteCommand(query);
+                    db2.ExecuteCommand(query);
 
-                return 1;
+                    return 1;
+                }
+                catch (Exception ex)
+                {
+                    db2.Dispose();
+                    return 0;
+                }
             }
-            catch (Exception ex)
+        }
+
+        public int EditNews(New newsItem, int userId)
+        {
+            using (var db2 = new CmsDataDataContext())
             {
-                return 0;
+                try
+                {
+                    var news = (from c in db.News where c.Id.Equals(newsItem.Id) select c).FirstOrDefault();
+                    if (news != null)
+                    {
+                        news.Title = newsItem.Title;
+                        news.DistrictId = newsItem.DistrictId;
+                        news.CategoryId = newsItem.CategoryId;
+                        news.Price = newsItem.Price;
+                        news.Contents = newsItem.Contents;
+                        news.Phone = newsItem.Phone;
+                        db2.SubmitChanges();
+                    }
+                    return 1;
+                }
+                catch
+                {
+                    db2.Dispose();
+                    return 0;
+                }
             }
         }
 

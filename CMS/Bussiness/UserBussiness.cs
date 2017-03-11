@@ -160,10 +160,20 @@ namespace CMS.Bussiness
 
         public void UpdateLastLogin(int id)
         {
-            var user = db.Users.FirstOrDefault(x => x.Id == id);
-            user.LastLoginDate = DateTime.Now;
-            user.LastActivityDate = DateTime.Now;
-            db.SubmitChanges();
+            using (var db2 = new CmsDataDataContext())
+            {
+                try
+                {
+                    var user = db2.Users.FirstOrDefault(x => x.Id == id);
+                    user.LastLoginDate = DateTime.Now;
+                    user.LastActivityDate = DateTime.Now;
+                    db2.SubmitChanges();
+                }
+                catch
+                {
+                    db2.Dispose();
+                }
+            }
         }
 
         public void UpdateProfile(UserModel model)

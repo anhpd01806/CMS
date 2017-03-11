@@ -255,6 +255,47 @@ namespace CMS.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult EditNews()
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["SS-USERID"]);
+                var newsId = Convert.ToInt32(Request["Id"]);
+                var title = Request["title"];
+                var cateId = Convert.ToInt32(Request["cateId"]);
+                var districtId = Convert.ToInt32(Request["districtId"]);
+                var phone = Request["phone"];
+                var price = Request["price"].Replace(".", "");
+                var content = Request["content"];
+
+                var news = new New
+                {
+                    Id = newsId,
+                    Title = title,
+                    CategoryId = cateId,
+                    DistrictId = districtId,
+                    Phone = phone,
+                    Price = Convert.ToDecimal(!string.IsNullOrEmpty(price) ? price : "0"),
+                    Contents = content
+                };
+
+                return Json(new
+                {
+                    type = _newsbussiness.EditNews(news, userId)
+                });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    type = 0
+                });
+            }
+        }
+
         public ActionResult LoadData(string key, int pageIndex, int pageSize)
         {
             try
