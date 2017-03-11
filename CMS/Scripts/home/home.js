@@ -308,6 +308,7 @@ $(function () {
 
         $(document).on("click", ".btnclose", function () {
             $("#newsdetail").modal("hide");
+            $("#newsedit").modal("hide");
         });
 
         $(document).on("click", ".btnsave", function () {
@@ -830,6 +831,23 @@ $(function () {
                 }
                 LoadData();
             }
+        });
+
+        $(document).on("click", ".edit-item-list_adm", function () {
+            var id = $(this).attr("data-id");
+            $.LoadingOverlay("show");
+            $.post("/news/GetNewsDetailForEdit", { newsId: id }, function (resp) {
+                if (resp != null) {
+                    $("#modaledit").empty();
+                    $("#modaledit").html(resp.Content);
+                    setTimeout(function () {
+                        $("#newsedit").modal("show");
+                    }, 500);
+                } else {
+                    showmessage("error", "Hệ thống gặp sự cố trong quá trình lấy dữ liệu!");
+                };
+                $.LoadingOverlay("hide");
+            });
         });
     });
 

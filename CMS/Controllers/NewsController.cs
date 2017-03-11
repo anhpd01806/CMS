@@ -22,6 +22,7 @@ namespace CMS.Controllers
         private readonly NewsBussiness _newsbussiness = new NewsBussiness();
         private readonly PaymentBussiness _payment = new PaymentBussiness();
         private readonly CacheNewsBussiness _cacheNewsBussiness = new CacheNewsBussiness();
+        private readonly HomeBussiness _homebussiness = new HomeBussiness();
         #endregion
 
 
@@ -104,7 +105,7 @@ namespace CMS.Controllers
                 var Id = Convert.ToInt32(Request["Id"]);
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
-                var news = _cacheNewsBussiness.GetNewsDetail(Id, userId);
+                var news = _homebussiness.GetNewsDetail(Id, userId);
                 ViewBag.RoleId = _cacheNewsBussiness.GetRoleByUser(userId);
                 var content = RenderPartialViewToString("~/Views/News/NewsDetail.cshtml", news);
                 return Json(new
@@ -294,6 +295,72 @@ namespace CMS.Controllers
                     type = 0
                 });
             }
+        }
+
+        [HttpPost]
+        public JsonResult GetNewsDetailForEdit(int newsId)
+        {
+            try
+            {
+                var model = new HomeViewModel();
+
+                #region Get select list category
+                var listCategory = _cacheNewsBussiness.GetListCategory();
+                var cateListItems = new List<SelectListItem>();
+                cateListItems.Add(new SelectListItem { Text = "Chọn chuyên mục", Value = "0" });
+                foreach (var item in listCategory)
+                {
+                    if (item.ParentCategoryId == 0)
+                    {
+                        cateListItems.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                        var listchillcate = _cacheNewsBussiness.GetChilldrenlistCategory(item.Id);
+                        foreach (var chill in listchillcate)
+                        {
+                            cateListItems.Add(new SelectListItem { Text = ("\xA0\xA0\xA0" + chill.Name), Value = chill.Id.ToString() });
+                        }
+                    }
+                }
+                model.ListCategory = new SelectList(cateListItems, "Value", "Text");
+                #endregion
+                #region Get select list district
+
+                var listDistrict = _cacheNewsBussiness.GetListDistric();
+                var listdictrictItem = new List<SelectListItem>();
+                listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
+                foreach (var item in listDistrict)
+                {
+                    listdictrictItem.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                }
+                model.ListDistric = new SelectList(listdictrictItem, "Value", "Text");
+                #endregion
+
+
+                var news = _newsbussiness.GetNewsById(newsId);
+                if (news != null)
+                {
+                    model.NewsItem = news;
+                    model.CategoryId = news.CategoryId.Value;
+                    model.DistricId = news.DistrictId.Value;
+                    var content = RenderPartialViewToString("~/Views/Home/NewsEdit.cshtml", model);
+                    return Json(new
+                    {
+                        Content = content
+                    });
+                }
+                return Json(new
+                {
+                    Content = string.Empty
+                });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    Content = string.Empty
+                });
+            }
+            
         }
 
         public ActionResult LoadData(string key, int pageIndex, int pageSize)

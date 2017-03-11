@@ -293,7 +293,7 @@
                                 <td style="text-align: center;">
                                     @if (!Convert.ToBoolean(ViewBag.User))
                                     {
-                                        <a class="green edit-item-list" href="javascript:;" data-id="@item.Id">
+                                        <a class="green edit-item-list_adm" href="javascript:;" data-id="@item.Id">
                                             <i class="icon-edit bigger-130 "></i>
                                         </a>
                                     }
@@ -345,6 +345,9 @@
 </div>
 <div id="modaldetail">
 
+</div>
+<div id="modaledit">
+    
 </div>
 <script src="~/assets/js/jquery.dataTables.min.js"></script>
 <script src="~/assets/js/jquery.dataTables.bootstrap.min.js"></script>

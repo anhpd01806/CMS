@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CMS.Models;
+using CMS.Data;
 
 namespace CMS.ViewModel
 {
@@ -12,6 +13,7 @@ namespace CMS.ViewModel
         public HomeViewModel()
         {
             ListNew = new List<NewsModel>();
+            NewsItem = new New();
         }
         public int CategoryId { get; set; }
         public SelectList ListCategory { get; set; }
@@ -32,6 +34,7 @@ namespace CMS.ViewModel
         public int Totalpage { get; set; }
         public int Total { get; set; }
         public int RoleId { get; set; }
-        public List<NewsModel> ListNew { get; set; } 
+        public List<NewsModel> ListNew { get; set; }
+        public New NewsItem { get; set; }
     }
 }

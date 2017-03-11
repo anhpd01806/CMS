@@ -4,7 +4,7 @@
 {
     foreach (var item in Model)
     {
-        
+
         <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #bf983b;" : string.Empty)">
             <td>
                 <label class="pos-rel">
@@ -58,9 +58,12 @@
                 }
             </td>
             <td style="text-align: center;">
-                <a class="green edit-item-list" href="javascript:;" data-id="@item.Id">
-                    <i class="icon-edit bigger-130 "></i>
-                </a>
+                @if (!Convert.ToBoolean(ViewBag.User))
+                {
+                    <a class="green edit-item-list" href="javascript:;" data-id="@item.Id">
+                        <i class="icon-edit bigger-130 "></i>
+                    </a>
+                }
             </td>
             @*<td style="text-align: center">
                     <div class="checkbox">

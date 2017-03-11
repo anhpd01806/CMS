@@ -63,5 +63,17 @@ namespace CMS.Helper
         {
             return Regex.Replace(Regex.Replace(source, "<.*?>", string.Empty), @"\s+", " ");
         }
+
+        public static string FormatPrice(decimal? price)
+        {
+            if (price.HasValue && price != 0)
+            {
+                string result = price.Value.ToString("#,#");
+                if (result.Contains(","))
+                    result = result.Replace(',', '.');
+                return result;
+            }
+            return "0";
+        }
     }
 }
