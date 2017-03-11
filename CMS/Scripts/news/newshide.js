@@ -381,11 +381,11 @@ $(function () {
                     title: "Thông báo",
                     message: "Bạn có chắc muốn xóa này không?",
                     buttons: {
-                        cancel: {
-                            label: '<i class="fa fa-times"></i> Đóng'
-                        },
                         confirm: {
                             label: '<i class="fa fa-check"></i> Đồng ý'
+                        },
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Đóng'
                         }
                     },
                     callback: function (result) {
@@ -429,11 +429,11 @@ $(function () {
                         title: "Thông báo",
                         message: "Bạn có chắc muốn báo chính chủ tin này không?",
                         buttons: {
-                            cancel: {
-                                label: '<i class="fa fa-times"></i> Đóng'
-                            },
                             confirm: {
                                 label: '<i class="fa fa-check"></i> Đồng ý'
+                            },
+                            cancel: {
+                                label: '<i class="fa fa-times"></i> Đóng'
                             }
                         },
                         callback: function (result) {
@@ -466,11 +466,11 @@ $(function () {
                     title: "Thông báo",
                     message: "Bạn có chắc muốn báo chính chủ tin này không?",
                     buttons: {
-                        cancel: {
-                            label: '<i class="fa fa-times"></i> Đóng'
-                        },
                         confirm: {
                             label: '<i class="fa fa-check"></i> Đồng ý'
+                        },
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Đóng'
                         }
                     },
                     callback: function (result) {
@@ -505,11 +505,11 @@ $(function () {
                     title: "Thông báo",
                     message: "Bạn có chắc muốn hủy chính chủ tin này không?",
                     buttons: {
-                        cancel: {
-                            label: '<i class="fa fa-times"></i> Đóng'
-                        },
                         confirm: {
                             label: '<i class="fa fa-check"></i> Đồng ý'
+                        },
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Đóng'
                         }
                     },
                     callback: function (result) {
@@ -643,11 +643,11 @@ $(function () {
                     title: "Thông báo",
                     message: "Bạn có chắc chắn muốn báo môi giới những tin này không?",
                     buttons: {
-                        cancel: {
-                            label: '<i class="fa fa-times"></i> Đóng'
-                        },
                         confirm: {
                             label: '<i class="fa fa-check"></i> Đồng ý'
+                        },
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Đóng'
                         }
                     },
                     callback: function (result) {
@@ -714,11 +714,11 @@ $(function () {
                         title: "Thông báo",
                         message: "Bạn có chắc chắn muốn báo môi giới những tin này không?",
                         buttons: {
-                            cancel: {
-                                label: '<i class="fa fa-times"></i> Đóng'
-                            },
                             confirm: {
                                 label: '<i class="fa fa-check"></i> Đồng ý'
+                            },
+                            cancel: {
+                                label: '<i class="fa fa-times"></i> Đóng'
                             }
                         },
                         callback: function (result) {
@@ -1019,11 +1019,11 @@ $(function () {
             title: title,
             message: message,
             buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Đóng'
-                },
                 confirm: {
                     label: '<i class="fa fa-check"></i> Đồng ý'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Đóng'
                 }
             },
             callback: function (result) {

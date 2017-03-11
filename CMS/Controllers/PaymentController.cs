@@ -78,8 +78,8 @@ namespace CMS.Controllers
             Session["SS-USERNAME"] = new UserBussiness().GetUserById(userId).UserName;
             PaymentViewModel model = new PaymentViewModel();
             model.PackageList = new List<SelectListItem>();
-            model.PackageList.Add(new SelectListItem { Text = "Gói tháng", Value = ConfigWeb.MonthPackage });
-            model.PackageList.Add(new SelectListItem { Text = "Gói ngày", Value = ConfigWeb.DayPackage });
+            model.PackageList.Add(new SelectListItem { Text = "Gói tháng(" + string.Format("{0:n0}", int.Parse(ConfigWeb.MonthPackage)) + "vnđ)", Value = ConfigWeb.MonthPackage });
+            model.PackageList.Add(new SelectListItem { Text = "Gói ngày(" + string.Format("{0:n0}", int.Parse(ConfigWeb.DayPackage)) + "vnđ)", Value = ConfigWeb.DayPackage });
             return View(model);
         }
 
@@ -92,7 +92,8 @@ namespace CMS.Controllers
             {
                 TempData["Success"] = rs;
                 Session["USER-ACCEPTED"] = true;
-            }else
+            }
+            else
             {
                 TempData["Error"] = rs;
             }

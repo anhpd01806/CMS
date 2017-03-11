@@ -91,12 +91,12 @@ $(document).ready(function () {
                 title: "Thông báo",
                 message: "Bạn sẽ bị trừ 15k vào tài khoản. bạn có chắc muốn đăng tin này?",
                 buttons: {
-                    cancel: {
-                        label: '<i class="fa fa-times"></i> Đóng'
-                    },
                     confirm: {
                         label: '<i class="fa fa-check"></i> Đồng ý'
                     },
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Đóng'
+                    }
                 },
                 callback: function (result) {
                     if (result) {
