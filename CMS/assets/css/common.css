@@ -26,3 +26,6 @@
 .modal-backdrop.in:nth-of-type(even) {
     z-index: 1041 !important;
 }
+.margin-right-10{
+    margin-right :10px;
+}

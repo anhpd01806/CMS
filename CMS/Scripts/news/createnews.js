@@ -92,11 +92,13 @@ $(document).ready(function () {
                 message: "Bạn sẽ bị trừ 15k vào tài khoản. bạn có chắc muốn đăng tin này?",
                 buttons: {
                     confirm: {
-                        label: '<i class="fa fa-check"></i> Đồng ý'
+                        label: '<i class="fa fa-check"></i> Đồng ý',
+                        className: 'btn-sm margin-right-10 btn-primary'
                     },
                     cancel: {
-                        label: '<i class="fa fa-times"></i> Đóng'
-                    }
+                        label: '<i class="fa fa-times"></i> Đóng',
+                        className: 'btn-sm pull-right btn-inverse'
+                    },
                 },
                 callback: function (result) {
                     if (result) {

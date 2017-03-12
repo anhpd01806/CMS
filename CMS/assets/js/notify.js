@@ -38,38 +38,41 @@ $(document).ready(function () {
     socket.emit('join-room', { userId, isAdmin });
     //show notify
     socket.on('show-notify', function (obj) {
-        //span avata
-        var spanAvt = "<span class='blue'>" + obj.name + ":</span>";
-        //span message title
-        var spanMsgTit = "<span class='msg-title'>" + spanAvt + obj.title + "</span>";
-        //span time
-        var spanTime = "<span>" + obj.time + "</span>";
-        //span message time
-        var spanMsgTime = "<span class='msg-time'> <i class='ace-icon fa fa-clock-o'></i>" + spanTime + "</span>";
-        //span message body
-        var spanMsgBody = "<span class='msg-body'>" + spanMsgTit + spanMsgTime + "</span>";
-        //tag image
-        var tagImg = "<img src='" + obj.avatar + "' class='msg-photo' alt='avatar' />";
-        //tag a
-        var tagA = "<div data-id='" + obj.id + "' data-type='" + obj.type + "'>" + tagImg + spanMsgBody + "</div>";
-        //tag li
-        var tagLi = "<li style='padding-top:10px;padding-bottom: 15px;cursor: pointer;border-bottom: 1px solid #E4ECF3' onclick='return DetailNotify(" + obj.id + "," + obj.type + ");' id='li-noti-" + obj.id + "'>" + tagA + "</li>";
-        $('#ul-notify').prepend(tagLi);
-        //update count notify
-        $('#count-notify').attr('data-badge', parseInt(typeof ($('#count-notify').data('badge')) === "undefined" ? 0 : $('#count-notify').data('badge')) + 1);
-        $.ajax({
-            type: "GET",
-            url: "/Notice/UpdateNotifySesion",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (result) {
+        if (!isExpiredSession()) {
+            //span avata
+            var spanAvt = "<span class='blue'>" + obj.name + ":</span>";
+            //span message title
+            var spanMsgTit = "<span class='msg-title'>" + spanAvt + obj.title + "</span>";
+            //span time
+            var spanTime = "<span>" + obj.time + "</span>";
+            //span message time
+            var spanMsgTime = "<span class='msg-time'> <i class='ace-icon fa fa-clock-o'></i>" + spanTime + "</span>";
+            //span message body
+            var spanMsgBody = "<span class='msg-body'>" + spanMsgTit + spanMsgTime + "</span>";
+            //tag image
+            var tagImg = "<img src='" + obj.avatar + "' class='msg-photo' alt='avatar' />";
+            //tag a
+            var tagA = "<div data-id='" + obj.id + "' data-type='" + obj.type + "'>" + tagImg + spanMsgBody + "</div>";
+            //tag li
+            var tagLi = "<li style='padding-top:10px;padding-bottom: 15px;cursor: pointer;border-bottom: 1px solid #E4ECF3' onclick='return DetailNotify(" + obj.id + "," + obj.type + ");' id='li-noti-" + obj.id + "'>" + tagA + "</li>";
+            $('#ul-notify').prepend(tagLi);
+            //update count notify
+            $('#count-notify').attr('data-badge', parseInt(typeof ($('#count-notify').data('badge')) === "undefined" ? 0 : $('#count-notify').data('badge')) + 1);
+            $.ajax({
+                type: "GET",
+                url: "/Notice/UpdateNotifySesion",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
 
-            },
-            error: function (response) {
-                alert('Có lỗi xẩy ra khi lấy dữ liệu trong database !');
-            }
-        });
+                },
+                error: function (response) {
+                    alert('Có lỗi xẩy ra khi lấy dữ liệu trong database !');
+                }
+            });
+        }
     });
+
 
     $('#btn-accept-acount').click(function () {
         //close modal notify account
@@ -96,6 +99,20 @@ $(document).ready(function () {
         });
     });
 });
+function isExpiredSession() {
+    $.ajax({
+        type: "GET",
+        url: "/Notice/IsExpiredSession",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            return result
+        },
+        error: function (response) {
+            return false;
+        }
+    });
+};
 
 function showNotify() {
     $('#count-notify').addClass('badge-notify')

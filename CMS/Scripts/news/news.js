@@ -408,11 +408,13 @@ $(function () {
                     message: "Bạn có chắc muốn xóa này không?",
                     buttons: {
                         confirm: {
-                            label: '<i class="fa fa-check"></i> Đồng ý'
+                            label: '<i class="fa fa-check"></i> Đồng ý',
+                            className: 'btn-sm margin-right-10 btn-primary'
                         },
                         cancel: {
-                            label: '<i class="fa fa-times"></i> Đóng'
-                        }
+                            label: '<i class="fa fa-times"></i> Đóng',
+                            className: 'btn-sm pull-right btn-inverse'
+                        },
                     },
                     callback: function (result) {
                         if (result) {
@@ -456,11 +458,13 @@ $(function () {
                         message: "Bạn có chắc muốn báo chính chủ tin này không?",
                         buttons: {
                             confirm: {
-                                label: '<i class="fa fa-check"></i> Đồng ý'
+                                label: '<i class="fa fa-check"></i> Đồng ý',
+                                className: 'btn-sm margin-right-10 btn-primary'
                             },
-                             cancel: {
-                                label: '<i class="fa fa-times"></i> Đóng'
-                            }
+                            cancel: {
+                                label: '<i class="fa fa-times"></i> Đóng',
+                                className: 'btn-sm pull-right btn-inverse'
+                            },
                         },
                         callback: function (result) {
                             $.post("/home/newsforuser", { listNewsId: selected }, function (resp) {
@@ -493,11 +497,13 @@ $(function () {
                     message: "Bạn có chắc muốn báo chính chủ tin này không?",
                     buttons: {
                         confirm: {
-                            label: '<i class="fa fa-check"></i> Đồng ý'
+                            label: '<i class="fa fa-check"></i> Đồng ý',
+                            className: 'btn-sm margin-right-10 btn-primary'
                         },
                         cancel: {
-                            label: '<i class="fa fa-times"></i> Đóng'
-                        }
+                            label: '<i class="fa fa-times"></i> Đóng',
+                            className: 'btn-sm pull-right btn-inverse'
+                        },
                     },
                     callback: function (result) {
                         if (result) {
@@ -532,11 +538,13 @@ $(function () {
                     message: "Bạn có chắc muốn hủy chính chủ tin này không?",
                     buttons: {
                         confirm: {
-                            label: '<i class="fa fa-check"></i> Đồng ý'
+                            label: '<i class="fa fa-check"></i> Đồng ý',
+                            className: 'btn-sm margin-right-10 btn-primary'
                         },
-                         cancel: {
-                            label: '<i class="fa fa-times"></i> Đóng'
-                        }
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Đóng',
+                            className: 'btn-sm pull-right btn-inverse'
+                        },
                     },
                     callback: function (result) {
                         if (result) {
@@ -643,11 +651,13 @@ $(function () {
                     message: "Bạn có chắc chắn muốn báo môi giới những tin này không?",
                     buttons: {
                         confirm: {
-                            label: '<i class="fa fa-check"></i> Đồng ý'
+                            label: '<i class="fa fa-check"></i> Đồng ý',
+                            className: 'btn-sm margin-right-10 btn-primary'
                         },
                         cancel: {
-                            label: '<i class="fa fa-times"></i> Đóng'
-                        }
+                            label: '<i class="fa fa-times"></i> Đóng',
+                            className: 'btn-sm pull-right btn-inverse'
+                        },
                     },
                     callback: function (result) {
                         if (result) {
@@ -715,11 +725,13 @@ $(function () {
                             message: "Bạn có chắc chắn muốn báo môi giới những tin này không?",
                             buttons: {
                                 confirm: {
-                                    label: '<i class="fa fa-check"></i> Đồng ý'
+                                    label: '<i class="fa fa-check"></i> Đồng ý',
+                                    className: 'btn-sm margin-right-10 btn-primary'
                                 },
                                 cancel: {
-                                    label: '<i class="fa fa-times"></i> Đóng'
-                                }
+                                    label: '<i class="fa fa-times"></i> Đóng',
+                                    className: 'btn-sm pull-right btn-inverse'
+                                },
                             },
                             callback: function (result) {
                                 if (result) {
@@ -1022,11 +1034,13 @@ $(function () {
             message: message,
             buttons: {
                 confirm: {
-                    label: '<i class="fa fa-check"></i> Đồng ý'
+                    label: '<i class="fa fa-check"></i> Đồng ý',
+                    className: 'btn-sm margin-right-10 btn-primary'
                 },
                 cancel: {
-                    label: '<i class="fa fa-times"></i> Đóng'
-                }
+                    label: '<i class="fa fa-times"></i> Đóng',
+                    className: 'btn-sm pull-right btn-inverse'
+                },
             },
             callback: function (result) {
                 

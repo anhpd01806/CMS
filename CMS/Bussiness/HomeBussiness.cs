@@ -165,7 +165,7 @@ namespace CMS.Bussiness
                 }
                 if (BackDate != -1)
                 {
-                    query = BackDate == 0 ? query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 23:59:59.999")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate)).ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate+1)).ToString("yyyy/MM/dd") + " 23:59:59.999"));
+                    query = BackDate == 0 ? query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 23:59:59.999")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate)).ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate + 1)).ToString("yyyy/MM/dd") + " 23:59:59.999"));
                 }
                 if (!string.IsNullOrEmpty(From))
                 {
@@ -403,11 +403,11 @@ namespace CMS.Bussiness
                          join t in db.NewsStatus on c.StatusId equals t.Id
                          join st in db.Sites on c.SiteId equals st.ID
                          where
-                             //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                             //&& !d.IsDeleted && d.Published
-                             //&& !news_new.Contains(c.Id)
-                             //&& c.CategoryId.Equals(CateId)
-                             //&& c.DistrictId.Equals(DistricId)
+                         //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                         //&& !d.IsDeleted && d.Published
+                         //&& !news_new.Contains(c.Id)
+                         //&& c.CategoryId.Equals(CateId)
+                         //&& c.DistrictId.Equals(DistricId)
                          c.Phone.Contains(phone) && c.Phone != ""
                          && !c.Id.Equals(Id)
                          orderby c.StatusId ascending, c.Price descending
@@ -440,8 +440,8 @@ namespace CMS.Bussiness
                 foreach (var item in reasonlst)
                 {
                     rs += "<li><span>" + new UserBussiness().GetNameById(item.UserId)
-                        + "(" + item.DateCreate.ToString("dd/MM/yyyy") + ") :"
-                        + item.Note + "</span></li>";
+                        + "(" + item.DateCreate.ToString("dd/MM/yyyy") + ":) </br></span>"
+                        + "<span>- " + item.Note + "</span></li>";
                 }
             }
             else

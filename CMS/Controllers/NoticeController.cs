@@ -146,6 +146,17 @@ namespace CMS.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
+        public JsonResult IsExpiredSession()
+        {
+            try
+            {
+                return Json(Session["SS-USERID"] == null, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         #region Private
         private List<NoticeDetailModel> getAllNoticeById(int page)
