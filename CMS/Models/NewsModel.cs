@@ -110,6 +110,8 @@ namespace CMS.Models
 
         public string PersionalReport { get; set; }
 
+        public string PersonCheck { get; set; }
+
         public bool IsReason { get; set; }
     }
 }

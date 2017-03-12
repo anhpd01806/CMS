@@ -284,6 +284,7 @@ namespace CMS.Bussiness
                              SameNews = GetSameNewsByNewsId(Id, c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
                              Iscc = CheckCCByUser(c.Id, UserId),
                              PersionalReport = GetNameReasonReport(c.Id),
+                             PersonCheck = GetPersonCheckNews(c.Id),
                              IsReason = CheckReason(UserId, c.Id)
                          }).FirstOrDefault();
 
@@ -442,6 +443,25 @@ namespace CMS.Bussiness
                     rs += "<li><span>" + new UserBussiness().GetNameById(item.UserId)
                         + "(" + item.DateCreate.ToString("dd/MM/yyyy") + ":) </br></span>"
                         + "<span>- " + item.Note + "</span></li>";
+                }
+            }
+            else
+            {
+                rs = "Chưa có ai";
+            }
+            return rs;
+        }
+
+        public String GetPersonCheckNews(int newsId)
+        {
+            string rs = "";
+            var reasonlst = db.News_customer_actions.Where(x => x.NewsId == newsId && x.Iscc == true).OrderByDescending(x=>x.DateCreate).Take(3).ToList();
+            if (reasonlst.Any())
+            {
+                foreach (var item in reasonlst)
+                {
+                    rs += "<li><span>" + new UserBussiness().GetNameById(item.CustomerId)
+                        + "(" + item.DateCreate.ToString("dd/MM/yyyy") + "</br></span></li>";
                 }
             }
             else
