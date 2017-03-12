@@ -38,9 +38,6 @@ $(document).ready(function () {
             price: {
                 required: true
             },
-            pricetext: {
-                required: true,
-            },
             txtcontent: {
                 required: function () {
                     CKEDITOR.instances.txtcontent.updateElement();
@@ -67,9 +64,6 @@ $(document).ready(function () {
             },
             price: {
                 required: "Giá không được bỏ trống"
-            },
-            pricetext: {
-                required: "Giá không được để trống",
             },
             CategoryId: {
                 Selectcheck: "Bạn chưa chọn danh mục nào"

@@ -145,6 +145,7 @@ namespace CMS.Controllers
                 int total = 0;
                 var listNews = _newsbussiness.GetListNewStatusByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToInt32(CMS.Helper.NewsStatus.IsDelete), Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
+                ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var content = RenderPartialViewToString("~/Views/NewsHide/Paging.cshtml", listNews);
                 return Json(new
                 {

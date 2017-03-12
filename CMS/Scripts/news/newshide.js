@@ -52,7 +52,7 @@ $(function () {
                 bInfo: false,
                 searching: false,
                 paging: false,
-                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
+                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
             });
             $('#check-all').parent().removeClass("sorting_asc");
         }
@@ -126,7 +126,7 @@ $(function () {
                                         bInfo: false,
                                         searching: false,
                                         paging: false,
-                                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
+                                        aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
                                     });
                                     $('#check-all').parent().removeClass("sorting_asc");
                                 }
@@ -197,7 +197,7 @@ $(function () {
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
+                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -313,6 +313,7 @@ $(function () {
 
         $(document).on("click", ".btnclose", function () {
             $("#newsdetail").modal("hide");
+            $("#newsedit").modal("hide");
         });
 
         $(document).on("click", ".btnsave", function () {
@@ -845,6 +846,24 @@ $(function () {
                 LoadData();
             }
         });
+
+        $(document).on("click", ".edit-item-list_adm", function () {
+            var id = $(this).attr("data-id");
+            $.LoadingOverlay("show");
+            $.post("/news/GetNewsDetailForEdit", { newsId: id }, function (resp) {
+                if (resp != null) {
+                    $("#modaledit").empty();
+                    $("#modaledit").html(resp.Content);
+                    $(".btneditnews").attr("data-id", id);
+                    setTimeout(function () {
+                        $("#newsedit").modal("show");
+                    }, 500);
+                } else {
+                    showmessage("error", "Hệ thống gặp sự cố trong quá trình lấy dữ liệu!");
+                };
+                $.LoadingOverlay("hide");
+            });
+        });
     });
 
     function LoadData() {
@@ -918,7 +937,7 @@ $(function () {
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
+                            aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -999,7 +1018,7 @@ $(function () {
                                 bInfo: false,
                                 searching: false,
                                 paging: false,
-                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null]
+                                aoColumns: [{ "bSortable": false, "aTargets": 'no-sort' }, null, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
                             });
                             $('#check-all').parent().removeClass("sorting_asc");
                         }

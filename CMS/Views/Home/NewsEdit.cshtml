@@ -8,127 +8,77 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Danh mục tin (<span class="requied">*</span>)</label>
+            <form id="frmedit">
+                <div class="modal-body">
+                    <div class="row">
 
-                            <div class="col-sm-9">
-                                @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "col-xs-12 col-sm-12 ddlfrm cateId" })
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Danh mục tin (<span class="requied">*</span>)</label>
+
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "col-xs-12 col-sm-12 ddlfrm cateId" })
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Quận huyện (<span class="requied">*</span>)</label>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Quận huyện (<span class="requied">*</span>)</label>
 
-                            <div class="col-sm-9">
-                                @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "col-xs-12 col-sm-12 ddlfrm districtId" })
+                                <div class="col-sm-9">
+                                    @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "col-xs-12 col-sm-12 ddlfrm districtId" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Điện thoại (<span class="requied">*</span>)</label>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Điện thoại (<span class="requied">*</span>)</label>
 
-                            <div class="col-sm-9">
-                                <input type="text" id="txtphone" placeholder="Nhập vào số điện thoại" name="phone" value="@Model.NewsItem.Phone" class="col-xs-12 col-sm-12 ddlfrm txtphone" />
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtphone" placeholder="Nhập vào số điện thoại" name="phone" value="@Model.NewsItem.Phone" class="col-xs-12 col-sm-12 ddlfrm txtphone" />
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Giá (<span class="requied">*</span>)</label>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Giá (<span class="requied">*</span>)</label>
 
-                            <div class="col-sm-9">
-                                <input type="text" id="txtprice" placeholder="Nhập vào giá" name="price" value="@CMS.Helper.Utils.FormatPrice(Model.NewsItem.Price)" class="col-xs-12 col-sm-12 ddlfrm txtprice" />
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtprice" placeholder="Nhập vào giá" name="price" value="@CMS.Helper.Utils.FormatPrice(Model.NewsItem.Price)" class="col-xs-12 col-sm-12 ddlfrm txtprice" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Tiêu đề tin (<span class="requied">*</span>) </label>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Tiêu đề tin (<span class="requied">*</span>) </label>
 
-                            <div class="col-sm-9">
-                                <input type="text" id="txttitle" placeholder="Nhập vào tiêu đề tin" name="title" value="@Model.NewsItem.Title" class="col-xs-12 col-sm-12" />
+                                <div class="col-sm-9">
+                                    <input type="text" id="txttitle" placeholder="Nhập vào tiêu đề tin" name="title" value="@Model.NewsItem.Title" class="col-xs-12 col-sm-12" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Nội dung (<span class="requied">*</span>)</label>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Nội dung (<span class="requied">*</span>)</label>
 
-                            <div class="col-sm-9">
-                                @*<textarea class="col-sm-12 col-xs-12" id="txtcontent" name="txtcontent">
-                                    @Model.NewsItem.Contents
-                                </textarea>*@
-                                <div class="wysiwyg-editor" id="txtcontent">
-                                    @Html.Raw(Model.NewsItem.Contents)
+                                <div class="col-sm-9">
+                                    <textarea class="col-sm-12 col-xs-12" id="txtcontent" name="txtcontent">
+                                        @Html.Raw(Model.NewsItem.Contents)
+                                    </textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <div class="pugrbtnclose">
-                    <button type="button" class="btn btn-sm btn-success btneditnews">Cập nhật</button>
-                    <button type="button" class="btn btn-sm btn-inverse btnclose">Đóng</button>
+                <div class="modal-footer">
+                    <div class="col-sm-10" style="text-align: left; padding-left: 20px;">
+                        <button type="submit" class="btn btn-sm btn-success btneditnews"> <i class="fa fa-save"></i> Cập nhật</button>
+                        <button type="reset" class="btn btn-sm btn-default"> <i class="fa fa-recycle"></i> Làm mới</button>
+                    </div>
+                    <div class="pugrbtnclose col-xs-2">
+                        <button type="button" class="btn btn-sm btn-inverse btnclose">Đóng</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
-<script src="~/assets/js/bootstrap-wysiwyg.min.js"></script>
-<style>
-    #txtcontent {
-        overflow: scroll;
-        max-height: 300px;
-        width: 100%;
-    }
-    .wysiwyg-toolbar {
-        padding: 0 20px;
-    }
-    .wysiwyg-toolbar .btn-group > .btn > .ace-icon:first-child {
-        padding: 0; 
-        margin: auto;
-    }
-</style>
+<script src="~/assets/ckeditor/ckeditor.js"></script>
 <script>
-    function showErrorAlert(reason, detail) {
-        var msg = '';
-        if (reason === 'unsupported-file-type') { msg = "Unsupported format " + detail; }
-        else {
-            //console.log("error uploading file", reason, detail);
-        }
-        $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
-		 '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
-    }
-
-    $('#txtcontent').ace_wysiwyg({
-        toolbar:
-		[
-			'font',
-			null,
-			'fontSize',
-			null,
-			{ name: 'bold', className: 'btn-info' },
-			{ name: 'italic', className: 'btn-info' },
-			{ name: 'underline', className: 'btn-info' },
-			null,
-			{ name: 'insertunorderedlist', className: 'btn-success' },
-			{ name: 'insertorderedlist', className: 'btn-success' },
-			{ name: 'outdent', className: 'btn-purple' },
-			{ name: 'indent', className: 'btn-purple' },
-			null,
-			{ name: 'justifyleft', className: 'btn-primary' },
-			{ name: 'justifycenter', className: 'btn-primary' },
-			{ name: 'justifyright', className: 'btn-primary' },
-			{ name: 'justifyfull', className: 'btn-inverse' },
-			null,
-			{ name: 'insertImage', className: 'btn-success' },
-			null,
-			'foreColor',
-			null,
-			{ name: 'undo', className: 'btn-grey' },
-			{ name: 'redo', className: 'btn-grey' }
-		],
-        'wysiwyg': {
-            fileUploadError: showErrorAlert
-        }
-    }).prev().addClass('wysiwyg-style2');
-
+    CKEDITOR.replace('txtcontent', {
+        toolbar: 'Custom',
+        height: 250
+    });
 </script>

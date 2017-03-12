@@ -306,7 +306,7 @@ namespace CMS.Bussiness
             {
                 try
                 {
-                    var news = (from c in db.News where c.Id.Equals(newsItem.Id) select c).FirstOrDefault();
+                    var news = (from c in db2.News where c.Id.Equals(newsItem.Id) select c).FirstOrDefault();
                     if (news != null)
                     {
                         news.Title = newsItem.Title;

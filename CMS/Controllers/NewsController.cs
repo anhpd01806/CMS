@@ -88,6 +88,8 @@ namespace CMS.Controllers
 
                 model.ListNew = _newsbussiness.GetListNewNotActiveByFilter(userId, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, ref total);
                 model.Total = total;
+                ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
+                ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);
             }

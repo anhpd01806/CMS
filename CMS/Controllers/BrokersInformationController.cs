@@ -107,6 +107,7 @@ namespace CMS.Controllers
                 int total = 0;
                 var listNews = _newsbussiness.GetListBrokersInformationByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
+                ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var content = RenderPartialViewToString("~/Views/BrokersInformation/Paging.cshtml", listNews);
                 return Json(new
                 {

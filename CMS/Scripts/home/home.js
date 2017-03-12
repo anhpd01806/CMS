@@ -852,6 +852,7 @@ $(function () {
                 if (resp != null) {
                     $("#modaledit").empty();
                     $("#modaledit").html(resp.Content);
+                    $(".btneditnews").attr("data-id", id);
                     setTimeout(function () {
                         $("#newsedit").modal("show");
                     }, 500);
