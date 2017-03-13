@@ -72,11 +72,11 @@ $(document).ready(function () {
                         title: "Thông báo",
                         message: "Bạn có chắc muốn sửa tin này không?",
                         buttons: {
-                            confirm: {
-                                label: '<i class="fa fa-check"></i> Đồng ý'
-                            },
                             cancel: {
                                 label: '<i class="fa fa-times"></i> Đóng'
+                            },
+                            confirm: {
+                                label: '<i class="fa fa-check"></i> Đồng ý'
                             }
                         },
                         callback: function (result) {
