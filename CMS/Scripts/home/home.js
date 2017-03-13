@@ -466,19 +466,21 @@ $(function () {
                             },
                         },
                         callback: function (result) {
-                            $.post("/home/newsforuser", { listNewsId: selected }, function (resp) {
-                                if (resp != null) {
-                                    if (resp.Status == 1) {
-                                        LoadData();
-                                        setTimeout(function () {
-                                            showmessage("success", "Tin đã được báo thành công!");
-                                        }, 800);
-                                    } else {
-                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            if (result) {
+                                $.post("/home/newsforuser", { listNewsId: selected }, function (resp) {
+                                    if (resp != null) {
+                                        if (resp.Status == 1) {
+                                            LoadData();
+                                            setTimeout(function () {
+                                                showmessage("success", "Tin đã được báo thành công!");
+                                            }, 800);
+                                        } else {
+                                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                        }
                                     }
-                                }
-                                ;
-                            });
+                                    ;
+                                });
+                            }
                         }
                     });
                 }
