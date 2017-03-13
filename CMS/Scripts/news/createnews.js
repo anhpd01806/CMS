@@ -118,6 +118,8 @@ $(document).ready(function () {
                                 if (resp != null) {
                                     if (resp.type == 1) {
                                         showmessage("success", "Tin đã được đăng thành công.");
+                                        $('#frmnews')[0].reset();
+                                        CKEDITOR.instances.txtcontent.setData('', function() { this.updateElement(); });
                                     } else {
                                         if (resp.type == 0) {
                                             showmessage("error", "Bạn không đủ tiền trong tài khoản! Vui lòng nạp thêm tiền để tiếp tục đăng tin");
