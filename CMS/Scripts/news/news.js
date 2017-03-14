@@ -868,6 +868,24 @@ $(function () {
                 $.LoadingOverlay("hide");
             });
         });
+        
+        $(document).on("click", ".btnedit-item-list", function () {
+            var id = $(this).attr("data-id");
+            $.LoadingOverlay("show");
+            $.post("/news/GetNewsDetailForEdit", { newsId: id }, function (resp) {
+                if (resp != null) {
+                    $("#modaledit").empty();
+                    $("#modaledit").html(resp.Content);
+                    $(".btneditnews").attr("data-id", id);
+                    setTimeout(function () {
+                        $("#newsedit").modal("show");
+                    }, 500);
+                } else {
+                    showmessage("error", "Hệ thống gặp sự cố trong quá trình lấy dữ liệu!");
+                };
+                $.LoadingOverlay("hide");
+            });
+        });
 
     });
 
