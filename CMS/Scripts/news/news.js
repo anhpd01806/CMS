@@ -793,9 +793,6 @@ $(function () {
                             } else {
                                 if (resp.Status == 2) {
                                     showmessage("success", "Tin không được cho vào danh sách đen! Số điện thoại đang bị trống!");
-                                    setTimeout(function () {
-                                        location.reload();
-                                    }, 500);
                                 } else {
                                     if (resp.Status == 3) {
                                         showmessage("success", "Không tìm thấy tin cần cho chặn!");
