@@ -510,15 +510,21 @@ namespace CMS.Bussiness
                         if (!string.IsNullOrEmpty(newsqr.Phone))
                         {
                             newsqr.IsSpam = true;
-                            var reportItem = new Blacklist
+                            var bll =
+                                (from c in db.Blacklists where c.Words.Contains(newsqr.Phone) select c).FirstOrDefault();
+                            if (bll != null)
                             {
-                                Words = item.Phone,
-                                Description = "Tin môi giới: " + item.Title,
-                                LinkUrl = item.Link,
-                                CreatedOn = DateTime.Now,
-                                Type = 1
-                            };
-                            db.Blacklists.InsertOnSubmit(reportItem);
+                                var reportItem = new Blacklist
+                                {
+                                    Words = item.Phone,
+                                    Description = "Tin môi giới: " + item.Title,
+                                    LinkUrl = item.Link,
+                                    CreatedOn = DateTime.Now,
+                                    Type = 1
+                                };
+
+                                db.Blacklists.InsertOnSubmit(reportItem);
+                            }
 
                             var query = (from c in db.News_customer_actions
                                          where
