@@ -18,6 +18,7 @@
                 $(this).addClass("delete-selected");
             });
             $('#submitDelete').click(function () {
+                debugger
                 var id = $('.delete-selected').data("id");
                 var data = {
                     id: id
@@ -252,8 +253,8 @@
                                         <th class="col-md-1 text-center" style="width: 5%">STT</th>
                                         <th style="width: 15%">Số điện thoại</th>
                                         <th style="width: 35%">Mô tả</th>
-                                        <th style="width: 25%">Link url</th>
-                                        <th class="text-center" style="width: 5%"></th>
+                                        <th style="width: 30%">Link url</th>
+                                        @*<th class="text-center" style="width: 5%"></th>*@
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

@@ -15,7 +15,7 @@
             <td>@u.Words</td>
             <td>@u.Description</td>
             <td><a onClick="window.open('@u.LinkUrl');" href="#">@(!string.IsNullOrEmpty(u.LinkUrl) ? u.LinkUrl.Replace("//","/").Split('/')[1].ToString() : "")</a></td>
-            <td class="text-center">
+            @*<td class="text-center">
                 <div class="hidden-sm hidden-xs action-buttons">
                     <a class="red delete delete-selected" href="#" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
                         <i class="ace-icon fa fa-trash-o bigger-130"></i>
@@ -37,7 +37,7 @@
                         </ul>
                     </div>
                 </div>
-            </td>
+            </td>*@
         </tr>
         count++;
     }
