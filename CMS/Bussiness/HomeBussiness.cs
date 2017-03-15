@@ -135,7 +135,7 @@ namespace CMS.Bussiness
                                  CreatedOn = c.CreatedOn,
                                  CusIsReaded = news_isread.Contains(c.Id),
                                  IsRepeat = c.IsRepeat,
-                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 0,
                                  Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
                                  IsReason = false//CheckReason(UserId, c.Id)
                              }).Distinct();
@@ -512,7 +512,7 @@ namespace CMS.Bussiness
                             newsqr.IsSpam = true;
                             var bll =
                                 (from c in db.Blacklists where c.Words.Contains(newsqr.Phone) select c).FirstOrDefault();
-                            if (bll != null)
+                            if (bll == null)
                             {
                                 var reportItem = new Blacklist
                                 {

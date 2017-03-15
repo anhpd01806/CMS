@@ -86,7 +86,7 @@ namespace CMS.Bussiness
                                  CusIsSaved = ncm.IsSaved,
                                  CusIsDeleted = ncm.IsDeleted,
                                  IsRepeat = c.IsRepeat,
-                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 0,
                                  Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
                                  IsReason = false//CheckReason(UserId, c.Id)
                              }).Distinct();
@@ -552,7 +552,7 @@ namespace CMS.Bussiness
                                  CreatedOn = c.CreatedOn,
                                  CusIsReaded = news_isread.Contains(c.Id),
                                  IsRepeat = c.IsRepeat,
-                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 0,
                                  Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
                                  IsReason = false//CheckReason(UserId, c.Id)
                              }).Distinct();
@@ -702,7 +702,7 @@ namespace CMS.Bussiness
                                   where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(UserId)
                                   select (c.NewsId)).ToList();
 
-                var query = from c in db.News
+                var query = (from c in db.News
                             join s in db.Sites on c.SiteId equals s.ID
                             join d in db.Districts on c.DistrictId equals d.Id
                             join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
@@ -727,10 +727,10 @@ namespace CMS.Bussiness
                                 StatusId = c.StatusId,
                                 CusIsReaded = news_isread.Contains(c.Id),
                                 IsRepeat = c.IsRepeat,
-                                RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 1,
+                                RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 0,
                                 Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
                                 IsReason = false//CheckReason(UserId, c.Id)
-                            };
+                            }).Distinct();
 
                 #region check param
                 if (CateId != 0)
