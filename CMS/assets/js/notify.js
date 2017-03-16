@@ -25,7 +25,7 @@ $(document).ready(function () {
 
             },
             error: function (response) {
-                alert('Có lỗi xẩy ra trong quá trình kết nối dữ liệu!');
+                
             }
         });
     });
@@ -67,7 +67,7 @@ $(document).ready(function () {
 
                 },
                 error: function (response) {
-                    alert('Có lỗi xẩy ra khi lấy dữ liệu trong database !');
+                    
                 }
             });
         }
@@ -94,7 +94,7 @@ $(document).ready(function () {
 
             },
             error: function (response) {
-                alert('Có lỗi xẩy ra khi lấy dữ liệu trong database !');
+               
             }
         });
     });
@@ -184,7 +184,7 @@ function DetailNotify(id, type) {
 
             },
             error: function (response) {
-                alert('Có lỗi xẩy ra khi lấy dữ liệu trong database !');
+               
             }
         });
 
@@ -215,7 +215,7 @@ function DetailNotify(id, type) {
 
             },
             error: function (response) {
-                alert('Có lỗi xẩy ra khi lấy dữ liệu trong database !');
+               
             }
         });
     }
