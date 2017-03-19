@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#recharge').click(function () {
+                var serial = $('#card-serial').val().trim();
+                var code = $('#card-code').val().trim();
+                var option = $('#card-option').val();
+                if (serial === "" || code === "" || !option) {
+                    alert("Hãy nhập đủ thông tin!");
+                } else {
+                    var data = { "TELCO": option, "SERIAL": serial, "CODE": code };
+                    $('#msg-recharge').empty();
+                    $.ajax({
+                        type: "POST",
+                        url: "/Payment/Recharge",
+                        data: JSON.stringify(data),
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.isError) {
+                                $('#msg-recharge').append($("<div>", { class: "alert alert-danger" }).clas.text(result));
+                            } else {
+                                $('#msg-recharge').append($("<div>", { class: "alert alert-success" }).clas.text(result));
+                            }
+                        },
+                        error: function (response) {
+                            $('#msg-recharge').append($("<div>", { class: "alert alert-danger" }).clas.text("Error"));
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+<div class="page-content">
+    <div class="page-content-area">
+        <h3 class="header smaller lighter blue">Nạp tiền bằng thẻ điện thoại</h3>
+        <div id="msg-recharge">
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-4 col-xs-12">
+                <input type="text" class="form-control" id="card-serial" placeholder="Nhập Serial">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-4 col-xs-12">
+                <input type="text" class="form-control" id="card-code" placeholder="Nhập mã thẻ">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-4 col-xs-12">
+                <select id="card-option">
+                    <option value="" disabled selected>Chọn nhà mạng</option>
+                    <option value="VTT">Viettel </option>
+                    <option value="VNP">Vinaphone</option>
+                    <option value="VMS">MobiFone</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-4 col-xs-12">
+                <button type="submit" class="btn btn-primary btn-sm" id="recharge">Submit</button>
+            </div>
+        </div>
+    </div>
+
+

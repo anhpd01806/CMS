@@ -14,7 +14,7 @@ namespace CMS.Bussiness
         {
             totalCount = db.Blacklists.Where(x => (x.Words.ToLower().Contains(search.ToLower()) || x.Description.ToLower().Contains(search.ToLower()) || string.IsNullOrEmpty(search))).Count();
 
-            var rs = db.Blacklists.Where(x => (x.Words.ToLower().Contains(search.ToLower()) || x.Description.ToLower().Contains(search.ToLower()) || string.IsNullOrEmpty(search)))
+            var rs = db.Blacklists.Where(x => (x.Words.ToLower().Contains(search.ToLower()) || string.IsNullOrEmpty(search)))
                                             .OrderByDescending(x => x.Id).Skip(pageIndex * pageSize).Take(pageSize).ToList();
             return rs;
         }

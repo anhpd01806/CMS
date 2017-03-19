@@ -44,10 +44,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elmah">
-      <HintPath>C:\Users\Pham Duc Anh\AppData\Roaming\Skype\My Skype Received Files\Elmah.dll</HintPath>
+      <HintPath>..\..\..\..\Dll\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus">
-      <HintPath>packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+      <HintPath>..\..\..\..\Dll\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="MemoryCache, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MemoryCache.1.2.0\lib\MemoryCache.dll</HintPath>
@@ -58,10 +58,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Caching" />
@@ -3030,6 +3026,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\LibEncryption.cs" />
     <Compile Include="Helper\ConfigWeb.cs" />
     <Compile Include="Helper\Contants.cs" />
     <Compile Include="Helper\Helpers.cs" />
@@ -3043,6 +3040,7 @@
     <Compile Include="Models\NewsModel.cs" />
     <Compile Include="Models\NewsStatusModel.cs" />
     <Compile Include="Models\News_Customer_MappingModel.cs" />
+    <Compile Include="Models\RechargeModel.cs" />
     <Compile Include="Models\NoticeModel.cs" />
     <Compile Include="Models\ProvinceModel.cs" />
     <Compile Include="Models\SiteModel.cs" />
@@ -3131,6 +3129,7 @@
     <Content Include="Views\BrokersInformation\Index.cshtml" />
     <Content Include="Views\BrokersInformation\NewsDetail.cshtml" />
     <Content Include="Views\BrokersInformation\Paging.cshtml" />
+    <Content Include="Views\Payment\Recharge.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
