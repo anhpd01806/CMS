@@ -20,14 +20,14 @@
                         contentType: "application/json;charset=utf-8",
                         dataType: "json",
                         success: function (result) {
-                            if (result.isError) {
-                                $('#msg-recharge').append($("<div>", { class: "alert alert-danger" }).clas.text(result));
+                            if (!result.isError) {
+                                $('#msg-recharge').append($("<div>", { class: "alert alert-danger" }).text(result.message));
                             } else {
-                                $('#msg-recharge').append($("<div>", { class: "alert alert-success" }).clas.text(result));
+                                $('#msg-recharge').append($("<div>", { class: "alert alert-success" }).text(result.message));
                             }
                         },
                         error: function (response) {
-                            $('#msg-recharge').append($("<div>", { class: "alert alert-danger" }).clas.text("Error"));
+                            $('#msg-recharge').append($("<div>", { class: "alert alert-danger" }).text("Error"));
                         }
                     });
                 }

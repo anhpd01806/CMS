@@ -11,7 +11,7 @@ using CMS.Models;
 using System.Net;
 using System.IO;
 using System.Web.Script.Serialization;
-using System.Security.Cryptography;
+using Newtonsoft.Json;
 
 namespace CMS.Controllers
 {
@@ -19,70 +19,72 @@ namespace CMS.Controllers
     {
         private static readonly Dictionary<String, String> errorMap = new Dictionary<String, String>()
         {
-            { "-1985", "Invalid parameters request" },
-            { "-1984", "Wrong username" },
-            {"-1983", "Wrong password"},
-            {"-1982", "Invalid IP request"},
-            {"-1981", "System busy"},
-            {"0", "Giao dich that bai"},
-            {"1", "Giao dich thanh cong"},
-            {"-10", "Ma the sai dinh dang"},
-            {"4", "The khong su dung duoc"},
-            {"5", "Nhap sai ma the qua 5 lan"},
-            {"9", "Tam thoi khoa kenh nap the do he thong Mobifone qua tai"},
-            {"10", "He thong nha cung cap gap loi"},
-            {"11", "Ket noi voi nha cung cap gian doan"},
-            {"13", "He thong tam thoi ban"},
-            {"-2", "The da bi khoa"},
-            {"-3", "The het han su dung"},
-            {"50", "The da su dung hoac khong ton tai"},
-            {"51", "Serial the khong dung"},
-            {"52", "Ma the va serial khong khop"},
-            {"53", "Serial hoac ma the khong dung"},
-            {"55", "Card tam thoi bi khoa 24h"},
-            {"59", "Ma the chua duoc kich hoat" },
+            { "-1985", "Invalid parameters request." },
+            { "-1984", "Wrong username." },
+            {"-1983", "Wrong password."},
+            {"-1982", "Invalid IP request."},
+            {"-1981", "System busy."},
+            {"0", "Giao dich that bai."},
+            {"1", "Giao dich thanh cong."},
+            {"-10", "Mã thẻ sai định dạng."},
+            {"4", "Thẻ không sử dụng được."},
+            {"5", "Nhập sai mã thẻ quá 5 lần."},
+            {"9", "Tạm thời khóa kênh nạp thẻ do hệ thống Mobifone quá tải."},
+            {"10", "Hệ thống nhà cung cấp dịch vụ gập lỗi."},
+            {"11", "Kết nối với nhà cung cấp bị gián đoạn."},
+            {"13", "Hệ thống tạm thời bận."},
+            {"-2", "Thẻ đã bị khóa."},
+            {"-3", "Thẻ hết hạn sử dụng."},
+            {"50", "Thẻ đã sử dụng hoặc không tồn tại."},
+            {"51", "Serial thẻ không đúng."},
+            {"52", "Mã thẻ và seerial không khớp."},
+            {"53", "Serial hoặc mã thẻ không đúng."},
+            {"55", "Card tạm thời bị khóa 24h."},
+            {"59", "Mã thẻ chưa được kick hoạt." },
+            {"99", "Giao dịch pending." },
+            {"100", "Không tồn tại access key." },
+            {"102", "Tài khoản tạm thời bị khóa 15 phút vì nạp sai mã thẻ quá 5 lần liên tiếp." },
         };
 
         [HttpPost]
         public JsonResult Recharge(RechargeModel form)
         {
-            //get from file config
-            String url = "http://cardgw.inet.vn/services/cardcharging.inet";
-            var result = "";
+            string url = "http://sms.vn/card-charging-api";
+            string accesskey = "e30ffc1ae7b93e1d807e07742f2ead06";
+            string requestUrl = url + "?accesskey=" + accesskey + "&serial=" + form.SERIAL + "&pin=" + form.CODE + "&type=" + form.TELCO;
+            // Create a request for the URL.   
+            WebRequest rq = WebRequest.Create(requestUrl);
+            // If required by the server, set the credentials.  
+            rq.Credentials = CredentialCache.DefaultCredentials;
+            // Get the response.  
+            WebResponse response = rq.GetResponse();
+            // Display the status.  
+            Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+            // Get the stream containing content returned by the server.  
+            Stream dataStream = response.GetResponseStream();
+            // Open the stream using a StreamReader for easy access.  
+            StreamReader reader = new StreamReader(dataStream);
+            // Read the content.  
+            string code = reader.ReadToEnd();
+            // Clean up the streams and the response.  
+            reader.Close();
+            response.Close();
 
-            //get from file config 16 length
-            String keyEncrypt = "y1Mg91Qzp04tm4Aw";
-            //get from config
-            String request = "CHARGE";
-            String userName = "user";
-            String password = "pass";
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+
+            var resultObj = new RechargeModel();
+            resultObj.message = errorMap[code] ?? "Nạp thẻ thành công";
+            resultObj.isErrror = Int32.Parse(code) < 10000;
+            if (!resultObj.isErrror)
             {
-                byte[] passwordEncript = System.Text.Encoding.UTF8.GetBytes(password);
-                String PWD = libAES.Instance.Encrypt(form.SERIAL, keyEncrypt);
-                var data = new RechargeModel
-                {
-                    RQST = request,
-                    USR = userName,
-                    PWD = System.Convert.ToBase64String(passwordEncript),
-                    TELCO = form.TELCO,
-                    SERIAL = libAES.Instance.Encrypt(form.SERIAL, keyEncrypt),
-                    CODE = libAES.Instance.Encrypt(form.CODE, keyEncrypt)
-                };
-                var json = new JavaScriptSerializer().Serialize(data);
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
+                //insert card to db
+                int amount = Int32.Parse(code);
+                resultObj.message = "Nạp thẻ thành công";
             }
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            else
             {
-                result = streamReader.ReadToEnd();
+                resultObj.message = errorMap[code];
             }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(resultObj, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Recharge()

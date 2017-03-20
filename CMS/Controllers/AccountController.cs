@@ -1,6 +1,7 @@
 ﻿using CMS.Bussiness;
 using CMS.Data;
 using CMS.Helper;
+using CMS.Models;
 using CMS.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -304,7 +305,18 @@ namespace CMS.Controllers
 
         private void GetNotifyUser(bool IsUser, int UserId)
         {
-            List<Models.NoticeModel> lstNotify = new NotifyBussiness().GetNotify(IsUser, UserId);
+            List<NoticeModel> lstNotify = new NotifyBussiness().GetNotify(IsUser, UserId);
+            //nếu tk đăng nhập sắp hết tiền thì thông báo 
+            if (true)
+            {
+                NoticeModel notyfi = new NoticeModel();
+                notyfi.Type = 4;
+                notyfi.Id = 0;
+                notyfi.Title = "Tài khoản của bạn sắp hết tiền , Vui lòng nạp thêm để sử dụng dịch vụ.";
+                notyfi.DateSend = DateTime.Now;
+                notyfi.UserName = "Admin";
+                lstNotify.Add(notyfi);
+            }
             Session["NotityUser"] = lstNotify;
         }
 

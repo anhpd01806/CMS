@@ -25,7 +25,7 @@ $(document).ready(function () {
 
             },
             error: function (response) {
-                
+
             }
         });
     });
@@ -67,7 +67,7 @@ $(document).ready(function () {
 
                 },
                 error: function (response) {
-                    
+
                 }
             });
         }
@@ -94,7 +94,7 @@ $(document).ready(function () {
 
             },
             error: function (response) {
-               
+
             }
         });
     });
@@ -132,6 +132,7 @@ function DetailNotify(id, type) {
     } else {
         $('#count-notify').attr('data-badge', parseInt($('#count-notify').data('badge')) - 1);
     }
+
     //update status notify set viewflag = true
     $.ajax({
         type: "GET",
@@ -184,7 +185,7 @@ function DetailNotify(id, type) {
 
             },
             error: function (response) {
-               
+
             }
         });
 
@@ -215,9 +216,13 @@ function DetailNotify(id, type) {
 
             },
             error: function (response) {
-               
+
             }
         });
+    }
+
+    if (type == 4) {
+        $('#md-notify-amount').modal('show');
     }
 };
 

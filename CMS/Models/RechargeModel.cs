@@ -17,6 +17,9 @@ namespace CMS.Models
         //card code
         public string CODE { get; set; }
 
+        public string message { get; set; }
+
+        public bool isErrror { get; set; }
     }
 
 }

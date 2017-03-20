@@ -97,8 +97,11 @@ namespace CMS.Controllers
             {
                 //parse notify  id
                 int id = int.Parse(Id);
-                //update notify status
-                new NotifyBussiness().UpdateNotifyView(id);
+                if (id != 0)
+                {
+                    //update notify status
+                    new NotifyBussiness().UpdateNotifyView(id);
+                }
                 //update session
                 List<NoticeModel> lstNotify = (List<CMS.Models.NoticeModel>)Session["NotityUser"];
                 if (lstNotify != null)
