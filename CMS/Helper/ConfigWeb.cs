@@ -27,6 +27,10 @@ namespace CMS.Helper
         public static string Captcha_SecretUser_Key = ConfigurationManager.AppSettings["Captcha_CreateUser_Key"];
 
         public static string Captcha_Public_Key = ConfigurationManager.AppSettings["Captcha_Public_Key"];
+
+        public static string Api_Charging = ConfigurationManager.AppSettings["Api_Charging"];
+
+        public static string Access_Key = ConfigurationManager.AppSettings["Access_Key"];
     }
 
     public enum NewsStatus

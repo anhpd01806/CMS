@@ -307,7 +307,8 @@ namespace CMS.Controllers
         {
             List<NoticeModel> lstNotify = new NotifyBussiness().GetNotify(IsUser, UserId);
             //nếu tk đăng nhập sắp hết tiền thì thông báo 
-            if (true)
+            var check = db.PaymentAccepteds.Where(x => x.UserId == UserId && x.EndDate >= DateTime.Now.AddDays(-1)).Any();
+            if (check)
             {
                 NoticeModel notyfi = new NoticeModel();
                 notyfi.Type = 4;

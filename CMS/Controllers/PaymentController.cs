@@ -10,8 +10,6 @@ using WebBackendPlus.Controllers;
 using CMS.Models;
 using System.Net;
 using System.IO;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
 
 namespace CMS.Controllers
 {
@@ -49,8 +47,10 @@ namespace CMS.Controllers
         [HttpPost]
         public JsonResult Recharge(RechargeModel form)
         {
-            string url = "http://sms.vn/card-charging-api";
-            string accesskey = "e30ffc1ae7b93e1d807e07742f2ead06";
+            //get url
+            string url = ConfigWeb.Api_Charging;
+            //get accesskey
+            string accesskey = ConfigWeb.Access_Key;
             string requestUrl = url + "?accesskey=" + accesskey + "&serial=" + form.SERIAL + "&pin=" + form.CODE + "&type=" + form.TELCO;
             // Create a request for the URL.   
             WebRequest rq = WebRequest.Create(requestUrl);
@@ -76,9 +76,32 @@ namespace CMS.Controllers
             resultObj.isErrror = Int32.Parse(code) < 10000;
             if (!resultObj.isErrror)
             {
-                //insert card to db
-                int amount = Int32.Parse(code);
-                resultObj.message = "Nạp thẻ thành công";
+                try
+                {
+                    //insert card to db
+                    int amount = Int32.Parse(code);
+                    var paymentHistory = new PaymentHistory
+                    {
+                        UserId = Convert.ToInt32(Session["SS-USERID"]),
+                        PaymentMethodId = 6,
+                        CreatedDate = DateTime.Now,
+                        Notes = "Nạp thẻ điện thoại",
+                        Amount = amount
+                    };
+
+                    //insert payment history
+                    new PaymentBussiness().Insert(paymentHistory);
+
+                    //insert payment accepted
+                    PaymentViewModel payment = new PaymentViewModel();
+                    payment.Amount = amount.ToString();
+                    new PaymentBussiness().PaymentAcceptedUpdate(payment, Convert.ToInt32(Session["SS-USERID"]));
+
+                    resultObj.message = "Nạp thẻ thành công";
+                }
+                catch (Exception)
+                {
+                }
             }
             else
             {
