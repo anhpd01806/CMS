@@ -53,17 +53,20 @@ namespace CMS.Controllers
                     //update isspam news
                     new NewsBussiness().UpdateSpam(id);
 
-                     //insert phone into blacklist
-                     var model = new Blacklist
+                    //insert phone into blacklist
+                    var phone = news.Phone.Split(',');
+                    foreach (var item in phone)
                     {
-                        Words = news.Phone,
-                        Description = news.Title,
-                        CreatedOn = DateTime.Now,
-                        LinkUrl = news.Link,
-                        Type = 1
-                    };
-                    new BlackListBussiness().Insert(model);
-
+                        var model = new Blacklist
+                        {
+                            Words = item,
+                            Description = news.Title,
+                            CreatedOn = DateTime.Now,
+                            LinkUrl = news.Link,
+                            Type = 1
+                        };
+                        new BlackListBussiness().Insert(model);
+                    }
                     //insert action delete blacklist
                     var newsAction = new News_customer_action
                     {
