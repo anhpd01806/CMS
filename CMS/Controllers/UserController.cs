@@ -193,8 +193,15 @@ namespace CMS.Controllers
 
         public ActionResult ResertPassword(string id)
         {
-
-            TempData["Success"] = Messages_Contants.SUCCESS_RESETPASSWORD;
+            try
+            {
+                new UserBussiness().ResetPassword(int.Parse(id));
+                TempData["Success"] = Messages_Contants.SUCCESS_RESETPASSWORD;
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = Messages_Contants.ERROR_COMMON;
+            }
             return RedirectToAction("Index", "User");
         }
 

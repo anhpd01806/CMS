@@ -140,12 +140,18 @@ namespace CMS.Bussiness
             return true;
         }
 
-        public void UpdateCustomer(UserModel model)
+        public void ResetPassword(int id)
         {
-            var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
-            user.IsMember = true;
-            user.ManagerBy = int.Parse(model.ManagerBy);
-            db.SubmitChanges();
+            try
+            {
+                var user = db.Users.FirstOrDefault(x => x.Id == id);
+                user.Password = Helpers.md5(user.UserName.Trim() + "ozo123456");
+                db.SubmitChanges();
+            }
+            catch (Exception)
+            {
+               
+            }
         }
 
         public void Update(UserModel model)
