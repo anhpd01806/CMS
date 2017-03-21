@@ -12,18 +12,17 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
 namespace CMS.Bussiness
 {
-
-    public class HomeBussiness
+    public class HomeBussiness : InitDB
     {
         #region define
-        CmsDataDataContext db = new CmsDataDataContext();
+        CmsDataDataContext Instance = new CmsDataDataContext();
         #endregion
 
         #region News in home
 
         public List<DistrictModel> GetListDistric()
         {
-            var listdistric = (from c in db.Districts
+            var listdistric = (from c in Instance.Districts
                                where !c.IsDeleted && c.Published
                                select new DistrictModel
                                {
@@ -35,7 +34,7 @@ namespace CMS.Bussiness
 
         public List<CategoryModel> GetListCategory()
         {
-            var listcategory = (from c in db.Categories
+            var listcategory = (from c in Instance.Categories
                                 where !c.Deleted && c.Published
                                 select new CategoryModel
                                 {
@@ -48,7 +47,7 @@ namespace CMS.Bussiness
 
         public List<SiteModel> GetListSite()
         {
-            var listsite = (from c in db.Sites
+            var listsite = (from c in Instance.Sites
                             where !c.Deleted && c.Published
                             select new SiteModel
                             {
@@ -60,7 +59,7 @@ namespace CMS.Bussiness
 
         public List<CategoryModel> GetChilldrenlistCategory(int parentId)
         {
-            var listcategory = (from c in db.Categories
+            var listcategory = (from c in Instance.Categories
                                 where !c.Deleted && c.Published
                                 && c.ParentCategoryId.Equals(parentId)
                                 select new CategoryModel
@@ -74,7 +73,7 @@ namespace CMS.Bussiness
 
         public List<NewsStatusModel> GetlistStatusModel()
         {
-            var liststatus = (from c in db.NewsStatus
+            var liststatus = (from c in Instance.NewsStatus
                               select new NewsStatusModel()
                               {
                                   Id = c.Id,
@@ -91,27 +90,27 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                var listDelete = (from c in db.News_Trashes
+                var listDelete = (from c in Instance.News_Trashes
                                   where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(UserId)
                                   select (c.NewsId)).ToList();
 
                 //Danh sách tin đã lưu hoặc đã ẩn theo user
-                var news_new = (from c in db.News_Customer_Mappings
+                var news_new = (from c in Instance.News_Customer_Mappings
                                 where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value || c.IsAgency.Value)
                                 select (c.NewsId)).ToList();
 
                 //Danh sách tin đã đọc theo user
-                var news_isread = (from c in db.News_Customer_Mappings
+                var news_isread = (from c in Instance.News_Customer_Mappings
                                    where c.CustomerId.Equals(UserId) && c.IsReaded.Value
                                    select (c.NewsId)).ToList();
 
-                var query = (from c in db.News
-                             join d in db.Districts on c.DistrictId equals d.Id
-                             join t in db.NewsStatus on c.StatusId equals t.Id
-                             join s in db.Sites on c.SiteId equals s.ID
-                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                var query = (from c in Instance.News
+                             join d in Instance.Districts on c.DistrictId equals d.Id
+                             join t in Instance.NewsStatus on c.StatusId equals t.Id
+                             join s in Instance.Sites on c.SiteId equals s.ID
+                             join ncm in Instance.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
                              from tm in temp.DefaultIfEmpty()
-                             join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
+                             join ac in Instance.News_customer_actions on c.Id equals ac.NewsId into temp2
                              from nac in temp2.DefaultIfEmpty()
                              where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam && !s.Deleted && s.Published //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
@@ -222,10 +221,10 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                var query = (from c in db.News
-                             join d in db.Districts on c.DistrictId equals d.Id
-                             join t in db.NewsStatus on c.StatusId equals t.Id
-                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                var query = (from c in Instance.News
+                             join d in Instance.Districts on c.DistrictId equals d.Id
+                             join t in Instance.NewsStatus on c.StatusId equals t.Id
+                             join ncm in Instance.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
                              from tm in temp.DefaultIfEmpty()
                              where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                              && listNewsId.Contains(c.Id)
@@ -254,11 +253,11 @@ namespace CMS.Bussiness
 
         public NewsModel GetNewsDetail(int Id, int UserId)
         {
-            var query = (from c in db.News
-                         join d in db.Districts on c.DistrictId equals d.Id
-                         join t in db.NewsStatus on c.StatusId equals t.Id
-                         join ct in db.Categories on c.CategoryId equals ct.Id
-                         join st in db.Sites on c.SiteId equals st.ID
+            var query = (from c in Instance.News
+                         join d in Instance.Districts on c.DistrictId equals d.Id
+                         join t in Instance.NewsStatus on c.StatusId equals t.Id
+                         join ct in Instance.Categories on c.CategoryId equals ct.Id
+                         join st in Instance.Sites on c.SiteId equals st.ID
                          where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                                && !d.IsDeleted && d.Published
                                && c.Id.Equals(Id)
@@ -291,7 +290,7 @@ namespace CMS.Bussiness
             if (query != null)
             {
 
-                var getnewsave = (from c in db.News_Customer_Mappings
+                var getnewsave = (from c in Instance.News_Customer_Mappings
                                   where c.NewsId.Equals(Id) && c.CustomerId.Equals(UserId)
                                   select c).ToList();
                 if (!getnewsave.Any())
@@ -306,7 +305,7 @@ namespace CMS.Bussiness
                     newItem.IsAgency = false;
                     newItem.IsSpam = false;
                     newItem.CreateDate = DateTime.Now;
-                    db.News_Customer_Mappings.InsertOnSubmit(newItem);
+                    Instance.News_Customer_Mappings.InsertOnSubmit(newItem);
 
                 }
                 else
@@ -316,14 +315,14 @@ namespace CMS.Bussiness
                         newsCustomerMapping.IsReaded = true;
                     }
                 }
-                db.SubmitChanges();
+                Instance.SubmitChanges();
             }
             return query;
         }
 
         public New GetNewsDetail(int Id)
         {
-            var query = (from c in db.News
+            var query = (from c in Instance.News
                          where c.Id.Equals(Id)
                          orderby c.Id ascending
                          select c).FirstOrDefault();
@@ -336,12 +335,12 @@ namespace CMS.Bussiness
             {
                 foreach (var item in cusNews)
                 {
-                    var query = (from c in db.News_Customer_Mappings
+                    var query = (from c in Instance.News_Customer_Mappings
                                  where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
                                  select c).FirstOrDefault();
                     if (query == null)
                     {
-                        db.News_Customer_Mappings.InsertOnSubmit(item);
+                        Instance.News_Customer_Mappings.InsertOnSubmit(item);
                     }
                     else
                     {
@@ -349,7 +348,7 @@ namespace CMS.Bussiness
                         query.IsDeleted = false;
                     }
                 }
-                db.SubmitChanges();
+                Instance.SubmitChanges();
                 return 1;
             }
             catch
@@ -364,12 +363,12 @@ namespace CMS.Bussiness
             {
                 foreach (var item in cusNews)
                 {
-                    var query = (from c in db.News_Customer_Mappings
+                    var query = (from c in Instance.News_Customer_Mappings
                                  where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
                                  select c).ToList();
                     if (!query.Any())
                     {
-                        db.News_Customer_Mappings.InsertOnSubmit(item);
+                        Instance.News_Customer_Mappings.InsertOnSubmit(item);
                     }
                     else
                     {
@@ -380,7 +379,7 @@ namespace CMS.Bussiness
                         }
                     }
                 }
-                db.SubmitChanges();
+                Instance.SubmitChanges();
                 return 1;
             }
             catch
@@ -391,7 +390,7 @@ namespace CMS.Bussiness
 
         public List<ImageModel> GetImageByNewsId(int NewsID)
         {
-            var query = (from c in db.Images
+            var query = (from c in Instance.Images
                          where c.NewsId.Equals(NewsID)
                          select new ImageModel { Id = c.Id, NewsId = c.NewsId, ImageUrl = c.ImageUrl }).ToList();
             return query;
@@ -399,10 +398,10 @@ namespace CMS.Bussiness
 
         public List<NewsModel> GetSameNewsByNewsId(int Id, int CateId, int DistricId, string phone, int UserId)
         {
-            var query = (from c in db.News
-                         join d in db.Districts on c.DistrictId equals d.Id
-                         join t in db.NewsStatus on c.StatusId equals t.Id
-                         join st in db.Sites on c.SiteId equals st.ID
+            var query = (from c in Instance.News
+                         join d in Instance.Districts on c.DistrictId equals d.Id
+                         join t in Instance.NewsStatus on c.StatusId equals t.Id
+                         join st in Instance.Sites on c.SiteId equals st.ID
                          where
                          //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                          //&& !d.IsDeleted && d.Published
@@ -435,7 +434,7 @@ namespace CMS.Bussiness
         public String GetNameReasonReport(int newsId)
         {
             string rs = "";
-            var reasonlst = db.ReasonReportNews.Where(x => x.NewsId == newsId).Take(3).ToList();
+            var reasonlst = Instance.ReasonReportNews.Where(x => x.NewsId == newsId).Take(3).ToList();
             if (reasonlst.Any())
             {
                 foreach (var item in reasonlst)
@@ -455,7 +454,7 @@ namespace CMS.Bussiness
         public String GetPersonCheckNews(int newsId)
         {
             string rs = "";
-            var reasonlst = db.News_customer_actions.Where(x => x.NewsId == newsId && x.Iscc == true).OrderByDescending(x=>x.DateCreate).Take(3).ToList();
+            var reasonlst = Instance.News_customer_actions.Where(x => x.NewsId == newsId && x.Iscc == true).OrderByDescending(x => x.DateCreate).Take(3).ToList();
             if (reasonlst.Any())
             {
                 foreach (var item in reasonlst)
@@ -484,9 +483,9 @@ namespace CMS.Bussiness
                         Notes = "Tin môi giới: " + item.Title,
                         CustomerId = userReport
                     };
-                    db.NewsReports.InsertOnSubmit(reportItem);
+                    Instance.NewsReports.InsertOnSubmit(reportItem);
                 }
-                db.SubmitChanges();
+                Instance.SubmitChanges();
                 return 1;
             }
             catch
@@ -501,7 +500,7 @@ namespace CMS.Bussiness
             {
                 foreach (var item in listNewReport)
                 {
-                    var newsqr = (from c in db.News
+                    var newsqr = (from c in Instance.News
                                   where c.Id.Equals(item.Id)
                                   select c).FirstOrDefault();
 
@@ -510,23 +509,32 @@ namespace CMS.Bussiness
                         if (!string.IsNullOrEmpty(newsqr.Phone))
                         {
                             newsqr.IsSpam = true;
-                            var bll =
-                                (from c in db.Blacklists where c.Words.Contains(newsqr.Phone) select c).FirstOrDefault();
-                            if (bll == null)
-                            {
-                                var reportItem = new Blacklist
-                                {
-                                    Words = item.Phone,
-                                    Description = "Tin môi giới: " + item.Title,
-                                    LinkUrl = item.Link,
-                                    CreatedOn = DateTime.Now,
-                                    Type = 1
-                                };
 
-                                db.Blacklists.InsertOnSubmit(reportItem);
+                            if (newsqr.Phone.Contains(','))
+                            {
+                                var listPhone = newsqr.Phone.Split(',');
+                                for (int i = 0; i < listPhone.Length; i++)
+                                {
+                                    var bll =
+                                (from c in Instance.Blacklists where c.Words.Contains(listPhone[i]) select c).FirstOrDefault();
+                                    if (bll == null)
+                                    {
+                                        var reportItem = new Blacklist
+                                        {
+                                            Words = listPhone[i],
+                                            Description = "Chặn số môi giới: " + listPhone[i],
+                                            LinkUrl = item.Link,
+                                            CreatedOn = DateTime.Now,
+                                            Type = 1
+                                        };
+                                        Instance.Blacklists.InsertOnSubmit(reportItem);
+                                    }
+                                }
                             }
 
-                            var query = (from c in db.News_customer_actions
+
+
+                            var query = (from c in Instance.News_customer_actions
                                          where
                                              c.NewsId.Equals(item.Id) && c.CustomerId.Equals(userReport) && c.IsReport.HasValue &&
                                              c.IsReport.Value
@@ -543,9 +551,9 @@ namespace CMS.Bussiness
                                     IsReport = true,
                                     DateCreate = DateTime.Now
                                 };
-                                db.News_customer_actions.InsertOnSubmit(action);
+                                Instance.News_customer_actions.InsertOnSubmit(action);
                             }
-                            db.SubmitChanges();
+                            Instance.SubmitChanges();
                         }
                     }
                 }
@@ -563,7 +571,7 @@ namespace CMS.Bussiness
             {
                 for (int i = 0; i < listNewDelete.Length; i++)
                 {
-                    var query = (from c in db.News_Customer_Mappings
+                    var query = (from c in Instance.News_Customer_Mappings
                                  where c.CustomerId.Equals(userId) && c.NewsId.Equals(listNewDelete[i]) && !c.IsAgency.Value
                                  select c).ToList();
                     if (query.Any())
@@ -575,7 +583,7 @@ namespace CMS.Bussiness
                         }
                     }
 
-                    var query2 = (from c in db.News_Trashes
+                    var query2 = (from c in Instance.News_Trashes
                                   where c.CustomerID.Equals(userId) && c.NewsId.Equals(listNewDelete[i])
                                   select c).ToList();
                     if (!query2.Any())
@@ -588,9 +596,9 @@ namespace CMS.Bussiness
                             Isdeleted = false,
                             IsSpam = false
                         };
-                        db.News_Trashes.InsertOnSubmit(itemtrash);
+                        Instance.News_Trashes.InsertOnSubmit(itemtrash);
                     }
-                    db.SubmitChanges();
+                    Instance.SubmitChanges();
                 }
                 return 1;
             }
@@ -602,19 +610,19 @@ namespace CMS.Bussiness
 
         public int CountRepeatnews(int newId, int userId, int districId)
         {
-            var listBlacklist = (from c in db.Blacklists
+            var listBlacklist = (from c in Instance.Blacklists
                                  select (c.Words)).ToList();
 
             var news_new = new List<int>();
             if (GetRoleByUser(userId) == Convert.ToInt32(CmsRole.Administrator))
             {
-                news_new = (from c in db.News_Customer_Mappings
+                news_new = (from c in Instance.News_Customer_Mappings
                             where (c.IsDeleted.Value || c.IsSaved.Value) //c.CustomerId.Equals(userId) &&
                             select (c.NewsId)).ToList();
             }
             else
             {
-                news_new = (from c in db.News_Customer_Mappings
+                news_new = (from c in Instance.News_Customer_Mappings
                             where c.CustomerId.Equals(userId) && (c.IsDeleted.Value || c.IsSaved.Value)
                             select (c.NewsId)).ToList();
             }
@@ -622,10 +630,10 @@ namespace CMS.Bussiness
             var news = GetNewsDetail(newId);
             if (news != null)
             {
-                var query = from c in db.News
-                            join d in db.Districts on c.DistrictId equals d.Id
-                            join t in db.NewsStatus on c.StatusId equals t.Id
-                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                var query = from c in Instance.News
+                            join d in Instance.Districts on c.DistrictId equals d.Id
+                            join t in Instance.NewsStatus on c.StatusId equals t.Id
+                            join ncm in Instance.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
                             from tm in temp.DefaultIfEmpty()
                             where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
@@ -662,12 +670,12 @@ namespace CMS.Bussiness
         {
             try
             {
-                var listBlacklist = (from c in db.Blacklists
+                var listBlacklist = (from c in Instance.Blacklists
                                      select (c.Words)).ToList();
-                var listDelete = (from c in db.News_Trashes
+                var listDelete = (from c in Instance.News_Trashes
                                   where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(userID)
                                   select (c.NewsId)).ToList();
-                var query = (from c in db.News
+                var query = (from c in Instance.News
                              where c.CreatedOn.HasValue && !c.IsDeleted
                              && c.Phone.Contains(phone)
                              && !listDelete.Contains(c.Id)
@@ -687,7 +695,7 @@ namespace CMS.Bussiness
             {
                 for (int i = 0; i < listnews.Length; i++)
                 {
-                    var query = (from c in db.News_customer_actions
+                    var query = (from c in Instance.News_customer_actions
                                  where c.NewsId.Equals(listnews[i]) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
                                  select c).ToList();
                     if (!query.Any())
@@ -699,9 +707,9 @@ namespace CMS.Bussiness
                         item.Ischeck = false;
                         item.IsSpam = false;
                         item.DateCreate = DateTime.Now;
-                        db.News_customer_actions.InsertOnSubmit(item);
+                        Instance.News_customer_actions.InsertOnSubmit(item);
                     }
-                    db.SubmitChanges();
+                    Instance.SubmitChanges();
                 }
                 return 1;
             }
@@ -717,17 +725,17 @@ namespace CMS.Bussiness
             {
                 foreach (var t in listnews)
                 {
-                    var query = (from c in db.News_customer_actions
+                    var query = (from c in Instance.News_customer_actions
                                  where c.NewsId.Equals(t) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
                                  select c).ToList();
                     if (query.Any())
                     {
                         foreach (var newsCustomerAction in query)
                         {
-                            db.News_customer_actions.DeleteOnSubmit(newsCustomerAction);
+                            Instance.News_customer_actions.DeleteOnSubmit(newsCustomerAction);
                         }
                     }
-                    db.SubmitChanges();
+                    Instance.SubmitChanges();
                 }
                 return 1;
             }
@@ -739,7 +747,7 @@ namespace CMS.Bussiness
 
         public bool CheckCC(int newsId)
         {
-            var query = (from c in db.News_customer_actions
+            var query = (from c in Instance.News_customer_actions
                          where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value
                          select c).ToList();
             if (query.Any())
@@ -749,12 +757,12 @@ namespace CMS.Bussiness
 
         public bool CheckReason(int userId, int newsId)
         {
-            return db.ReasonReportNews.Any(x => x.UserId == userId && x.NewsId == newsId);
+            return Instance.ReasonReportNews.Any(x => x.UserId == userId && x.NewsId == newsId);
         }
 
         public bool CheckCCByUser(int newsId, int userId)
         {
-            var query = (from c in db.News_customer_actions
+            var query = (from c in Instance.News_customer_actions
                          where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value && c.CustomerId.Equals(userId)
                          select c).ToList();
             if (query.Any())
@@ -769,7 +777,7 @@ namespace CMS.Bussiness
         {
             try
             {
-                var query = (from c in db.Role_Users
+                var query = (from c in Instance.Role_Users
                              where c.UserId.Equals(userId)
                              select new
                              {
@@ -791,17 +799,17 @@ namespace CMS.Bussiness
         #region ReasonReportNews
         public void InsertReasonReportNews(ReasonReportNew model)
         {
-            db.ReasonReportNews.InsertOnSubmit(model);
-            db.SubmitChanges();
+            Instance.ReasonReportNews.InsertOnSubmit(model);
+            Instance.SubmitChanges();
         }
 
         public void DeleteReasonReportNews(int newsId, int userId)
         {
-            var check = db.ReasonReportNews.FirstOrDefault(x => x.UserId == userId && x.NewsId == newsId);
+            var check = Instance.ReasonReportNews.FirstOrDefault(x => x.UserId == userId && x.NewsId == newsId);
             if (check != null)
             {
-                db.ReasonReportNews.DeleteOnSubmit(check);
-                db.SubmitChanges();
+                Instance.ReasonReportNews.DeleteOnSubmit(check);
+                Instance.SubmitChanges();
             }
         }
         #endregion

@@ -10,9 +10,9 @@
         <div class="col-xs-12 lo-paging-0">
             <div class="col-md-2"></div>
             <div class="input-group col-xs-12 col-md-8 lo-paging-0">
-                <input class="form-control txtsearchkey" placeholder="Nhập nội dung cần tìm..." type="text" />
+                <input class="form-control txtsearchkey" placeholder="Nhập nội dung cần tìm..." type="text" @(!Convert.ToBoolean(ViewBag.User)? string.Empty : "disabled = 'disabled'") />
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-inverse btn-white btnsearch" style="background-color: #4267b2 !important; color: white !important;">
+                    <button type="button" class="btn btn-inverse btn-white btnsearch" style="background-color: #4267b2 !important; color: white !important;" @(!Convert.ToBoolean(ViewBag.User)? string.Empty : "disabled = 'disabled'")>
                         <span class="ace-icon fa fa-search icon-on-right bigger-110 searchicon"></span>
                         Tìm
                     </button>
@@ -43,7 +43,14 @@
                                             <label class="control-label" for="form-field-1">Chuyên mục</label>
                                         </div>
                                         <div class="input-group col-xs-7">
-                                            @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "form-control col-xs-10 cateId" })
+                                            @if (!Convert.ToBoolean(ViewBag.User))
+                                            {
+                                                @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "form-control col-xs-10 cateId"})
+                                            }
+                                            else
+                                            {
+                                                @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "form-control col-xs-10 cateId", @disabled = "disabled" })
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +60,15 @@
                                             <label class="control-label" for="form-field-1">Quận huyện</label>
                                         </div>
                                         <div class="input-group col-xs-7">
-                                            @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "form-control col-xs-10 districtId" })
+                                            @if (!Convert.ToBoolean(ViewBag.User))
+                                            {
+                                                @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "form-control col-xs-10 districtId" })
+                                            }
+                                            else
+                                            {
+                                                @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "form-control col-xs-10 districtId", @disabled = "disabled" })
+                                            }
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +78,14 @@
                                             <label class="control-label" for="form-field-1">Loại tin</label>
                                         </div>
                                         <div class="input-group col-xs-7">
-                                            @Html.DropDownListFor(m => m.NewsType, Model.ListStatus, new { @class = "form-control col-xs-10 newTypeId" })
+                                            @if (!Convert.ToBoolean(ViewBag.User))
+                                            {
+                                                @Html.DropDownListFor(m => m.NewsType, Model.ListStatus, new { @class = "form-control col-xs-10 newTypeId" })
+                                            }
+                                            else
+                                            {
+                                                @Html.DropDownListFor(m => m.NewsType, Model.ListStatus, new { @class = "form-control col-xs-10 newTypeId", @disabled = "disabled" })
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +96,7 @@
                                             <label class="control-label" for="form-field-1">Theo ngày</label>
                                         </div>
                                         <div class="input-group col-xs-7">
-                                            <select class="form-control col-xs-10 ddlbackdate">
+                                            <select class="form-control col-xs-10 ddlbackdate" @(!Convert.ToBoolean(ViewBag.User)? string.Empty : "disabled = 'disabled'")>
                                                 <option value="-1">Theo ngày</option>
                                                 <option value="0">Hôm nay</option>
                                                 <option value="2">2 Ngày trước</option>
@@ -94,7 +116,7 @@
                                             <label class="control-label col-xs-4">Từ ngày</label>
                                         </div>
                                         <div class="input-group col-xs-7">
-                                            <input class="form-control date-picker txtFrom" type="text" />
+                                            <input class="form-control date-picker txtFrom" type="text" @(!Convert.ToBoolean(ViewBag.User)? string.Empty : "disabled = 'disabled'") />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar bigger-110"></i>
                                             </span>
@@ -108,7 +130,7 @@
                                             <label class="control-label ">Đến ngày</label>
                                         </div>
                                         <div class="input-group col-xs-7">
-                                            <input class="form-control date-picker txtTo" type="text" />
+                                            <input class="form-control date-picker txtTo" type="text" @(!Convert.ToBoolean(ViewBag.User)? string.Empty : "disabled = 'disabled'") />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar bigger-110"></i>
                                             </span>
@@ -122,7 +144,7 @@
                                             <label class="control-label" for="form-field-1">Theo giá</label>
                                         </div>
                                         <div class="input-group col-xs-7">
-                                            <select class="form-control col-xs-10 ddlprice">
+                                            <select class="form-control col-xs-10 ddlprice" @(!Convert.ToBoolean(ViewBag.User)? string.Empty : "disabled = 'disabled'")>
                                                 <option value="">Tất cả</option>
                                                 <option value="0+1000000">&lt; 1 triệu</option>
                                                 <option value="1000000+5000000">1 - 5 triệu</option>
@@ -144,7 +166,15 @@
                                             <label class="control-label" for="form-field-1">Nguồn tin</label>
                                         </div>
                                         <div class="input-group col-xs-7">
-                                            @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId" })
+                                            @if (!Convert.ToBoolean(ViewBag.User))
+                                            {
+                                                @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId" })
+                                            }
+                                            else
+                                            {
+                                                @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId", @disabled = "disabled" })
+                                            }
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -154,7 +184,7 @@
                                             <label class="control-label">Hiển thị tin trùng</label>
                                         </div>
                                         <div class="input-group col-xs-6 col-md-7" style="top: 7px; padding-right: 0;">
-                                            <input id="chkIsrepeatNews" type="checkbox" value="0" class="ace ace-switch ace-switch-6" />
+                                            <input id="chkIsrepeatNews" type="checkbox" value="0" class="ace ace-switch ace-switch-6" @(!Convert.ToBoolean(ViewBag.User)? string.Empty : "disabled = 'disabled'")/>
                                             <span class="lbl middle"></span>
                                         </div>
                                     </div>
@@ -189,7 +219,7 @@
                     </button>
                     <button class="btn btn-sm btn-danger btnspam disabled">
                         <i class="icon-warning-sign bigger-125"></i>
-                        Chặn môi giới
+                        Chặn tin
                     </button>
                     <button class="btn btn-sm btn-success btnexport">
                         <i class="icon-download-alt bigger-125"></i>
