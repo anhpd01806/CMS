@@ -47,6 +47,12 @@ namespace CMS.Controllers
         [HttpPost]
         public JsonResult Recharge(RechargeModel form)
         {
+            var resultObj = new RechargeModel();
+            if (!isValidCode(form)) {
+                resultObj.isError = true;
+                resultObj.message = errorMap["53"];
+                return Json(resultObj, JsonRequestBehavior.AllowGet);
+            }
             //get url
             string url = ConfigWeb.Api_Charging;
             //get accesskey
@@ -69,12 +75,8 @@ namespace CMS.Controllers
             // Clean up the streams and the response.  
             reader.Close();
             response.Close();
-
-
-            var resultObj = new RechargeModel();
-            resultObj.message = errorMap[code] ?? "Nạp thẻ thành công";
-            resultObj.isErrror = Int32.Parse(code) < 10000;
-            if (!resultObj.isErrror)
+            resultObj.isError = Int32.Parse(code) < 10000;
+            if (!resultObj.isError)
             {
                 try
                 {
@@ -99,15 +101,55 @@ namespace CMS.Controllers
 
                     resultObj.message = "Nạp thẻ thành công";
                 }
+
                 catch (Exception)
                 {
                 }
             }
             else
             {
-                resultObj.message = errorMap[code];
+                if (errorMap.ContainsKey(code))
+                {
+                    resultObj.message = errorMap[code];
+                }
+                else
+                {
+                    resultObj.message = "Nạp thẻ thất bại";
+                }
+
             }
             return Json(resultObj, JsonRequestBehavior.AllowGet);
+        }
+        //check is valid card code
+        private bool isValidCode(RechargeModel card)
+        {
+            bool result = true;
+            try
+            {
+                switch (card.TELCO)
+                {
+                    case "VTT":
+                        if (card.CODE.Length < 13 || card.SERIAL.Length < 11)
+                            result = false;
+                        break;
+                    case "VNP":
+                        if (card.CODE.Length < 12 || card.SERIAL.Length < 9)
+                            result = false;
+                        break;
+                    case "VMS":
+                        if (card.CODE.Length < 12 || card.SERIAL.Length < 9)
+                            result = false;
+                        break;
+                    default:
+                        result = false;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return result;
         }
 
         public ActionResult Recharge()

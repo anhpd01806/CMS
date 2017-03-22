@@ -19,7 +19,7 @@ namespace CMS.Models
 
         public string message { get; set; }
 
-        public bool isErrror { get; set; }
+        public bool isError { get; set; }
     }
 
 }

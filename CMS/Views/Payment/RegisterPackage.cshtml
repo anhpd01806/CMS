@@ -11,6 +11,37 @@
         $(document).ready(function () {
             $("#datatable1 > tbody").html("");
             callAjax(0);
+
+
+            //recharge
+            $('#recharge').click(function () {
+                var serial = $('#card-serial').val().trim();
+                var code = $('#card-code').val().trim();
+                var option = $('#card-option').val();
+                if (serial === "" || code === "" || !option) {
+                    alert("Hãy nhập đủ thông tin!");
+                } else {
+                    var data = { "TELCO": option, "SERIAL": serial, "CODE": code };
+                    $('#msg-recharge').empty();
+                    $.ajax({
+                        type: "POST",
+                        url: "/Payment/Recharge",
+                        data: JSON.stringify(data),
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.isError) {
+                                $('#msg-recharge').append($("<div>", { class: "alert alert-danger" }).text(result.message));
+                            } else {
+                                $('#msg-recharge').append($("<div>", { class: "alert alert-success" }).text(result.message));
+                            }
+                        },
+                        error: function (response) {
+                            $('#msg-recharge').append($("<div>", { class: "alert alert-danger" }).text("Nạp thẻ thất bại."));
+                        }
+                    });
+                }
+            });
         });
 
         $(function ($) {
@@ -30,13 +61,13 @@
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                        $.each(result, function (i, item) {
-                            $('<tr>').append(
-                            $('<td>').text(item.DateString),
-                            $('<td>').text(item.PaymentMethod),
-                            $('<td>').text(item.Amount),
-                            $('<td>').text(item.Notes)).appendTo('#datatable1 > tbody');
-                        });
+                    $.each(result, function (i, item) {
+                        $('<tr>').append(
+                        $('<td>').text(item.DateString),
+                        $('<td>').text(item.PaymentMethod),
+                        $('<td>').text(item.Amount),
+                        $('<td>').text(item.Notes)).appendTo('#datatable1 > tbody');
+                    });
                 },
                 error: function (response) {
                     debugger;
@@ -55,6 +86,10 @@
             <div class="page-content-area">
                 <div class="row">
                     <div class="col-xs-12">
+
+                        <div id="msg-recharge">
+
+                        </div>
                         @if (TempData["Error"] != null)
                         {
                             <div class="alert alert-danger message-box ">
@@ -68,14 +103,51 @@
                             </div>
                         }
                         <input id="hdUserName" type="hidden" value="@Session["SS-USERNAME"].ToString()" />
-                        <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
-                        <div class="form col-md-3" role="form">
-                            <div class="form-group">
-                                @Html.DropDownListFor(m => m.Payment, Model.PackageList, new { @class = "form-control" })
-                            </div>
+                        @*<h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>*@
+                        <div class="col-md-4 col-xs-12">
+                            <fieldset>
+                                <legend class="lighter blue">Đăng ký gói cước</legend>
+                                <div class="form col-md-10" role="form">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(m => m.Payment, Model.PackageList, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-12 footer-button">
+                                    <button type="submit" class="btn btn-primary btn-sm">Đăng ký</button>
+                                </div>
+                            </fieldset>
                         </div>
-                        <div class="col-md-12 footer-button">
-                            <button type="submit" class="btn btn-primary btn-sm">Nạp tiền</button>
+
+                        <div class="col-md-4 col-xs-12">
+                            <fieldset>
+                                <legend class="lighter blue">Nạp tiền bằng thẻ điện thoại</legend>
+
+                                <div class="form-group">
+                                    <div class="col-md-10 col-xs-12">
+                                        <input type="text" class="form-control" id="card-serial" placeholder="Nhập Serial">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-10 col-xs-12">
+                                        <input type="text" class="form-control" id="card-code" placeholder="Nhập mã thẻ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-10 col-xs-12">
+                                        <select id="card-option">
+                                            <option value="" disabled selected>Chọn nhà mạng</option>
+                                            <option value="VTT">Viettel </option>
+                                            <option value="VNP">Vinaphone</option>
+                                            <option value="VMS">MobiFone</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4 col-xs-12">
+                                        <input type="button" class="btn btn-primary btn-sm" id="recharge" value="Nạp tiền" />
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
                 </div>

@@ -848,7 +848,8 @@ $(function () {
                 }
                 LoadData();
             }
-            LoadData();
+            //a Hai comment 
+            //LoadData();
         });
 
         $(document).on("click", ".edit-item-list_adm", function () {
