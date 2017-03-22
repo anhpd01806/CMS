@@ -112,11 +112,11 @@
                     }
                     @if (!Model.IsReason)
                     {
-                        <button type="button" class="btn btn-sm btn-purple btnclose" id="btn-noti-error" data-toggle="modal" data-target="#md-notify">Báo cáo</button>
+                        <button type="button" class="btn btn-sm btn-purple btnclose" id="btn-noti-error" data-toggle="modal" data-target="#md-notify"><i class="fa fa-bug"></i> Báo cáo</button>
                     }
                     else
                     {
-                        <button type="button" class="btn btn-sm btn-grey btnclose" id="btn-noti-error-cancel" data-toggle="modal" onclick="CancerDangerNewsReport(@Model.Id)">Hủy báo cáo</button>
+                        <button type="button" class="btn btn-sm btn-grey btnclose" id="btn-noti-error-cancel" data-toggle="modal" onclick="CancerDangerNewsReport(@Model.Id)"><i class="fa fa-bug"></i> Hủy báo cáo</button>
                     }
                 </div>
 

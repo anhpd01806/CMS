@@ -2946,6 +2946,7 @@
     <None Include="Properties\PublishProfiles\CMS.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\common.js" />
+    <Content Include="Scripts\home\brockerinformation.js" />
     <Content Include="Scripts\home\home.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -3133,6 +3134,7 @@
     <Content Include="Views\BrokersInformation\Paging.cshtml" />
     <Content Include="Views\Payment\Recharge.cshtml" />
     <Content Include="Views\NewsSave\NewDetail.cshtml" />
+    <Content Include="Views\Home\NewsEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

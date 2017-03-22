@@ -88,7 +88,7 @@ namespace CMS.Bussiness
             int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
         {
             #region Orther
-            
+
             DateTime? from;
             DateTime? to;
 
@@ -359,11 +359,11 @@ namespace CMS.Bussiness
                          join t in Instance.NewsStatus on c.StatusId equals t.Id
                          join st in Instance.Sites on c.SiteId equals st.ID
                          where
-                             //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                             //&& !d.IsDeleted && d.Published
-                             //&& !news_new.Contains(c.Id)
-                             //&& c.CategoryId.Equals(CateId)
-                             //&& c.DistrictId.Equals(DistricId)
+                         //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                         //&& !d.IsDeleted && d.Published
+                         //&& !news_new.Contains(c.Id)
+                         //&& c.CategoryId.Equals(CateId)
+                         //&& c.DistrictId.Equals(DistricId)
                          c.Phone.Contains(phone) && c.Phone != ""
                          && !c.Id.Equals(Id)
                          orderby c.StatusId ascending, c.Price descending
@@ -465,30 +465,24 @@ namespace CMS.Bussiness
                         if (!string.IsNullOrEmpty(newsqr.Phone))
                         {
                             newsqr.IsSpam = true;
-
-                            if (newsqr.Phone.Contains(','))
+                            var listPhone = newsqr.Phone.Split(',');
+                            foreach (var itemPhone in listPhone)
                             {
-                                var listPhone = newsqr.Phone.Split(',');
-                                for (int i = 0; i < listPhone.Length; i++)
+                                var bll =
+                            (from c in Instance.Blacklists where c.Words.Contains(itemPhone) select c).FirstOrDefault();
+                                if (bll == null)
                                 {
-                                    var bll =
-                                (from c in Instance.Blacklists where c.Words.Contains(listPhone[i]) select c).FirstOrDefault();
-                                    if (bll == null)
+                                    var reportItem = new Blacklist
                                     {
-                                        var reportItem = new Blacklist
-                                        {
-                                            Words = listPhone[i],
-                                            Description = "Chặn số môi giới: " + listPhone[i],
-                                            LinkUrl = item.Link,
-                                            CreatedOn = DateTime.Now,
-                                            Type = 1
-                                        };
-                                        Instance.Blacklists.InsertOnSubmit(reportItem);
-                                    }
+                                        Words = itemPhone,
+                                        Description = "Chặn số môi giới: " + itemPhone,
+                                        LinkUrl = item.Link,
+                                        CreatedOn = DateTime.Now,
+                                        Type = 1
+                                    };
+                                    Instance.Blacklists.InsertOnSubmit(reportItem);
                                 }
                             }
-
-
 
                             var query = (from c in Instance.News_customer_actions
                                          where
