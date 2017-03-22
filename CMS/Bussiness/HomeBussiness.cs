@@ -8,6 +8,8 @@ using System.Transactions;
 using CMS.Data;
 using CMS.Helper;
 using CMS.Models;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
 namespace CMS.Bussiness
@@ -85,132 +87,86 @@ namespace CMS.Bussiness
         public List<NewsModel> GetListNewByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
             int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
         {
-            using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            #region Orther
+            
+            DateTime? from;
+            DateTime? to;
+
+            if (!string.IsNullOrEmpty(From))
             {
-                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
-            }))
-            {
-                var listDelete = (from c in Instance.News_Trashes
-                                  where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(UserId)
-                                  select (c.NewsId)).ToList();
-
-                //Danh sách tin đã lưu hoặc đã ẩn theo user
-                var news_new = (from c in Instance.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && (c.IsDeleted.Value || c.IsSaved.Value || c.IsAgency.Value)
-                                select (c.NewsId)).ToList();
-
-                //Danh sách tin đã đọc theo user
-                var news_isread = (from c in Instance.News_Customer_Mappings
-                                   where c.CustomerId.Equals(UserId) && c.IsReaded.Value
-                                   select (c.NewsId)).ToList();
-
-                var query = (from c in Instance.News
-                             join d in Instance.Districts on c.DistrictId equals d.Id
-                             join t in Instance.NewsStatus on c.StatusId equals t.Id
-                             join s in Instance.Sites on c.SiteId equals s.ID
-                             join ncm in Instance.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
-                             from tm in temp.DefaultIfEmpty()
-                             join ac in Instance.News_customer_actions on c.Id equals ac.NewsId into temp2
-                             from nac in temp2.DefaultIfEmpty()
-                             where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam && !s.Deleted && s.Published //&& c.Published.HasValue
-                            && !d.IsDeleted && d.Published
-                            && !listDelete.Contains(c.Id)
-                            && !news_new.Contains(c.Id)
-                             select new NewsModel
-                             {
-                                 Id = c.Id,
-                                 Title = c.Title,
-                                 CategoryId = c.CategoryId,
-                                 SiteId = c.SiteId,
-                                 Link = c.Link,
-                                 Phone = c.Phone,
-                                 Contents = c.Contents,
-                                 Price = c.Price,
-                                 PriceText = c.PriceText,
-                                 DistrictId = d.Id,
-                                 DistictName = d.Name,
-                                 StatusId = t.Id,
-                                 StatusName = t.Name,
-                                 CreatedOn = c.CreatedOn,
-                                 CusIsReaded = news_isread.Contains(c.Id),
-                                 IsRepeat = c.IsRepeat,
-                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 0,
-                                 Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
-                                 IsReason = false//CheckReason(UserId, c.Id)
-                             }).Distinct();
-
-                #region check param
-                //check admin để không load tin đã được duyệt ra nữa
-                //if (!checkuser)
-                //{
-                //    query = query.Where(c => !newsisactive.Contains(c.Id));
-                //}
-
-                if (CateId != 0)
-                {
-                    query = query.Where(c => c.CategoryId.Equals(CateId));
-                }
-                if (DistricId != 0)
-                {
-                    query = query.Where(c => c.DistrictId.Equals(DistricId));
-                }
-                if (StatusId != 0)
-                {
-                    query = query.Where(c => c.StatusId.Equals(StatusId));
-                }
-                if (SiteId != 0)
-                {
-                    query = query.Where(c => c.SiteId.Equals(SiteId));
-                }
-                if (BackDate != -1)
-                {
-                    query = BackDate == 0 ? query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 23:59:59.999")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate)).ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate + 1)).ToString("yyyy/MM/dd") + " 23:59:59.999"));
-                }
-                if (!string.IsNullOrEmpty(From))
-                {
-                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime((From.Split('-')[2] + "/" + From.Split('-')[1] + "/" + From.Split('-')[0] + " 00:00:00.00")));
-                }
-                if (!string.IsNullOrEmpty(To))
-                {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")).AddDays(-1));
-                }
-                if (MinPrice != -1)
-                {
-                    query = query.Where(c => c.Price.Value >= Convert.ToDecimal(MinPrice));
-                }
-                if (MaxPrice != -1)
-                {
-                    query = query.Where(c => c.Price.Value <= Convert.ToDecimal(MaxPrice));
-                }
-                if (!string.IsNullOrEmpty(key))
-                {
-                    query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.Contents.Contains(key) || c.DistictName.Contains(key) || c.PriceText.Contains(key));
-                }
-                if (!IsRepeat)
-                {
-                    query = query.Where(c => !c.IsRepeat);
-                }
-                #endregion
-
-                var list = query.ToList();
-                total = list.Count;
-                if (string.IsNullOrEmpty(NameOrder))
-                {
-                    if (!IsRepeat)
-                    {
-                        query = query.OrderByDescending(c => c.CreatedOn);
-                    }
-                    else
-                    {
-                        query = query.OrderByDescending(c => c.Phone);
-                    }
-                }
-                else
-                {
-                    query = descending ? QueryableHelper.OrderByDescending(query, NameOrder) : QueryableHelper.OrderBy(query, NameOrder);
-                }
-                return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                from = Convert.ToDateTime((From.Split('-')[2] + "/" + From.Split('-')[1] + "/" + From.Split('-')[0]));
             }
+            else
+            {
+                from = null;
+            }
+            if (!string.IsNullOrEmpty(To))
+            {
+                to = Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0]));
+            }
+            else
+            {
+                to = null;
+            }
+
+            decimal? minPrice;
+            if (MinPrice != -1)
+            {
+                minPrice = Convert.ToDecimal(MinPrice);
+            }
+            else
+            {
+                minPrice = null;
+            }
+            decimal? maxPrice;
+            if (MaxPrice != -1)
+            {
+                maxPrice = Convert.ToDecimal(MaxPrice);
+            }
+            else
+            {
+                maxPrice = null;
+            }
+            int? backdate;
+            if (BackDate != -1)
+            {
+                backdate = BackDate;
+            }
+            else
+            {
+                backdate = null;
+            }
+
+            int? totalout = 0;
+            #endregion
+
+            var listItem =
+                (Instance.PROC_GetListNewsInHome(UserId, CateId, DistricId, StatusId, SiteId, backdate, from, to,
+                    minPrice, maxPrice, pageIndex, pageSize, IsRepeat, key, NameOrder, descending, ref totalout)
+                    .Select(c => new NewsModel
+                    {
+                        Id = c.Id.Value,
+                        Title = c.Title,
+                        CategoryId = c.CategoryId,
+                        SiteId = c.SiteId.Value,
+                        Link = c.Link,
+                        Phone = c.Phone,
+                        Contents = c.Contents,
+                        Price = c.Price,
+                        PriceText = c.PriceText,
+                        DistrictId = c.DistrictId,
+                        DistictName = c.DistictName,
+                        StatusId = c.StatusId,
+                        StatusName = c.StatusName,
+                        CreatedOn = c.CreatedOn,
+                        CusIsReaded = c.CusIsReaded,
+                        IsRepeat = c.IsRepeat.HasValue && c.IsRepeat.Value,
+                        RepeatTotal = c.RepeatTotal.Value,
+                        Iscc = c.Iscc.HasValue && c.Iscc.Value
+                    })).ToList();
+
+            total = totalout.HasValue ? Convert.ToInt32(totalout) : 0;
+            return listItem;
         }
 
         //Export excel
@@ -403,11 +359,11 @@ namespace CMS.Bussiness
                          join t in Instance.NewsStatus on c.StatusId equals t.Id
                          join st in Instance.Sites on c.SiteId equals st.ID
                          where
-                         //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                         //&& !d.IsDeleted && d.Published
-                         //&& !news_new.Contains(c.Id)
-                         //&& c.CategoryId.Equals(CateId)
-                         //&& c.DistrictId.Equals(DistricId)
+                             //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                             //&& !d.IsDeleted && d.Published
+                             //&& !news_new.Contains(c.Id)
+                             //&& c.CategoryId.Equals(CateId)
+                             //&& c.DistrictId.Equals(DistricId)
                          c.Phone.Contains(phone) && c.Phone != ""
                          && !c.Id.Equals(Id)
                          orderby c.StatusId ascending, c.Price descending
