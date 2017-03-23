@@ -976,72 +976,75 @@ $(function () {
             next: 'Tiếp',
             last: 'Trang cuối',
             onPageClick: function (event, page) {
-                $.LoadingOverlay("show");
-                var cateId = parseInt($(".cateId").val());
-                var districtId = parseInt($(".districtId").val());
-                var newTypeId = parseInt($(".newTypeId").val());
-                var siteId = parseInt($(".siteId").val());
-                var backdate = parseInt($(".ddlbackdate").val());
-                var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-                var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
-                var from = $(".txtFrom").val();
-                var to = $(".txtTo").val();
-                var pageIndex = page;
-                var pageSize = 20;
-                if (typeof $(".ddlpage").val() != "undefined") {
-                    pageSize = parseInt($(".ddlpage").val());
+                var curentpage = parseInt($('#datatable').attr("data-page"));
+                if (curentpage != page) {
+                    $.LoadingOverlay("show");
+                    var cateId = parseInt($(".cateId").val());
+                    var districtId = parseInt($(".districtId").val());
+                    var newTypeId = parseInt($(".newTypeId").val());
+                    var siteId = parseInt($(".siteId").val());
+                    var backdate = parseInt($(".ddlbackdate").val());
+                    var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
+                    var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                    var from = $(".txtFrom").val();
+                    var to = $(".txtTo").val();
+                    var pageIndex = page;
+                    var pageSize = 20;
+                    if (typeof $(".ddlpage").val() != "undefined") {
+                        pageSize = parseInt($(".ddlpage").val());
+                    }
+                    var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
+                    var key = $.trim($(".txtsearchkey").val());
+
+                    var NameOrder = "";
+                    var descending = false;
+
+                    $("#listnewstable th").each(function () {
+                        if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
+                            NameOrder = $(this).attr("data-name");
+                            if ($(this).hasClass("order_desc")) {
+                                descending = true;
+                            }
+                        }
+                    });
+
+                    var data = {
+                        cateId: cateId, districtId: districtId, newTypeId: newTypeId,
+                        siteId: siteId, backdate: backdate,
+                        minPrice: minPrice, maxPrice: maxPrice,
+                        from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
+                    };
+                    $.post("/home/loaddata", data, function (resp) {
+                        if (resp != null) {
+                            $("#listnewstable tbody").html("");
+                            $("#listnewstable tbody").html(resp.Content);
+                            if (resp.TotalPage > 1) {
+                                $(".page-home").show();
+                            } else {
+                                $(".page-home").hide();
+                            }
+                            $(".fistrecord").html(((page - 1) * pageSize) + 1);
+                            $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
+                            $(".totalrecord").html(resp.TotalRecord);
+                            $('#datatable').attr("data-total", resp.TotalPage);
+                            $('#datatable').attr("data-page", page);
+                            $('#check-all').prop('checked', false);
+                            if (resp.TotalRecord > 0) {
+                                $('#listnewstable').DataTable({
+                                    sDom: 'rt',
+                                    retrieve: true,
+                                    bFilter: false,
+                                    bInfo: false,
+                                    searching: false,
+                                    paging: false,
+                                    aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
+                                });
+                                $('#check-all').parent().removeClass("sorting_asc");
+                            }
+                            $.LoadingOverlay("hide");
+                        }
+                    });
                 }
-                var isrepeat = $('#chkIsrepeatNews').prop('checked') ? 1 : 0;
-                var key = $.trim($(".txtsearchkey").val());
-
-                var NameOrder = "";
-                var descending = false;
-
-                $("#listnewstable th").each(function () {
-                    if ($(this).hasClass("order_desc") || $(this).hasClass("order_asc")) {
-                        NameOrder = $(this).attr("data-name");
-                        if ($(this).hasClass("order_desc")) {
-                            descending = true;
-                        }
-                    }
-                });
-
-                var data = {
-                    cateId: cateId, districtId: districtId, newTypeId: newTypeId,
-                    siteId: siteId, backdate: backdate,
-                    minPrice: minPrice, maxPrice: maxPrice,
-                    from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
-                };
-                $.post("/home/loaddata", data, function (resp) {
-                    if (resp != null) {
-                        $("#listnewstable tbody").html("");
-                        $("#listnewstable tbody").html(resp.Content);
-                        if (resp.TotalPage > 1) {
-                            $(".page-home").show();
-                        } else {
-                            $(".page-home").hide();
-                        }
-                        $(".fistrecord").html(((page - 1) * pageSize) + 1);
-                        $(".endrecord").html((page * pageSize) <= resp.TotalRecord ? (page * pageSize) : resp.TotalRecord);
-                        $(".totalrecord").html(resp.TotalRecord);
-                        $('#datatable').attr("data-total", resp.TotalPage);
-                        $('#datatable').attr("data-page", page);
-                        $('#check-all').prop('checked', false);
-                        if (resp.TotalRecord > 0) {
-                            $('#listnewstable').DataTable({
-                                sDom: 'rt',
-                                retrieve: true,
-                                bFilter: false,
-                                bInfo: false,
-                                searching: false,
-                                paging: false,
-                                aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
-                            });
-                            $('#check-all').parent().removeClass("sorting_asc");
-                        }
-                        $.LoadingOverlay("hide");
-                    }
-                });
             }
         });
     }
