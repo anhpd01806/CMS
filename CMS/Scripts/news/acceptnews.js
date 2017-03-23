@@ -81,7 +81,7 @@
                             showmessage("error", "Bạn chưa chọn tin để duyệt!");
                         }
                         if (resp.Status == 0) {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                         }
                         if (resp.Status == 2) {
                             showmessage("error", "Không tìm thấy dữ liệu cần duyệt!");
@@ -117,7 +117,7 @@
                             showmessage("error", "Bạn chưa chọn tin để duyệt!");
                         }
                         if (resp.Status == 0) {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                         }
                         if (resp.Status == 2) {
                             showmessage("error", "Không tìm thấy dữ liệu cần duyệt!");
@@ -210,7 +210,7 @@
                         showmessage("error", "Bạn chưa chọn tin để duyệt!");
                     }
                     if (resp.Status == 0) {
-                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                        showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                     }
                     if (resp.Status == 2) {
                         showmessage("error", "Không tìm thấy dữ liệu cần duyệt!");
@@ -242,7 +242,7 @@
                         showmessage("error", "Bạn chưa chọn tin để duyệt!");
                     }
                     if (resp.Status == 0) {
-                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                        showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                     }
                     if (resp.Status == 2) {
                         showmessage("error", "Không tìm thấy dữ liệu cần duyệt!");

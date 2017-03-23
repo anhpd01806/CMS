@@ -278,7 +278,7 @@
                                 }, 1200);
 
                             } else {
-                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                             }
                         }
                         ;
@@ -301,7 +301,7 @@
                             }, 1200);
 
                         } else {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                         }
                     };
                 });
@@ -354,7 +354,7 @@
                         $("#newsedit").modal("show");
                     }, 500);
                 } else {
-                    showmessage("error", "Hệ thống gặp sự cố trong quá trình lấy dữ liệu!");
+                    showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                 };
                 $.LoadingOverlay("hide");
             });

@@ -333,7 +333,7 @@ $(function () {
                                     showmessage("success", "Tin đã được lưu thành công!");
                                 }, 1200);
                             } else {
-                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                             }
                         }
                         ;
@@ -363,7 +363,7 @@ $(function () {
                                 if (resp.Status == 2) {
                                     showmessage("error", "Bạn chưa chọn tin nào để xóa!");
                                 } else {
-                                    showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                    showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                 }
                             }
                         }
@@ -405,7 +405,7 @@ $(function () {
                                         if (resp.Status == 2) {
                                             showmessage("error", "Bạn chưa chọn tin nào để xóa!");
                                         } else {
-                                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                            showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                         }
                                     }
                                 }
@@ -451,7 +451,7 @@ $(function () {
                                                 showmessage("success", "Tin đã được báo thành công!");
                                             }, 800);
                                         } else {
-                                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                            showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                         }
                                     }
                                     ;
@@ -492,7 +492,7 @@ $(function () {
                                             showmessage("success", "Tin đã được báo thành công!");
                                         }, 800);
                                     } else {
-                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                        showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                     }
                                 }
                                 ;
@@ -533,7 +533,7 @@ $(function () {
                                             showmessage("success", "Tin đã được bỏ thành công!");
                                         }, 800);
                                     } else {
-                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                        showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                     }
                                 }
                                 ;
@@ -563,7 +563,7 @@ $(function () {
                                 }, 1200);
 
                             } else {
-                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                             }
                         }
                         ;
@@ -585,7 +585,7 @@ $(function () {
                                 showmessage("success", "Tin đã được lưu thành công!");
                             }, 1200);
                         } else {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                         }
                     };
                 });
@@ -607,7 +607,7 @@ $(function () {
                             }, 1200);
 
                         } else {
-                            showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                            showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                         }
                     };
                 });
@@ -635,7 +635,7 @@ $(function () {
                                 if (resp.Status == 3) {
                                     showmessage("success", "Không tìm thấy tin cần cho chặn!");
                                 } else {
-                                    showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                    showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                 }
                             }
                         }
@@ -688,7 +688,7 @@ $(function () {
                                     });
                                 }
                                 else {
-                                    showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                    showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                 }
                                 ;
                             });
@@ -761,7 +761,7 @@ $(function () {
                                         });
                                     }
                                     else {
-                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                        showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                     }
                                     ;
                                 });
@@ -796,7 +796,7 @@ $(function () {
                                     if (resp.Status == 3) {
                                         showmessage("success", "Không tìm thấy tin cần cho chặn!");
                                     } else {
-                                        showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                        showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                     }
                                 }
                             }
@@ -861,7 +861,7 @@ $(function () {
                         $("#newsedit").modal("show");
                     }, 500);
                 } else {
-                    showmessage("error", "Hệ thống gặp sự cố trong quá trình lấy dữ liệu!");
+                    showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                 };
                 $.LoadingOverlay("hide");
             });
@@ -879,7 +879,7 @@ $(function () {
                         $("#newsedit").modal("show");
                     }, 500);
                 } else {
-                    showmessage("error", "Hệ thống gặp sự cố trong quá trình lấy dữ liệu!");
+                    showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                 };
                 $.LoadingOverlay("hide");
             });

@@ -127,13 +127,13 @@ $(document).ready(function () {
                                             if (resp.type == 2) {
                                                 showmessage("error", "Bạn không đủ tiền trong tài khoản! Vui lòng nạp thêm tiền để tiếp tục đăng tin");
                                             } else {
-                                                showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                                showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                             }
                                         }
                                     }
 
                                 } else {
-                                    showmessage("error", "Hệ thống gặp sự cố trong quá trình update dữ liệu!");
+                                    showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
                                 }
                             });
                         
