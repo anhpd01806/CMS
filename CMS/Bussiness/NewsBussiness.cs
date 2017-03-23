@@ -12,10 +12,9 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
 namespace CMS.Bussiness
 {
-    public class NewsBussiness
+    public class NewsBussiness : InitDB
     {
         #region member
-        private readonly CmsDataDataContext db = new CmsDataDataContext();
         private readonly HomeBussiness _homeBussiness = new HomeBussiness();
         private readonly PaymentBussiness _payment = new PaymentBussiness();
         #endregion
@@ -25,150 +24,86 @@ namespace CMS.Bussiness
         public List<NewsModel> GetListNewStatusByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
             int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, int newsStatus, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
         {
-            using (var tran = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            #region Orther
+
+            DateTime? from;
+            DateTime? to;
+
+            if (!string.IsNullOrEmpty(From))
             {
-                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
-            }))
-            {
-                var news_new = new List<int>();
-
-                if (newsStatus != Convert.ToInt32(Helper.NewsStatus.IsDelete))
-                {
-                    news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && !c.IsDeleted.Value && !c.IsAgency.Value
-                                select (c.NewsId)).ToList();
-                }
-                else
-                {
-                    news_new = (from c in db.News_Customer_Mappings
-                                where c.CustomerId.Equals(UserId) && c.IsDeleted.Value && !c.IsAgency.Value
-                                select (c.NewsId)).ToList();
-                }
-
-                //Danh sách tin đã đọc theo user
-                var news_isread = (from c in db.News_Customer_Mappings
-                                   where c.CustomerId.Equals(UserId) && c.IsReaded.Value && !c.IsAgency.Value
-                                   select (c.NewsId)).ToList();
-
-                //Danh sách tin đã bị xóa
-                var listDelete = (from c in db.News_Trashes
-                                  where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(UserId)
-                                  select (c.NewsId)).ToList();
-
-                var query = (from c in db.News
-                             join d in db.Districts on c.DistrictId equals d.Id
-                             join t in db.NewsStatus on c.StatusId equals t.Id
-                             join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
-                             join s in db.Sites on c.SiteId equals s.ID
-                             join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
-                             from nac in temp2.DefaultIfEmpty()
-                             where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam && !s.Deleted && s.Published
-                             && !d.IsDeleted && d.Published
-                             && news_new.Contains(c.Id)
-                             && !listDelete.Contains(c.Id)
-                             select new NewsModel
-                             {
-                                 Id = c.Id,
-                                 Title = c.Title,
-                                 CategoryId = c.CategoryId,
-                                 SiteId = c.SiteId,
-                                 Contents = c.Contents,
-                                 Link = c.Link,
-                                 Phone = c.Phone,
-                                 Price = c.Price,
-                                 PriceText = c.PriceText,
-                                 DistrictId = d.Id,
-                                 DistictName = d.Name,
-                                 StatusId = t.Id,
-                                 StatusName = t.Name,
-                                 CreatedOn = c.CreatedOn,
-                                 CusIsReaded = news_isread.Contains(c.Id),
-                                 CusIsSaved = ncm.IsSaved,
-                                 CusIsDeleted = ncm.IsDeleted,
-                                 IsRepeat = c.IsRepeat,
-                                 RepeatTotal = c.TotalRepeat.HasValue ? c.TotalRepeat.Value : 0,
-                                 Iscc = nac.Iscc.HasValue && nac.Iscc.Value,
-                                 IsReason = false//CheckReason(UserId, c.Id)
-                             }).Distinct();
-
-                if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsSave))
-                {
-                    query = query.Where(c => c.CusIsSaved.HasValue && c.CusIsSaved.Value && !c.CusIsDeleted.Value);
-                }
-                if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsDelete))
-                {
-                    query = query.Where(c => c.CusIsDeleted.HasValue && c.CusIsDeleted.Value);
-                }
-                if (newsStatus == Convert.ToInt32(Helper.NewsStatus.IsRead))
-                {
-                    query = query.Where(c => c.CusIsReaded.HasValue && c.CusIsReaded.Value);
-                }
-
-                #region check param
-                if (CateId != 0)
-                {
-                    query = query.Where(c => c.CategoryId.Equals(CateId));
-                }
-                if (DistricId != 0)
-                {
-                    query = query.Where(c => c.DistrictId.Equals(DistricId));
-                }
-                if (StatusId != 0)
-                {
-                    query = query.Where(c => c.StatusId.Equals(StatusId));
-                }
-                if (SiteId != 0)
-                {
-                    query = query.Where(c => c.SiteId.Equals(SiteId));
-                }
-                if (BackDate != -1)
-                {
-                    query = BackDate == 0 ? query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd") + " 23:59:59.999")) : query.Where(c => c.CreatedOn >= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate)).ToString("yyyy/MM/dd") + " 00:00:00.00") && c.CreatedOn <= Convert.ToDateTime(DateTime.Now.AddDays(-(BackDate + 1)).ToString("yyyy/MM/dd") + " 23:59:59.999"));
-                }
-                if (!string.IsNullOrEmpty(From))
-                {
-                    query = query.Where(c => c.CreatedOn >= Convert.ToDateTime((From.Split('-')[2] + "/" + From.Split('-')[1] + "/" + From.Split('-')[0] + " 00:00:00.00")));
-                }
-                if (!string.IsNullOrEmpty(To))
-                {
-                    query = query.Where(c => c.CreatedOn <= Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0] + " 23:59:59.999")).AddDays(-1));
-                }
-                if (MinPrice != -1)
-                {
-                    query = query.Where(c => c.Price.Value >= Convert.ToDecimal(MinPrice));
-                }
-                if (MaxPrice != -1)
-                {
-                    query = query.Where(c => c.Price.Value <= Convert.ToDecimal(MaxPrice));
-                }
-                if (!string.IsNullOrEmpty(key))
-                {
-                    query = query.Where(c => c.Title.Contains(key) || c.Phone.Contains(key) || c.Contents.Contains(key) || c.DistictName.Contains(key) || c.PriceText.Contains(key));
-                }
-                if (!IsRepeat)
-                {
-                    query = query.Where(c => !c.IsRepeat);
-                }
-                #endregion
-
-                total = query.ToList().Count;
-                if (string.IsNullOrEmpty(NameOrder))
-                {
-                    if (!IsRepeat)
-                    {
-                        query = query.OrderByDescending(c => c.CreatedOn);
-                    }
-                    else
-                    {
-                        query = query.OrderByDescending(c => c.Phone);
-                    }
-                }
-                else
-                {
-                    query = descending ? QueryableHelper.OrderByDescending(query, NameOrder) : QueryableHelper.OrderBy(query, NameOrder);
-                }
-                return query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                from = Convert.ToDateTime((From.Split('-')[2] + "/" + From.Split('-')[1] + "/" + From.Split('-')[0]));
             }
+            else
+            {
+                from = null;
+            }
+            if (!string.IsNullOrEmpty(To))
+            {
+                to = Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0]));
+            }
+            else
+            {
+                to = null;
+            }
+
+            decimal? minPrice;
+            if (MinPrice != -1)
+            {
+                minPrice = Convert.ToDecimal(MinPrice);
+            }
+            else
+            {
+                minPrice = null;
+            }
+            decimal? maxPrice;
+            if (MaxPrice != -1)
+            {
+                maxPrice = Convert.ToDecimal(MaxPrice);
+            }
+            else
+            {
+                maxPrice = null;
+            }
+            int? backdate;
+            if (BackDate != -1)
+            {
+                backdate = BackDate;
+            }
+            else
+            {
+                backdate = null;
+            }
+
+            int? totalout = 0;
+            #endregion
+
+            var listItem =
+                (Instance.PROC_GetListNewsByStatus(UserId, CateId, DistricId, StatusId, SiteId, backdate, from, to,
+                    minPrice, maxPrice, pageIndex, pageSize, newsStatus, IsRepeat, key, NameOrder, descending, ref totalout)
+                    .Select(c => new NewsModel
+                    {
+                        Id = c.Id.Value,
+                        Title = c.Title,
+                        CategoryId = c.CategoryId,
+                        SiteId = c.SiteId.Value,
+                        Link = c.Link,
+                        Phone = c.Phone,
+                        Contents = c.Contents,
+                        Price = c.Price,
+                        PriceText = c.PriceText,
+                        DistrictId = c.DistrictId,
+                        DistictName = c.DistictName,
+                        StatusId = c.StatusId,
+                        StatusName = c.StatusName,
+                        CreatedOn = c.CreatedOn,
+                        CusIsReaded = c.CusIsReaded,
+                        IsRepeat = c.IsRepeat.HasValue && c.IsRepeat.Value,
+                        RepeatTotal = c.RepeatTotal.Value,
+                        Iscc = c.Iscc.HasValue && c.Iscc.Value
+                    })).ToList();
+
+            total = totalout.HasValue ? Convert.ToInt32(totalout) : 0;
+            return listItem;
         }
 
         public int RemoveSaveNewByUserId(List<News_Customer_Mapping> cusNews, int userId)
@@ -177,7 +112,7 @@ namespace CMS.Bussiness
             {
                 foreach (var item in cusNews)
                 {
-                    var query = (from c in db.News_Customer_Mappings
+                    var query = (from c in Instance.News_Customer_Mappings
                                  where c.NewsId.Equals(item.NewsId) && c.IsSaved.Value && c.CustomerId.Equals(userId)
                                  select c).ToList();
                     if (query != null)
@@ -190,10 +125,10 @@ namespace CMS.Bussiness
                             }
                             else
                             {
-                                db.News_Customer_Mappings.DeleteOnSubmit(newsCustomerMapping);
+                                Instance.News_Customer_Mappings.DeleteOnSubmit(newsCustomerMapping);
                             }
                         }
-                        db.SubmitChanges();
+                        Instance.SubmitChanges();
                     }
                 }
 
@@ -214,7 +149,7 @@ namespace CMS.Bussiness
             {
                 foreach (var item in cusNews)
                 {
-                    var query = (from c in db.News_Customer_Mappings
+                    var query = (from c in Instance.News_Customer_Mappings
                                  where c.NewsId.Equals(item.NewsId) && c.IsDeleted.Value && c.CustomerId.Equals(userId)
                                  select c).ToList();
                     if (query != null)
@@ -227,10 +162,10 @@ namespace CMS.Bussiness
                             }
                             else
                             {
-                                db.News_Customer_Mappings.DeleteOnSubmit(newsCustomerMapping);
+                                Instance.News_Customer_Mappings.DeleteOnSubmit(newsCustomerMapping);
                             }
                         }
-                        db.SubmitChanges();
+                        Instance.SubmitChanges();
                     }
                 }
 
@@ -249,7 +184,7 @@ namespace CMS.Bussiness
         {
             try
             {
-                var query = (from c in db.Role_Users
+                var query = (from c in Instance.Role_Users
                              where c.UserId.Equals(userId)
                              select new
                              {
@@ -331,10 +266,10 @@ namespace CMS.Bussiness
             int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, ref int total)
         {
             var minPayment = Convert.ToDouble(ConfigWeb.MinPayment);
-            var query = from c in db.News
-                        join d in db.Districts on c.DistrictId equals d.Id
-                        join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
-                        join u in db.Users on ncm.CustomerId equals u.Id
+            var query = from c in Instance.News
+                        join d in Instance.Districts on c.DistrictId equals d.Id
+                        join ncm in Instance.News_Customer_Mappings on c.Id equals ncm.NewsId
+                        join u in Instance.Users on ncm.CustomerId equals u.Id
                         where ncm.IsAgency.HasValue && ncm.IsAgency.Value
                         select new NewsModel
                         {
@@ -443,7 +378,7 @@ namespace CMS.Bussiness
                         var minPayment = Convert.ToDouble(ConfigWeb.MinPayment);
                         var totalMoney = Convert.ToDouble(string.IsNullOrEmpty(_payment.GetCashPaymentByUserId(userid)) ? "0" : _payment.GetCashPaymentByUserId(userid));
 
-                        var news = (from c in db.News_Customer_Mappings
+                        var news = (from c in Instance.News_Customer_Mappings
                                     where c.CustomerId.Equals(userid) && c.NewsId.Equals(newsid) && c.IsAgency.HasValue && c.IsAgency.Value
                                     select c).ToList();
                         if (news.Any())
@@ -452,14 +387,14 @@ namespace CMS.Bussiness
                             {
                                 if (isDelete)
                                 {
-                                    db.News_Customer_Mappings.DeleteOnSubmit(item);
-                                    db.News.DeleteOnSubmit(GetNewsById(item.NewsId));
+                                    Instance.News_Customer_Mappings.DeleteOnSubmit(item);
+                                    Instance.News.DeleteOnSubmit(GetNewsById(item.NewsId));
                                 }
                                 else
                                 {
                                     if (totalMoney >= minPayment)
                                     {
-                                        db.News_Customer_Mappings.DeleteOnSubmit(item);
+                                        Instance.News_Customer_Mappings.DeleteOnSubmit(item);
                                     }
                                     else
                                     {
@@ -467,7 +402,7 @@ namespace CMS.Bussiness
                                     }
                                 }
                             }
-                            db.SubmitChanges();
+                            Instance.SubmitChanges();
                             return 1;
                         }
                         return 2;
@@ -483,10 +418,10 @@ namespace CMS.Bussiness
 
         public NewsModel GetNewsDetail(int Id, int UserId)
         {
-            var query = (from c in db.News
-                         join d in db.Districts on c.DistrictId equals d.Id
-                         join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId
-                         join u in db.Users on ncm.CustomerId equals u.Id
+            var query = (from c in Instance.News
+                         join d in Instance.Districts on c.DistrictId equals d.Id
+                         join ncm in Instance.News_Customer_Mappings on c.Id equals ncm.NewsId
+                         join u in Instance.Users on ncm.CustomerId equals u.Id
                          where c.CreatedOn.HasValue
                          && c.Id.Equals(Id)
                          select new NewsModel
@@ -521,15 +456,15 @@ namespace CMS.Bussiness
             }))
             {
                 //Danh sách tin đã đọc theo user
-                var news_isread = (from c in db.News_Customer_Mappings
+                var news_isread = (from c in Instance.News_Customer_Mappings
                                    where c.CustomerId.Equals(UserId) && c.IsReaded.Value && !c.IsAgency.Value
                                    select (c.NewsId)).ToList();
 
-                var query = (from c in db.News
-                             join d in db.Districts on c.DistrictId equals d.Id
-                             join t in db.NewsStatus on c.StatusId equals t.Id
-                             join nd in db.News_Trashes on c.Id equals nd.NewsId
-                             join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
+                var query = (from c in Instance.News
+                             join d in Instance.Districts on c.DistrictId equals d.Id
+                             join t in Instance.NewsStatus on c.StatusId equals t.Id
+                             join nd in Instance.News_Trashes on c.Id equals nd.NewsId
+                             join ac in Instance.News_customer_actions on c.Id equals ac.NewsId into temp2
                              from nac in temp2.DefaultIfEmpty()
                              where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam //&& c.Published.HasValue
                              && !d.IsDeleted && d.Published
@@ -630,17 +565,17 @@ namespace CMS.Bussiness
             {
                 foreach (var t in listnews)
                 {
-                    var query = (from c in db.News_Trashes
+                    var query = (from c in Instance.News_Trashes
                                  where c.NewsId.Equals(t) && c.CustomerID.Equals(userId) && !c.Isdeleted
                                  select c).ToList();
                     if (query.Any())
                     {
                         foreach (var newsTrash in query)
                         {
-                            db.News_Trashes.DeleteOnSubmit(newsTrash);
+                            Instance.News_Trashes.DeleteOnSubmit(newsTrash);
                         }
                     }
-                    db.SubmitChanges();
+                    Instance.SubmitChanges();
                 }
                 return 1;
             }
@@ -656,7 +591,7 @@ namespace CMS.Bussiness
             {
                 foreach (var t in listnews)
                 {
-                    var query = (from c in db.News_Trashes
+                    var query = (from c in Instance.News_Trashes
                                  where c.NewsId.Equals(t) && c.CustomerID.Equals(userId) && !c.Isdeleted && !c.IsSpam
                                  select c).ToList();
                     if (query.Any())
@@ -668,7 +603,7 @@ namespace CMS.Bussiness
                             newsTrash.IsSpam = false;
                         }
                     }
-                    db.SubmitChanges();
+                    Instance.SubmitChanges();
                 }
                 return 1;
             }
@@ -689,23 +624,23 @@ namespace CMS.Bussiness
                 IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }))
             {
-                //var listBlacklist = (from c in db.Blacklists
+                //var listBlacklist = (from c in Instance.Blacklists
                 //                     select (c.Words)).ToList();
 
                 //Danh sách tin đã đọc theo user
-                var news_isread = (from c in db.News_Customer_Mappings
+                var news_isread = (from c in Instance.News_Customer_Mappings
                                    where c.CustomerId.Equals(UserId) && c.IsReaded.Value && !c.IsAgency.Value
                                    select (c.NewsId)).ToList();
 
                 //Danh sách tin đã bị xóa
-                var listDelete = (from c in db.News_Trashes
+                var listDelete = (from c in Instance.News_Trashes
                                   where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(UserId)
                                   select (c.NewsId)).ToList();
 
-                var query = (from c in db.News
-                            join s in db.Sites on c.SiteId equals s.ID
-                            join d in db.Districts on c.DistrictId equals d.Id
-                            join ac in db.News_customer_actions on c.Id equals ac.NewsId into temp2
+                var query = (from c in Instance.News
+                            join s in Instance.Sites on c.SiteId equals s.ID
+                            join d in Instance.Districts on c.DistrictId equals d.Id
+                            join ac in Instance.News_customer_actions on c.Id equals ac.NewsId into temp2
                             from nac in temp2.DefaultIfEmpty()
                             where !listDelete.Contains(c.Id) && c.IsSpam
                             orderby c.CreatedOn descending
@@ -805,7 +740,7 @@ namespace CMS.Bussiness
             {
                 foreach (var t in listnews)
                 {
-                    var query = (from c in db.News
+                    var query = (from c in Instance.News
                                  where c.Id.Equals(t)
                                  select c).ToList();
 
@@ -814,14 +749,14 @@ namespace CMS.Bussiness
                         foreach (var item in query)
                         {
                             item.IsSpam = false;
-                            var qr = (from c in db.Blacklists where c.Words.Equals(item.Phone) select c).FirstOrDefault();
+                            var qr = (from c in Instance.Blacklists where c.Words.Equals(item.Phone) select c).FirstOrDefault();
                             if (qr != null)
                             {
-                                db.Blacklists.DeleteOnSubmit(qr);
+                                Instance.Blacklists.DeleteOnSubmit(qr);
                             }
                         }
                     }
-                    db.SubmitChanges();
+                    Instance.SubmitChanges();
                 }
                 return 1;
             }
@@ -836,25 +771,25 @@ namespace CMS.Bussiness
         #region Help
         public int CountRepeatnews(int newId, int userId, int districId)
         {
-            var listBlacklist = (from c in db.Blacklists
+            var listBlacklist = (from c in Instance.Blacklists
                                  select (c.Words)).ToList();
 
             //Danh sách tin đã lưu hoặc đã ẩn theo user
-            var news_new = (from c in db.News_Customer_Mappings
+            var news_new = (from c in Instance.News_Customer_Mappings
                             where c.CustomerId.Equals(userId) && (c.IsDeleted.Value || c.IsSaved.Value)
                             select (c.NewsId)).ToList();
 
             //Danh sách tin đã đọc theo user
-            var news_isread = (from c in db.News_Customer_Mappings
+            var news_isread = (from c in Instance.News_Customer_Mappings
                                where c.CustomerId.Equals(userId) && c.IsReaded.Value
                                select (c.NewsId)).ToList();
             var news = _homeBussiness.GetNewsDetail(newId);
             if (news != null)
             {
-                var query = from c in db.News
-                            join d in db.Districts on c.DistrictId equals d.Id
-                            join t in db.NewsStatus on c.StatusId equals t.Id
-                            join ncm in db.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
+                var query = from c in Instance.News
+                            join d in Instance.Districts on c.DistrictId equals d.Id
+                            join t in Instance.NewsStatus on c.StatusId equals t.Id
+                            join ncm in Instance.News_Customer_Mappings on c.Id equals ncm.NewsId into temp
                             from tm in temp.DefaultIfEmpty()
                             where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                             && !d.IsDeleted && d.Published
@@ -889,10 +824,10 @@ namespace CMS.Bussiness
 
         public int CheckRepeatNews(string phone, int districId, int userId)
         {
-            //var listBlacklist = (from c in db.Blacklists
+            //var listBlacklist = (from c in Instance.Blacklists
             //                     select (c.Words)).ToList();
-            var query = (from c in db.News
-                         join d in db.Districts on c.DistrictId equals d.Id
+            var query = (from c in Instance.News
+                         join d in Instance.Districts on c.DistrictId equals d.Id
                          where c.CreatedOn.HasValue && !c.IsDeleted
                          && !d.IsDeleted && d.Published
                          && c.DistrictId.Equals(districId)
@@ -908,12 +843,12 @@ namespace CMS.Bussiness
         {
             try
             {
-                var listBlacklist = (from c in db.Blacklists
+                var listBlacklist = (from c in Instance.Blacklists
                                      select (c.Words)).ToList();
-                var listDelete = (from c in db.News_Trashes
+                var listDelete = (from c in Instance.News_Trashes
                                   where (c.Isdelete || c.Isdeleted) && c.CustomerID.Equals(userID)
                                   select (c.NewsId)).ToList();
-                var query = (from c in db.News
+                var query = (from c in Instance.News
                              where c.CreatedOn.HasValue && !c.IsDeleted
                              && c.Phone.Contains(phone)
                              && !listDelete.Contains(c.Id)
@@ -929,7 +864,7 @@ namespace CMS.Bussiness
 
         public bool CheckCC(int newsId)
         {
-            var query = (from c in db.News_customer_actions
+            var query = (from c in Instance.News_customer_actions
                          where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value
                          select c).ToList();
             if (query.Any())
@@ -939,7 +874,7 @@ namespace CMS.Bussiness
 
         public bool CheckCCByUser(int newsId, int userId)
         {
-            var query = (from c in db.News_customer_actions
+            var query = (from c in Instance.News_customer_actions
                          where c.NewsId.Equals(newsId) && c.Iscc.HasValue && c.Iscc.Value && c.CustomerId.Equals(userId)
                          select c).ToList();
             if (query.Any())
@@ -950,40 +885,40 @@ namespace CMS.Bussiness
 
         public New GetNewsById(int id)
         {
-            return db.News.FirstOrDefault(x => x.Id == id);
+            return Instance.News.FirstOrDefault(x => x.Id == id);
         }
 
         public void UpdateSpam(int id)
         {
-            var news = db.News.FirstOrDefault(x => x.Id == id);
+            var news = Instance.News.FirstOrDefault(x => x.Id == id);
             news.IsSpam = true;
-            db.SubmitChanges();
+            Instance.SubmitChanges();
         }
 
         public void UpdateCountNews(string Phone)
         {
             if (!string.IsNullOrEmpty(Phone))
             {
-                var newsList = db.News.Where(x => x.Phone.Contains(Phone) && x.IsSpam == false).ToList();
+                var newsList = Instance.News.Where(x => x.Phone.Contains(Phone) && x.IsSpam == false).ToList();
                 if (newsList != null)
                 {
                     foreach (var item in newsList)
                     {
                         item.TotalRepeat = newsList.Count();
                     }
-                    db.SubmitChanges();
+                    Instance.SubmitChanges();
                 }
             }
         }
 
         public string GetDetailManagerUser(int userId)
         {
-            var user = (from c in db.Users where c.Id.Equals(userId) select c).FirstOrDefault();
+            var user = (from c in Instance.Users where c.Id.Equals(userId) select c).FirstOrDefault();
             if (user != null)
             {
                 if (user.ManagerBy != null)
                 {
-                    var manager = (from c in db.Users where c.Id.Equals(user.ManagerBy) select c).FirstOrDefault();
+                    var manager = (from c in Instance.Users where c.Id.Equals(user.ManagerBy) select c).FirstOrDefault();
                     if (manager != null)
                         return manager.UserName;
                 }
