@@ -744,4 +744,44 @@
       <Column Name="Iscc" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.PROC_GetListNewsByStatus" Method="PROC_GetListNewsByStatus">
+    <Parameter Name="UserId" Parameter="userId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CateId" Parameter="cateId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DistricId" Parameter="districId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="StatusId" Parameter="statusId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SiteId" Parameter="siteId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="BackDate" Parameter="backDate" Type="System.Int32" DbType="Int" />
+    <Parameter Name="From" Parameter="from" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="To" Parameter="to" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="MinPrice" Parameter="minPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="MaxPrice" Parameter="maxPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="pageIndex" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pageSize" Type="System.Int32" DbType="Int" />
+    <Parameter Name="newsStatus" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IsRepeat" Parameter="isRepeat" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="key" Type="System.String" DbType="NVarChar(255)" />
+    <Parameter Name="NameOrder" Parameter="nameOrder" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="descending" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="total" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <ElementType Name="PROC_GetListNewsByStatusResult">
+      <Column Name="Id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SiteId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Link" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Contents" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="PriceText" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="DistrictId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DistictName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="StatusId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="StatusName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CusIsReaded" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsRepeat" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="RepeatTotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Iscc" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>
