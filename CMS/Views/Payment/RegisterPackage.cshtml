@@ -33,7 +33,10 @@
                             if (result.isError) {
                                 $('#msg-recharge').append($("<div>", { class: "alert alert-danger" }).text(result.message));
                             } else {
-                                $('#msg-recharge').append($("<div>", { class: "alert alert-success" }).text(result.message));
+                                //$('#msg-recharge').append($("<div>", { class: "alert alert-success" }).text(result.message));
+                                //show modal thông báo .
+                                $('#tit-notify').html(result.message);
+                                $('#md-notify-payment').modal().show();
                             }
                         },
                         error: function (response) {
@@ -76,6 +79,13 @@
             });
         }
     </script>
+    <style>
+        .notice-box {
+            border: 1px solid #337ab7;
+            margin-top: 30px;
+            height: 106px;
+        }
+    </style>
 }
 @section featured
 {
@@ -104,10 +114,10 @@
                         }
                         <input id="hdUserName" type="hidden" value="@Session["SS-USERNAME"].ToString()" />
                         @*<h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>*@
-                        <div class="col-md-4 col-xs-12">
+                        <div class="col-md-3 col-xs-12">
                             <fieldset>
                                 <legend class="lighter blue">Đăng ký gói cước</legend>
-                                <div class="form col-md-10" role="form">
+                                <div class="form col-md-11" role="form">
                                     <div class="form-group">
                                         @Html.DropDownListFor(m => m.Payment, Model.PackageList, new { @class = "form-control" })
                                     </div>
@@ -115,28 +125,25 @@
                                 <div class="col-md-12 footer-button">
                                     <button type="submit" class="btn btn-primary btn-sm">Đăng ký</button>
                                 </div>
-                                <div class="col-md-12">
-                                    <h3 class="lighter orange">Đăng ký gói ngày hoặc gói tháng để sử dụng phần mềm!</h3>
-                                </div>
                             </fieldset>
                         </div>
 
-                        <div class="col-md-4 col-xs-12">
+                        <div class="col-md-3 col-xs-12">
                             <fieldset>
                                 <legend class="lighter blue">Nạp tiền bằng thẻ điện thoại</legend>
 
                                 <div class="form-group">
-                                    <div class="col-md-10 col-xs-12">
+                                    <div class="col-md-11 col-xs-12">
                                         <input type="text" class="form-control" id="card-serial" placeholder="Nhập Serial">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-10 col-xs-12">
+                                    <div class="col-md-11 col-xs-12">
                                         <input type="text" class="form-control" id="card-code" placeholder="Nhập mã thẻ">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-10 col-xs-12">
+                                    <div class="col-md-11 col-xs-12">
                                         <select id="card-option">
                                             <option value="" disabled selected>Chọn nhà mạng</option>
                                             <option value="VTT">Viettel </option>
@@ -146,11 +153,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-4 col-xs-12">
+                                    <div class="col-md-3 col-xs-12">
                                         <input type="button" class="btn btn-primary btn-sm" id="recharge" value="Nạp tiền" />
                                     </div>
                                 </div>
                             </fieldset>
+                        </div>
+
+                        <div class="col-md-3 col-xs-12 notice-box " >
+                            <h3><span style="color:red;">Lưu ý :</span> <span style="color:#478FCA">sau khi nạp tiền bằng thẻ cào bạn phải đăng ký gói cước thì mới xem được tin.</span></h3>
                         </div>
                     </div>
                 </div>
