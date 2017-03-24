@@ -41,14 +41,13 @@
 
             <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>
             <td style="text-align: center">
-                @if (Convert.ToBoolean(item.CusIsReaded))
+                @if (Convert.ToBoolean(ViewBag.Accept))
                 {
-                    <span class="label label-warning arrowed-right arrowed-in">Đã xem</span>
+                    <a href="@item.Link" target="_blank" title="@item.Title"><label style="cursor:pointer;">@item.SiteName</label> </a>
                 }
                 else
                 {
-                    <span class="label label-info arrowed">Chưa xem</span>
-
+                    <span class="error">Vui lòng nạp tiền</span>
                 }
             </td>
             <td class="tdcc">
@@ -60,7 +59,7 @@
             <td style="text-align: center;">
                 @if (!Convert.ToBoolean(ViewBag.User))
                 {
-                    <a class="green edit-item-list" href="javascript:;" data-id="@item.Id">
+                    <a class="green edit-item-list_adm" href="javascript:;" data-id="@item.Id">
                         <i class="icon-edit bigger-130 "></i>
                     </a>
                 }

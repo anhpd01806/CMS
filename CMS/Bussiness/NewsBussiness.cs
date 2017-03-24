@@ -92,6 +92,7 @@ namespace CMS.Bussiness
                         Price = c.Price,
                         PriceText = c.PriceText,
                         DistrictId = c.DistrictId,
+                        SiteName = c.SiteName,
                         DistictName = c.DistictName,
                         StatusId = c.StatusId,
                         StatusName = c.StatusName,

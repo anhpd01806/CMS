@@ -716,31 +716,6 @@ namespace CMS.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.PROC_GetListNewsInHome")]
-		public ISingleResult<PROC_GetListNewsInHomeResult> PROC_GetListNewsInHome(
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="UserId", DbType="Int")] System.Nullable<int> userId, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CateId", DbType="Int")] System.Nullable<int> cateId, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="DistricId", DbType="Int")] System.Nullable<int> districId, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="StatusId", DbType="Int")] System.Nullable<int> statusId, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="SiteId", DbType="Int")] System.Nullable<int> siteId, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="BackDate", DbType="Int")] System.Nullable<int> backDate, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="DateTime")] System.Nullable<System.DateTime> from, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="DateTime")] System.Nullable<System.DateTime> to, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="MinPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> minPrice, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="MaxPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> maxPrice, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pageIndex, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pageSize, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsRepeat", DbType="Bit")] System.Nullable<bool> isRepeat, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(255)")] string key, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="NameOrder", DbType="NVarChar(200)")] string nameOrder, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> descending, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> total)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, cateId, districId, statusId, siteId, backDate, from, to, minPrice, maxPrice, pageIndex, pageSize, isRepeat, key, nameOrder, descending, total);
-			total = ((System.Nullable<int>)(result.GetParameterValue(16)));
-			return ((ISingleResult<PROC_GetListNewsInHomeResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.PROC_GetListNewsByStatus")]
 		public ISingleResult<PROC_GetListNewsByStatusResult> PROC_GetListNewsByStatus(
 					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="UserId", DbType="Int")] System.Nullable<int> userId, 
@@ -765,6 +740,31 @@ namespace CMS.Data
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, cateId, districId, statusId, siteId, backDate, from, to, minPrice, maxPrice, pageIndex, pageSize, newsStatus, isRepeat, key, nameOrder, descending, total);
 			total = ((System.Nullable<int>)(result.GetParameterValue(17)));
 			return ((ISingleResult<PROC_GetListNewsByStatusResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.PROC_GetListNewsInHome")]
+		public ISingleResult<PROC_GetListNewsInHomeResult> PROC_GetListNewsInHome(
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="UserId", DbType="Int")] System.Nullable<int> userId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CateId", DbType="Int")] System.Nullable<int> cateId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="DistricId", DbType="Int")] System.Nullable<int> districId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="StatusId", DbType="Int")] System.Nullable<int> statusId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="SiteId", DbType="Int")] System.Nullable<int> siteId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="BackDate", DbType="Int")] System.Nullable<int> backDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="DateTime")] System.Nullable<System.DateTime> from, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="DateTime")] System.Nullable<System.DateTime> to, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="MinPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> minPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="MaxPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> maxPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pageIndex, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pageSize, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsRepeat", DbType="Bit")] System.Nullable<bool> isRepeat, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(255)")] string key, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="NameOrder", DbType="NVarChar(200)")] string nameOrder, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> descending, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> total)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, cateId, districId, statusId, siteId, backDate, from, to, minPrice, maxPrice, pageIndex, pageSize, isRepeat, key, nameOrder, descending, total);
+			total = ((System.Nullable<int>)(result.GetParameterValue(16)));
+			return ((ISingleResult<PROC_GetListNewsInHomeResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -14399,6 +14399,356 @@ namespace CMS.Data
 		}
 	}
 	
+	public partial class PROC_GetListNewsByStatusResult
+	{
+		
+		private System.Nullable<int> _Id;
+		
+		private string _Title;
+		
+		private System.Nullable<int> _CategoryId;
+		
+		private System.Nullable<int> _SiteId;
+		
+		private string _Link;
+		
+		private string _Phone;
+		
+		private string _Contents;
+		
+		private System.Nullable<decimal> _Price;
+		
+		private string _PriceText;
+		
+		private System.Nullable<int> _DistrictId;
+		
+		private string _DistictName;
+		
+		private System.Nullable<int> _StatusId;
+		
+		private string _StatusName;
+		
+		private System.Nullable<System.DateTime> _CreatedOn;
+		
+		private System.Nullable<bool> _CusIsReaded;
+		
+		private System.Nullable<bool> _IsRepeat;
+		
+		private System.Nullable<int> _RepeatTotal;
+		
+		private System.Nullable<bool> _Iscc;
+		
+		private string _SiteName;
+		
+		public PROC_GetListNewsByStatusResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int")]
+		public System.Nullable<int> Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this._Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(300)")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this._Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryId", DbType="Int")]
+		public System.Nullable<int> CategoryId
+		{
+			get
+			{
+				return this._CategoryId;
+			}
+			set
+			{
+				if ((this._CategoryId != value))
+				{
+					this._CategoryId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteId", DbType="Int")]
+		public System.Nullable<int> SiteId
+		{
+			get
+			{
+				return this._SiteId;
+			}
+			set
+			{
+				if ((this._SiteId != value))
+				{
+					this._SiteId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(300)")]
+		public string Link
+		{
+			get
+			{
+				return this._Link;
+			}
+			set
+			{
+				if ((this._Link != value))
+				{
+					this._Link = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(50)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this._Phone = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contents", DbType="NVarChar(MAX)")]
+		public string Contents
+		{
+			get
+			{
+				return this._Contents;
+			}
+			set
+			{
+				if ((this._Contents != value))
+				{
+					this._Contents = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this._Price = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceText", DbType="NVarChar(100)")]
+		public string PriceText
+		{
+			get
+			{
+				return this._PriceText;
+			}
+			set
+			{
+				if ((this._PriceText != value))
+				{
+					this._PriceText = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistrictId", DbType="Int")]
+		public System.Nullable<int> DistrictId
+		{
+			get
+			{
+				return this._DistrictId;
+			}
+			set
+			{
+				if ((this._DistrictId != value))
+				{
+					this._DistrictId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistictName", DbType="NVarChar(200)")]
+		public string DistictName
+		{
+			get
+			{
+				return this._DistictName;
+			}
+			set
+			{
+				if ((this._DistictName != value))
+				{
+					this._DistictName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusId", DbType="Int")]
+		public System.Nullable<int> StatusId
+		{
+			get
+			{
+				return this._StatusId;
+			}
+			set
+			{
+				if ((this._StatusId != value))
+				{
+					this._StatusId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusName", DbType="NVarChar(200)")]
+		public string StatusName
+		{
+			get
+			{
+				return this._StatusName;
+			}
+			set
+			{
+				if ((this._StatusName != value))
+				{
+					this._StatusName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this._CreatedOn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CusIsReaded", DbType="Bit")]
+		public System.Nullable<bool> CusIsReaded
+		{
+			get
+			{
+				return this._CusIsReaded;
+			}
+			set
+			{
+				if ((this._CusIsReaded != value))
+				{
+					this._CusIsReaded = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRepeat", DbType="Bit")]
+		public System.Nullable<bool> IsRepeat
+		{
+			get
+			{
+				return this._IsRepeat;
+			}
+			set
+			{
+				if ((this._IsRepeat != value))
+				{
+					this._IsRepeat = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatTotal", DbType="Int")]
+		public System.Nullable<int> RepeatTotal
+		{
+			get
+			{
+				return this._RepeatTotal;
+			}
+			set
+			{
+				if ((this._RepeatTotal != value))
+				{
+					this._RepeatTotal = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Iscc", DbType="Bit")]
+		public System.Nullable<bool> Iscc
+		{
+			get
+			{
+				return this._Iscc;
+			}
+			set
+			{
+				if ((this._Iscc != value))
+				{
+					this._Iscc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteName", DbType="NVarChar(100)")]
+		public string SiteName
+		{
+			get
+			{
+				return this._SiteName;
+			}
+			set
+			{
+				if ((this._SiteName != value))
+				{
+					this._SiteName = value;
+				}
+			}
+		}
+	}
+	
 	public partial class PROC_GetListNewsInHomeResult
 	{
 		
@@ -14437,6 +14787,8 @@ namespace CMS.Data
 		private System.Nullable<int> _RepeatTotal;
 		
 		private System.Nullable<bool> _Iscc;
+		
+		private string _SiteName;
 		
 		public PROC_GetListNewsInHomeResult()
 		{
@@ -14729,335 +15081,19 @@ namespace CMS.Data
 				}
 			}
 		}
-	}
-	
-	public partial class PROC_GetListNewsByStatusResult
-	{
 		
-		private System.Nullable<int> _Id;
-		
-		private string _Title;
-		
-		private System.Nullable<int> _CategoryId;
-		
-		private System.Nullable<int> _SiteId;
-		
-		private string _Link;
-		
-		private string _Phone;
-		
-		private string _Contents;
-		
-		private System.Nullable<decimal> _Price;
-		
-		private string _PriceText;
-		
-		private System.Nullable<int> _DistrictId;
-		
-		private string _DistictName;
-		
-		private System.Nullable<int> _StatusId;
-		
-		private string _StatusName;
-		
-		private System.Nullable<System.DateTime> _CreatedOn;
-		
-		private System.Nullable<bool> _CusIsReaded;
-		
-		private System.Nullable<bool> _IsRepeat;
-		
-		private System.Nullable<int> _RepeatTotal;
-		
-		private System.Nullable<bool> _Iscc;
-		
-		public PROC_GetListNewsByStatusResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int")]
-		public System.Nullable<int> Id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteName", DbType="NVarChar(100)")]
+		public string SiteName
 		{
 			get
 			{
-				return this._Id;
+				return this._SiteName;
 			}
 			set
 			{
-				if ((this._Id != value))
+				if ((this._SiteName != value))
 				{
-					this._Id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(300)")]
-		public string Title
-		{
-			get
-			{
-				return this._Title;
-			}
-			set
-			{
-				if ((this._Title != value))
-				{
-					this._Title = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryId", DbType="Int")]
-		public System.Nullable<int> CategoryId
-		{
-			get
-			{
-				return this._CategoryId;
-			}
-			set
-			{
-				if ((this._CategoryId != value))
-				{
-					this._CategoryId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteId", DbType="Int")]
-		public System.Nullable<int> SiteId
-		{
-			get
-			{
-				return this._SiteId;
-			}
-			set
-			{
-				if ((this._SiteId != value))
-				{
-					this._SiteId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(300)")]
-		public string Link
-		{
-			get
-			{
-				return this._Link;
-			}
-			set
-			{
-				if ((this._Link != value))
-				{
-					this._Link = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(50)")]
-		public string Phone
-		{
-			get
-			{
-				return this._Phone;
-			}
-			set
-			{
-				if ((this._Phone != value))
-				{
-					this._Phone = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contents", DbType="NVarChar(MAX)")]
-		public string Contents
-		{
-			get
-			{
-				return this._Contents;
-			}
-			set
-			{
-				if ((this._Contents != value))
-				{
-					this._Contents = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> Price
-		{
-			get
-			{
-				return this._Price;
-			}
-			set
-			{
-				if ((this._Price != value))
-				{
-					this._Price = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceText", DbType="NVarChar(100)")]
-		public string PriceText
-		{
-			get
-			{
-				return this._PriceText;
-			}
-			set
-			{
-				if ((this._PriceText != value))
-				{
-					this._PriceText = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistrictId", DbType="Int")]
-		public System.Nullable<int> DistrictId
-		{
-			get
-			{
-				return this._DistrictId;
-			}
-			set
-			{
-				if ((this._DistrictId != value))
-				{
-					this._DistrictId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistictName", DbType="NVarChar(200)")]
-		public string DistictName
-		{
-			get
-			{
-				return this._DistictName;
-			}
-			set
-			{
-				if ((this._DistictName != value))
-				{
-					this._DistictName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusId", DbType="Int")]
-		public System.Nullable<int> StatusId
-		{
-			get
-			{
-				return this._StatusId;
-			}
-			set
-			{
-				if ((this._StatusId != value))
-				{
-					this._StatusId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusName", DbType="NVarChar(200)")]
-		public string StatusName
-		{
-			get
-			{
-				return this._StatusName;
-			}
-			set
-			{
-				if ((this._StatusName != value))
-				{
-					this._StatusName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CreatedOn
-		{
-			get
-			{
-				return this._CreatedOn;
-			}
-			set
-			{
-				if ((this._CreatedOn != value))
-				{
-					this._CreatedOn = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CusIsReaded", DbType="Bit")]
-		public System.Nullable<bool> CusIsReaded
-		{
-			get
-			{
-				return this._CusIsReaded;
-			}
-			set
-			{
-				if ((this._CusIsReaded != value))
-				{
-					this._CusIsReaded = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRepeat", DbType="Bit")]
-		public System.Nullable<bool> IsRepeat
-		{
-			get
-			{
-				return this._IsRepeat;
-			}
-			set
-			{
-				if ((this._IsRepeat != value))
-				{
-					this._IsRepeat = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatTotal", DbType="Int")]
-		public System.Nullable<int> RepeatTotal
-		{
-			get
-			{
-				return this._RepeatTotal;
-			}
-			set
-			{
-				if ((this._RepeatTotal != value))
-				{
-					this._RepeatTotal = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Iscc", DbType="Bit")]
-		public System.Nullable<bool> Iscc
-		{
-			get
-			{
-				return this._Iscc;
-			}
-			set
-			{
-				if ((this._Iscc != value))
-				{
-					this._Iscc = value;
+					this._SiteName = value;
 				}
 			}
 		}

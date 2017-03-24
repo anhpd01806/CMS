@@ -157,6 +157,7 @@ namespace CMS.Bussiness
                         DistrictId = c.DistrictId,
                         DistictName = c.DistictName,
                         StatusId = c.StatusId,
+                        SiteName = c.SiteName,
                         StatusName = c.StatusName,
                         CreatedOn = c.CreatedOn,
                         CusIsReaded = c.CusIsReaded,
