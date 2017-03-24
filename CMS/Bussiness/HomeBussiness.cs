@@ -496,7 +496,7 @@ namespace CMS.Bussiness
                                 {
                                     NewsId = item.Id,
                                     CustomerId = userReport,
-                                    Iscc = false,
+                                    Iscc = CheckCC(item.Id) ? true : false,
                                     IsSpam = false,
                                     Ischeck = false,
                                     IsReport = true,
@@ -646,6 +646,9 @@ namespace CMS.Bussiness
             {
                 for (int i = 0; i < listnews.Length; i++)
                 {
+                    var checkcc = (from c in Instance.News_customer_actions
+                                   where c.NewsId.Equals(listnews[i])
+                                   select c).ToList();
                     var query = (from c in Instance.News_customer_actions
                                  where c.NewsId.Equals(listnews[i]) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
                                  select c).ToList();
@@ -659,6 +662,10 @@ namespace CMS.Bussiness
                         item.IsSpam = false;
                         item.DateCreate = DateTime.Now;
                         Instance.News_customer_actions.InsertOnSubmit(item);
+                    }
+                    foreach (var item in checkcc)
+                    {
+                        item.Iscc = true;
                     }
                     Instance.SubmitChanges();
                 }
