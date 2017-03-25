@@ -593,7 +593,7 @@ namespace CMS.Bussiness
                 foreach (var t in listnews)
                 {
                     var query = (from c in Instance.News_Trashes
-                                 where c.NewsId.Equals(t) && c.CustomerID.Equals(userId) && !c.Isdeleted && !c.IsSpam
+                                 where c.NewsId.Equals(t) && !c.Isdeleted && !c.IsSpam
                                  select c).ToList();
                     if (query.Any())
                     {
