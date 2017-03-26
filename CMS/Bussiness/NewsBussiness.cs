@@ -77,6 +77,7 @@ namespace CMS.Bussiness
             int? totalout = 0;
             #endregion
 
+            Instance.CommandTimeout = 30;
             var listItem =
                 (Instance.PROC_GetListNewsByStatus(UserId, CateId, DistricId, StatusId, SiteId, backdate, from, to,
                     minPrice, maxPrice, pageIndex, pageSize, newsStatus, IsRepeat, key, NameOrder, descending, ref totalout)

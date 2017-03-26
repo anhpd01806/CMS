@@ -9,7 +9,6 @@ namespace CMS.Bussiness
     public class InitDB
     {
         #region fields
-        [ThreadStatic]
         private static CmsDataDataContext _instance;
         private static readonly object lockDB = new object();
 
