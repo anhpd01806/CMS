@@ -307,13 +307,13 @@ namespace CMS.Controllers
         {
             List<NoticeModel> lstNotify = new NotifyBussiness().GetNotify(IsUser, UserId);
             //nếu tk đăng nhập sắp hết tiền thì thông báo 
-            var check = db.PaymentAccepteds.Where(x => x.UserId == UserId && x.EndDate >= DateTime.Now.AddDays(-1)).Any();
+            var check = db.PaymentAccepteds.Where(x => x.UserId == UserId && x.EndDate >= DateTime.Now.AddDays(-1) && x.EndDate <= DateTime.Now).Any();
             if (check)
             {
                 NoticeModel notyfi = new NoticeModel();
                 notyfi.Type = 4;
                 notyfi.Id = 0;
-                notyfi.Title = "Tài khoản của bạn sắp hết tiền , Vui lòng nạp thêm để sử dụng dịch vụ.";
+                notyfi.Title = "Tài khoản của bạn sắp hết hạn sử dụng , Vui lòng đăng ký mới gói cước để sử dụng dịch vụ.";
                 notyfi.DateSend = DateTime.Now;
                 notyfi.UserName = "Admin";
                 lstNotify.Add(notyfi);
