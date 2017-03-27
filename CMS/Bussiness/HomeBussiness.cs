@@ -417,7 +417,7 @@ namespace CMS.Bussiness
                 foreach (var item in reasonlst)
                 {
                     rs += "<li><span>" + new UserBussiness().GetNameById(item.CustomerId)
-                        + "(" + item.DateCreate.ToString("dd/MM/yyyy") + "</br></span></li>";
+                        + "(" + item.DateCreate.ToString("dd/MM/yyyy") + ")</br></span></li>";
                 }
             }
             else
