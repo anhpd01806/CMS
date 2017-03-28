@@ -476,7 +476,7 @@ namespace CMS.Bussiness
                                     var reportItem = new Blacklist
                                     {
                                         Words = itemPhone,
-                                        Description = "Chặn số môi giới: " + item.Title,
+                                        Description = item.Title,
                                         LinkUrl = item.Link,
                                         CreatedOn = DateTime.Now,
                                         Type = 1

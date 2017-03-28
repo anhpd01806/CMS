@@ -87,12 +87,18 @@ namespace CMS.Bussiness
 
         public int GetUserByName(string name)
         {
-            return db.Users.FirstOrDefault(x => x.UserName == name).Id;
+            var user = db.Users.FirstOrDefault(x => x.UserName == name);
+            if(user!= null)
+            return user.Id;
+            else return 0;
         }
 
         public string GetNameById(int id)
         {
-            return db.Users.FirstOrDefault(x => x.Id == id).UserName;
+            var user = db.Users.FirstOrDefault(x => x.Id == id);
+            if (user != null)
+                return user.FullName;
+            else return "Quản trị viên ";
         }
 
         /// <summary>
