@@ -244,7 +244,16 @@
                     {
                         foreach (var item in Model.ListNew)
                         {
-                            <tr style="@(Convert.ToBoolean(item.CusIsReaded) ? "color: #bf983b;" : string.Empty)">
+                            bool check = false;
+                            var cookie = Request.Cookies["NewsViewd"];
+                            if (cookie != null)
+                            {
+                                if (cookie.Value.ToString().Contains(item.Id.ToString()))
+                                {
+                                    check = true;
+                                }
+                            }
+                            <tr style="@(check ? "color: #bf983b;" : string.Empty)">
                                 <td>
                                     <label class="pos-rel">
                                         <input type="checkbox" class="checkboxItem" id="@item.Id" />

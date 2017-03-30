@@ -323,7 +323,7 @@ $(function () {
                     $.post("/home/usersavenews", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
-                                LoadData();
+                                //LoadData();
                                 setTimeout(function () {
                                     showmessage("success", "Tin đã được lưu thành công!");
                                 }, 1200);
@@ -349,7 +349,7 @@ $(function () {
                     $.post("/home/userhidenews", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
-                                LoadData();
+                                //LoadData();
                                 setTimeout(function () {
                                     showmessage("success", "Tin đã được ẩn thành công!");
                                 }, 1200);
@@ -377,7 +377,7 @@ $(function () {
                     $.post("/home/delete", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
-                                LoadData();
+                                //LoadData();
                                 setTimeout(function () {
                                     showmessage("success", "Tin đã được xóa thành công!");
                                 }, 1200);
@@ -420,7 +420,7 @@ $(function () {
                             $.post("/home/delete", { listNewsId: selected }, function (resp) {
                                 if (resp != null) {
                                     if (resp.Status == 1) {
-                                        LoadData();
+                                        //LoadData();
                                         setTimeout(function () {
                                             showmessage("success", "Tin đã được xóa thành công!");
                                         }, 1200);
@@ -470,7 +470,14 @@ $(function () {
                                 $.post("/home/newsforuser", { listNewsId: selected }, function (resp) {
                                     if (resp != null) {
                                         if (resp.Status == 1) {
-                                            LoadData();
+                                            $(".tdcc").each(function () {
+                                                $.each(selected, function (key, value) {
+
+                                                    $("." + value).html('<img class="icon icons8-Checked" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADcElEQVRoQ+2Zu24TQRSG/7OEWKEApwhSnCKXjiaJm3hdxdQREFokBLwBj+BHyBsAQqLF3GqSynaa2KGgS+wijkSaDR0C9qCxveDL3HZ3YhQp087M2e+fc5nLEi55o0vOjysB/9uDVx6IPFA9rS558DaZsQ1wFkxZENa7/YwGiAOAAiJUQoR7xfliy4X3Unugflp/wiGe/4W1pWI0yMNOYb7wynaKbFxiAV1w5jJAS2kAAG4RUTmpkNgCRKhQ6L2NveImlYwGe+HDuKEVS8D+t/318Cd/BiFr4knUzwi863R34/ZGw3a+tYDq6f5TYn5hazjNOCZ6VpzfeGljw0pAd+V/8YGNQVdjvCnK23jCKKAf8wcXFjYqxYyAvTBvygmjgNpJXcD36vmkG6PhLxTyus9qBUwy7oMfAbKZ8dpgygetgFqndpy+zpvd1jw7xIejT7i3soW1udWRCdzyc/6yyopSwKRWP4KPAFfnVnF/ZWuIV+cFpYBJxP4ofET9+M4jLN5c/CdCkwtSAd3Kw96x2fnJR6jg5WEEMIXLsoqkEHCxm1Zc+O6BVrG5SQXUOrUKQA+Sr696ZhL4njV+5+f87VHLcg906rsEbLoWkBxeXCmwV8wVSlYCbBO4/b09nGwaxWngew6Qb2qKEKqzafXfH33E4dkXRe0enp0avm/OzxXGeBMJiOAjTFXlEP2u4IUtewEn9QYIazIviLB5/fXNWJdMhEt4MJr+QmHsTJYoiW3AbMaYwnSwP14SW5RRHaD4sDjbjDZdqJnFxCmjlrcvlQgZTDr4mBtZnKOEjYi08GJBMjPTs/nZfGC1D4hBNU0ijxrRiXABr0pgweHsOC0T4QRecw7SChCd1U6tRaCBc60+1QZFOIMHt4s5X/l45vxKKUSINn6zMtcZ2YhUV8q4uZAMUTNLsXkNzjC+SvQrkngpu+UcUG/wPDMzvSSrPLEEiMGX+mErUjupS774ninuY3sgmtD3xO4FhtO5N0UlmyfFiMmYA6Nh2n9qrKhOq4nzhNHM3JgumWLeeic2gYiQAoflOPuEtEyC2yCvbPsa7UzAUG6ELH4xSe8PyoVgNNmjnaTgiUNIBSRCC7hWIg63GZQlhvjJ1xMlYAkBgQMmrwL83jW9OpsiwLkA2w+6Hhc7iV0DpLV3JSDtCqadf+k98AexqL9A8fyQVgAAAABJRU5ErkJggg==" width="30" height="30" />');
+
+                                                });
+                                            });
+                                            //LoadData();
                                             setTimeout(function () {
                                                 showmessage("success", "Tin đã được báo thành công!");
                                             }, 800);
@@ -489,7 +496,8 @@ $(function () {
 
         /*Báo chính chủ*/
         $(document).on("click", ".iscc-item-list", function () {
-            var selected = [parseInt($(this).attr("data-id"))];
+            var id = $(this).attr("data-id");
+            var selected = [parseInt(id)];
             if (selected.length == 0) {
                 showmessage("error", "Bạn hãy chọn tin chính chủ!");
             } else {
@@ -511,7 +519,8 @@ $(function () {
                             $.post("/home/newsforuser", { listNewsId: selected }, function (resp) {
                                 if (resp != null) {
                                     if (resp.Status == 1) {
-                                        LoadData();
+                                        $("." + id).html('<img class="icon icons8-Checked" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADcElEQVRoQ+2Zu24TQRSG/7OEWKEApwhSnCKXjiaJm3hdxdQREFokBLwBj+BHyBsAQqLF3GqSynaa2KGgS+wijkSaDR0C9qCxveDL3HZ3YhQp087M2e+fc5nLEi55o0vOjysB/9uDVx6IPFA9rS558DaZsQ1wFkxZENa7/YwGiAOAAiJUQoR7xfliy4X3Unugflp/wiGe/4W1pWI0yMNOYb7wynaKbFxiAV1w5jJAS2kAAG4RUTmpkNgCRKhQ6L2NveImlYwGe+HDuKEVS8D+t/318Cd/BiFr4knUzwi863R34/ZGw3a+tYDq6f5TYn5hazjNOCZ6VpzfeGljw0pAd+V/8YGNQVdjvCnK23jCKKAf8wcXFjYqxYyAvTBvygmjgNpJXcD36vmkG6PhLxTyus9qBUwy7oMfAbKZ8dpgygetgFqndpy+zpvd1jw7xIejT7i3soW1udWRCdzyc/6yyopSwKRWP4KPAFfnVnF/ZWuIV+cFpYBJxP4ofET9+M4jLN5c/CdCkwtSAd3Kw96x2fnJR6jg5WEEMIXLsoqkEHCxm1Zc+O6BVrG5SQXUOrUKQA+Sr696ZhL4njV+5+f87VHLcg906rsEbLoWkBxeXCmwV8wVSlYCbBO4/b09nGwaxWngew6Qb2qKEKqzafXfH33E4dkXRe0enp0avm/OzxXGeBMJiOAjTFXlEP2u4IUtewEn9QYIazIviLB5/fXNWJdMhEt4MJr+QmHsTJYoiW3AbMaYwnSwP14SW5RRHaD4sDjbjDZdqJnFxCmjlrcvlQgZTDr4mBtZnKOEjYi08GJBMjPTs/nZfGC1D4hBNU0ijxrRiXABr0pgweHsOC0T4QRecw7SChCd1U6tRaCBc60+1QZFOIMHt4s5X/l45vxKKUSINn6zMtcZ2YhUV8q4uZAMUTNLsXkNzjC+SvQrkngpu+UcUG/wPDMzvSSrPLEEiMGX+mErUjupS774ninuY3sgmtD3xO4FhtO5N0UlmyfFiMmYA6Nh2n9qrKhOq4nzhNHM3JgumWLeeic2gYiQAoflOPuEtEyC2yCvbPsa7UzAUG6ELH4xSe8PyoVgNNmjnaTgiUNIBSRCC7hWIg63GZQlhvjJ1xMlYAkBgQMmrwL83jW9OpsiwLkA2w+6Hhc7iV0DpLV3JSDtCqadf+k98AexqL9A8fyQVgAAAABJRU5ErkJggg==" width="30" height="30" />');
+                                        //LoadData();
                                         setTimeout(function () {
                                             showmessage("success", "Tin đã được báo thành công!");
                                         }, 800);
@@ -530,7 +539,8 @@ $(function () {
 
         /*hủy tin chính chủ*/
         $(document).on("click", ".rmiscc-item-list", function () {
-            var selected = [parseInt($(this).attr("data-id"))];
+            var id = $(this).attr("data-id");
+            var selected = [parseInt(id)];
             if (selected.length == 0) {
                 showmessage("error", "Bạn hãy chọn tin hủy chính chủ!");
             } else {
@@ -552,7 +562,8 @@ $(function () {
                             $.post("/home/Removenewsforuser", { listNewsId: selected }, function (resp) {
                                 if (resp != null) {
                                     if (resp.Status == 1) {
-                                        LoadData();
+                                        $("." + id).html("");
+                                        //LoadData();
                                         setTimeout(function () {
                                             showmessage("success", "Tin đã được bỏ thành công!");
                                         }, 800);
@@ -577,7 +588,7 @@ $(function () {
                 $.post("/home/usersavenews", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
                         if (resp.Status == 1) {
-                            LoadData();
+                            //LoadData();
                             setTimeout(function () {
                                 showmessage("success", "Tin đã được lưu thành công!");
                             }, 1200);
@@ -598,7 +609,7 @@ $(function () {
                 $.post("/home/userhidenews", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
                         if (resp.Status == 1) {
-                            LoadData();
+                            //LoadData();
                             setTimeout(function () {
                                 showmessage("success", "Tin đã được ẩn thành công!");
                             }, 1200);
@@ -620,7 +631,7 @@ $(function () {
                 $.post("/home/newsspam", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
                         if (resp.Status == 1) {
-                            LoadData();
+                            //LoadData();
                             setTimeout(function () {
                                 showmessage("success", "Tin môi giới đã được cho vào danh sách đen!");
                             }, 1200);
@@ -664,7 +675,7 @@ $(function () {
                         if (result) {
                             $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
                                 if (resp != null) {
-                                    LoadData();
+                                    //LoadData();
                                     setTimeout(function () {
                                         showmessage("success", "Tin môi giới đã được báo cáo thành công!");
                                     }, 1200);
@@ -738,7 +749,7 @@ $(function () {
                             if (result) {
                                 $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
                                     if (resp != null) {
-                                        LoadData();
+                                        //LoadData();
                                         setTimeout(function () {
                                             showmessage("success", "Tin môi giới đã được báo cáo thành công!");
                                         }, 1200);
@@ -782,7 +793,7 @@ $(function () {
                     $.post("/home/newsspam", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
-                                LoadData();
+                                //LoadData();
                                 setTimeout(function () {
                                     showmessage("success", "Tin môi giới đã được cho vào danh sách đen!");
                                 }, 1200);
@@ -864,7 +875,7 @@ $(function () {
                 $.LoadingOverlay("hide");
             });
         });
-        
+
         $(document).on("click", ".btnedit-item-list", function () {
             var id = $(this).attr("data-id");
             $.LoadingOverlay("show");

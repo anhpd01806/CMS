@@ -138,8 +138,11 @@ namespace CMS.Controllers
                     var cookie = Request.Cookies["NewsViewd"];
                     if (cookie != null)
                     {
-                        string ck = cookie.Values["NewsViewd"].ToString() + "," + Id;
-                        cookie.Values["NewsViewd"] = ck;
+                        if (!cookie.Value.ToString().Contains(Id.ToString()))
+                        {
+                            string ck = cookie.Value.ToString() + "," + Id;
+                            Response.Cookies["NewsViewd"].Value = ck;
+                        }
                     }
                     else
                     {
