@@ -135,6 +135,17 @@ namespace CMS.Controllers
                 if (Convert.ToBoolean(Session["USER-ACCEPTED"]))
                 {
                     var Id = Convert.ToInt32(Request["Id"]);
+                    var cookie = Request.Cookies["NewsViewd"];
+                    if (cookie != null)
+                    {
+                        string ck = cookie.Values["NewsViewd"].ToString() + "," + Id;
+                        cookie.Values["NewsViewd"] = ck;
+                    }
+                    else
+                    {
+                        var cookieCompanyID = new HttpCookie("NewsViewd", Id.ToString()) { Expires = DateTime.Now.AddDays(10) };
+                        Response.Cookies.Add(cookieCompanyID);
+                    }
                     int userId = Convert.ToInt32(Session["SS-USERID"]);
                     ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                     ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
