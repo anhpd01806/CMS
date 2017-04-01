@@ -14,6 +14,13 @@ namespace CMS.Bussiness
             return db.Roles.ToList();
         }
 
+        public List<Role> GetRolesByAdmin(int userId)
+        {
+            if (userId == 1)
+                return db.Roles.ToList();
+            else return db.Roles.Where(x => x.Id != 1).ToList();
+        }
+
         public void Insert(Role role)
         {
             try

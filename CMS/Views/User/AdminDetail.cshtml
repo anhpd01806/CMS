@@ -12,37 +12,45 @@
             <td><a onclick="AdminDetail(@u.Id)">@u.UserName</a></td>
             <td>
                 @if (u.IsDelete == true)
-            { <span class="label label-inverse">TK bị khóa</span>}
-            else if (u.IsMember == true)
-            { <span class="label label-warning arrowed-right arrowed-in">Kích hoạt</span>}
+                { <span class="label label-inverse">TK bị khóa</span>}
+                else if (u.IsMember == true)
+                { <span class="label label-warning arrowed-right arrowed-in">Kích hoạt</span>}
+                else
+                { <span class="label label-info arrowed">Chưa được duyệt</span>}
+            </td>
+            @if (u.IsOnline == true)
+            {
+                <td class="text-center"><span class="badge badge-success">online</span></td>
+            }
             else
-            { <span class="label label-info arrowed">Chưa được duyệt</span>}
-        </td>
-        <td>@u.ManagerBy</td>
-        <td>@u.RoleName</td>
-        <td class="text-center">
-            <div class="hidden-sm hidden-xs action-buttons">
-                <a class="green" href="/User/Edit/@u.Id">
-                    Sửa
-                </a>
-            </div>
-            <div class="hidden-md hidden-lg">
-                <div class="inline position-relative">
-                    <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                        <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                        <li>
-                            <a href="/User/Edit/@u.Id" class="tooltip-success" data-rel="tooltip" title="Sửa">
-                                <span class="green">
-                                    <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
+            {
+                <td class="text-center"><span class="badge badge-grey">offline</span></td>
+            }
+            <td>@u.ManagerBy</td>
+            <td>@u.RoleName</td>
+            <td class="text-center">
+                <div class="hidden-sm hidden-xs action-buttons">
+                    <a class="green" href="/User/Edit/@u.Id">
+                        Sửa
+                    </a>
                 </div>
-            </div>
-        </td>
-    </tr>
+                <div class="hidden-md hidden-lg">
+                    <div class="inline position-relative">
+                        <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                            <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                            <li>
+                                <a href="/User/Edit/@u.Id" class="tooltip-success" data-rel="tooltip" title="Sửa">
+                                    <span class="green">
+                                        <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
     }
 }

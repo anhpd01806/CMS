@@ -358,6 +358,7 @@ namespace CMS.Controllers
                         UserName = a.UserName,
                         Phone = a.Phone,
                         Email = a.Email,
+                        IsOnline = checkUserOnline(a.Id),
                         IsDelete = a.IsDeleted ?? false,
                         IsMember = a.IsMember ?? false,
                         ManagerBy = a.ManagerBy != null ? allUser.Where(x => x.Id == a.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "",
@@ -369,6 +370,17 @@ namespace CMS.Controllers
         private NewsCustomerActionModel GetCustomerDetail(int userId, DateTime startDate, DateTime endDate)
         {
             return new NewsCustomerActionBussiness().GetCustomerDetail(userId, startDate, endDate);
+        }
+
+        private Boolean checkUserOnline(int userId)
+        {
+            var currentApp = System.Web.HttpContext.Current.Application["usr_" + userId];
+
+            if (currentApp != null)
+            {
+                return true;
+            }
+            return false;
         }
         #endregion
     }

@@ -105,9 +105,11 @@ namespace CMS.Controllers
                 model.UserList = getCustomerList(ref totalpage, int.Parse(pageIndex), 20, search, managerId, statusId);
                 var content = RenderPartialViewToString("~/Views/Customer/CustomerDetail.cshtml", model.UserList);
                 model.Totalpage = totalpage;
+                var totalPayment = new PaymentBussiness().GetAllCashPaymentByAdmin(managerId);
                 return Json(new
                 {
                     TotalPage = model.Totalpage,
+                    TotalPayment = totalPayment,
                     Content = content
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -143,7 +145,7 @@ namespace CMS.Controllers
                     model.RoleUsers = new RoleBussiness().GetListByUserId(id);
 
                     //get dropdownlist and list role
-                    var allRoles = new RoleBussiness().GetRoles();
+                    var allRoles = new RoleBussiness().GetRolesByAdmin(int.Parse(Session["SS-USERID"].ToString()));
                     model.ManagerList = new UserBussiness().GetManagerUser();
                     if (allRoles != null)
                     {

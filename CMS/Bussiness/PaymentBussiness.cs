@@ -131,6 +131,19 @@ namespace CMS.Bussiness
             else return "0";
         }
 
+        public string GetAllCashPaymentByAdmin(int adminId)
+        {
+            var cash = (from u in db.Users
+                        join p in db.PaymentHistories on u.Id equals p.UserId
+                        where u.ManagerBy == adminId
+                        && p.PaymentMethodId != 5 // tai khoan thanh toan
+                        && p.CreatedDate.Month < DateTime.Now.Month && p.CreatedDate.Month >= DateTime.Now.AddMonths(-1).Month
+                        select p.Amount).Sum();
+            if (cash != null)
+                return string.Format("{0:n0}", cash);
+            else return "0";
+        }
+
         public string GetTimePaymentByUserId(int userId)
         {
             var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);

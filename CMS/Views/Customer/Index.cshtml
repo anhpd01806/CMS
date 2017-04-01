@@ -46,6 +46,8 @@
                     debugger;
                     $("#datatable1 tbody").html("");
                     $("#datatable1 tbody").html(resp.Content);
+                    $("#TotalPayment").html("")
+                    $("#TotalPayment").html(resp.TotalPayment + ' vnđ')
                     if (resp.TotalPage > 1) {
                         $(".page-home").show();
                         showPagination(resp.TotalPage);
@@ -256,7 +258,11 @@
                                     <label>Tình trạng tài khoản</label>
                                     @Html.DropDownListFor(m => m.StatusId, Model.PaymentStatus, new { @class = "form-control", @onchange = "LoadByPaymentStatus()" })
                                 </div>
-                                <div class="form-group" style="padding-left:48%">
+                                <div class="form-group">
+                                    <label>Tổng doanh thu tháng: </label>
+                                    <span id="TotalPayment"></span>
+                                </div>
+                                <div class="form-group" style="padding-left:31%">
                                     <button onclick="ExportExcelAllUser(); return false;" class="btn btn-sm btn-danger btnexport btn-small">
                                         <i class="icon-download-alt bigger-125"></i>
                                         Xuất Excel
