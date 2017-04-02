@@ -869,9 +869,14 @@ $(function () {
                     setTimeout(function () {
                         $("#newsedit").modal("show");
                     }, 500);
+                    $.LoadingOverlay("hide");
+                    return;
                 } else {
-                    showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
+                    showmessage("error", "Bạn không có quyền hoặc server đang bận. Vui lòng thử lại sau!");
+                    $.LoadingOverlay("hide");
+                    return;
                 };
+                showmessage("error", "Bạn không có quyền hoặc server đang bận. Vui lòng thử lại sau!");
                 $.LoadingOverlay("hide");
             });
         });
@@ -888,7 +893,7 @@ $(function () {
                         $("#newsedit").modal("show");
                     }, 500);
                 } else {
-                    showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
+                    showmessage("error", "Bạn không có quyền hoặc server đang bận. Vui lòng thử lại sau!");
                 };
                 $.LoadingOverlay("hide");
             });
