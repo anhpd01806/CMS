@@ -89,8 +89,8 @@
                     @if (!Convert.ToBoolean(ViewBag.User))
                     {
                         <button type="button" class="btn btn-sm btn-danger spam-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Chặn tin</button>
-                        <button type="button" class="btn btn-sm btn-danger delete-item-list btnclose" data-id="@Model.Id"><i class="fa icon-trash"></i> Xóa tin</button>
                         <button type="button" class="btn btn-sm btn-success btnedit-item-list btnclose" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Sửa tin</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-item-list btnclose" data-id="@Model.Id"><i class="fa icon-trash"></i> Xóa tin</button>                        
                         if (Model.Iscc)
                         {
                             <button type="button" class="btn btn-sm btn-grey btnclose rmiscc-item-list" data-id="@Model.Id"><i class="fa fa-user-secret"></i> Hủy chính chủ</button>

@@ -223,10 +223,10 @@ namespace CMS.Bussiness
                         (newsItem.ModifiedOn ?? DateTime.Now) + "' ," + (newsItem.StatusId ?? 0) + ",'" + newsItem.Phone +
                         "',0,'" + (newsItem.CreatedOn ?? DateTime.Now) +
                         "',0," + (newsItem.IsPhone ? 1 : 0) + ",N'" + newsItem.PriceText + "',0," + (newsItem.Area ?? 0) +
-                        "," + newsItem.Price + ",0,1);";
+                        "," + newsItem.Price + ",0,1); SELECT SCOPE_IDENTITY()";
 
-                    db2.ExecuteCommand(query);
-
+                    var id = db2.ExecuteQuery<decimal>(query).ToList()[0];
+                    _homeBussiness.NewsforUser(new int[] { Convert.ToInt32(id) }, userId);
                     return 1;
                 }
                 catch (Exception ex)
@@ -469,6 +469,7 @@ namespace CMS.Bussiness
                              join ac in Instance.News_customer_actions on c.Id equals ac.NewsId into temp2
                              from nac in temp2.DefaultIfEmpty()
                              where c.CreatedOn.HasValue && !c.IsDeleted && !c.IsSpam //&& c.Published.HasValue
+                             && nd.CustomerID.Equals(UserId)
                              && !d.IsDeleted && d.Published
                              && nd.Isdelete && !nd.Isdeleted
                              select new NewsModel
