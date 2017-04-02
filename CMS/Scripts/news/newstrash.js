@@ -431,6 +431,11 @@ $(function () {
             $.LoadingOverlay("show");
             $.post("/news/GetNewsDetailForEdit", { newsId: id }, function (resp) {
                 if (resp != null) {
+                    if (typeof resp.Content == "undefined") {
+                        showmessage("error", "Bạn không có quyền hoặc server đang bận. Vui lòng thử lại sau!");
+                        $.LoadingOverlay("hide");
+                        return;
+                    }
                     $("#modaledit").empty();
                     $("#modaledit").html(resp.Content);
                     $(".btneditnews").attr("data-id", id);
