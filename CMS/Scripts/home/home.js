@@ -675,6 +675,11 @@ $(function () {
                         if (result) {
                             $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
                                 if (resp != null) {
+                                    if (typeof resp.Content == "undefined") {
+                                        showmessage("error", "Bạn không có quyền hoặc server đang bận. Vui lòng thử lại sau!");
+                                        $.LoadingOverlay("hide");
+                                        return;
+                                    }
                                     //LoadData();
                                     setTimeout(function () {
                                         showmessage("success", "Tin môi giới đã được báo cáo thành công!");
@@ -694,11 +699,14 @@ $(function () {
                                         notify.time = moment(value.DateSend).format('DD/MM/YYYY hh:mm:ss');;
                                         socket.emit('send-to-admin', notify);
                                     });
+                                    return;
                                 }
                                 else {
                                     showmessage("error", "Bạn không có quyền hoặc server đang bận. vui long thử lại sau!");
-                                }
-                                ;
+                                    return;
+                                };
+                                showmessage("error", "Bạn không có quyền hoặc server đang bận. Vui lòng thử lại sau!");
+                                $.LoadingOverlay("hide");
                             });
                         }
                     }
