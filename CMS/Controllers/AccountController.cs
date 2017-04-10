@@ -3,6 +3,7 @@ using CMS.Data;
 using CMS.Helper;
 using CMS.Models;
 using CMS.ViewModel;
+using Elmah;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -64,8 +65,9 @@ namespace CMS.Controllers
 
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
                 return View();
             }
 

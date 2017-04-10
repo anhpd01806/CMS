@@ -213,7 +213,9 @@ namespace CMS.Controllers
                 var properties = new string[]
                     {
                         "STT",
-                        "Số điện thoại"
+                        "Số điện thoại",
+                        "Mô tả",
+                        "Link Url"
                     };
                 for (var i = 0; i < properties.Length; i++)
                 {
@@ -232,6 +234,12 @@ namespace CMS.Controllers
                     col++;
 
                     worksheet.Cells[row, col].Value = item.Words;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.Description;
+                    col++;
+
+                    worksheet.Cells[row, col].Value = item.LinkUrl;
                     col++;
                     //next row
                     row++;
