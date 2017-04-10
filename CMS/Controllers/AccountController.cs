@@ -205,11 +205,11 @@ namespace CMS.Controllers
                         //Insert to tbl notify
                         var notify = new Notify
                         {
-                            UserName = "Guest",
+                            UserName = "Khách hàng ",
                             Userid = userId,
                             SendFlag = true,
                             DateSend = DateTime.Now,
-                            Title = "Yêu cầu tạo tài khoản mới",
+                            Title = "Đăng ký mới",
                             Accepted = false,
                             ViewFlag = false,
                             Type = 1

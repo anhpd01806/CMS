@@ -96,7 +96,7 @@ namespace CMS.ViewModel
         public string ManagerBy { get; set; }
         public string TimeEnd { get; set; }
         public string Amount { get; set; }
-        public string LastLogin { get; set; }
+        public DateTime LastLogin { get; set; }
         public string CashPayment { get; set; }
         public string CardPayment { get; set; }
         public string Status { get; set; }

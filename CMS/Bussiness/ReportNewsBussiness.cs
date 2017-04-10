@@ -25,7 +25,7 @@ namespace CMS.Bussiness
                                     Id = a.Id,
                                     StatusId = a.StatusId,
                                     NewsId = a.NewsId,
-                                    Users = b.UserName,
+                                    Users = b.FullName +" - "+ b.UserName,
                                     Notes = a.Notes,
                                     CreateDate = a.CreateDate,
                                     Description = c.Contents,

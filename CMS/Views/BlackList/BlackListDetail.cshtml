@@ -15,29 +15,6 @@
             <td>@u.Words</td>
             <td>@u.Description</td>
             <td><a onClick="window.open('@u.LinkUrl');" href="#">@(!string.IsNullOrEmpty(u.LinkUrl) ? u.LinkUrl.Replace("//","/").Split('/')[1].ToString() : "")</a></td>
-            @*<td class="text-center">
-                <div class="hidden-sm hidden-xs action-buttons">
-                    <a class="red delete delete-selected" href="#" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
-                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                    </a>
-                </div>
-                <div class="hidden-md hidden-lg">
-                    <div class="inline position-relative">
-                        <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                            <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                            <li>
-                                <a href="#" class="tooltip-error delete-selected" data-rel="tooltip" title="Xóa" data-toggle="modal" data-target="#confirm-delete" data-id="@u.Id">
-                                    <span class="red">
-                                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </td>*@
         </tr>
         count++;
     }

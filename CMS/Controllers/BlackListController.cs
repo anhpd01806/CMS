@@ -55,7 +55,7 @@ namespace CMS.Controllers
                                 {
                                     string test = rowIterator.ToString();
                                 }
-                              
+
                                 try
                                 {
                                     black.Description = workSheet.Cells[rowIterator, 3].Value.ToString();
@@ -79,7 +79,7 @@ namespace CMS.Controllers
                                 black.Type = 1;
                                 new BlackListBussiness().Insert(black);
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 string test = black.Words;
                                 TempData["Error"] = "Có một hoặc nhiều bản ghi đang sai định dạng.Lưu ý: Số điện thoại không được để trống";
@@ -152,7 +152,7 @@ namespace CMS.Controllers
                 int totalpage = 0;
                 int totalCount = 0;
                 BlackListViewModel model = new BlackListViewModel();
-                model.BlackList = GetBlackListLink(ref totalCount,ref totalpage, search, PageSize, pageIndex);
+                model.BlackList = GetBlackListLink(ref totalCount, ref totalpage, search, PageSize, pageIndex);
                 var content = RenderPartialViewToString("~/Views/BlackList/BlackListDetail.cshtml", model.BlackList);
                 model.Totalpage = totalpage;
                 return Json(new
@@ -257,7 +257,7 @@ namespace CMS.Controllers
             }
         }
 
-        private List<BlacklistModel> GetBlackListLink(ref int totalCount,ref int totalPage, string search, int pageSize, int pageIndex)
+        private List<BlacklistModel> GetBlackListLink(ref int totalCount, ref int totalPage, string search, int pageSize, int pageIndex)
         {
             var blackList = new BlackListBussiness().GetBlackListByParam(ref totalCount, search, pageSize, (pageIndex - 1));
             var rs = (from a in blackList
@@ -266,7 +266,7 @@ namespace CMS.Controllers
                           Id = a.Id,
                           Words = a.Words,
                           Description = a.Description,
-                          LinkUrl = a.LinkUrl,
+                          LinkUrl = String.IsNullOrEmpty(a.LinkUrl) ? "" : a.LinkUrl.Replace("//", "/").Split('/')[1].ToString(),
                           CreatedOn = a.CreatedOn,
                           Type = a.Type
                       }).ToList();

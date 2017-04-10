@@ -69,7 +69,7 @@
             <div class="navbar-header pull-left">
                 <a href="/Home/index" class="navbar-brand">
                     <small>
-                        <img style="width: 33%; margin-left: 20px; height: 36px;" src="~/Image/ozo-banner1.png" />
+                        <img style="width: 35%; margin-left: 20px; height: 36px;" src="~/Image/ozo-banner1.png" />
                     </small>
                 </a>
             </div>
@@ -129,7 +129,7 @@
 
                                                                         <span class="msg-time">
                                                                             <i class="ace-icon fa fa-clock-o"></i>
-                                                                            <span>@notify.DateSend</span>
+                                                                            <span>@notify.DateSend.ToString("dd/MM/yyyy")</span>
                                                                         </span>
                                                                     </span>
                                                                 </div>
@@ -189,7 +189,7 @@
             try { ace.settings.check('main-container', 'fixed') } catch (e) { }
         </script>
 
-        <div id="sidebar" class="sidebar responsive display menu-min">
+        <div id="sidebar" class="sidebar responsive display">
             <script type="text/javascript">
                 try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
             </script>
@@ -221,7 +221,7 @@
             @Html.Partial("PartialMenu")
 
             <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-                <i class="ace-icon fa fa-angle-double-right" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right" title="Mở/ đóng menu"></i>
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right" title="Mở/ đóng menu"></i>
             </div>
 
             <script type="text/javascript">
