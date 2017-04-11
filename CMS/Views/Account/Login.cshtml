@@ -56,7 +56,7 @@
                                         <div class="space-6"></div>
                                         @using (Html.BeginForm("Login", "Account", FormMethod.Post))
                                         {
-                                            @Html.AntiForgeryToken()
+                                            @*@Html.AntiForgeryToken()*@
                                             @Html.ValidationMessage("CredentialError", new { style = "color:red;" })
                                             <fieldset>
                                                 @if (TempData["Error"] != null)

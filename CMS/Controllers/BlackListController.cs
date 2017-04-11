@@ -283,7 +283,7 @@ namespace CMS.Controllers
                           Id = a.Id,
                           Words = a.Words,
                           Description = a.Description,
-                          LinkUrl = a.LinkUrl,
+                          LinkUrl = String.IsNullOrEmpty(a.LinkUrl) ? "" : a.LinkUrl.Replace("//", "/").Split('/')[1].ToString(),
                           CreatedOn = a.CreatedOn,
                           Type = a.Type
                       }).ToList();

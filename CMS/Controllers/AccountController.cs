@@ -80,11 +80,16 @@ namespace CMS.Controllers
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Login(AccountViewModel model)
         {
             try
             {
+                if (Session["SS-USERID"] != null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
                 if (ModelState.IsValid)
                 {
                     var user = db.Users.FirstOrDefault(x => x.UserName.Equals(model.UserName) && x.Password.Equals(Helpers.md5(model.UserName.Trim() + "ozo" + model.Password.Trim()))
@@ -157,6 +162,7 @@ namespace CMS.Controllers
             HttpCookie rememberCookies = new HttpCookie("rememberCookies");
             rememberCookies.Expires = DateTime.Now.AddDays(-1d);
             Response.Cookies.Add(rememberCookies);
+            System.Web.HttpContext.Current.Application.Remove("usr_" + Session["SS-USERID"]);
             Session.Abandon();
             return RedirectToAction("Login", "Account");
         }
