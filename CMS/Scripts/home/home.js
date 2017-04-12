@@ -675,7 +675,7 @@ $(function () {
                         if (result) {
                             $.post("/home/reportnews", { listNewsId: selected }, function (resp) {
                                 if (resp != null) {
-                                    if (typeof resp.Content == "undefined") {
+                                    if (resp.indexOf("0hh 404 page not found") >= 0) {
                                         showmessage("error", "Bạn không có quyền hoặc server đang bận. Vui lòng thử lại sau!");
                                         $.LoadingOverlay("hide");
                                         return;

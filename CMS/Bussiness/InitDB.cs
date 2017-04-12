@@ -19,10 +19,7 @@ namespace CMS.Bussiness
         {
             get
             {
-                lock (lockDB)
-                {
-                    return _instance ?? (_instance = new CmsDataDataContext());
-                }
+                return _instance = new CmsDataDataContext();
             }
         }
 

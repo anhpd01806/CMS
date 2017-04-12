@@ -26,6 +26,7 @@ namespace WebBackendPlus.Controllers
             {
                 urlCurrent = "/Home/Index";
             }
+
             int userId = Convert.ToInt32(Session["SS-USERID"]);
             string controller = "";
             string action = "";
