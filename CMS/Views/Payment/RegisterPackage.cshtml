@@ -82,8 +82,8 @@
     <style>
         .notice-box {
             border: 1px solid #337ab7;
-            margin-top: 30px;
-            height: 106px;
+            /*margin-top: 30px;
+            height: 106px;*/
         }
     </style>
 }
@@ -114,6 +114,9 @@
                         }
                         <input id="hdUserName" type="hidden" value="@Session["SS-USERNAME"].ToString()" />
                         @*<h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>*@
+                        <div class="col-md-12 col-xs-12 notice-box ">
+                            <h3><span style="color:red;">Lưu ý :</span> <span style="color:#478FCA">Bạn phải chọn gói cước thì mới xem được tin, khi cần trợ giúp xin vui lòng liên hệ:0982.66.77.00</span></h3>
+                        </div>
                         <div class="col-md-3 col-xs-12">
                             <fieldset>
                                 <legend class="lighter blue">Đăng ký gói cước</legend>
@@ -128,7 +131,7 @@
                             </fieldset>
                         </div>
 
-                        <div class="col-md-3 col-xs-12">
+                        <div class="col-md-offset-1 col-md-4 col-xs-12">
                             <fieldset>
                                 <legend class="lighter blue">Nạp tiền bằng thẻ điện thoại</legend>
 
@@ -158,10 +161,6 @@
                                     </div>
                                 </div>
                             </fieldset>
-                        </div>
-
-                        <div class="col-md-3 col-xs-12 notice-box " >
-                            <h3><span style="color:red;">Lưu ý :</span> <span style="color:#478FCA">sau khi nạp tiền bằng thẻ cào bạn phải đăng ký gói cước thì mới xem được tin.</span></h3>
                         </div>
                     </div>
                 </div>
