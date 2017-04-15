@@ -388,7 +388,8 @@ namespace CMS.Controllers
             rs.UserId = cusDetail.Id;
             rs.UserName = cusDetail.UserName;
             rs.FullName = cusDetail.FullName;
-            rs.LastLogin = cusDetail.LastActivityDate?? DateTime.Now;
+            rs.LastLogin = cusDetail.LastActivityDate ?? DateTime.Now;
+            rs.CreateDate = cusDetail.CreatedOn ?? DateTime.Now;
             rs.ManagerBy = cusDetail.ManagerBy != null ? allAdmin.Where(x => x.Id == cusDetail.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "";
             rs.Notes = cusDetail.Notes;
             //get paymen by Id

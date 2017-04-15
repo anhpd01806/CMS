@@ -58,6 +58,7 @@ namespace CMS.Controllers
                     Password = Helpers.md5(model.UserName.Trim() + "ozo" + model.PassWord.Trim()),
                     Sex = model.Sex,
                     Phone = model.UserName,
+                    CreatedOn = DateTime.Now,
                     Email = "",
                     ManagerBy = int.Parse(model.ManagerBy),
                     IsDeleted = false,

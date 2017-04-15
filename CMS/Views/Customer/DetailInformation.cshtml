@@ -40,7 +40,15 @@
                     <label>Login cuối</label>
                 </div>
                 <div class="profile-info-value">
-                    <span>@Model.LastLogin.ToString("dd/MM/yyyy") </span>
+                    <span>@Model.LastLogin </span>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name">
+                    <label>Ngày tạo</label>
+                </div>
+                <div class="profile-info-value">
+                    <span>@Model.CreateDate </span>
                 </div>
             </div>
         </div>

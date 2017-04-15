@@ -102,6 +102,7 @@ namespace CMS.ViewModel
         public string Status { get; set; }
         public string Role { get; set; }
         public string Notes { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 
     public class PaymentTotal

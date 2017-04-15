@@ -199,6 +199,7 @@ namespace CMS.Controllers
                         {
                             UserName = model.UserName,
                             FullName = model.FullName,
+                            CreatedOn = DateTime.Now,
                             Password = Helpers.md5(model.UserName.Trim() + "ozo" + model.PassWord.Trim()),
                             Sex = true,
                             Phone = model.UserName,
