@@ -30,6 +30,7 @@ namespace CMS.Controllers
                 var model = new HomeViewModel();
                 int total = 0;
                 model.pageIndex = 1;
+                model.NewsType = 1;
                 model.pageSize = ConfigWeb.PageSize;
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
 
@@ -80,13 +81,13 @@ namespace CMS.Controllers
                 {
                     listStatusItem.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
                 }
-                model.ListStatus = new SelectList(listStatusItem, "Value", "Text");
+                model.ListStatus = new SelectList(listStatusItem, "Value", "Text", model.NewsType);
                 #endregion
 
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 ViewBag.User = checkuser;
-                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, string.Empty, false, ref total);
+                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 1, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, string.Empty, false, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);
@@ -371,7 +372,7 @@ namespace CMS.Controllers
                     col++;
 
                     worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? (item.Title + "\r\n" + CMS.Helper.Utils.RemoveHtml(item.Contents).Trim()) : "Vui lòng nạp tiền";
-                     worksheet.Cells[row, col].Style.WrapText = true;
+                    worksheet.Cells[row, col].Style.WrapText = true;
                     col++;
 
 
