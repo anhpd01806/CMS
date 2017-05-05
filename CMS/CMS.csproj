@@ -2771,6 +2771,7 @@
     <Content Include="Image\PageNotFound\bg.png" />
     <Content Include="Image\PageNotFound\bg1.png" />
     <Content Include="Image\PageNotFound\error-img.png" />
+    <Content Include="Image\thanh-toan.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Data\CmsData.dbml">
@@ -3005,6 +3006,8 @@
     <Compile Include="Controllers\CategorySiteController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
+    <Compile Include="Controllers\HelpPaymentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LandingPageController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
@@ -3135,6 +3138,8 @@
     <Content Include="Views\Payment\Recharge.cshtml" />
     <Content Include="Views\NewsSave\NewDetail.cshtml" />
     <Content Include="Views\Home\NewsEdit.cshtml" />
+    <Content Include="Views\HelpPayment\Index.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

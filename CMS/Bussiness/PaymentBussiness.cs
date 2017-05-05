@@ -69,6 +69,7 @@ namespace CMS.Bussiness
                       on a.PaymentMethodId equals b.Id
                       where (a.PaymentMethodId == 1 || a.PaymentMethodId == 2)
                       && a.CreatedDate.Month == DateTime.Now.AddMonths(-1).Month
+                      && a.UserId == id
                       group a by new
                       {
                           a.PaymentMethodId,
