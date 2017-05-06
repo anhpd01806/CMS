@@ -40,7 +40,7 @@ namespace CMS.API.Common
         public static string Sort(NameValueCollection array)
         {
             var str = "";
-            foreach (var item in array.AllKeys.OrderBy(k => k))
+            foreach (var item in array.AllKeys)
             {
                 str += string.Format("&{0}={1}", item, UpperCaseUrlEncode(array[item].ToString()));
             }

@@ -53,5 +53,11 @@ namespace CMS.API.Controllers
             }
             return Json("");
         }
+
+        [HttpPost]
+        public JsonResult GenSign(string str)
+        {
+            return Json(Common.Common.GenSign(str, Common.APIConfig.PrivateKey));
+        }
     }
 }
