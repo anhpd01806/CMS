@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "TestApi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#frmlogin").submit(function() {
+            
+        });
+
+        $(".gensign").click(function () {
+            
+        });
+    });
+    
+</script>
+<style>
+    label.error {
+        font-size: 12px;
+        color: red;
+        padding-left: 5px;
+    }
+</style>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#login">Login</a></li>
+    <li><a data-toggle="tab" href="#category">GetCategory</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="login" class="tab-pane fade in active">
+        <h3>LOGIN API</h3>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <form id="frmlogin">
+                        <div class="form-group">
+                            <label for="username">UserName:</label>
+                            <input type="text" class="form-control" id="username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="text" class="form-control" id="password" name="password">
+                        </div>
+                        <div class="form-group">
+                            <label for="sign">Sign:</label>
+                            <input type="text" class="form-control" id="sign" name="sign">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button type="button" class="btn btn-default gensign">GenSign</button>
+                    </form>
+                </div>
+                <div class="col-sm-6 result" style="min-height: 400px; background-color: #ccc;">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="category" class="tab-pane fade">
+    </div>
+</div> 
+
