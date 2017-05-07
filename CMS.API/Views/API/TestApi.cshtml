@@ -10,7 +10,7 @@
         $(".submit").click(function (e) {
             e.preventDefault();
             $.post("/api/login", { username: $("#username").val(), password: $("#password").val(), sign: $("#sign").val() }, function (resp) {
-
+                $(".result_login").html(JSON.stringify(resp));
             });
         });
 
@@ -61,7 +61,7 @@
                         <button type="button" class="btn btn-default gensign">GenSign</button>
                     </form>
                 </div>
-                <div class="col-sm-6 result" style="min-height: 400px; background-color: #ccc;">
+                <div class="col-sm-6 result_login" style="min-height: 400px; background-color: #ccc;">
                     
                 </div>
             </div>
