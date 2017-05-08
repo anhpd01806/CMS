@@ -14,10 +14,66 @@
             });
         });
 
+        $(".submit_category").click(function (e) {
+            e.preventDefault();
+            var data = {
+                UserId: $("#UserId").val(),
+                CateId: $("#CateId").val(),
+                DistricId: $("#DistricId").val(),
+                StatusId: $("#StatusId").val(),
+                SiteId: $("#SiteId").val(),
+                BackDate: $("#BackDate").val(),
+                From: $("#From").val(),
+                To: $("#To").val(),
+                MinPrice: $("#MinPrice").val(),
+                MaxPrice: $("#MaxPrice").val(),
+                pageIndex: $("#pageIndex").val(),
+                pageSize: $("#pageSize").val(),
+                IsRepeat: $("#IsRepeat").val(),
+                key: $("#key").val(),
+                NameOrder: $("#NameOrder").val(),
+                descending: $("#descending").val(),
+                sign: $("#sign_category").val()
+            }
+            $.post("/api/GetListNewsInHome", data, function (resp) {
+                $(".result_category").html(JSON.stringify(resp));
+            });
+        });
+
+        $(".gensign_category").click(function () {
+            var str = "";
+            str += "UserId=" + $("#UserId").val();
+            str += "&CateId=" + $("#CateId").val();
+            str += "&DistricId=" + $("#DistricId").val();
+            str += "&StatusId=" + $("#StatusId").val();
+            str += "&SiteId=" + $("#SiteId").val();
+            str += "&BackDate=" + $("#BackDate").val();
+            str += "&From=" + $("#From").val();
+            str += "&To=" + $("#To").val();
+            str += "&MinPrice=" + $("#MinPrice").val();
+            str += "&MaxPrice=" + $("#MaxPrice").val();
+            str += "&pageIndex=" + $("#pageIndex").val();
+            str += "&pageSize=" + $("#pageSize").val();
+            str += "&IsRepeat=" + $("#IsRepeat").val();
+            str += "&key=" + $("#key").val();
+            str += "&NameOrder=" + $("#NameOrder").val();
+            str += "&descending=" + $("#descending").val();
+            $.post("/api/gensign", { str: str.toLowerCase() }, function (data) {
+                $("#sign_category").val(data);
+            });
+        });
+
         $(".gensign").click(function () {
             var str = "";
             str += "username=" + $.trim($("#username").val());
             str += "&password=" + $.trim($("#password").val());
+            $.post("/api/gensign", { str: str.toLowerCase() }, function (data) {
+                $("#sign").val(data);
+            });
+        });
+
+        $(".gensign_v2").click(function () {
+            var str = "";
             $.post("/api/gensign", { str: str }, function (data) {
                 $("#sign").val(data);
             });
@@ -32,14 +88,16 @@
         padding-left: 5px;
     }
 </style>
-
-<ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#login">Login</a></li>
-    <li><a data-toggle="tab" href="#category">GetCategory</a></li>
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a aria-controls="home" role="tab" data-toggle="tab" href="#login">Login</a></li>
+    <li role="presentation"><a aria-controls="profile" role="tab" data-toggle="tab" href="#category">GetCategory</a></li>
+   
 </ul>
 
+<!-- Tab panes -->
+
 <div class="tab-content">
-    <div id="login" class="tab-pane fade in active">
+    <div role="tabpanel" class="tab-pane active" id="login">
         <h3>LOGIN API</h3>
         <div class="container">
             <div class="row">
@@ -59,6 +117,7 @@
                         </div>
                         <button type="button" class="btn btn-default submit">Submit</button>
                         <button type="button" class="btn btn-default gensign">GenSign</button>
+                        <button type="button" class="btn btn-default gensign_v2">GenSign Empty Param</button>
                     </form>
                 </div>
                 <div class="col-sm-6 result_login" style="min-height: 400px; background-color: #ccc;">
@@ -67,7 +126,92 @@
             </div>
         </div>
     </div>
-    <div id="category" class="tab-pane fade">
+    <div role="tabpanel" class="tab-pane" id="category">
+        <h3>GETLIST NEWS API</h3>
+        <div class="container">
+            <div class="row">
+                @*int UserId, int CateId, int DistricId, int StatusId, int SiteId,
+                int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending*@
+                <div class="col-sm-6">
+                    <form id="frmlogin">
+                        <div class="form-group">
+                            <label for="username">UserID:</label>
+                            <input type="text" class="form-control" id="UserId" name="UserId">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">CateId:</label>
+                            <input type="text" class="form-control" id="CateId" name="CateId">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">DistricId:</label>
+                            <input type="text" class="form-control" id="DistricId" name="DistricId">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">StatusId:</label>
+                            <input type="text" class="form-control" id="StatusId" name="StatusId">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">SiteId:</label>
+                            <input type="text" class="form-control" id="SiteId" name="SiteId">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">BackDate:</label>
+                            <input type="text" class="form-control" id="BackDate" name="BackDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">From:</label>
+                            <input type="text" class="form-control" id="From" name="From">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">To:</label>
+                            <input type="text" class="form-control" id="To" name="To">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">MinPrice:</label>
+                            <input type="text" class="form-control" id="MinPrice" name="MinPrice">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">MaxPrice:</label>
+                            <input type="text" class="form-control" id="MaxPrice" name="MaxPrice">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">pageIndex:</label>
+                            <input type="text" class="form-control" id="pageIndex" name="pageIndex">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">pageSize:</label>
+                            <input type="text" class="form-control" id="pageSize" name="pageSize">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">IsRepeat:</label>
+                            <input type="text" class="form-control" id="IsRepeat" name="IsRepeat">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">key:</label>
+                            <input type="text" class="form-control" id="key" name="key">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">NameOrder:</label>
+                            <input type="text" class="form-control" id="NameOrder" name="NameOrder">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">descending:</label>
+                            <input type="text" class="form-control" id="descending" name="descending">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">sign:</label>
+                            <input type="text" class="form-control" id="sign_category" name="sign">
+                        </div>
+                        
+                        <button type="button" class="btn btn-default submit_category">Submit</button>
+                        <button type="button" class="btn btn-default gensign_category">GenSign</button>
+                    </form>
+                </div>
+                <div class="col-sm-6 result_category" style="min-height: 400px; background-color: #ccc;">
+
+                </div>
+            </div>
+        </div>
     </div>
 </div> 
 
