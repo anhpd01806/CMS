@@ -34,7 +34,7 @@ $(document).ready(function () {
     var isUser = $('#isUser').val();
     var isAdmin = isUser == 0 ? true : false;
     //connect to notify server
-    var socket = io.connect('http://ozo.vn:8088');
+    var socket = io.connect('http://ozo.vn:8010');
     socket.emit('join-room', { userId, isAdmin });
     //show notify
     socket.on('show-notify', function (obj) {
@@ -44,7 +44,7 @@ $(document).ready(function () {
             //span message title
             var spanMsgTit = "<span class='msg-title'>" + spanAvt + obj.title + "</span>";
             //span time
-            var spanTime = "<span>" + obj.time + "</span>";
+            var spanTime = "<span>" + moment(obj.time).format('DD/MM/YYYY') + "</span>";
             //span message time
             var spanMsgTime = "<span class='msg-time'> <i class='ace-icon fa fa-clock-o'></i>" + spanTime + "</span>";
             //span message body

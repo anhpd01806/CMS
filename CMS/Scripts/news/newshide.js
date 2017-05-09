@@ -672,7 +672,7 @@ $(function () {
                                         showmessage("success", "Tin môi giới đã được báo cáo thành công!");
                                     }, 1200);
                                     //send notify to admin
-                                    var socket = io.connect('http://ozo.vn:8088');
+                                    var socket = io.connect('http://ozo.vn:8010');
                                     $.each(resp, function (i, value) {
                                         var notify = {};
                                         notify.title = value.Title;
@@ -745,7 +745,7 @@ $(function () {
                                             showmessage("success", "Tin môi giới đã được báo cáo thành công!");
                                         }, 1200);
                                         //send notify to admin
-                                        var socket = io.connect('http://ozo.vn:8088');
+                                        var socket = io.connect('http://ozo.vn:8010');
                                         $.each(resp, function (i, value) {
                                             var notify = {};
                                             notify.title = value.Title;

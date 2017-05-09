@@ -37,7 +37,7 @@
                 notify.time = $('#noti-time').val();
                 notify.userId = $('#noti-user-id').val();
                 //connect notify server
-                var socket = io.connect('http://ozo.vn:8088');
+                var socket = io.connect('http://ozo.vn:8010');
                 socket.emit('send-to-user', notify);
             }
         });

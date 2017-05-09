@@ -1244,6 +1244,7 @@
     <Content Include="assets\js\loadingoverlay_progress.min.js" />
     <Content Include="assets\js\markdown.min.js" />
     <Content Include="assets\js\moment.min.js" />
+    <Content Include="assets\js\notify.js" />
     <Content Include="assets\js\plugins\closeable-tabs.js" />
     <Content Include="assets\js\plugins\closeable-tabs.min.js" />
     <Content Include="assets\js\plugins\responsive-tabs.js" />
@@ -2951,13 +2952,16 @@
     <Content Include="Scripts\home\home.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery.mousewheel.min.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\news\acceptnews.js" />
     <Content Include="Scripts\news\createnews.js" />
+    <Content Include="Scripts\news\editnews.js" />
     <Content Include="Scripts\news\news.js" />
     <Content Include="Scripts\news\newshide.js" />
+    <Content Include="Scripts\news\newstrash.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
