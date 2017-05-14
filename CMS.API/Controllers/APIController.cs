@@ -347,8 +347,8 @@ namespace CMS.API.Controllers
                     param.Add("key", key.ToString());
                     param.Add("NameOrder", NameOrder.ToString());
                     param.Add("descending", descending.ToString());
-                    var str = Common.Common.Sort(param);
-                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+                    var str = Common.Common.Sort(param).ToLower();
+                    var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
 
                     if (!sign.Equals(gen_sign))
                     {
@@ -414,7 +414,7 @@ namespace CMS.API.Controllers
                     param.Add("Id", Id.ToString());
                     param.Add("UserId", UserId.ToString());
                     var str = Common.Common.Sort(param);
-                    var gen_sign = Common.Common.GenSign(string.Empty, Common.APIConfig.PrivateKey);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
 
                     if (!sign.Equals(gen_sign))
                     {
@@ -455,7 +455,7 @@ namespace CMS.API.Controllers
         [HttpPost]
         public JsonResult GenSign(string str)
         {
-            return Json(Common.Common.GenSign(str, Common.APIConfig.PrivateKey));
+            return Json(Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey));
         }
     }
 }
