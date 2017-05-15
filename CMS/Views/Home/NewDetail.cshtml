@@ -101,10 +101,17 @@
                         {
                             <button type="button" class="btn btn-sm btn-info btnclose iscc-item-list btnclose" data-id="@Model.Id"><i class="fa fa-user"></i> Chính chủ</button>
                         }
+                        if (!Model.IsReason)
+                        {
+                            <button type="button" class="btn btn-sm btn-purple btnclose" id="btn-noti-error" data-toggle="modal" data-target="#md-notify"><i class="fa fa-bug"></i> Báo cáo</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-sm btn-grey btnclose" id="btn-noti-error-cancel" data-toggle="modal" onclick="CancerDangerNewsReport(@Model.Id)"><i class="fa fa-bug"></i> Hủy báo cáo</button>
+                        }
                     }
                     else
                     {
-                        <button type="button" class="btn btn-sm btn-warning btnclose report-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i> Môi giới</button>
                         if (Model.Iscc)
                         {
                             <button type="button" class="btn btn-sm btn-grey btnclose rmiscc-item-list" data-id="@Model.Id"><i class="fa fa-user-secret"></i> Hủy chính chủ</button>
@@ -113,16 +120,18 @@
                         {
                             <button type="button" class="btn btn-sm btn-info btnclose iscc-item-list btnclose" data-id="@Model.Id"><i class="fa fa-user"></i> Chính chủ</button>
                         }
+                        if (!Model.IsReason)
+                        {
+                            <button type="button" class="btn btn-sm btn-purple btnclose" id="btn-noti-error" data-toggle="modal" data-target="#md-notify"><i class="fa fa-bug"></i> Báo cáo</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-sm btn-grey btnclose" id="btn-noti-error-cancel" data-toggle="modal" onclick="CancerDangerNewsReport(@Model.Id)"><i class="fa fa-bug"></i> Hủy báo cáo</button>
+                        }
+                        <button type="button" style="background-color: red!important;border-color: red;" class="btn btn-sm btn-warning btnclose report-item-list" data-id="@Model.Id"><i class="fa fa-exclamation-triangle"></i>Báo môi giới</button>
                     }
 
-                    @if (!Model.IsReason)
-                    {
-                        <button type="button" class="btn btn-sm btn-purple btnclose" id="btn-noti-error" data-toggle="modal" data-target="#md-notify"><i class="fa fa-bug"></i> Báo cáo</button>
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-sm btn-grey btnclose" id="btn-noti-error-cancel" data-toggle="modal" onclick="CancerDangerNewsReport(@Model.Id)"><i class="fa fa-bug"></i> Hủy báo cáo</button>
-                    }
+                  
                 </div>
                 <div class="col-sm-1 pugrbtnclose">
                     <button type="button" class="btn btn-sm btn-inverse btnclose">Đóng</button>

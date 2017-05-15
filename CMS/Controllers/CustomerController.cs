@@ -102,7 +102,7 @@ namespace CMS.Controllers
             {
                 int totalpage = 0;
                 UserViewModel model = new UserViewModel();
-                model.UserList = getCustomerList(ref totalpage, int.Parse(pageIndex), 20, search, managerId, statusId);
+                model.UserList = getCustomerList(ref totalpage, int.Parse(pageIndex), 500, search, managerId, statusId);
                 var content = RenderPartialViewToString("~/Views/Customer/CustomerDetail.cshtml", model.UserList);
                 model.Totalpage = totalpage;
                 var totalPayment = new PaymentBussiness().GetAllCashPaymentByAdmin(managerId);
@@ -359,7 +359,7 @@ namespace CMS.Controllers
                         RoleName = getNameRole(allRoles, allRolesUser, a.Id),
                         IsOnline = checkCustomerOnline(a.Id),
                         EndTimePayment = getPaymentStatus(a.Id)
-                    }).OrderBy(x => x.EndTimePayment).ToList();
+                    }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x=>x.EndTimePayment).ToList();
         }
 
         private DateTime getPaymentStatus(int userId)
