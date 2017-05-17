@@ -62,7 +62,7 @@ $(function () {
                 bInfo: false,
                 searching: false,
                 paging: false,
-                aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
+                aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, null, { "bSortable": false }]
             });
             $('#check-all').parent().removeClass("sorting_asc");
         }
@@ -137,7 +137,7 @@ $(function () {
                                         bInfo: false,
                                         searching: false,
                                         paging: false,
-                                        aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
+                                        aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, null, { "bSortable": false }]
                                     });
                                     $('#check-all').parent().removeClass("sorting_asc");
                                 }
@@ -196,7 +196,7 @@ $(function () {
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
+                            aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, null, { "bSortable": false }]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -323,7 +323,7 @@ $(function () {
                     $.post("/home/usersavenews", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
-                                //LoadData();
+                                LoadData();
                                 setTimeout(function () {
                                     showmessage("success", "Tin đã được lưu thành công!");
                                 }, 1200);
@@ -349,7 +349,7 @@ $(function () {
                     $.post("/home/userhidenews", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
-                                //LoadData();
+                                LoadData();
                                 setTimeout(function () {
                                     showmessage("success", "Tin đã được ẩn thành công!");
                                 }, 1200);
@@ -377,7 +377,7 @@ $(function () {
                     $.post("/home/delete", { listNewsId: selected }, function (resp) {
                         if (resp != null) {
                             if (resp.Status == 1) {
-                                //LoadData();
+                                LoadData();
                                 setTimeout(function () {
                                     showmessage("success", "Tin đã được xóa thành công!");
                                 }, 1200);
@@ -420,7 +420,7 @@ $(function () {
                             $.post("/home/delete", { listNewsId: selected }, function (resp) {
                                 if (resp != null) {
                                     if (resp.Status == 1) {
-                                        //LoadData();
+                                        LoadData();
                                         setTimeout(function () {
                                             showmessage("success", "Tin đã được xóa thành công!");
                                         }, 1200);
@@ -473,8 +473,8 @@ $(function () {
                                             $(".tdcc").each(function () {
                                                 $.each(selected, function (key, value) {
 
-                                                    $("." + value).html('<img class="icon icons8-Checked" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADcElEQVRoQ+2Zu24TQRSG/7OEWKEApwhSnCKXjiaJm3hdxdQREFokBLwBj+BHyBsAQqLF3GqSynaa2KGgS+wijkSaDR0C9qCxveDL3HZ3YhQp087M2e+fc5nLEi55o0vOjysB/9uDVx6IPFA9rS558DaZsQ1wFkxZENa7/YwGiAOAAiJUQoR7xfliy4X3Unugflp/wiGe/4W1pWI0yMNOYb7wynaKbFxiAV1w5jJAS2kAAG4RUTmpkNgCRKhQ6L2NveImlYwGe+HDuKEVS8D+t/318Cd/BiFr4knUzwi863R34/ZGw3a+tYDq6f5TYn5hazjNOCZ6VpzfeGljw0pAd+V/8YGNQVdjvCnK23jCKKAf8wcXFjYqxYyAvTBvygmjgNpJXcD36vmkG6PhLxTyus9qBUwy7oMfAbKZ8dpgygetgFqndpy+zpvd1jw7xIejT7i3soW1udWRCdzyc/6yyopSwKRWP4KPAFfnVnF/ZWuIV+cFpYBJxP4ofET9+M4jLN5c/CdCkwtSAd3Kw96x2fnJR6jg5WEEMIXLsoqkEHCxm1Zc+O6BVrG5SQXUOrUKQA+Sr696ZhL4njV+5+f87VHLcg906rsEbLoWkBxeXCmwV8wVSlYCbBO4/b09nGwaxWngew6Qb2qKEKqzafXfH33E4dkXRe0enp0avm/OzxXGeBMJiOAjTFXlEP2u4IUtewEn9QYIazIviLB5/fXNWJdMhEt4MJr+QmHsTJYoiW3AbMaYwnSwP14SW5RRHaD4sDjbjDZdqJnFxCmjlrcvlQgZTDr4mBtZnKOEjYi08GJBMjPTs/nZfGC1D4hBNU0ijxrRiXABr0pgweHsOC0T4QRecw7SChCd1U6tRaCBc60+1QZFOIMHt4s5X/l45vxKKUSINn6zMtcZ2YhUV8q4uZAMUTNLsXkNzjC+SvQrkngpu+UcUG/wPDMzvSSrPLEEiMGX+mErUjupS774ninuY3sgmtD3xO4FhtO5N0UlmyfFiMmYA6Nh2n9qrKhOq4nzhNHM3JgumWLeeic2gYiQAoflOPuEtEyC2yCvbPsa7UzAUG6ELH4xSe8PyoVgNNmjnaTgiUNIBSRCC7hWIg63GZQlhvjJ1xMlYAkBgQMmrwL83jW9OpsiwLkA2w+6Hhc7iV0DpLV3JSDtCqadf+k98AexqL9A8fyQVgAAAABJRU5ErkJggg==" width="30" height="30" />');
-
+                                                    //$("." + value).html('<img class="icon icons8-Checked" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADcElEQVRoQ+2Zu24TQRSG/7OEWKEApwhSnCKXjiaJm3hdxdQREFokBLwBj+BHyBsAQqLF3GqSynaa2KGgS+wijkSaDR0C9qCxveDL3HZ3YhQp087M2e+fc5nLEi55o0vOjysB/9uDVx6IPFA9rS558DaZsQ1wFkxZENa7/YwGiAOAAiJUQoR7xfliy4X3Unugflp/wiGe/4W1pWI0yMNOYb7wynaKbFxiAV1w5jJAS2kAAG4RUTmpkNgCRKhQ6L2NveImlYwGe+HDuKEVS8D+t/318Cd/BiFr4knUzwi863R34/ZGw3a+tYDq6f5TYn5hazjNOCZ6VpzfeGljw0pAd+V/8YGNQVdjvCnK23jCKKAf8wcXFjYqxYyAvTBvygmjgNpJXcD36vmkG6PhLxTyus9qBUwy7oMfAbKZ8dpgygetgFqndpy+zpvd1jw7xIejT7i3soW1udWRCdzyc/6yyopSwKRWP4KPAFfnVnF/ZWuIV+cFpYBJxP4ofET9+M4jLN5c/CdCkwtSAd3Kw96x2fnJR6jg5WEEMIXLsoqkEHCxm1Zc+O6BVrG5SQXUOrUKQA+Sr696ZhL4njV+5+f87VHLcg906rsEbLoWkBxeXCmwV8wVSlYCbBO4/b09nGwaxWngew6Qb2qKEKqzafXfH33E4dkXRe0enp0avm/OzxXGeBMJiOAjTFXlEP2u4IUtewEn9QYIazIviLB5/fXNWJdMhEt4MJr+QmHsTJYoiW3AbMaYwnSwP14SW5RRHaD4sDjbjDZdqJnFxCmjlrcvlQgZTDr4mBtZnKOEjYi08GJBMjPTs/nZfGC1D4hBNU0ijxrRiXABr0pgweHsOC0T4QRecw7SChCd1U6tRaCBc60+1QZFOIMHt4s5X/l45vxKKUSINn6zMtcZ2YhUV8q4uZAMUTNLsXkNzjC+SvQrkngpu+UcUG/wPDMzvSSrPLEEiMGX+mErUjupS774ninuY3sgmtD3xO4FhtO5N0UlmyfFiMmYA6Nh2n9qrKhOq4nzhNHM3JgumWLeeic2gYiQAoflOPuEtEyC2yCvbPsa7UzAUG6ELH4xSe8PyoVgNNmjnaTgiUNIBSRCC7hWIg63GZQlhvjJ1xMlYAkBgQMmrwL83jW9OpsiwLkA2w+6Hhc7iV0DpLV3JSDtCqadf+k98AexqL9A8fyQVgAAAABJRU5ErkJggg==" width="30" height="30" />');
+                                                    $("." + value).html('<span style="color:deepskyblue">Chính chủ</span>');
                                                 });
                                             });
                                             //LoadData();
@@ -519,7 +519,8 @@ $(function () {
                             $.post("/home/newsforuser", { listNewsId: selected }, function (resp) {
                                 if (resp != null) {
                                     if (resp.Status == 1) {
-                                        $("." + id).html('<img class="icon icons8-Checked" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADcElEQVRoQ+2Zu24TQRSG/7OEWKEApwhSnCKXjiaJm3hdxdQREFokBLwBj+BHyBsAQqLF3GqSynaa2KGgS+wijkSaDR0C9qCxveDL3HZ3YhQp087M2e+fc5nLEi55o0vOjysB/9uDVx6IPFA9rS558DaZsQ1wFkxZENa7/YwGiAOAAiJUQoR7xfliy4X3Unugflp/wiGe/4W1pWI0yMNOYb7wynaKbFxiAV1w5jJAS2kAAG4RUTmpkNgCRKhQ6L2NveImlYwGe+HDuKEVS8D+t/318Cd/BiFr4knUzwi863R34/ZGw3a+tYDq6f5TYn5hazjNOCZ6VpzfeGljw0pAd+V/8YGNQVdjvCnK23jCKKAf8wcXFjYqxYyAvTBvygmjgNpJXcD36vmkG6PhLxTyus9qBUwy7oMfAbKZ8dpgygetgFqndpy+zpvd1jw7xIejT7i3soW1udWRCdzyc/6yyopSwKRWP4KPAFfnVnF/ZWuIV+cFpYBJxP4ofET9+M4jLN5c/CdCkwtSAd3Kw96x2fnJR6jg5WEEMIXLsoqkEHCxm1Zc+O6BVrG5SQXUOrUKQA+Sr696ZhL4njV+5+f87VHLcg906rsEbLoWkBxeXCmwV8wVSlYCbBO4/b09nGwaxWngew6Qb2qKEKqzafXfH33E4dkXRe0enp0avm/OzxXGeBMJiOAjTFXlEP2u4IUtewEn9QYIazIviLB5/fXNWJdMhEt4MJr+QmHsTJYoiW3AbMaYwnSwP14SW5RRHaD4sDjbjDZdqJnFxCmjlrcvlQgZTDr4mBtZnKOEjYi08GJBMjPTs/nZfGC1D4hBNU0ijxrRiXABr0pgweHsOC0T4QRecw7SChCd1U6tRaCBc60+1QZFOIMHt4s5X/l45vxKKUSINn6zMtcZ2YhUV8q4uZAMUTNLsXkNzjC+SvQrkngpu+UcUG/wPDMzvSSrPLEEiMGX+mErUjupS774ninuY3sgmtD3xO4FhtO5N0UlmyfFiMmYA6Nh2n9qrKhOq4nzhNHM3JgumWLeeic2gYiQAoflOPuEtEyC2yCvbPsa7UzAUG6ELH4xSe8PyoVgNNmjnaTgiUNIBSRCC7hWIg63GZQlhvjJ1xMlYAkBgQMmrwL83jW9OpsiwLkA2w+6Hhc7iV0DpLV3JSDtCqadf+k98AexqL9A8fyQVgAAAABJRU5ErkJggg==" width="30" height="30" />');
+                                        //$("." + id).html('<img class="icon icons8-Checked" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADcElEQVRoQ+2Zu24TQRSG/7OEWKEApwhSnCKXjiaJm3hdxdQREFokBLwBj+BHyBsAQqLF3GqSynaa2KGgS+wijkSaDR0C9qCxveDL3HZ3YhQp087M2e+fc5nLEi55o0vOjysB/9uDVx6IPFA9rS558DaZsQ1wFkxZENa7/YwGiAOAAiJUQoR7xfliy4X3Unugflp/wiGe/4W1pWI0yMNOYb7wynaKbFxiAV1w5jJAS2kAAG4RUTmpkNgCRKhQ6L2NveImlYwGe+HDuKEVS8D+t/318Cd/BiFr4knUzwi863R34/ZGw3a+tYDq6f5TYn5hazjNOCZ6VpzfeGljw0pAd+V/8YGNQVdjvCnK23jCKKAf8wcXFjYqxYyAvTBvygmjgNpJXcD36vmkG6PhLxTyus9qBUwy7oMfAbKZ8dpgygetgFqndpy+zpvd1jw7xIejT7i3soW1udWRCdzyc/6yyopSwKRWP4KPAFfnVnF/ZWuIV+cFpYBJxP4ofET9+M4jLN5c/CdCkwtSAd3Kw96x2fnJR6jg5WEEMIXLsoqkEHCxm1Zc+O6BVrG5SQXUOrUKQA+Sr696ZhL4njV+5+f87VHLcg906rsEbLoWkBxeXCmwV8wVSlYCbBO4/b09nGwaxWngew6Qb2qKEKqzafXfH33E4dkXRe0enp0avm/OzxXGeBMJiOAjTFXlEP2u4IUtewEn9QYIazIviLB5/fXNWJdMhEt4MJr+QmHsTJYoiW3AbMaYwnSwP14SW5RRHaD4sDjbjDZdqJnFxCmjlrcvlQgZTDr4mBtZnKOEjYi08GJBMjPTs/nZfGC1D4hBNU0ijxrRiXABr0pgweHsOC0T4QRecw7SChCd1U6tRaCBc60+1QZFOIMHt4s5X/l45vxKKUSINn6zMtcZ2YhUV8q4uZAMUTNLsXkNzjC+SvQrkngpu+UcUG/wPDMzvSSrPLEEiMGX+mErUjupS774ninuY3sgmtD3xO4FhtO5N0UlmyfFiMmYA6Nh2n9qrKhOq4nzhNHM3JgumWLeeic2gYiQAoflOPuEtEyC2yCvbPsa7UzAUG6ELH4xSe8PyoVgNNmjnaTgiUNIBSRCC7hWIg63GZQlhvjJ1xMlYAkBgQMmrwL83jW9OpsiwLkA2w+6Hhc7iV0DpLV3JSDtCqadf+k98AexqL9A8fyQVgAAAABJRU5ErkJggg==" width="30" height="30" />');
+                                        $("." + id).html('<span style="color:deepskyblue">Chính chủ</span>');
                                         //LoadData();
                                         setTimeout(function () {
                                             showmessage("success", "Tin đã được báo thành công!");
@@ -588,7 +589,7 @@ $(function () {
                 $.post("/home/usersavenews", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
                         if (resp.Status == 1) {
-                            //LoadData();
+                            LoadData();
                             setTimeout(function () {
                                 showmessage("success", "Tin đã được lưu thành công!");
                             }, 1200);
@@ -609,7 +610,7 @@ $(function () {
                 $.post("/home/userhidenews", { listNewsId: selected }, function (resp) {
                     if (resp != null) {
                         if (resp.Status == 1) {
-                            //LoadData();
+                            LoadData();
                             setTimeout(function () {
                                 showmessage("success", "Tin đã được ẩn thành công!");
                             }, 1200);
@@ -993,7 +994,7 @@ $(function () {
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
+                            aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, null, { "bSortable": false }]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -1076,7 +1077,7 @@ $(function () {
                                     bInfo: false,
                                     searching: false,
                                     paging: false,
-                                    aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, { "bSortable": false }, null, { "bSortable": false }]
+                                    aoColumns: [{ "bSortable": false }, { "bSortable": false }, { "bSortable": false }, null, null, { "bSortable": false }, null, null, { "bSortable": false }]
                                 });
                                 $('#check-all').parent().removeClass("sorting_asc");
                             }
