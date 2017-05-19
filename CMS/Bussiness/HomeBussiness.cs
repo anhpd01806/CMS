@@ -367,25 +367,31 @@ namespace CMS.Bussiness
                          //&& c.DistrictId.Equals(DistricId)
                          c.Phone.Contains(phone) && c.Phone != ""
                          && !c.Id.Equals(Id)
-                         orderby c.StatusId ascending, c.Price descending
+                         group new { c, st} by new {c.Title, c.Link, st.Name} into g
+                         //orderby c.StatusId ascending, c.Price descending
                          select new NewsModel
                          {
-                             Id = c.Id,
-                             Title = c.Title,
-                             CategoryId = c.CategoryId,
-                             Link = c.Link,
-                             SiteName = st.Name,
-                             Phone = c.Phone,
-                             Price = c.Price,
-                             PriceText = c.PriceText,
-                             DistrictId = d.Id,
-                             SiteId = c.SiteId,
-                             DistictName = d.Name,
-                             StatusId = t.Id,
-                             StatusName = t.Name,
-                             CreatedOn = c.CreatedOn
+                             Title = g.Key.Title,
+                             Link = g.Key.Link,
+                             SiteName = g.Key.Name
                          }).Skip(0).Take(3).ToList();
-            return query;
+            var listItem = new List<NewsModel>();
+            foreach (var item in query)
+            {
+                var newsItem = (from c in Instance.News
+                                join t in Instance.NewsStatus on c.StatusId equals t.Id
+                                join st in Instance.Sites on c.SiteId equals st.ID
+                                where c.Title.Equals(item.Title)
+                                select new NewsModel
+                                {
+                                    Id = c.Id,
+                                    Title = c.Title,
+                                    Link = c.Link,
+                                    SiteName = st.Name
+                                }).FirstOrDefault();
+                listItem.Add(newsItem);
+            }
+            return listItem;
         }
 
         public String GetNameReasonReport(int newsId)
