@@ -237,7 +237,7 @@ namespace CMS.Bussiness
                              CategoryId = ct.Id,
                              CateName = ct.Name,
                              ListImage = GetImageByNewsId(c.Id),
-                             SameNews = GetSameNewsByNewsId(Id, c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
+                             SameNews = GetSameNewsByNewsId(Id, c.Title, c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
                              Iscc = CheckCCByUser(c.Id, UserId),
                              PersionalReport = GetNameReasonReport(c.Id),
                              PersonCheck = GetPersonCheckNews(c.Id),
@@ -353,7 +353,7 @@ namespace CMS.Bussiness
             return query;
         }
 
-        public List<NewsModel> GetSameNewsByNewsId(int Id, int CateId, int DistricId, string phone, int UserId)
+        public List<NewsModel> GetSameNewsByNewsId(int Id, string Title, int CateId, int DistricId, string phone, int UserId)
         {
             var query = (from c in Instance.News
                          join d in Instance.Districts on c.DistrictId equals d.Id
@@ -365,7 +365,7 @@ namespace CMS.Bussiness
                          //&& !news_new.Contains(c.Id)
                          //&& c.CategoryId.Equals(CateId)
                          //&& c.DistrictId.Equals(DistricId)
-                         c.Phone.Contains(phone) && c.Phone != ""
+                         c.Phone.Contains(phone) && c.Phone != "" && c.Title != Title && !c.IsRepeat
                          && !c.Id.Equals(Id)
                          group new { c, st} by new {c.Title, c.Link, st.Name} into g
                          //orderby c.StatusId ascending, c.Price descending
