@@ -48,7 +48,7 @@
     <![endif]-->
     
     @RenderSection("header", required: false)
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="~/assets/css/jquery-ui.css" rel="stylesheet" />
     <script>
         $(document).ready(function () {
             $(document).tooltip();
@@ -59,7 +59,7 @@
 <body class="no-skin">
     <div id="navbar" class="navbar navbar-default">
         <script type="text/javascript">
-            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+            try { ace.settings.check('navbar', 'fixed') } catch (e)- { }
         </script>
         <div class="navbar-container" id="navbar-container">
             <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
