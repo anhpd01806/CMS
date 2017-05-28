@@ -225,6 +225,472 @@ namespace CMS.API.Bussiness
             }
             return query;
         }
+
+        public List<NewsModel> GetListNewStatusByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, int newsStatus, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                #region Orther
+
+                DateTime? from;
+                DateTime? to;
+
+                if (!string.IsNullOrEmpty(From))
+                {
+                    from = Convert.ToDateTime((From.Split('-')[2] + "/" + From.Split('-')[1] + "/" + From.Split('-')[0]));
+                }
+                else
+                {
+                    from = null;
+                }
+                if (!string.IsNullOrEmpty(To))
+                {
+                    to = Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0]));
+                }
+                else
+                {
+                    to = null;
+                }
+
+                decimal? minPrice;
+                if (MinPrice != -1)
+                {
+                    minPrice = Convert.ToDecimal(MinPrice);
+                }
+                else
+                {
+                    minPrice = null;
+                }
+                decimal? maxPrice;
+                if (MaxPrice != -1)
+                {
+                    maxPrice = Convert.ToDecimal(MaxPrice);
+                }
+                else
+                {
+                    maxPrice = null;
+                }
+                int? backdate;
+                if (BackDate != -1)
+                {
+                    backdate = BackDate;
+                }
+                else
+                {
+                    backdate = null;
+                }
+
+                int? totalout = 0;
+                #endregion
+
+                var listItem =
+                    (db.PROC_GetListNewsByStatus(UserId, CateId, DistricId, StatusId, SiteId, backdate, from, to,
+                        minPrice, maxPrice, pageIndex, pageSize, newsStatus, IsRepeat, key, NameOrder, descending, ref totalout)
+                        .Select(c => new NewsModel
+                        {
+                            Id = c.Id.Value,
+                            Title = c.Title,
+                            CategoryId = c.CategoryId,
+                            SiteId = c.SiteId.Value,
+                            Link = c.Link,
+                            Phone = c.Phone,
+                            Contents = c.Contents,
+                            Price = c.Price,
+                            PriceText = c.PriceText,
+                            DistrictId = c.DistrictId,
+                            SiteName = c.SiteName,
+                            DistictName = c.DistictName,
+                            StatusId = c.StatusId,
+                            StatusName = c.StatusName,
+                            CreatedOn = c.CreatedOn,
+                            CusIsReaded = c.CusIsReaded,
+                            IsRepeat = c.IsRepeat.HasValue && c.IsRepeat.Value,
+                            RepeatTotal = c.RepeatTotal.Value,
+                            Iscc = c.Iscc.HasValue && c.Iscc.Value
+                        })).ToList();
+
+                total = totalout.HasValue ? Convert.ToInt32(totalout) : 0;
+                return listItem;
+            }
+        }
+
+        public List<NewsModel> GetListNewDeleteByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                #region Orther
+
+                DateTime? from;
+                DateTime? to;
+
+                if (!string.IsNullOrEmpty(From))
+                {
+                    from = Convert.ToDateTime((From.Split('-')[2] + "/" + From.Split('-')[1] + "/" + From.Split('-')[0]));
+                }
+                else
+                {
+                    from = null;
+                }
+                if (!string.IsNullOrEmpty(To))
+                {
+                    to = Convert.ToDateTime((To.Split('-')[2] + "/" + To.Split('-')[1] + "/" + To.Split('-')[0]));
+                }
+                else
+                {
+                    to = null;
+                }
+
+                decimal? minPrice;
+                if (MinPrice != -1)
+                {
+                    minPrice = Convert.ToDecimal(MinPrice);
+                }
+                else
+                {
+                    minPrice = null;
+                }
+                decimal? maxPrice;
+                if (MaxPrice != -1)
+                {
+                    maxPrice = Convert.ToDecimal(MaxPrice);
+                }
+                else
+                {
+                    maxPrice = null;
+                }
+                int? backdate;
+                if (BackDate != -1)
+                {
+                    backdate = BackDate;
+                }
+                else
+                {
+                    backdate = null;
+                }
+
+                int? totalout = 0;
+                #endregion
+
+                db.CommandTimeout = 30;
+                var listItem =
+                    (db.PROC_GetListNewsDelete(UserId, CateId, DistricId, StatusId, SiteId, backdate, from, to,
+                        minPrice, maxPrice, pageIndex, pageSize, IsRepeat, key, NameOrder, descending, ref totalout)
+                        .Select(c => new NewsModel
+                        {
+                            Id = c.Id.Value,
+                            Title = c.Title,
+                            CategoryId = c.CategoryId,
+                            SiteId = c.SiteId.Value,
+                            Link = c.Link,
+                            Phone = c.Phone,
+                            Contents = c.Contents,
+                            Price = c.Price,
+                            PriceText = c.PriceText,
+                            DistrictId = c.DistrictId,
+                            SiteName = c.SiteName,
+                            DistictName = c.DistictName,
+                            StatusId = c.StatusId,
+                            StatusName = c.StatusName,
+                            CreatedOn = c.CreatedOn,
+                            CusIsReaded = c.CusIsReaded,
+                            IsRepeat = c.IsRepeat.HasValue && c.IsRepeat.Value,
+                            RepeatTotal = c.RepeatTotal.Value,
+                            Iscc = c.Iscc.HasValue && c.Iscc.Value
+                        })).ToList();
+
+                total = totalout.HasValue ? Convert.ToInt32(totalout) : 0;
+                return listItem;
+            }
+        }
+        #endregion
+
+        #region News Action
+        /// <summary>
+        /// Lưu tin theo user
+        /// </summary>
+        /// <param name="cusNews"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int SaveNewByUserId(List<News_Customer_Mapping> cusNews, int userId)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+                    foreach (var item in cusNews)
+                    {
+                        var query = (from c in db.News_Customer_Mappings
+                                     where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
+                                     select c).FirstOrDefault();
+                        if (query == null)
+                        {
+                            db.News_Customer_Mappings.InsertOnSubmit(item);
+                        }
+                        else
+                        {
+                            query.IsSaved = true;
+                            query.IsDeleted = false;
+                        }
+                    }
+                    db.SubmitChanges();
+                    return 1;
+                }
+                catch
+                {
+                    db.Dispose();
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Ẩn tin theo user
+        /// </summary>
+        /// <param name="cusNews"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int HideNewByUserId(List<News_Customer_Mapping> cusNews, int userId)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+                    foreach (var item in cusNews)
+                    {
+                        var query = (from c in db.News_Customer_Mappings
+                                     where c.NewsId.Equals(item.NewsId) && c.CustomerId.Equals(userId)
+                                     select c).ToList();
+                        if (!query.Any())
+                        {
+                            db.News_Customer_Mappings.InsertOnSubmit(item);
+                        }
+                        else
+                        {
+                            foreach (var newsCustomerMapping in query)
+                            {
+                                newsCustomerMapping.IsDeleted = true;
+                                newsCustomerMapping.IsSaved = false;
+                            }
+                        }
+                    }
+                    db.SubmitChanges();
+                    return 1;
+                }
+                catch
+                {
+                    db.Dispose();
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Xóa tin theo user
+        /// </summary>
+        /// <param name="listNewDelete"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int Delete(int[] listNewDelete, int userId)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+                    for (int i = 0; i < listNewDelete.Length; i++)
+                    {
+                        var query = (from c in db.News_Customer_Mappings
+                                     where c.CustomerId.Equals(userId) && c.NewsId.Equals(listNewDelete[i]) && !c.IsAgency.Value
+                                     select c).ToList();
+                        if (query.Any())
+                        {
+                            foreach (var item in query)
+                            {
+                                item.IsDeleted = false;
+                                item.IsSaved = false;
+                            }
+                        }
+
+                        var query2 = (from c in db.News_Trashes
+                                      where c.CustomerID.Equals(userId) && c.NewsId.Equals(listNewDelete[i])
+                                      select c).ToList();
+                        if (!query2.Any())
+                        {
+                            var itemtrash = new News_Trash
+                            {
+                                CustomerID = userId,
+                                NewsId = listNewDelete[i],
+                                Isdelete = true,
+                                Isdeleted = false,
+                                IsSpam = false
+                            };
+                            db.News_Trashes.InsertOnSubmit(itemtrash);
+                        }
+                        db.SubmitChanges();
+                    }
+                    return 1;
+                }
+                catch
+                {
+                    db.Dispose();
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Báo chính chủ
+        /// </summary>
+        /// <param name="listnews"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int NewsforUser(int[] listnews, int userId)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+
+                    for (int i = 0; i < listnews.Length; i++)
+                    {
+                        var checkcc = (from c in db.News_customer_actions
+                                       where c.NewsId.Equals(listnews[i])
+                                       select c).ToList();
+                        var query = (from c in db.News_customer_actions
+                                     where c.NewsId.Equals(listnews[i]) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
+                                     select c).ToList();
+                        if (!query.Any())
+                        {
+                            var item = new News_customer_action();
+                            item.CustomerId = userId;
+                            item.NewsId = listnews[i];
+                            item.Iscc = true;
+                            item.Ischeck = false;
+                            item.IsSpam = false;
+                            item.DateCreate = DateTime.Now;
+                            db.News_customer_actions.InsertOnSubmit(item);
+                        }
+                        foreach (var item in checkcc)
+                        {
+                            item.Iscc = true;
+                        }
+                        db.SubmitChanges();
+                    }
+                    return 1;
+                }
+                catch
+                {
+                    db.Dispose();
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Đăng tin
+        /// </summary>
+        /// <param name="newsItem"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int Createnew(New newsItem, int userId)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+                    var query =
+                        "INSERT INTO News (CategoryId,Title,Contents,Summary,Link,SiteId,DistrictId,ProvinceId,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn,StatusId,Phone,IsUpdated,DateOld,IsDeleted,IsPhone,PriceText,IsRepeat,Area,Price,IsSpam,TotalRepeat)" +
+                        "VALUES(" + newsItem.CategoryId + ", N'" + newsItem.Title + "', N'" + newsItem.Contents +
+                        "', N'" + newsItem.Contents + "', '" + newsItem.Link + "', " + newsItem.SiteId + ", " +
+                        newsItem.DistrictId +
+                        "," + newsItem.ProvinceId + "," + (newsItem.CreatedBy ?? 0) + ",'" +
+                        (newsItem.CreatedOn ?? DateTime.Now) + "'," + (newsItem.ModifiedBy ?? 0) + ",'" +
+                        (newsItem.ModifiedOn ?? DateTime.Now) + "' ," + (newsItem.StatusId ?? 0) + ",'" + newsItem.Phone +
+                        "',0,'" + (newsItem.CreatedOn ?? DateTime.Now) +
+                        "',0," + (newsItem.IsPhone ? 1 : 0) + ",N'" + newsItem.PriceText + "',0," + (newsItem.Area ?? 0) +
+                        "," + newsItem.Price + ",0,1); SELECT SCOPE_IDENTITY()";
+
+                    var id = db.ExecuteQuery<decimal>(query).ToList()[0];
+                    NewsforUser(new int[] { Convert.ToInt32(id) }, userId);
+                    return 1;
+                }
+                catch
+                {
+                    db.Dispose();
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sửa tin
+        /// </summary>
+        /// <param name="newsItem"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int EditNews(New newsItem, int userId)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+                    var news = (from c in db.News where c.Id.Equals(newsItem.Id) select c).FirstOrDefault();
+                    if (news != null)
+                    {
+                        news.Title = newsItem.Title;
+                        news.DistrictId = newsItem.DistrictId;
+                        news.CategoryId = newsItem.CategoryId;
+                        news.Price = newsItem.Price;
+                        news.Contents = newsItem.Contents;
+                        news.Phone = newsItem.Phone;
+                        db.SubmitChanges();
+                    }
+                    return 1;
+                }
+                catch
+                {
+                    db.Dispose();
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Bỏ tin chính chủ
+        /// </summary>
+        /// <param name="listnews"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int RemoveNewsforUser(int[] listnews, int userId)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+                    foreach (var t in listnews)
+                    {
+                        var query = (from c in db.News_customer_actions
+                                     where c.NewsId.Equals(t) && c.CustomerId.Equals(userId) && c.Iscc.HasValue && c.Iscc.Value
+                                     select c).ToList();
+                        if (query.Any())
+                        {
+                            foreach (var newsCustomerAction in query)
+                            {
+                                db.News_customer_actions.DeleteOnSubmit(newsCustomerAction);
+                            }
+                        }
+                        db.SubmitChanges();
+                    }
+                    return 1;
+                }
+                catch
+                {
+                    db.Dispose();
+                    return 0;
+                }
+            }
+        }
         #endregion
 
         #region Help Method
@@ -315,6 +781,65 @@ namespace CMS.API.Bussiness
         {
             return Instance.ReasonReportNews.Any(x => x.UserId == userId && x.NewsId == newsId);
         }
+
+        public int PaymentForCreateNews(long amount, int userId)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+                    var paymentAccepted = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+                    if (paymentAccepted == null) return 0;
+                    if (amount > paymentAccepted.AmountTotal) return 2;
+
+                    // insert historypayment
+                    var paymentHis = new PaymentHistory
+                    {
+                        PaymentMethodId = 5,
+                        CreatedDate = DateTime.Now,
+                        Amount = -amount,
+                        Notes = "Trừ tiền đăng bài",
+                        UserId = userId
+                    };
+
+                    db.PaymentHistories.InsertOnSubmit(paymentHis);
+                    // minus cash on amount
+                    paymentAccepted.AmountTotal = paymentAccepted.AmountTotal - amount;
+                    db.SubmitChanges();
+
+                    return 1;
+                }
+                catch (Exception)
+                {
+                    return 3;
+                }
+            }
+        }
+        public int CheckRepeatNews(string phone, int districId, int userId)
+        {
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+                    var query = (from c in db.News
+                                 join d in db.Districts on c.DistrictId equals d.Id
+                                 where c.CreatedOn.HasValue && !c.IsDeleted
+                                 && !d.IsDeleted && d.Published
+                                 && c.DistrictId.Equals(districId)
+                                 && c.Phone.Contains(phone)
+                                 select c).ToList();
+
+                    var total = query.Count;
+                    return total;
+                }
+                catch
+                {
+                    return 0;
+                }
+                
+            }
+        }
+
         #endregion
     }
 }
