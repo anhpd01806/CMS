@@ -159,71 +159,74 @@ namespace CMS.API.Bussiness
 
         public NewsModel GetNewsDetail(int Id, int UserId)
         {
-            var query = (from c in Instance.News
-                         join d in Instance.Districts on c.DistrictId equals d.Id
-                         join t in Instance.NewsStatus on c.StatusId equals t.Id
-                         join ct in Instance.Categories on c.CategoryId equals ct.Id
-                         join st in Instance.Sites on c.SiteId equals st.ID
-                         where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                               && !d.IsDeleted && d.Published
-                               && c.Id.Equals(Id)
-                         select new NewsModel
-                         {
-                             Id = c.Id,
-                             Title = c.Title,
-                             Link = c.Link,
-                             SiteId = c.SiteId,
-                             SiteName = st.Name,
-                             Phone = c.Phone,
-                             Contents = c.Contents,
-                             Price = c.Price,
-                             PriceText = c.PriceText,
-                             DistrictId = d.Id,
-                             DistictName = d.Name,
-                             StatusId = t.Id,
-                             StatusName = t.Name,
-                             CreatedOn = c.CreatedOn,
-                             CategoryId = ct.Id,
-                             CateName = ct.Name,
-                             ListImage = GetImageByNewsId(c.Id),
-                             SameNews = GetSameNewsByNewsId(Id, c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
-                             Iscc = CheckCCByUser(c.Id, UserId),
-                             PersionalReport = GetNameReasonReport(c.Id),
-                             PersonCheck = GetPersonCheckNews(c.Id),
-                             IsReason = CheckReason(UserId, c.Id)
-                         }).FirstOrDefault();
-
-            if (query != null)
+            using (var db = new CmsDataDataContext())
             {
+                var query = (from c in db.News
+                             join d in db.Districts on c.DistrictId equals d.Id
+                             join t in db.NewsStatus on c.StatusId equals t.Id
+                             join ct in db.Categories on c.CategoryId equals ct.Id
+                             join st in db.Sites on c.SiteId equals st.ID
+                             where c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                                   && !d.IsDeleted && d.Published
+                                   && c.Id.Equals(Id)
+                             select new NewsModel
+                             {
+                                 Id = c.Id,
+                                 Title = c.Title,
+                                 Link = c.Link,
+                                 SiteId = c.SiteId,
+                                 SiteName = st.Name,
+                                 Phone = c.Phone,
+                                 Contents = c.Contents,
+                                 Price = c.Price,
+                                 PriceText = c.PriceText,
+                                 DistrictId = d.Id,
+                                 DistictName = d.Name,
+                                 StatusId = t.Id,
+                                 StatusName = t.Name,
+                                 CreatedOn = c.CreatedOn,
+                                 CategoryId = ct.Id,
+                                 CateName = ct.Name,
+                                 ListImage = GetImageByNewsId(c.Id),
+                                 SameNews = GetSameNewsByNewsId(Id, c.Title, c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
+                                 Iscc = CheckCCByUser(c.Id, UserId),
+                                 PersionalReport = GetNameReasonReport(c.Id),
+                                 PersonCheck = GetPersonCheckNews(c.Id),
+                                 IsReason = CheckReason(UserId, c.Id)
+                             }).FirstOrDefault();
 
-                var getnewsave = (from c in Instance.News_Customer_Mappings
-                                  where c.NewsId.Equals(Id) && c.CustomerId.Equals(UserId)
-                                  select c).ToList();
-                if (!getnewsave.Any())
+                if (query != null)
                 {
-                    var newItem = new News_Customer_Mapping();
-                    newItem.CustomerId = UserId;
-                    newItem.NewsId =
-                        newItem.NewsId = Id;
-                    newItem.IsSaved = false;
-                    newItem.IsDeleted = false;
-                    newItem.IsReaded = true;
-                    newItem.IsAgency = false;
-                    newItem.IsSpam = false;
-                    newItem.CreateDate = DateTime.Now;
-                    Instance.News_Customer_Mappings.InsertOnSubmit(newItem);
 
-                }
-                else
-                {
-                    foreach (var newsCustomerMapping in getnewsave)
+                    var getnewsave = (from c in db.News_Customer_Mappings
+                                      where c.NewsId.Equals(Id) && c.CustomerId.Equals(UserId)
+                                      select c).ToList();
+                    if (!getnewsave.Any())
                     {
-                        newsCustomerMapping.IsReaded = true;
+                        var newItem = new News_Customer_Mapping();
+                        newItem.CustomerId = UserId;
+                        newItem.NewsId =
+                            newItem.NewsId = Id;
+                        newItem.IsSaved = false;
+                        newItem.IsDeleted = false;
+                        newItem.IsReaded = true;
+                        newItem.IsAgency = false;
+                        newItem.IsSpam = false;
+                        newItem.CreateDate = DateTime.Now;
+                        db.News_Customer_Mappings.InsertOnSubmit(newItem);
+
                     }
+                    else
+                    {
+                        foreach (var newsCustomerMapping in getnewsave)
+                        {
+                            newsCustomerMapping.IsReaded = true;
+                        }
+                    }
+                    db.SubmitChanges();
                 }
-                Instance.SubmitChanges();
+                return query;
             }
-            return query;
         }
 
         public List<NewsModel> GetListNewStatusByFilter(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
@@ -701,34 +704,45 @@ namespace CMS.API.Bussiness
                          select new ImageModel { Id = c.Id, NewsId = c.NewsId, ImageUrl = c.ImageUrl }).ToList();
             return query;
         }
-        public List<NewsModel> GetSameNewsByNewsId(int Id, int CateId, int DistricId, string phone, int UserId)
+        public List<NewsModel> GetSameNewsByNewsId(int Id, string Title, int CateId, int DistricId, string phone, int UserId)
         {
             var query = (from c in Instance.News
                          join d in Instance.Districts on c.DistrictId equals d.Id
                          join t in Instance.NewsStatus on c.StatusId equals t.Id
                          join st in Instance.Sites on c.SiteId equals st.ID
                          where
-                         c.Phone.Contains(phone) && c.Phone != ""
+                         //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                         //&& !d.IsDeleted && d.Published
+                         //&& !news_new.Contains(c.Id)
+                         //&& c.CategoryId.Equals(CateId)
+                         //&& c.DistrictId.Equals(DistricId)
+                         c.Phone.Contains(phone) && c.Phone != "" && c.Title != Title && !c.IsRepeat
                          && !c.Id.Equals(Id)
-                         orderby c.StatusId ascending, c.Price descending
+                         group new { c, st } by new { c.Title, c.Link, st.Name } into g
+                         //orderby c.StatusId ascending, c.Price descending
                          select new NewsModel
                          {
-                             Id = c.Id,
-                             Title = c.Title,
-                             CategoryId = c.CategoryId,
-                             Link = c.Link,
-                             SiteName = st.Name,
-                             Phone = c.Phone,
-                             Price = c.Price,
-                             PriceText = c.PriceText,
-                             DistrictId = d.Id,
-                             SiteId = c.SiteId,
-                             DistictName = d.Name,
-                             StatusId = t.Id,
-                             StatusName = t.Name,
-                             CreatedOn = c.CreatedOn
+                             Title = g.Key.Title,
+                             Link = g.Key.Link,
+                             SiteName = g.Key.Name
                          }).Skip(0).Take(3).ToList();
-            return query;
+            var listItem = new List<NewsModel>();
+            foreach (var item in query)
+            {
+                var newsItem = (from c in Instance.News
+                                join t in Instance.NewsStatus on c.StatusId equals t.Id
+                                join st in Instance.Sites on c.SiteId equals st.ID
+                                where c.Title.Equals(item.Title)
+                                select new NewsModel
+                                {
+                                    Id = c.Id,
+                                    Title = c.Title,
+                                    Link = c.Link,
+                                    SiteName = st.Name
+                                }).FirstOrDefault();
+                listItem.Add(newsItem);
+            }
+            return listItem;
         }
         public bool CheckCCByUser(int newsId, int userId)
         {
@@ -836,7 +850,7 @@ namespace CMS.API.Bussiness
                 {
                     return 0;
                 }
-                
+
             }
         }
 

@@ -87,11 +87,11 @@ namespace CMS.API.Bussiness
             {
                 if (isFree.ToLower().Trim() == "true")
                 {
-                    return true;
+                    return false;
                 }
                 else
                 {
-                    return false;
+                    return true;
                 }
             }
             catch (Exception ex)

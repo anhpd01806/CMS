@@ -674,7 +674,7 @@ namespace CMS.API.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(listNewsId.ToString()) || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
+                if ( listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
                     {
@@ -687,7 +687,7 @@ namespace CMS.API.Controllers
                 else
                 {
                     var param = new NameValueCollection();
-                    param.Add("listNewsId", listNewsId.ToString());
+                    param.Add("listNewsId", "[" + String.Join(",", listNewsId) + "]");
                     param.Add("userId", userId.ToString());
                     var str = Common.Common.Sort(param).ToLower();
                     var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
@@ -765,7 +765,7 @@ namespace CMS.API.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(listNewsId.ToString()) || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
+                if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
                     {
@@ -778,7 +778,7 @@ namespace CMS.API.Controllers
                 else
                 {
                     var param = new NameValueCollection();
-                    param.Add("listNewsId", listNewsId.ToString());
+                    param.Add("listNewsId", "[" + String.Join(",", listNewsId) + "]");
                     param.Add("userId", userId.ToString());
                     var str = Common.Common.Sort(param).ToLower();
                     var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
@@ -855,7 +855,7 @@ namespace CMS.API.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(listNewsId.ToString()) || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
+                if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
                     {
@@ -868,7 +868,7 @@ namespace CMS.API.Controllers
                 else
                 {
                     var param = new NameValueCollection();
-                    param.Add("listNewsId", listNewsId.ToString());
+                    param.Add("listNewsId", "[" + String.Join(",", listNewsId) + "]");
                     param.Add("userId", userId.ToString());
                     var str = Common.Common.Sort(param).ToLower();
                     var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
@@ -931,7 +931,7 @@ namespace CMS.API.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(listNewsId.ToString()) || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
+                if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
                     {
@@ -944,7 +944,7 @@ namespace CMS.API.Controllers
                 else
                 {
                     var param = new NameValueCollection();
-                    param.Add("listNewsId", listNewsId.ToString());
+                    param.Add("listNewsId", "[" + String.Join(",", listNewsId) + "]");
                     param.Add("userId", userId.ToString());
                     var str = Common.Common.Sort(param).ToLower();
                     var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
@@ -1007,7 +1007,7 @@ namespace CMS.API.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(listNewsId.ToString()) || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
+                if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
                     {
@@ -1020,7 +1020,7 @@ namespace CMS.API.Controllers
                 else
                 {
                     var param = new NameValueCollection();
-                    param.Add("listNewsId", listNewsId.ToString());
+                    param.Add("listNewsId", "[" + String.Join(",", listNewsId) + "]");
                     param.Add("userId", userId.ToString());
                     var str = Common.Common.Sort(param).ToLower();
                     var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
