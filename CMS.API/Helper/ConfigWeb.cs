@@ -14,6 +14,7 @@ namespace CMS.API.Helper
         public static int EnableCache = Convert.ToInt32(ConfigurationManager.AppSettings["EnableCache"]);
 
         public static int PageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
+
         public static int OzoId = Convert.ToInt32(ConfigurationManager.AppSettings["OzoId"]);
 
         public static string DayPackage = ConfigurationManager.AppSettings["DayPackage"];

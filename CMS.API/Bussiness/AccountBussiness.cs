@@ -5,6 +5,7 @@ using System.Web;
 using CMS.API.Data;
 using Elmah;
 using CMS.API.Models;
+using CMS.API.Helper;
 
 namespace CMS.API.Bussiness
 {
@@ -60,7 +61,7 @@ namespace CMS.API.Bussiness
                 return null;
             }
         }
-
+       
         private bool CheckAcceptedUser(int userId, string isFree)
         {
             try
@@ -100,5 +101,22 @@ namespace CMS.API.Bussiness
                 return false;
             }
         }
+
+        public int Insert(User user)
+        {
+            var check = Instance.Users.FirstOrDefault(x => x.UserName.Equals(user.UserName));
+            if (check == null)
+            {
+                Instance.Users.InsertOnSubmit(user);
+                Instance.SubmitChanges();
+                return user.Id;
+            }
+            else
+            {
+                return 0;
+            }
+           
+        }
+
     }
 }

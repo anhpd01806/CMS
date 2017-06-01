@@ -10,6 +10,8 @@ using CMS.API.Bussiness;
 using CMS.API.Models;
 using CMS.API.Data;
 using CMS.API.Helper;
+using System.Net;
+using System.IO;
 
 namespace CMS.API.Controllers
 {
@@ -674,7 +676,7 @@ namespace CMS.API.Controllers
         {
             try
             {
-                if ( listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
+                if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
                     {
@@ -843,7 +845,7 @@ namespace CMS.API.Controllers
                 });
             }
         }
-        
+
         /// <summary>
         /// Xóa bài viết
         /// </summary>
@@ -1196,6 +1198,326 @@ namespace CMS.API.Controllers
         public JsonResult GenSign(string str)
         {
             return Json(Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey));
+        }
+
+        [HttpPost]
+        public JsonResult CreateCustomer(string username, string password, string fullname, string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(username))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("username", username);
+                    param.Add("password", password);
+                    param.Add("fullname", fullname);
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var u = new User
+                        {
+                            UserName = username,
+                            FullName = fullname,
+                            CreatedOn = DateTime.Now,
+                            Password = Common.Common.md5(username.Trim() + "ozo" + password.Trim()),
+                            Sex = true,
+                            Phone = username,
+                            Email = "",
+                            IsDeleted = false,
+                            IsMember = false,
+                            IsFree = false
+                        };
+
+                        var rs = _accountbussiness.Insert(u);
+                        if(rs == 0)
+                        {
+                            return Json(new
+                            {
+                                status = "200",
+                                errorcode = "250",
+                                message = "User is existed.",
+                                data = ""
+                            });
+                        }
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = rs
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult RegisterPackage(int userId, long payment, string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(payment.ToString()) || string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("userId", userId.ToString());
+                    param.Add("payment", payment.ToString());
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        string message = "";
+                        var rs = new PaymentBussiness().UpdatePaymentAccepted(payment,userId);
+                        if (rs == 1) message = "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền.";
+                        else if (rs == 2) message = "Tài khoản của quý khách không đủ tiền.";
+                        else message = "Nạp tiền thành công.";
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = rs,
+                            message = message,
+                            data = userId
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Recharge(string telco,string pin, string serial,string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(telco) || string.IsNullOrEmpty(serial) || string.IsNullOrEmpty(pin) || string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("telco", telco);
+                    param.Add("pin", pin);
+                    param.Add("serial", serial);
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+
+                        var resultObj = new RechargeModel();
+                        if (!isValidCode(telco, pin))
+                        {
+                            return Json(new
+                            {
+                                status = "200",
+                                errorcode = "5000",
+                                message = "Mã thẻ không đúng. vui lòng thử lại",
+                                data = ""
+                            });
+                        }
+                        //get url
+                        string url = ConfigWeb.Api_Charging;
+                        //get accesskey
+                        string accesskey = ConfigWeb.Access_Key;
+                        string requestUrl = url + "?accesskey=" + accesskey + "&serial=" + serial + "&pin=" + pin + "&type=" + telco;
+                        // Create a request for the URL.   
+                        WebRequest rq = WebRequest.Create(requestUrl);
+                        // If required by the server, set the credentials.  
+                        rq.Credentials = CredentialCache.DefaultCredentials;
+                        // Get the response.  
+                        WebResponse response = rq.GetResponse();
+                        // Display the status.  
+                        Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                        // Get the stream containing content returned by the server.  
+                        Stream dataStream = response.GetResponseStream();
+                        // Open the stream using a StreamReader for easy access.  
+                        StreamReader reader = new StreamReader(dataStream);
+                        // Read the content.  
+                        string code = reader.ReadToEnd();
+                        // Clean up the streams and the response.  
+                        reader.Close();
+                        response.Close();
+                        resultObj.isError = Int32.Parse(code) < 10000;
+                        if (!resultObj.isError)
+                        {
+                            try
+                            {
+                                //insert card to db
+                                int amount = Int32.Parse(code);
+                                var paymentHistory = new PaymentHistory
+                                {
+                                    UserId = Convert.ToInt32(Session["SS-USERID"]),
+                                    PaymentMethodId = 6,
+                                    CreatedDate = DateTime.Now,
+                                    Notes = "Nạp thẻ điện thoại",
+                                    Amount = amount
+                                };
+
+                                //insert payment history
+                                new PaymentBussiness().Insert(paymentHistory);
+
+                                //insert payment accepted
+                                string message = "";
+                                var rs = new PaymentBussiness().UpdatePaymentAccepted(amount, Convert.ToInt32(Session["SS-USERID"]));
+                                if (rs == 1) message = "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền.";
+                                else if (rs == 2) message = "Tài khoản của quý khách không đủ tiền.";
+                                else message = "Bạn đã nạp thành công " + string.Format("{0:n0}", amount) + "vnđ !Cảm ơn bạn đã sử dụng phần mềm.";
+                                return Json(new
+                                {
+                                    status = "200",
+                                    errorcode = rs,
+                                    message = message,
+                                    data = ""
+                                });
+                            }
+
+                            catch (Exception)
+                            {
+                            }
+                        }
+                        else
+                        {
+                            return Json(new
+                            {
+                                status = "200",
+                                errorcode = "5000",
+                                message = "Nạp thẻ thất bại",
+                                data = ""
+                            });
+
+                        }
+                        return Json(resultObj, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        private bool isValidCode(string telco, string code)
+        {
+            bool result = true;
+            try
+            {
+                switch (telco)
+                {
+                    case "VTT":
+                        if (code.Length < 13 || code.Length < 11)
+                            result = false;
+                        break;
+                    case "VNP":
+                        if (code.Length < 12 || code.Length < 9)
+                            result = false;
+                        break;
+                    case "VMS":
+                        if (code.Length < 12 || code.Length < 9)
+                            result = false;
+                        break;
+                    default:
+                        result = false;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return result;
+        }
+
+        [HttpPost]
+        public JsonResult GetPayment()
+        {
+            return Json(ConfigWeb.DayPackage, ConfigWeb.MonthPackage);
         }
     }
 }
