@@ -49,7 +49,7 @@ namespace CMS.API.Common
 
         public static string UpperCaseUrlEncode(string s)
         {
-            char[] temp = HttpUtility.UrlEncode(s).ToCharArray();
+            char[] temp = s.ToCharArray();
             for (int i = 0; i < temp.Length - 2; i++)
             {
                 if (temp[i] == '%')
