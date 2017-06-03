@@ -7,8 +7,11 @@ using CMS.API.Data;
 
 namespace CMS.API.Bussiness
 {
-    public class NewsBussiness : InitDB
+    public class NewsBussiness
     {
+        #region define
+        CmsDataDataContext Instance = new CmsDataDataContext();
+        #endregion
         #region Home
         public List<DistrictModel> GetListDistric()
         {
@@ -706,6 +709,10 @@ namespace CMS.API.Bussiness
         }
         public List<NewsModel> GetSameNewsByNewsId(int Id, string Title, int CateId, int DistricId, string phone, int UserId)
         {
+            var listItem = new List<NewsModel>();
+            try
+            {
+
             var query = (from c in Instance.News
                          join d in Instance.Districts on c.DistrictId equals d.Id
                          join t in Instance.NewsStatus on c.StatusId equals t.Id
@@ -726,7 +733,7 @@ namespace CMS.API.Bussiness
                              Link = g.Key.Link,
                              SiteName = g.Key.Name
                          }).Skip(0).Take(3).ToList();
-            var listItem = new List<NewsModel>();
+           
             foreach (var item in query)
             {
                 var newsItem = (from c in Instance.News
@@ -741,6 +748,13 @@ namespace CMS.API.Bussiness
                                     SiteName = st.Name
                                 }).FirstOrDefault();
                 listItem.Add(newsItem);
+            }
+
+            }
+            catch (Exception ẽ)
+            {
+
+                throw;
             }
             return listItem;
         }
