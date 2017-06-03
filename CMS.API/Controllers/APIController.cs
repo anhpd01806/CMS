@@ -1205,7 +1205,7 @@ namespace CMS.API.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(username))
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(fullname))
                 {
                     return Json(new
                     {
