@@ -202,7 +202,7 @@ namespace CMS.Controllers
             try
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
-                var title = Request["title"];
+                var title = "[ĐỘC QUYỀN TRÊN OZO] " + Request["title"];
                 var cateId = Convert.ToInt32(Request["cateId"]);
                 var districtId = Convert.ToInt32(Request["districtId"]);
                 var phone = Request["phone"];
