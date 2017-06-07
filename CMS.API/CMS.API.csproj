@@ -173,6 +173,7 @@
     <Compile Include="Bussiness\InitDB.cs" />
     <Compile Include="Bussiness\NewsBussiness.cs" />
     <Compile Include="Bussiness\PaymentBussiness.cs" />
+    <Compile Include="Bussiness\RoleBussiness.cs" />
     <Compile Include="Bussiness\UserBussiness.cs" />
     <Compile Include="Common\APIConfig.cs" />
     <Compile Include="Common\Common.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Helper\Utils.cs" />
     <Compile Include="Models\BlacklistModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\CustomerDetailModel.cs" />
     <Compile Include="Models\DistrictModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\ImageModel.cs" />
@@ -202,6 +204,7 @@
     <Compile Include="Models\RechargeModel.cs" />
     <Compile Include="Models\SiteModel.cs" />
     <Compile Include="Models\UserItem.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

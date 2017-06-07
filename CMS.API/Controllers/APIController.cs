@@ -1251,7 +1251,7 @@ namespace CMS.API.Controllers
                         };
 
                         var rs = _accountbussiness.Insert(u);
-                        if(rs == 0)
+                        if (rs == 0)
                         {
                             return Json(new
                             {
@@ -1320,7 +1320,7 @@ namespace CMS.API.Controllers
                     else
                     {
                         string message = "";
-                        var rs = new PaymentBussiness().UpdatePaymentAccepted(payment,userId);
+                        var rs = new PaymentBussiness().UpdatePaymentAccepted(payment, userId);
                         if (rs == 1) message = "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền.";
                         else if (rs == 2) message = "Tài khoản của quý khách không đủ tiền.";
                         else message = "Nạp tiền thành công.";
@@ -1348,7 +1348,7 @@ namespace CMS.API.Controllers
         }
 
         [HttpPost]
-        public JsonResult Recharge(string telco,string pin, string serial,string sign)
+        public JsonResult Recharge(string telco, string pin, string serial, string sign)
         {
             try
             {
@@ -1517,7 +1517,211 @@ namespace CMS.API.Controllers
         [HttpPost]
         public JsonResult GetPayment()
         {
-            return Json(ConfigWeb.DayPackage, ConfigWeb.MonthPackage);
+            return Json(new
+            {
+                DayPackage = ConfigWeb.DayPackage,
+                MonthPackage = ConfigWeb.MonthPackage
+            });
+        }
+
+        [HttpPost]
+        public JsonResult GetListCustomer(string search, int managerId, int statusId, int pageIndex, int pageSize, string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(managerId.ToString()) || string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(managerId.ToString()))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("search", search);
+                    param.Add("managerId", managerId.ToString());
+                    param.Add("statusId", statusId.ToString());
+                    param.Add("pageIndex", pageIndex.ToString());
+                    param.Add("pageSize", pageSize.ToString());
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        int pageTotal = 0;
+                        var allAdmin = new UserBussiness().GetAdminUser();
+                        var allUser = new UserBussiness().GetCustomerUser(ref pageTotal, managerId, statusId, pageIndex, pageSize, search);
+                        var allRoles = new RoleBussiness().GetRoles();
+                        var allRolesUser = new RoleBussiness().GetAllRoleUser();
+                        var rs = (from a in allUser
+                                  select new UserModel
+                                  {
+                                      Id = a.Id,
+                                      FullName = a.FullName,
+                                      UserName = a.UserName,
+                                      Phone = a.Phone,
+                                      Email = a.Email,
+                                      IsDelete = a.IsDelete,
+                                      IsMember = a.IsMember,
+                                      ManagerBy = a.ManagerId != 0 ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "",
+                                      RoleName = getNameRole(allRoles, allRolesUser, a.Id),
+                                      EndTimePayment = getPaymentStatus(a.Id)
+                                  }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.EndTimePayment).ToList();
+
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = rs,
+                            pageTotal = pageTotal
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CustomerDetail(int id, string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id.ToString()))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("id", id.ToString());
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        CustomerDetail cusDetail = new CustomerDetail();
+                        cusDetail = getCustomerDetail(id);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = cusDetail
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetPaymentStatus()
+        {
+            List<SelectListItem> lstPayment = getPaymentStatus();
+            return Json(new
+            {
+                data = lstPayment
+            });
+        }
+
+        private List<SelectListItem> getPaymentStatus()
+        {
+            List<SelectListItem> status = new List<SelectListItem>();
+            status.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
+            status.Add(new SelectListItem { Text = "Đang hoạt động", Value = "1" });
+            status.Add(new SelectListItem { Text = "Sắp hết hạn", Value = "2" });
+            status.Add(new SelectListItem { Text = "Đã hết hạn", Value = "3" });
+            status.Add(new SelectListItem { Text = "Chưa có gói cước", Value = "4" });
+            return status;
+        }
+
+        private string getNameRole(List<Role> role, List<Role_User> roleUser, int userId)
+        {
+            var rs = (from r in role
+                      join ru in roleUser on r.Id equals ru.RoleId
+                      where ru.UserId == userId
+                      select r.Name).ToArray();
+            return String.Join(", ", rs);
+        }
+
+        private DateTime getPaymentStatus(int userId)
+        {
+            return new PaymentBussiness().GetEndTimeByUserId(userId);
+        }
+
+        private CustomerDetail getCustomerDetail(int id)
+        {
+            // get all admin
+            var allAdmin = new UserBussiness().GetAdminUser();
+
+            var cusDetail = new UserBussiness().GetUserById(id);
+            var rs = new CustomerDetail();
+            rs.UserId = cusDetail.Id;
+            rs.UserName = cusDetail.UserName;
+            rs.FullName = cusDetail.FullName;
+            rs.LastLogin = cusDetail.LastActivityDate ?? DateTime.Now;
+            rs.CreateDate = cusDetail.CreatedOn ?? DateTime.Now;
+            rs.ManagerBy = cusDetail.ManagerBy != null ? allAdmin.Where(x => x.Id == cusDetail.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "";
+            rs.Notes = cusDetail.Notes;
+            //get paymen by Id
+            rs.Amount = new PaymentBussiness().GetCashPaymentByUserId(cusDetail.Id);
+            rs.TimeEnd = new PaymentBussiness().GetTimePaymentByUserId(cusDetail.Id);
+            //get payment by Id 
+            var payment = new PaymentBussiness().GetPaymentByUserId(cusDetail.Id);
+            rs.CashPayment = payment.FirstOrDefault(x => x.PaymentMethodId == 1) != null ? payment.FirstOrDefault(x => x.PaymentMethodId == 1).AmoutPayment : "0";
+            rs.CardPayment = payment.FirstOrDefault(x => x.PaymentMethodId == 2) != null ? payment.FirstOrDefault(x => x.PaymentMethodId == 2).AmoutPayment : "0";
+            return rs;
         }
     }
 }

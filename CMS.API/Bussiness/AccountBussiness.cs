@@ -104,19 +104,22 @@ namespace CMS.API.Bussiness
 
         public int Insert(User user)
         {
-            var check = Instance.Users.FirstOrDefault(x => x.UserName.Equals(user.UserName));
-            if (check == null)
-            {
-                Instance.Users.InsertOnSubmit(user);
-                Instance.SubmitChanges();
-                return user.Id;
-            }
-            else
-            {
-                return 0;
-            }
            
+            using (var db = new CmsDataDataContext())
+            {
+                try
+                {
+                    db.Users.InsertOnSubmit(user);
+                    db.SubmitChanges();
+                    return user.Id;
+                }
+                catch
+                {
+                    db.Dispose();
+                    return 0;
+                }
+            }
         }
-
+      
     }
 }
