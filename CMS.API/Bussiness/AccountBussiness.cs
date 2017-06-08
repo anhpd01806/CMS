@@ -61,7 +61,7 @@ namespace CMS.API.Bussiness
                 return null;
             }
         }
-       
+
         private bool CheckAcceptedUser(int userId, string isFree)
         {
             try
@@ -104,14 +104,19 @@ namespace CMS.API.Bussiness
 
         public int Insert(User user)
         {
-           
+
             using (var db = new CmsDataDataContext())
             {
                 try
                 {
-                    db.Users.InsertOnSubmit(user);
-                    db.SubmitChanges();
-                    return user.Id;
+                    var checkUser = db.Users.FirstOrDefault(x => x.UserName == user.UserName);
+                    if (checkUser == null)
+                    {
+                        db.Users.InsertOnSubmit(user);
+                        db.SubmitChanges();
+                        return user.Id;
+                    }
+                    return 0;
                 }
                 catch
                 {
@@ -120,6 +125,6 @@ namespace CMS.API.Bussiness
                 }
             }
         }
-      
+
     }
 }
