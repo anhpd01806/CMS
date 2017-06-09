@@ -126,5 +126,34 @@ namespace CMS.API.Bussiness
             }
         }
 
+        public UserItem GetUserDetail(int Id)
+        {
+            try
+            {
+                using (var db = new CmsDataDataContext())
+                {
+                    var user = db.Users.FirstOrDefault(x => x.Id == Id);
+                    if (user != null)
+                    {
+                        var userItem = new UserItem
+                        {
+                            Id = user.Id,
+                            Username = user.UserName,
+                            Phone = user.Phone,
+                            FullName = user.FullName,
+                            IsPayment = CheckAcceptedUser(user.Id, user.IsFree.ToString()),
+                            IsUser = CheckRole(user.Id, user.IsFree.ToString())
+                        };
+                        return userItem;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(HttpContext.Current).Log(new Error(ex));
+                return null;
+            }
+        }
     }
 }

@@ -9,11 +9,12 @@ using System.Web.Mvc;
 
 namespace CMS.API.Bussiness
 {
-    public class PaymentBussiness : InitDB
+    public class PaymentBussiness
     {
+        CmsDataDataContext db = new CmsDataDataContext();
         public int UpdatePaymentAccepted(long payment, int userId)
         {
-            var paymentAccepted = Instance.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            var paymentAccepted = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
             if (paymentAccepted == null)
                 return 1;// "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền"
             else
@@ -37,9 +38,9 @@ namespace CMS.API.Bussiness
                         Notes = "Nạp tài khoản",
                         UserId = userId
                     };
-                    Instance.PaymentHistories.InsertOnSubmit(pay);
+                    db.PaymentHistories.InsertOnSubmit(pay);
 
-                    Instance.SubmitChanges();
+                    db.SubmitChanges();
 
                     return 0;// "Nạp tiền thành công";
                 }
@@ -48,13 +49,13 @@ namespace CMS.API.Bussiness
 
         public void Insert(PaymentHistory model)
         {
-            Instance.PaymentHistories.InsertOnSubmit(model);
-            Instance.SubmitChanges();
+            db.PaymentHistories.InsertOnSubmit(model);
+            db.SubmitChanges();
         }
 
         public DateTime GetEndTimeByUserId(int userId)
         {
-            var cash = Instance.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
             if (cash != null)
                 return cash.EndDate;
             else return DateTime.MinValue;
@@ -62,7 +63,7 @@ namespace CMS.API.Bussiness
 
         public string GetCashPaymentByUserId(int userId)
         {
-            var cash = Instance.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
             if (cash != null)
                 return string.Format("{0:n0}", cash.AmountTotal);
             else return "0";
@@ -70,7 +71,7 @@ namespace CMS.API.Bussiness
 
         public string GetTimePaymentByUserId(int userId)
         {
-            var cash = Instance.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
             if (cash != null)
                 return string.Format(cash.EndDate.ToString("dd/MM/yyyy"));
             else return "Chưa đăng ký gói cước";
@@ -78,8 +79,8 @@ namespace CMS.API.Bussiness
 
         public List<PaymentTotal> GetPaymentByUserId(int id)
         {
-            var rs = (from a in Instance.PaymentHistories
-                      join b in Instance.PaymentMethods
+            var rs = (from a in db.PaymentHistories
+                      join b in db.PaymentMethods
                       on a.PaymentMethodId equals b.Id
                       where (a.PaymentMethodId == 1 || a.PaymentMethodId == 2)
                       && a.CreatedDate.Month == DateTime.Now.AddMonths(-1).Month

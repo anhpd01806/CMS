@@ -8,24 +8,25 @@ using System.Web.Mvc;
 
 namespace CMS.API.Bussiness
 {
-    public class UserBussiness : InitDB
+    public class UserBussiness
     {
+        CmsDataDataContext db = new CmsDataDataContext();
         public string GetNameById(int id)
         {
-            return Instance.Users.FirstOrDefault(x => x.Id == id).UserName;
+            return db.Users.FirstOrDefault(x => x.Id == id).UserName;
         }
 
         public List<User> GetAdminUser()
         {
-            return Instance.Users.Where(x => x.IsFree == true).OrderBy(m => m.Id).ToList();
+            return db.Users.Where(x => x.IsFree == true).OrderBy(m => m.Id).ToList();
         }
 
         public List<UserModel> GetCustomerUser(ref int pageTotal, int managerId, int statusId, int pageIndex, int pageSize, string search)
         {
             try
             {
-                var rs = (from a in Instance.Users
-                          join b in Instance.PaymentAccepteds
+                var rs = (from a in db.Users
+                          join b in db.PaymentAccepteds
                           on a.Id equals b.UserId into ps
                           from b in ps.DefaultIfEmpty()
                           where (a.ManagerBy == managerId || a.ManagerBy == null || managerId == 0)
@@ -57,7 +58,7 @@ namespace CMS.API.Bussiness
         }
         public User GetUserById(int id)
         {
-            return Instance.Users.FirstOrDefault(x => x.Id == id);
+            return db.Users.FirstOrDefault(x => x.Id == id);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace CMS.Bussiness
 
         public List<CategorySite> GetAllCategorySite()
         {
-            return db.CategorySites.Where(x => x.Deleted == false).ToList();
+            return db.CategorySites.Where(x => x.Deleted == false && x.Published == true).ToList();
         }
 
         public CategorySite GetCategorySiteById(int id)

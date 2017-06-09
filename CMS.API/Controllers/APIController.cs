@@ -1246,7 +1246,7 @@ namespace CMS.API.Controllers
                             Phone = username,
                             Email = "",
                             IsDeleted = false,
-                            IsMember = false,
+                            IsMember = true,
                             IsFree = false
                         };
 
@@ -1261,12 +1261,14 @@ namespace CMS.API.Controllers
                                 data = ""
                             });
                         }
+
+                        var userItem = _accountbussiness.GetUserDetail(u.Id);
                         return Json(new
                         {
                             status = "200",
                             errorcode = "0",
                             message = "success",
-                            data = rs
+                            data = userItem
                         });
                     }
                 }
@@ -1529,7 +1531,7 @@ namespace CMS.API.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(managerId.ToString()) || string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(managerId.ToString()))
+                if (string.IsNullOrEmpty(managerId.ToString()) || string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(statusId.ToString()))
                 {
                     return Json(new
                     {
