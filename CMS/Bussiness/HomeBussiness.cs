@@ -359,14 +359,15 @@ namespace CMS.Bussiness
                          join d in Instance.Districts on c.DistrictId equals d.Id
                          join t in Instance.NewsStatus on c.StatusId equals t.Id
                          join st in Instance.Sites on c.SiteId equals st.ID
+
                          where
                          //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
                          //&& !d.IsDeleted && d.Published
                          //&& !news_new.Contains(c.Id)
                          //&& c.CategoryId.Equals(CateId)
                          //&& c.DistrictId.Equals(DistricId)
-                         c.Phone.Contains(phone) && c.Phone != "" && c.Title != Title && !c.IsRepeat
-                         && !c.Id.Equals(Id)
+                         c.Phone.Contains(phone) && c.Phone != "" && c.Title != Title && !c.IsRepeat 
+                         && !c.Id.Equals(Id) && (!c.Published.HasValue || c.Published.Value) && !c.IsDeleted
                          group new { c, st} by new {c.Title, c.Link, st.Name} into g
                          //orderby c.StatusId ascending, c.Price descending
                          select new NewsModel

@@ -47,7 +47,7 @@
                                         <div class="input-group col-xs-7">
                                             @if (Convert.ToBoolean(ViewBag.Accept))
                                             {
-                                                @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "form-control col-xs-10 cateId"})
+                                                @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "form-control col-xs-10 cateId" })
                                             }
                                             else
                                             {
@@ -70,7 +70,7 @@
                                             {
                                                 @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "form-control col-xs-10 districtId", @disabled = "disabled" })
                                             }
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -176,7 +176,7 @@
                                             {
                                                 @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId", @disabled = "disabled" })
                                             }
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -186,7 +186,7 @@
                                             @*<label class="control-label">Hiển thị tin trùng</label>*@
                                         </div>
                                         <div class="input-group col-xs-6 col-md-7" style="top: 7px; padding-right: 0;">
-                                            <input id="chkIsrepeatNews" type="hidden" value="0" class="ace ace-switch ace-switch-6" @(Convert.ToBoolean(ViewBag.Accept) ? string.Empty : "disabled = 'disabled'")/>
+                                            <input id="chkIsrepeatNews" type="hidden" value="0" class="ace ace-switch ace-switch-6" @(Convert.ToBoolean(ViewBag.Accept) ? string.Empty : "disabled = 'disabled'") />
                                             <span class="lbl middle"></span>
                                         </div>
                                     </div>
@@ -266,7 +266,8 @@
                         {
                             bool check = false;
                             var cookie = Request.Cookies["NewsViewd"];
-                            if(cookie != null) {
+                            if (cookie != null)
+                            {
                                 if (cookie.Value.ToString().Contains(item.Id.ToString()))
                                 {
                                     check = true;
@@ -279,7 +280,10 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <span data-id="@item.Id" class="lbltitle" title="@( Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
+                                    @{
+                                        var title = Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!";
+                                    }
+                                    <span data-id="@item.Id" class="lbltitle" @Html.Raw("title=\"" + title + "\"")>
                                         @item.Title
                                     </span>
                                 </td>
@@ -307,15 +311,15 @@
                                 </td>
                                 <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>
                                 @*<td>
-                                    @if (Convert.ToBoolean(ViewBag.Accept))
-                                    {
-                                        <a href="@item.Link" target="_blank" title="@item.Title"><label style="cursor:pointer;">@item.SiteName</label> </a>
-                                    }
-                                    else
-                                    {
-                                        <span class="error">Vui lòng nạp tiền</span>
-                                    }
-                                </td>*@
+                                        @if (Convert.ToBoolean(ViewBag.Accept))
+                                        {
+                                            <a href="@item.Link" target="_blank" title="@item.Title"><label style="cursor:pointer;">@item.SiteName</label> </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="error">Vui lòng nạp tiền</span>
+                                        }
+                                    </td>*@
                                 <td class="tdcc @item.Id">
                                     @if (item.Iscc)
                                     {
@@ -327,18 +331,19 @@
                                     {
                                         <a class="green edit-item-list_adm" href="javascript:;" data-id="@item.Id">
                                             <i class="icon-edit bigger-130 "></i>
+                                            edit
                                         </a>
                                     }
                                 </td>
                             </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="10" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
-                        </tr>
-                    }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="10" style="text-align: center"><strong>Chưa có dữ liệu</strong></td>
+                                            </tr>
+                                        }
                 </tbody>
             </table>
             <input type="hidden" id="datatable" data-total="@Model.Totalpage" data-totalrecord="@Model.Total" data-page="1" />

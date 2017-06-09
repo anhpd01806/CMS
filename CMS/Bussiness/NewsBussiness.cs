@@ -569,6 +569,9 @@ namespace CMS.Bussiness
             {
                 foreach (var t in listnews)
                 {
+                    var news = (from n in db.News where n.Id.Equals(t) select n).FirstOrDefault();
+                    if (news != null) { news.Published = false; news.IsDeleted = true; }
+
                     var query = (from c in db.News_Trashes
                                  where c.NewsId.Equals(t) && !c.Isdeleted && !c.IsSpam
                                  select c).ToList();
