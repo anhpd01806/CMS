@@ -1677,6 +1677,92 @@ namespace CMS.API.Controllers
             });
         }
 
+        [HttpPost]
+        public JsonResult GetManagerList()
+        {
+            List<SelectListItem> lstManager = new UserBussiness().GetManagerUser();
+            return Json(new
+            {
+                data = lstManager
+            });
+        }
+
+        [HttpPost]
+        public JsonResult NoticeList(int userId, int page, Boolean isUser, string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(page.ToString()))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("userId", userId.ToString());
+                    param.Add("page", page.ToString());
+                    param.Add("isUser", isUser.ToString());
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        List<NoticeDetailModel> notice = new List<NoticeDetailModel>();
+                        notice = getAllNoticeById(page,userId,isUser);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = notice
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+        private List<NoticeDetailModel> getAllNoticeById(int page, int userId, Boolean isUser)  
+        {
+            var listNotice = new NotifyBussiness().GetAllNotice(isUser, userId, page);
+            var rs = (from a in listNotice
+                      select new NoticeDetailModel
+                      {
+                          Id = a.Id,
+                          UserId = a.Userid ?? 0,
+                          DateSend = a.DateSend ?? DateTime.Now,
+                          UserName = a.UserName,
+                          Title = a.Title,
+                          Type = a.Type ?? 0,
+                          Description = a.Description
+                      }).ToList();
+            return rs;
+        }
         private List<SelectListItem> getPaymentStatus()
         {
             List<SelectListItem> status = new List<SelectListItem>();

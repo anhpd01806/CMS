@@ -172,6 +172,7 @@
     <Compile Include="Bussiness\AccountBussiness.cs" />
     <Compile Include="Bussiness\InitDB.cs" />
     <Compile Include="Bussiness\NewsBussiness.cs" />
+    <Compile Include="Bussiness\NotifyBussiness.cs" />
     <Compile Include="Bussiness\PaymentBussiness.cs" />
     <Compile Include="Bussiness\RoleBussiness.cs" />
     <Compile Include="Bussiness\UserBussiness.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\NewsModel.cs" />
     <Compile Include="Models\NewsStatusModel.cs" />
+    <Compile Include="Models\NoticeDetailModel.cs" />
     <Compile Include="Models\PaymentModel.cs" />
     <Compile Include="Models\RechargeModel.cs" />
     <Compile Include="Models\SiteModel.cs" />

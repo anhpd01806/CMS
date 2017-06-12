@@ -60,5 +60,17 @@ namespace CMS.API.Bussiness
         {
             return db.Users.FirstOrDefault(x => x.Id == id);
         }
+
+        public List<SelectListItem> GetManagerUser()
+        {
+            var managerUser = (from u in db.Users
+                               where u.IsFree == true
+                               select new SelectListItem
+                               {
+                                   Text = u.FullName != null ? u.FullName : u.UserName,
+                                   Value = u.Id.ToString()
+                               }).ToList();
+            return managerUser;
+        }
     }
 }
