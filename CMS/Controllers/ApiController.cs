@@ -751,6 +751,90 @@ namespace CMS.Controllers
         }
 
         /// <summary>
+        /// Bỏ tin đã lưu ra khỏi danh sách
+        /// </summary>
+        /// <param name="listNewsId"></param>
+        /// <param name="userId"></param>
+        /// <param name="sign"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult UserRemoveNewsSave(int[] listNewsId, int userId, string sign)
+        {
+            try
+            {
+                if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("listNewsId", "[" + String.Join(",", listNewsId) + "]");
+                    param.Add("userId", userId.ToString());
+                    var str = Common.Common.Sort(param).ToLower();
+                    var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        if (listNewsId.Length > 0)
+                        {
+                            var listItem = new List<News_Customer_Mapping>();
+                            for (int i = 0; i < listNewsId.Length; i++)
+                            {
+                                listItem.Add(new News_Customer_Mapping
+                                {
+                                    NewsId = listNewsId[i]
+                                });
+                            }
+                            var result = new NewsBussiness().RemoveSaveNewByUserId(listItem, userId);
+                            return Json(new
+                            {
+                                status = "200",
+                                errorcode = "0",
+                                message = "success",
+                                data = result
+                            });
+                        }
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = "2"
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        /// <summary>
         /// Ẩn bài viết
         /// </summary>
         /// <param name="listNewsId"></param>
@@ -810,6 +894,90 @@ namespace CMS.Controllers
                                 });
                             }
                             var result = _newsbussiness.HideNewByUserId(listItem, userId);
+                            return Json(new
+                            {
+                                status = "200",
+                                errorcode = "0",
+                                message = "success",
+                                data = result
+                            });
+                        }
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = "2"
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        /// <summary>
+        /// Bỏ tin đã ẩn ra khỏi danh sách
+        /// </summary>
+        /// <param name="listNewsId"></param>
+        /// <param name="userId"></param>
+        /// <param name="sign"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult UserRemoveNewsHide(int[] listNewsId, int userId, string sign)
+        {
+            try
+            {
+                if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("listNewsId", "[" + String.Join(",", listNewsId) + "]");
+                    param.Add("userId", userId.ToString());
+                    var str = Common.Common.Sort(param).ToLower();
+                    var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        if (listNewsId.Length > 0)
+                        {
+                            var listItem = new List<News_Customer_Mapping>();
+                            for (int i = 0; i < listNewsId.Length; i++)
+                            {
+                                listItem.Add(new News_Customer_Mapping
+                                {
+                                    NewsId = listNewsId[i]
+                                });
+                            }
+                            var result = new NewsBussiness().RemoveHideNewByUserId(listItem, userId);
                             return Json(new
                             {
                                 status = "200",
@@ -1067,6 +1235,93 @@ namespace CMS.Controllers
                 });
             }
         }
+
+        /// <summary>
+        /// Chặn tin
+        /// </summary>
+        /// <param name="listNewsId"></param>
+        /// <param name="userId"></param>
+        /// <param name="sign"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult NewsSpam(int[] listNewsId, int userId, string sign)
+        {
+            try
+            {
+                if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("listNewsId", "[" + String.Join(",", listNewsId) + "]");
+                    param.Add("userId", userId.ToString());
+                    var str = Common.Common.Sort(param).ToLower();
+                    var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        if (listNewsId.Length > 0)
+                        {
+                            var listItem = new List<New>();
+                            for (int i = 0; i < listNewsId.Length; i++)
+                            {
+                                var news = new HomeBussiness() .GetNewsDetail(listNewsId[i]);
+                                listItem.Add(news);
+                            }
+                            var result = new HomeBussiness().Spam(listItem, userId);
+                            return Json(new
+                            {
+                                status = "200",
+                                errorcode = "0",
+                                message = "success",
+                                data = result
+                            });
+                        }
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = "2"
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+
+
+
+
 
         /// <summary>
         /// Status : 1 - Thành công.
