@@ -2,7 +2,7 @@
 * 
 */
 $(document).ready(function () {
-    CKEDITOR.replace('txtcontent');
+    //CKEDITOR.replace('txtcontent');
     jQuery.validator.addMethod("valueNotEquals", function (value, element, arg) {
         return arg != value;
     }, "Bạn chưa chọn giá trị nào.");
@@ -33,15 +33,13 @@ $(document).ready(function () {
             },
             phone: {
                 required: true,
-                rgphone: true,
+                //rgphone: true,
             },
             price: {
                 required: true
             },
             txtcontent: {
-                required: function () {
-                    CKEDITOR.instances.txtcontent.updateElement();
-                }
+                required: true
             },
             hiddenRecaptcha: {
                 required: function () {
@@ -60,7 +58,7 @@ $(document).ready(function () {
             },
             phone: {
                 required: "Số điện thoại không được để trống",
-                rgphone: "Số điện thoại chưa đúng định dạng",
+                //rgphone: "Số điện thoại chưa đúng định dạng",
             },
             price: {
                 required: "Giá không được bỏ trống"
@@ -103,7 +101,7 @@ $(document).ready(function () {
                         var phone = $("#txtphone").val();
                         
                         var pricetext = "";
-                        var content = CKEDITOR.instances['txtcontent'].getData();
+                        var content = $('#txtcontent').val();
                         
                             var data = {
                                 title: title,
@@ -119,7 +117,6 @@ $(document).ready(function () {
                                     if (resp.type == 1) {
                                         showmessage("success", "Tin đã được đăng thành công.");
                                         $('#frmnews')[0].reset();
-                                        CKEDITOR.instances.txtcontent.setData('', function() { this.updateElement(); });
                                     } else {
                                         if (resp.type == 0) {
                                             showmessage("error", "Bạn không đủ tiền trong tài khoản! Vui lòng nạp thêm tiền để tiếp tục đăng tin");

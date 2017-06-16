@@ -199,5 +199,40 @@ namespace CMS.Bussiness
                 return 3;
             }
         }
+
+        public int UpdatePaymentAccepted(long payment, int userId)
+        {
+            var paymentAccepted = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            if (paymentAccepted == null)
+                return 1;// "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền"
+            else
+            {
+                if (paymentAccepted.AmountTotal < payment) return 2; // "Tài khoản của quý khách không đủ tiền"
+                else
+                {
+                    paymentAccepted.AmountTotal = paymentAccepted.AmountTotal - payment;
+                    paymentAccepted.StartDate = DateTime.Now;
+                    //th tk đã hết hạn sử dụng
+                    if (DateTime.Now > paymentAccepted.EndDate)
+                        paymentAccepted.EndDate = payment.ToString() == ConfigWeb.DayPackage ? DateTime.Now.AddDays(1) : DateTime.Now.AddMonths(1);
+                    else
+                        paymentAccepted.EndDate = payment.ToString() == ConfigWeb.DayPackage ? paymentAccepted.EndDate.AddDays(1) : paymentAccepted.EndDate.AddMonths(1);
+                    //insert to payment history
+                    var pay = new PaymentHistory
+                    {
+                        PaymentMethodId = 5,  // nap tiền
+                        CreatedDate = DateTime.Now,
+                        Amount = payment,
+                        Notes = "Nạp tài khoản",
+                        UserId = userId
+                    };
+                    db.PaymentHistories.InsertOnSubmit(pay);
+
+                    db.SubmitChanges();
+
+                    return 0;// "Nạp tiền thành công";
+                }
+            }
+        }
     }
 }

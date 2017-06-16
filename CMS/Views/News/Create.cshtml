@@ -4,6 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src='https://www.google.com/recaptcha/api.js'></script>
+<style>
+    .righttxt {
+        width: 73%;
+    }
+</style>
 <div class="page-header">
     <h1>
         Tin tức
@@ -15,39 +20,39 @@
 </div>
 
 <div class="row">
-    
+
     <div class="col-xs-12">
         <form class="form-horizontal" id="frmnews" role="form">
             <div class="row clearfix">
                 <div class="col-xs-12 col-sm-5 left-createnews">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Danh mục tin (<span class="requied">*</span>)</label>
+                        <label class="col-xs-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Danh mục tin (<span class="requied">*</span>)</label>
 
-                        <div class="col-sm-9">
-                            @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "col-xs-12 col-sm-12 ddlfrm cateId" })
+                        <div class="col-xs-9 righttxt">
+                            @Html.DropDownListFor(m => m.CategoryId, Model.ListCategory, new { @class = "ddlfrm cateId col-xs-12" })
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Quận huyện (<span class="requied">*</span>)</label>
+                        <label class="col-xs-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Quận huyện (<span class="requied">*</span>)</label>
 
-                        <div class="col-sm-9">
-                            @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "col-xs-12 col-sm-12 ddlfrm districtId" })
+                        <div class="col-xs-9 righttxt">
+                            @Html.DropDownListFor(m => m.DistricId, Model.ListDistric, new { @class = "ddlfrm districtId col-xs-12" })
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Điện thoại (<span class="requied">*</span>)</label>
+                        <label class="col-xs-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Điện thoại (<span class="requied">*</span>)</label>
 
-                        <div class="col-sm-9">
-                            <input type="text" id="txtphone" placeholder="Nhập vào số điện thoại" name="phone" class="col-xs-12 col-sm-12 ddlfrm txtphone" />
+                        <div class="col-xs-9 righttxt">
+                            <input type="text" id="txtphone" placeholder="Nhập vào số điện thoại" name="phone" class="ddlfrm col-xs-12 txtphone" />
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Giá (<span class="requied">*</span>)</label>
+                        <label class="col-xs-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Giá (<span class="requied">*</span>)</label>
 
-                        <div class="col-sm-9">
-                            <input type="text" id="txtprice" placeholder="Nhập vào giá" name="price" class="col-xs-12 col-sm-12 ddlfrm txtprice" />
+                        <div class="col-xs-9 righttxt">
+                            <input type="text" id="txtprice" placeholder="Nhập vào giá" name="price" class="ddlfrm col-xs-12 txtprice" />
                         </div>
                     </div>
                 </div>
@@ -60,20 +65,20 @@
                         - Bộ phận CSKH : @ViewBag.Manager
                     </span>
                     <br />
-                    
+
                     @*<span class="col-xs-3">
-                        - Phí đăng tin
-                    </span>
-                    <span class="col-xs-9">
-                        : 15.000<sup>đ</sup>/tin (<i>số tiền trong tài khoản của bạn phải lớn hơn 15.000<sup>đ</sup></i>)
-                    </span>
-                    <br />
-                    <span class="col-xs-3">
-                        - Tài khoản hiện tại
-                    </span>
-                    <span class="col-xs-9">
-                        : @ViewBag.TotalMoney<sup>đ</sup>
-                    </span>*@
+                            - Phí đăng tin
+                        </span>
+                        <span class="col-xs-9">
+                            : 15.000<sup>đ</sup>/tin (<i>số tiền trong tài khoản của bạn phải lớn hơn 15.000<sup>đ</sup></i>)
+                        </span>
+                        <br />
+                        <span class="col-xs-3">
+                            - Tài khoản hiện tại
+                        </span>
+                        <span class="col-xs-9">
+                            : @ViewBag.TotalMoney<sup>đ</sup>
+                        </span>*@
                 </div>
             </div>
             <div class="form-group">
@@ -87,7 +92,7 @@
                 <label class="col-sm-3 control-label no-padding-right lo-txt-left" for="form-field-1"> Nội dung (<span class="requied">*</span>)</label>
 
                 <div class="col-sm-9">
-                    <textarea class="col-sm-12 col-xs-12" id="txtcontent" name="txtcontent"></textarea>
+                    <textarea class="col-sm-12 col-xs-12" id="txtcontent" name="txtcontent" rows="10"></textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -95,7 +100,7 @@
                 <div class="col-sm-9">
                     <input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">
                     @*6LcgwBYUAAAAACh_dbcdd-K36mHfgW_zdXQW2C_p*@
-                    <div class="g-recaptcha" data-sitekey="6LdaxRQUAAAAAEzTtuyPn-Fw1FXwssvfxcOxQ8pG"></div>
+                    <div class="g-recaptcha" data-sitekey="6LcgwBYUAAAAACh_dbcdd-K36mHfgW_zdXQW2C_p"></div>
                 </div>
             </div>
 

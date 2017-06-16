@@ -90,5 +90,10 @@ namespace CMS.Bussiness
                 }
             }
         }
+        
+        public List<Role_User> GetAllRoleUser()
+        {
+            return db.Role_Users.ToList();
+        }
     }
 }

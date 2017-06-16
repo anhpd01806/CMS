@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -74,6 +75,30 @@ namespace CMS.Helper
                 return result;
             }
             return "0";
+        }
+
+        public static string ConvertPrice(string price)
+        {
+            try
+            {
+                StringBuilder PriceStr = new StringBuilder();
+                if (price.Length > 9)
+                {
+                    PriceStr.Append(price.Substring(0, price.Length - 9) + " tỷ ");
+                    double milionPrice = int.Parse(price.Substring(price.Length - 9));
+                    if (milionPrice > 0) PriceStr.Append(string.Format("{0:n0}", Math.Round((milionPrice / 1000000), 1)) + " triệu");
+                }
+                else
+                {
+                    double milionPrice = int.Parse(price);
+                    PriceStr.Append(string.Format("{0:n1}", Math.Round((milionPrice / 1000000), 1)) + " triệu");
+                }
+                return PriceStr.ToString();
+            }
+            catch (Exception)
+            {
+                return "";
+            }
         }
     }
 }
