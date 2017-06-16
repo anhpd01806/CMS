@@ -31,7 +31,7 @@ namespace CMS.API.Common
             var keyByte = encoding.GetBytes(key);
             using (var hmacsha256 = new HMACSHA256(keyByte))
             {
-                byte[] dataToSign = Encoding.Default.GetBytes(str);
+                byte[] dataToSign = Encoding.UTF8.GetBytes(str);
                 var signature = hmacsha256.ComputeHash(dataToSign);
                 return BitConverter.ToString(signature).Replace("-", "").ToLower();
             }
