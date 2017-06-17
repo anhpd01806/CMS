@@ -34,23 +34,23 @@
         });
 
         //fill category site by site
-        function FillCategorySite() {
-            var id = $('#SiteId').val();
-            $.ajax({
-                url: '/LinkSite/FillCategorySite',
-                type: "GET",
-                dataType: "JSON",
-                data: { id: id },
-                success: function (result) {
-                    $("#CategoryId").html(""); // clear before appending new list
-                    $.each(result, function (i, result) {
-                        $("#CategoryId").append(
-                            $('<option></option>').val(result.Value).html(result.Text));
-                    });
-                    FindInfomation();
-                }
-            });
-        }
+        //function FillCategorySite() {
+        //    var id = $('#SiteId').val();
+        //    $.ajax({
+        //        url: '/LinkSite/FillCategorySite',
+        //        type: "GET",
+        //        dataType: "JSON",
+        //        data: { id: id },
+        //        success: function (result) {
+        //            $("#CategoryId").html(""); // clear before appending new list
+        //            $.each(result, function (i, result) {
+        //                $("#CategoryId").append(
+        //                    $('<option></option>').val(result.Value).html(result.Text));
+        //            });
+        //            FindInfomation();
+        //        }
+        //    });
+        //}
 
         //fill district by province
         function FillDistrictSite() {
@@ -73,6 +73,7 @@
 
         // click button tim kiem
         function FindInfomation() {
+            debugger;
             $.LoadingOverlay("show");
             var search = $('#LinkUrl').val();
             var pageIndex = 1;
@@ -200,11 +201,11 @@
                         <div class="form col-md-6" role="form">
                             <div class="form-group">
                                 <label>Chọn trang web</label>
-                                @Html.DropDownListFor(m => m.SiteId, Model.SiteList, new { @class = "form-control", @onchange = "FillCategorySite()" })
+                                @Html.DropDownListFor(m => m.SiteId, Model.SiteList, new { @class = "form-control"})
                             </div>
                             <div class="form-group">
-                                <label>Chọn danh mục web</label>
-                                @Html.DropDownListFor(m => m.CategoryId, Model.CategorySite, new { @class = "form-control", @onchange = "FindInfomation()" })
+                                <label>Chọn danh mục</label>
+                                @Html.DropDownListFor(m => m.CategoryId, Model.Category, new { @class = "form-control", @onchange = "FindInfomation()" })
                             </div>
                             <div class="form-group">
                                 <label>Chọn tỉnh, thành phố</label>

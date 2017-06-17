@@ -12,7 +12,7 @@ namespace CMS.ViewModel
         public List<SelectListItem> SiteList { get; set; }
         public int SiteId { get; set; }
 
-        public List<SelectListItem> CategorySite { get; set; }
+        public List<SelectListItem> Category { get; set; }
         public int CategoryId { get; set; }
 
         public List<SelectListItem> ProvinceList { get; set; }

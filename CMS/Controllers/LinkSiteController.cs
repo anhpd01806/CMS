@@ -27,19 +27,19 @@ namespace CMS.Controllers
                     model.SiteList = allSite.Select(x => new SelectListItem { Value = x.ID.ToString(), Text = x.Name }).ToList();
 
                     //get category site by link site
-                    var categorySite = new CategoryBussiness().GetCategorySiteBySiteId(allSite.First().ID);
+                    var category = new CategoryBussiness().GetCategoryDrop();
 
                     //get parent category site
-                    model.CategorySite = new List<SelectListItem>();
-                    foreach (var item in categorySite.Where(x => x.ParentId == 0))
-                    {
-                        model.CategorySite.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
-                        // get child category with parent
-                        foreach (var itemChild in categorySite.Where(x => x.ParentId == item.Id))
-                        {
-                            model.CategorySite.Add(new SelectListItem {Text = "   " + itemChild.Name, Value = itemChild.Id.ToString() });
-                        }
-                    }
+                    model.Category = category;
+                    //foreach (var item in category.Where(x => x.ParentId == 0))
+                    //{
+                    //    model.CategorySite.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                    //    // get child category with parent
+                    //    foreach (var itemChild in categorySite.Where(x => x.ParentId == item.Id))
+                    //    {
+                    //        model.CategorySite.Add(new SelectListItem {Text = "   " + itemChild.Name, Value = itemChild.Id.ToString() });
+                    //    }
+                    //}
                 }
                 // get all province
                 var allProvince = new ProviceBussiness().GetAllProvice();
@@ -141,28 +141,27 @@ namespace CMS.Controllers
             }
         }
 
-        public ActionResult FillCategorySite(int id)
-        {
-            LinkSiteViewModel model = new LinkSiteViewModel();
+        //public ActionResult FillCategorySite(int id)
+        //{
+        //    LinkSiteViewModel model = new LinkSiteViewModel();
 
-            //get category site by link site
-            var categorySite = new CategoryBussiness().GetCategorySiteBySiteId(id);
+        //    //get category site by link site
+        //    var categorySite = new CategoryBussiness().GetCategorySiteBySiteId(id);
 
-            //get parent category site
-            model.CategorySite = new List<SelectListItem>();
-            foreach (var item in categorySite.Where(x => x.ParentId == 0))
-            {
-                model.CategorySite.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
-                // get child category with parent
-                foreach (var itemChild in categorySite.Where(x => x.ParentId == item.Id))
-                {
-                    model.CategorySite.Add(new SelectListItem { Text = "    >> " + itemChild.Name, Value = itemChild.Id.ToString() });
-                }
-            }
-            return Json(model.CategorySite, JsonRequestBehavior.AllowGet);
-        }
-
-
+        //    //get parent category site
+        //    model.CategorySite = new List<SelectListItem>();
+        //    foreach (var item in categorySite.Where(x => x.ParentId == 0))
+        //    {
+        //        model.CategorySite.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+        //        // get child category with parent
+        //        foreach (var itemChild in categorySite.Where(x => x.ParentId == item.Id))
+        //        {
+        //            model.CategorySite.Add(new SelectListItem { Text = "    >> " + itemChild.Name, Value = itemChild.Id.ToString() });
+        //        }
+        //    }
+        //    return Json(model.CategorySite, JsonRequestBehavior.AllowGet);
+        //}
+        
         public ActionResult FillDistrict(int id)
         {
             LinkSiteViewModel model = new LinkSiteViewModel();
@@ -174,7 +173,6 @@ namespace CMS.Controllers
         #endregion
 
         #region PrivateFuntion
-
         private List<LinkSiteModel> GetLinkSite(ref int totalPage, string search, int siteId, int categorySiteId, int districtId, int provinceId, int pageSize, int pageIndex)
         {
             int totalCount = 0;
@@ -195,7 +193,6 @@ namespace CMS.Controllers
             totalPage = (int)Math.Ceiling((double)totalCount / (double)pageSize);
             return rs;
         }
-
         #endregion
     }
 }
