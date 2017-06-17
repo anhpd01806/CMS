@@ -47,7 +47,7 @@ namespace CMS.Controllers
                 {
                     if (!CheckUserLogin(int.Parse(username.Split(',')[1].Trim())))
                     {
-                        TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thử lại sau 10 phút.";
+                        TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
                         return View(model);
                     }
                     // set seesion for notify
@@ -101,7 +101,7 @@ namespace CMS.Controllers
                         //check login user
                         if (!CheckUserLogin(user.Id))
                         {
-                            TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thử lại sau 10 phút.";
+                            TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
                             return RedirectToAction("Login", "Account");
                         }
                         //update last login user

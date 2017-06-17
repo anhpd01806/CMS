@@ -64,7 +64,7 @@ namespace CMS.Controllers
                             {
                                 status = "200",
                                 errorcode = "2200",
-                                message = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thử lại sau 10 phút.",
+                                message = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.",
                                 data = 0
                             });
                         }
