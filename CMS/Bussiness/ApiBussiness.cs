@@ -10,6 +10,16 @@ namespace CMS.Bussiness
 {
     public class ApiBussiness : InitDB
     {
+        public int GetIdByAccount(string userName)
+        {
+            int id = 0;
+            using (var db = new CmsDataDataContext())
+            {
+                id = db.Users.FirstOrDefault(x => userName.Equals(userName)).Id;
+                db.Dispose();
+            }
+            return id;
+        }
         public void UpdateLastLogin(int id)
         {
             using (var db = new CmsDataDataContext())

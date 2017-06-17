@@ -57,6 +57,18 @@ namespace CMS.Controllers
                     }
                     else
                     {
+                        var userId = _accountbussiness.GetIdByAccount(username);
+                        if (!CheckUserLogin(userId))
+                        {
+                            return Json(new
+                            {
+                                status = "200",
+                                errorcode = "2200",
+                                message = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thử lại sau 10 phút.",
+                                data = 0
+                            });
+                        }
+
                         var userItem = _accountbussiness.Login(username, password);
                         if (userItem == null)
                         {
@@ -74,6 +86,64 @@ namespace CMS.Controllers
                             errorcode = "0",
                             message = "success",
                             data = userItem
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Logout(int userid, string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userid.ToString()) || string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("userid", userid.ToString());
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        System.Web.HttpContext.Current.Application.Remove("usr_" + userid);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = ""
                         });
                     }
                 }
@@ -1283,7 +1353,7 @@ namespace CMS.Controllers
                             var listItem = new List<New>();
                             for (int i = 0; i < listNewsId.Length; i++)
                             {
-                                var news = new HomeBussiness() .GetNewsDetail(listNewsId[i]);
+                                var news = new HomeBussiness().GetNewsDetail(listNewsId[i]);
                                 listItem.Add(news);
                             }
                             var result = new HomeBussiness().Spam(listItem, userId);
@@ -1399,9 +1469,6 @@ namespace CMS.Controllers
                 });
             }
         }
-
-
-
 
         /// <summary>
         /// Status : 1 - Thành công.
@@ -1522,7 +1589,6 @@ namespace CMS.Controllers
                 });
             }
         }
-
 
         [HttpPost]
         public JsonResult GenSign(string str)
@@ -1722,7 +1788,7 @@ namespace CMS.Controllers
                             return Json(new
                             {
                                 status = "200",
-                                errorcode = "5000",
+                                errorcode = "3000",
                                 message = "Mã thẻ không đúng. vui lòng thử lại",
                                 data = ""
                             });
@@ -1792,7 +1858,7 @@ namespace CMS.Controllers
                             return Json(new
                             {
                                 status = "200",
-                                errorcode = "5000",
+                                errorcode = "3100",
                                 message = "Nạp thẻ thất bại",
                                 data = ""
                             });
@@ -2077,6 +2143,7 @@ namespace CMS.Controllers
                 });
             }
         }
+
         private List<NoticeDetailModel> getAllNoticeById(int page, int userId, Boolean isUser)
         {
             var listNotice = new NotifyBussiness().GetAllNotice(isUser, userId, page);
@@ -2093,6 +2160,7 @@ namespace CMS.Controllers
                       }).ToList();
             return rs;
         }
+
         private List<SelectListItem> getPaymentStatus()
         {
             List<SelectListItem> status = new List<SelectListItem>();
@@ -2140,6 +2208,23 @@ namespace CMS.Controllers
             rs.CashPayment = payment.FirstOrDefault(x => x.PaymentMethodId == 1) != null ? payment.FirstOrDefault(x => x.PaymentMethodId == 1).AmoutPayment : "0";
             rs.CardPayment = payment.FirstOrDefault(x => x.PaymentMethodId == 2) != null ? payment.FirstOrDefault(x => x.PaymentMethodId == 2).AmoutPayment : "0";
             return rs;
+        }
+
+        private Boolean CheckUserLogin(int userId)
+        {
+            var currentApp = System.Web.HttpContext.Current.Application["usr_" + userId];
+
+            if (currentApp != null)
+            {
+                if (System.Web.HttpContext.Current.Application["usr_" + userId].Equals("true"))
+                {
+                    return false;
+                }
+            }
+            //storing session to login at sametime
+            System.Web.HttpContext.Current.Application["usr_" + userId] = "true";
+
+            return true;
         }
     }
 }
