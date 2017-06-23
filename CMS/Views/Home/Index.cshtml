@@ -170,7 +170,14 @@
                                         <div class="input-group col-xs-7">
                                             @if (Convert.ToBoolean(ViewBag.Accept))
                                             {
+                                                if (!Convert.ToBoolean(ViewBag.User))
+                                                {
                                                 @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId", @disabled = "disabled" })
+                                                }
                                             }
                                             else
                                             {
@@ -283,8 +290,8 @@
                                     @{
                                         var title = Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!";
                                     }
-                                    <span data-id="@item.Id" class="lbltitle" @Html.Raw("title=\"" + title + "\"")>
-                                        @item.Title
+                                    <span data-id="@item.Id" class="lbltitle" @Html.Raw("title=\"" + CMS.Helper.Utils.RemoveHtml(title) + "\"")>
+                                        @Html.Raw(CMS.Helper.Utils.RemoveHtml(item.Title))
                                     </span>
                                 </td>
                                 <td class="td-medium">
@@ -331,7 +338,6 @@
                                     {
                                         <a class="green edit-item-list_adm" href="javascript:;" data-id="@item.Id">
                                             <i class="icon-edit bigger-130 "></i>
-                                            edit
                                         </a>
                                     }
                                 </td>

@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header customheader">
-                <h3><i class="fa fa-search-plus"></i> Nội dung chi tiết tin</h3>
+                <h3><i class="fa fa-exclamation-circle"></i> Tin này là của Môi giới hay Chính chủ ? </h3>
                 <button type="button" class="close btnclose" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-xs-12 col-md-8 ">
                                 <div class="mCustomScrollbar">
-                                    <h5><strong>Tiêu đề: </strong><label title="@Model.Title" class="lo-modal-title"> @Model.Title</label></h5>
+                                    <h5><strong>Tiêu đề: </strong><label class="lo-modal-title"> @Html.Raw(CMS.Helper.Utils.RemoveHtml(Model.Title))</label></h5>
                                     <h5><strong>Nội dung :</strong></h5>
                                     <p>
                                         @Html.Raw(@Model.Contents)
@@ -45,7 +45,7 @@
                                 <h6><strong>Loại tin: </strong> @Model.StatusName</h6>
                                 <h6><strong>Danh mục: </strong> @Model.CateName</h6>
                                 <h6><strong>Khu vực: </strong> @Model.DistictName</h6>
-                                <h6><strong>Nguồn tin: </strong> @(Model.SiteId == 0 ? Html.Raw("<a href='http://ozo.vn' target='_blank'  title='ozo.vn'>ozo.vn</a>") : Html.Raw("<a href='" + Model.Link + "' target='_blank'  title='" + Model.SiteName + "'>" + Model.SiteName + "</a>"))</h6>
+                                <h6><strong>Nguồn tin: </strong> <a style="cursor: pointer;">OZO</a> </h6>
                                 <h6><strong>Người kiểm tra: </strong></h6>
                                 @Html.Raw("<ul>" + Model.PersonCheck + "</ul>")
                                 <h6><strong>Báo cáo: </strong></h6>

@@ -20,8 +20,11 @@
                 </label>
             </td>
             <td>
-                <span data-id="@item.Id" class="lbltitle" title="@(Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!")">
-                    @item.Title
+                @{
+                    var title = Convert.ToBoolean(ViewBag.Accept) ? CMS.Helper.Utils.RemoveHtml(item.Contents).Trim() : "Bạn vui lòng nạp thêm tiền để xem chi tiết nội dung tin!";
+                }
+                <span data-id="@item.Id" class="lbltitle" @Html.Raw("title=\"" + CMS.Helper.Utils.RemoveHtml(title) + "\"")>
+                    @Html.Raw(CMS.Helper.Utils.RemoveHtml(item.Title))
                 </span>
             </td>
             <td class="td-medium">
