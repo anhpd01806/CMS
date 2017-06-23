@@ -1915,10 +1915,16 @@ namespace CMS.Controllers
         [HttpPost]
         public JsonResult GetPayment()
         {
+            Payment rs = new Payment();
+            rs.DayPackage = ConfigWeb.DayPackage;
+            rs.MonthPackage = ConfigWeb.MonthPackage;
+
             return Json(new
             {
-                DayPackage = ConfigWeb.DayPackage,
-                MonthPackage = ConfigWeb.MonthPackage
+                status = "200",
+                errorcode = "0",
+                message = "success",
+                data = rs
             });
         }
 
@@ -2225,6 +2231,12 @@ namespace CMS.Controllers
             System.Web.HttpContext.Current.Application["usr_" + userId] = "true";
 
             return true;
+        }
+
+        private class Payment
+        {
+            public string DayPackage { get; set; }
+            public string MonthPackage { get; set; }
         }
     }
 }

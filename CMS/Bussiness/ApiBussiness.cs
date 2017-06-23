@@ -16,7 +16,6 @@ namespace CMS.Bussiness
             using (var db = new CmsDataDataContext())
             {
                 id = db.Users.FirstOrDefault(x => userName.Equals(userName)).Id;
-                db.Dispose();
             }
             return id;
         }
