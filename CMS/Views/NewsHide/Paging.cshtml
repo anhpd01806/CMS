@@ -51,7 +51,7 @@
             </td>
 
             <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>
-            <td style="text-align: center">
+            @*<td style="text-align: center">
                 @if (Convert.ToBoolean(ViewBag.Accept))
                 {
                     <a href="@item.Link" target="_blank" title="@item.Title"><label style="cursor:pointer;">@item.SiteName</label> </a>
@@ -60,7 +60,7 @@
                 {
                     <span class="error">Vui lòng nạp tiền</span>
                 }
-            </td>
+            </td>*@
             <td class="tdcc @item.Id">
                 @if (item.Iscc)
                 {
@@ -71,7 +71,7 @@
                 @if (!Convert.ToBoolean(ViewBag.User))
                 {
                     <a class="green edit-item-list_adm" href="javascript:;" data-id="@item.Id">
-                        <i class="icon-edit bigger-130 "></i>
+                        <i class="fa fa-edit icon-edit bigger-130 "></i>
                     </a>
                 }
             </td>

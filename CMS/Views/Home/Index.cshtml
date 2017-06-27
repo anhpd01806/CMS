@@ -170,14 +170,7 @@
                                         <div class="input-group col-xs-7">
                                             @if (Convert.ToBoolean(ViewBag.Accept))
                                             {
-                                                if (!Convert.ToBoolean(ViewBag.User))
-                                                {
                                                 @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId" })
-                                                }
-                                                else
-                                                {
-                                                    @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId", @disabled = "disabled" })
-                                                }
                                             }
                                             else
                                             {
@@ -337,7 +330,7 @@
                                     @if (!Convert.ToBoolean(ViewBag.User))
                                     {
                                         <a class="green edit-item-list_adm" href="javascript:;" data-id="@item.Id">
-                                            <i class="icon-edit bigger-130 "></i>
+                                            <i class="fa fa-edit icon-edit bigger-130 "></i>
                                         </a>
                                     }
                                 </td>

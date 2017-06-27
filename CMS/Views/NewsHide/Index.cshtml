@@ -169,14 +169,7 @@
                                         <div class="input-group col-xs-7">
                                             @if (Convert.ToBoolean(ViewBag.Accept))
                                             {
-                                                if (!Convert.ToBoolean(ViewBag.User))
-                                                {
-                                                    @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId" })
-                                                }
-                                                else
-                                                {
-                                                    @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId", @disabled = "disabled" })
-                                                }
+                                                @Html.DropDownListFor(m => m.SiteId, Model.ListSite, new { @class = "form-control col-xs-10 siteId" })
                                             }
                                             else
                                             {
@@ -258,7 +251,7 @@
                         <th style="min-width: 105px;" data-name="Price">Giá</th>
                         <th style="text-align: center">Điện thoại</th>
                         <th style="text-align: center" data-name="StatusId">Loại tin</th>
-                        <th>Nguồn tin</th>
+                        @*<th>Nguồn tin</th>*@
                         <th class="tdcc" data-name="Iscc">C.Chủ</th>
                         <th>Sửa</th>
                     </tr>
@@ -314,7 +307,7 @@
                                     }
                                 </td>
                                 <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>
-                                <td>
+                                @*<td>
                                     @if (Convert.ToBoolean(ViewBag.Accept))
                                     {
                                         <a href="@item.Link" target="_blank" title="@item.Title"><label style="cursor:pointer;">@item.SiteName</label> </a>
@@ -323,7 +316,7 @@
                                     {
                                         <span class="error">Vui lòng nạp tiền</span>
                                     }
-                                </td>
+                                </td>*@
                                 <td class="tdcc @item.Id">
                                     @if (item.Iscc)
                                     {
@@ -334,7 +327,7 @@
                                     @if (!Convert.ToBoolean(ViewBag.User))
                                     {
                                         <a class="green edit-item-list_adm" href="javascript:;" data-id="@item.Id">
-                                            <i class="icon-edit bigger-130 "></i>
+                                            <i class="fa fa-edit icon-edit bigger-130 "></i>
                                         </a>
                                     }
                                 </td>
