@@ -1971,6 +1971,8 @@ namespace CMS.Controllers
                         var allUser = new UserBussiness().GetCustomerUser(ref pageTotal, managerId, statusId, pageIndex, pageSize, search);
                         var allRoles = new RoleBussiness().GetRoles();
                         var allRolesUser = new RoleBussiness().GetAllRoleUser();
+                        CustomerModel model = new CustomerModel();
+
                         var rs = (from a in allUser
                                   select new UserModel
                                   {
@@ -1985,14 +1987,17 @@ namespace CMS.Controllers
                                       RoleName = getNameRole(allRoles, allRolesUser, a.Id),
                                       EndTimePayment = getPaymentStatus(a.Id)
                                   }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.EndTimePayment).ToList();
-
+                        model.Total = pageTotal;
+                        model.pageIndex = pageIndex;
+                        model.pageSize = pageSize;
+                        model.ListCustomer = rs;
+                        model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                         return Json(new
                         {
                             status = "200",
                             errorcode = "0",
                             message = "success",
-                            data = rs,
-                            pageTotal = pageTotal
+                            data = model
                         });
                     }
                 }
@@ -2075,6 +2080,9 @@ namespace CMS.Controllers
             List<SelectListItem> lstPayment = getPaymentStatus();
             return Json(new
             {
+                status = "200",
+                errorcode = "0",
+                message = "success",
                 data = lstPayment
             });
         }

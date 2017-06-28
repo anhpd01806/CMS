@@ -3050,6 +3050,7 @@
     <Compile Include="Models\BlacklistModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CategorySiteModel.cs" />
+    <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\DistrictModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\ImageModel.cs" />
