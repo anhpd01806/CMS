@@ -23,7 +23,7 @@ namespace CMS.Bussiness
             return db.Users.Where(x => x.IsFree == true).OrderBy(m => m.Id).ToList();
         }
 
-        public List<UserModel> GetCustomerUser(ref int pageTotal, int managerId, int statusId, int pageIndex, int pageSize, string search)
+        public List<UserModel> GetCustomerUser(ref double total, ref int pageTotal, int managerId, int statusId, int pageIndex, int pageSize, string search)
         {
             try
             {
@@ -50,7 +50,8 @@ namespace CMS.Bussiness
                               IsMember = a.IsMember ?? false,
                               //EndTimePayment = b.EndDate == null ? DateTime.MinValue : b.EndDate,
                           });
-                pageTotal = (int)Math.Ceiling((double)rs.ToList().Count / (double)pageSize);
+                total = (double)rs.ToList().Count;
+                pageTotal = (int)Math.Ceiling(total / (double)pageSize);
                 return rs.OrderBy(x => x.IsMember).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList(); ;
             }
             catch (Exception ex)

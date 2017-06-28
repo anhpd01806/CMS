@@ -1967,8 +1967,9 @@ namespace CMS.Controllers
                     else
                     {
                         int pageTotal = 0;
+                        double total = 0;
                         var allAdmin = new UserBussiness().GetAdminUser();
-                        var allUser = new UserBussiness().GetCustomerUser(ref pageTotal, managerId, statusId, pageIndex, pageSize, search);
+                        var allUser = new UserBussiness().GetCustomerUser(ref total, ref pageTotal, managerId, statusId, pageIndex, pageSize, search);
                         var allRoles = new RoleBussiness().GetRoles();
                         var allRolesUser = new RoleBussiness().GetAllRoleUser();
                         CustomerModel model = new CustomerModel();
@@ -1987,7 +1988,7 @@ namespace CMS.Controllers
                                       RoleName = getNameRole(allRoles, allRolesUser, a.Id),
                                       EndTimePayment = getPaymentStatus(a.Id)
                                   }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.EndTimePayment).ToList();
-                        model.Total = pageTotal;
+                        model.Total = total;
                         model.pageIndex = pageIndex;
                         model.pageSize = pageSize;
                         model.ListCustomer = rs;

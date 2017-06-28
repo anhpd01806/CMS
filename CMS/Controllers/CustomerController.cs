@@ -341,8 +341,9 @@ namespace CMS.Controllers
         //get all khách hàng
         private List<UserModel> getCustomerList(ref int pageTotal, int pageIndex, int pageSize, string search, int managerId, int statusId)
         {
+            double total = 0;
             var allAdmin = new UserBussiness().GetAdminUser();
-            var allUser = new UserBussiness().GetCustomerUser(ref pageTotal, managerId, statusId, pageIndex, pageSize, search);
+            var allUser = new UserBussiness().GetCustomerUser(ref total, ref pageTotal, managerId, statusId, pageIndex, pageSize, search);
             var allRoles = new RoleBussiness().GetRoles();
             var allRolesUser = new RoleUserBussiness().GetAllRoleUser();
             return (from a in allUser
