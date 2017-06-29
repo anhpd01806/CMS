@@ -45,11 +45,11 @@ namespace CMS.Controllers
                 if (reCookie != null) { username = Server.HtmlEncode(reCookie.Value); }
                 if (username.Split(',')[0].Trim().ToLower() == "true")
                 {
-                    if (!CheckUserLogin(int.Parse(username.Split(',')[1].Trim())))
-                    {
-                        TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
-                        return View(model);
-                    }
+                    //if (!CheckUserLogin(int.Parse(username.Split(',')[1].Trim())))
+                    //{
+                    //    TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
+                    //    return View(model);
+                    //}
                     // set seesion for notify
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
@@ -99,11 +99,11 @@ namespace CMS.Controllers
                         bool isNotify;
                         isNotify = user.IsNotify ?? true;
                         //check login user
-                        if (!CheckUserLogin(user.Id))
-                        {
-                            TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
-                            return RedirectToAction("Login", "Account");
-                        }
+                        //if (!CheckUserLogin(user.Id))
+                        //{
+                        //    TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
+                        //    return RedirectToAction("Login", "Account");
+                        //}
                         //update last login user
                         UpdateLastLoginUser(user.Id);
 
@@ -162,7 +162,7 @@ namespace CMS.Controllers
             HttpCookie rememberCookies = new HttpCookie("rememberCookies");
             rememberCookies.Expires = DateTime.Now.AddDays(-1d);
             Response.Cookies.Add(rememberCookies);
-            System.Web.HttpContext.Current.Application.Remove("usr_" + Session["SS-USERID"]);
+            //System.Web.HttpContext.Current.Application.Remove("usr_" + Session["SS-USERID"]);
             Session.Abandon();
             return RedirectToAction("Login", "Account");
         }
