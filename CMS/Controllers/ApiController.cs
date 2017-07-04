@@ -2107,7 +2107,7 @@ namespace CMS.Controllers
                     }
                     else
                     {
-                        CustomerDetail cusDetail = new CustomerDetail();
+                        CustomerDetailApi cusDetail = new CustomerDetailApi();
                         cusDetail = getCustomerDetail(id);
                         return Json(new
                         {
@@ -2261,14 +2261,14 @@ namespace CMS.Controllers
             return new PaymentBussiness().GetEndTimeByUserId(userId);
         }
 
-        private CustomerDetail getCustomerDetail(int id)
+        private CustomerDetailApi getCustomerDetail(int id)
         {
             // get all admin
             var allAdmin = new UserBussiness().GetAdminUser();
 
             var cusDetail = new UserBussiness().GetUserById(id);
-            var rs = new CustomerDetail();
-            rs.UserId = cusDetail.Id;
+            var rs = new CustomerDetailApi();
+            rs.Id = cusDetail.Id;
             rs.UserName = cusDetail.UserName;
             rs.FullName = cusDetail.FullName;
             rs.LastLogin = cusDetail.LastActivityDate ?? DateTime.Now;
