@@ -13,5 +13,7 @@ namespace CMS.Models
         public string FullName { get; set; }
         public bool IsPayment { get; set; }
         public bool IsUser { get; set; }
+        public string ManagerName { get; set; }
+        public string Amount { get; set; }
     }
 }

@@ -40,6 +40,10 @@ namespace CMS.Bussiness
 
         public UserItem Login(string username, string password)
         {
+
+            // get all admin
+            var allAdmin = new UserBussiness().GetAdminUser();
+
             try
             {
                 using (var db = new CmsDataDataContext())
@@ -56,8 +60,10 @@ namespace CMS.Bussiness
                             Phone = user.Phone,
                             FullName = user.FullName,
                             IsPayment = CheckAcceptedUser(user.Id, user.IsFree.ToString()),
-                            IsUser = CheckRole(user.Id, user.IsFree.ToString())
-                        };
+                            IsUser = CheckRole(user.Id, user.IsFree.ToString()),
+                            ManagerName = allAdmin.Where(x => x.Id == user.ManagerBy).Select(x => x.FullName).FirstOrDefault(),
+                            Amount = new PaymentBussiness().GetCashPaymentByUserId(user.Id)
+                    };
                         return userItem;
                     }
                     return null;

@@ -104,6 +104,63 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetAmountCustomer(int userid, string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userid.ToString()) || string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("userid", userid.ToString());
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        string amount = new PaymentBussiness().GetCashPaymentByUserId(userid);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = amount
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+        [HttpPost]
         public JsonResult Logout(int userid, string sign)
         {
             try
@@ -2094,6 +2151,9 @@ namespace CMS.Controllers
             List<SelectListItem> lstManager = new UserBussiness().GetManagerUser();
             return Json(new
             {
+                status = "200",
+                errorcode = "0",
+                message = "success",
                 data = lstManager
             });
         }
