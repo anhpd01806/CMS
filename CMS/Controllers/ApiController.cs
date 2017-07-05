@@ -149,7 +149,7 @@ namespace CMS.Controllers
                             status = "200",
                             errorcode = "0",
                             message = "success",
-                            data = 1
+                            data = 0
                         });
                     }
                 }

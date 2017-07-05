@@ -47,12 +47,6 @@ namespace CMS.Controllers
                 if (reCookie != null) { username = Server.HtmlEncode(reCookie.Value); }
                 if (username.Split(',')[0].Trim().ToLower() == "true")
                 {
-                    //if (!CheckUserLogin(int.Parse(username.Split(',')[1].Trim())))
-                    //{
-                    //    TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
-                    //    return View(model);
-                    //}
-
                     AddUserLogin(int.Parse(username.Split(',')[1].Trim()));
 
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
@@ -107,12 +101,6 @@ namespace CMS.Controllers
                     {
                         bool isNotify;
                         isNotify = user.IsNotify ?? true;
-                        //check login user
-                        //if (!CheckUserLogin(user.Id))
-                        //{
-                        //    TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
-                        //    return RedirectToAction("Login", "Account");
-                        //}
 
                         //add login information
                         AddUserLogin(user.Id);
@@ -201,6 +189,11 @@ namespace CMS.Controllers
         /// 
         public ActionResult Logout()
         {
+
+            // kiểm tra xem tài khoản có đăng nhập ở thiết bị khác hay không
+            var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
+            var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == int.Parse(Session["SS-USERID"].ToString()));
+            if (tokenLogin != null) tokenLogin.PrivateKey = "";
             HttpCookie rememberCookies = new HttpCookie("rememberCookies");
             rememberCookies.Expires = DateTime.Now.AddDays(-1d);
             Response.Cookies.Add(rememberCookies);

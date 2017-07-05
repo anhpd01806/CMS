@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebBackendPlus.Controllers;
+using static CMS.Common.Common;
 
 namespace CMS.Controllers
 {
@@ -360,7 +361,7 @@ namespace CMS.Controllers
                         RoleName = getNameRole(allRoles, allRolesUser, a.Id),
                         IsOnline = checkCustomerOnline(a.Id),
                         EndTimePayment = getPaymentStatus(a.Id)
-                    }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x=>x.EndTimePayment).ToList();
+                    }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.EndTimePayment).ToList();
         }
 
         private DateTime getPaymentStatus(int userId)
@@ -370,11 +371,17 @@ namespace CMS.Controllers
 
         private Boolean checkCustomerOnline(int userId)
         {
-            var currentApp = System.Web.HttpContext.Current.Application["usr_" + userId];
+            // kiểm tra xem tài khoản có đăng nhập ở thiết bị khác hay không
+            var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
+            var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == userId);
 
-            if (currentApp != null)
+            if (tokenLogin != null)
             {
-                return true;
+                if (!string.IsNullOrEmpty(tokenLogin.PrivateKey))
+                {
+                    return true;
+                }
+                return false;
             }
             return false;
         }

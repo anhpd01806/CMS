@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
+using static CMS.Common.Common;
 
 namespace CMS
 {
@@ -18,7 +19,10 @@ namespace CMS
 
         void Session_End(object sender, EventArgs e)
         {
-            Application.Remove("usr_" + GetSession()["SS-USERID"]);
+            //Application.Remove("usr_" + GetSession()["SS-USERID"]);
+            var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
+            var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == int.Parse(GetSession()["SS-USERID"].ToString()));
+            if (tokenLogin != null) tokenLogin.PrivateKey = "";
         }
 
         public HttpSessionState GetSession()
