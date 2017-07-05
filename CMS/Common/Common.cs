@@ -56,5 +56,11 @@ namespace CMS.Common
             }
             return new string(temp);
         }
+
+        public class LoginInfomation
+        {
+            public int UserId { get; set; }
+            public string PrivateKey { get; set; }
+        }
     }
 }

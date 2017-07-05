@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using static CMS.Common.Common;
 
 namespace WebBackendPlus.Controllers
 {
@@ -21,13 +23,25 @@ namespace WebBackendPlus.Controllers
                 return;
             }
 
+            int userId = Convert.ToInt32(Session["SS-USERID"]);
+            // kiểm tra xem tài khoản có đăng nhập ở thiết bị khác hay không
+            var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
+            var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == userId).PrivateKey;
+            if (!tokenLogin.Equals(Session["TokenInfoLogin"].ToString()))
+            {
+                Session["SS-USERID"] = null;
+                HttpCookie rememberCookies = new HttpCookie("rememberCookies");
+                rememberCookies.Expires = DateTime.Now.AddDays(-1d);
+                Response.Cookies.Add(rememberCookies);
+                Session["OtherLogin"] = "Tài khoản vừa được đăng nhập ở một nơi khác.Vui lòng kiểm tra lại";
+                filterContext.Result = new RedirectResult("~/account/login");
+                return;
+            }
             string urlCurrent = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
             if (urlCurrent == "/")
             {
                 urlCurrent = "/Home/Index";
             }
-
-            int userId = Convert.ToInt32(Session["SS-USERID"]);
             string controller = "";
             string action = "";
             GetInfoAuth(urlCurrent, ref controller, ref action);
@@ -48,8 +62,8 @@ namespace WebBackendPlus.Controllers
             ViewBag.BreadScrumb = GetBreadCrumb(controller, action, ref titleForm);
             ViewBag.TitleForm = titleForm;
             var userInfo = (User)Session["SS-USER"];
-            ViewBag.Manager =  new NewsBussiness().GetDetailManagerUser(userId);
-            ViewBag.FullName = Session["SS-FULLNAME"] != null? Session["SS-FULLNAME"] : userInfo.FullName != null ? userInfo.FullName : userInfo.UserName;
+            ViewBag.Manager = new NewsBussiness().GetDetailManagerUser(userId);
+            ViewBag.FullName = Session["SS-FULLNAME"] != null ? Session["SS-FULLNAME"] : userInfo.FullName != null ? userInfo.FullName : userInfo.UserName;
             ViewBag.CashAmount = new PaymentBussiness().GetCashPaymentByUserId(userId);
             ViewBag.EndDate = new PaymentBussiness().GetTimePaymentByUserId(userId);
         }
@@ -127,7 +141,7 @@ namespace WebBackendPlus.Controllers
                 }
             }
         }
-        
+
         /// <summary>
         /// Get menu parent
         /// </summary>
@@ -241,7 +255,7 @@ namespace WebBackendPlus.Controllers
                 return "";
             }
         }
-        
+
         /// <summary>
         /// return controller + action
         /// </summary>

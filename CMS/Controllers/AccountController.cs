@@ -9,10 +9,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using static CMS.Common.Common;
 
 namespace CMS.Controllers
 {
@@ -45,12 +47,14 @@ namespace CMS.Controllers
                 if (reCookie != null) { username = Server.HtmlEncode(reCookie.Value); }
                 if (username.Split(',')[0].Trim().ToLower() == "true")
                 {
-                    if (!CheckUserLogin(int.Parse(username.Split(',')[1].Trim())))
-                    {
-                        TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
-                        return View(model);
-                    }
-                    // set seesion for notify
+                    //if (!CheckUserLogin(int.Parse(username.Split(',')[1].Trim())))
+                    //{
+                    //    TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
+                    //    return View(model);
+                    //}
+
+                    AddUserLogin(int.Parse(username.Split(',')[1].Trim()));
+
                     Session.Add("SS-USERID", username.Split(',')[1].Trim());
                     Session.Add("SS-FULLNAME", HttpUtility.UrlDecode(username.Split(',')[2].Trim()));
                     CheckAcceptedUser(int.Parse(username.Split(',')[1].Trim()), username.Split(',')[3].Trim());
@@ -62,7 +66,12 @@ namespace CMS.Controllers
                     UpdateLastLoginUser(int.Parse(username.Split(',')[1].Trim()));
                     return RedirectToAction("Index", "Home");
                 }
-
+                // set seesion for notify
+                if (Session["OtherLogin"] != null)
+                {
+                    TempData["Error"] = Session["OtherLogin"].ToString();
+                    Session["OtherLogin"] = null;
+                }
                 return View(model);
             }
             catch (Exception ex)
@@ -99,11 +108,15 @@ namespace CMS.Controllers
                         bool isNotify;
                         isNotify = user.IsNotify ?? true;
                         //check login user
-                        if (!CheckUserLogin(user.Id))
-                        {
-                            TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
-                            return RedirectToAction("Login", "Account");
-                        }
+                        //if (!CheckUserLogin(user.Id))
+                        //{
+                        //    TempData["Error"] = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.";
+                        //    return RedirectToAction("Login", "Account");
+                        //}
+
+                        //add login information
+                        AddUserLogin(user.Id);
+
                         //update last login user
                         UpdateLastLoginUser(user.Id);
 
@@ -136,21 +149,50 @@ namespace CMS.Controllers
             }
         }
 
-        private Boolean CheckUserLogin(int userId)
+        private void AddUserLogin(int userId)
         {
-            var currentApp = System.Web.HttpContext.Current.Application["usr_" + userId];
-
+            string info = GetLocalIPAddress();
+            // gán vào session hiện tại
+            Session["TokenInfoLogin"] = md5(info);
+            var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
             if (currentApp != null)
             {
-                if (System.Web.HttpContext.Current.Application["usr_" + userId].Equals("true"))
+                // update lại private key khi đăng nhập tại 1 nơi khác
+                var check = currentApp.FirstOrDefault(x => x.UserId == userId);
+                if (check != null) check.PrivateKey = md5(info);
+                else
                 {
-                    return false;
+                    currentApp.Add(new LoginInfomation
+                    {
+                        UserId = userId,
+                        PrivateKey = md5(info)
+                    });
                 }
             }
-            //storing session to login at sametime
-            System.Web.HttpContext.Current.Application["usr_" + userId] = "true";
+            else
+            {
+                List<LoginInfomation> login = new List<LoginInfomation>();
+                login.Add(new LoginInfomation
+                {
+                    UserId = userId,
+                    PrivateKey = md5(info)
+                });
+                System.Web.HttpContext.Current.Application["LoginInfomation"] = login;
+            }
+        }
 
-            return true;
+        public string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var ipAddress = "";
+            if (host != null) ipAddress = host.AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork).ToString();
+            // get name of machine
+            string nameMachine = Environment.MachineName;
+            // get web browther
+            var browser = Request.Browser;
+            string browerInfo = browser.Type + browser.Version + browser.Type;
+
+            return ipAddress + "|" + nameMachine + "|" + browerInfo;
         }
         /// <summary>
         /// Đăng xuất
@@ -162,7 +204,6 @@ namespace CMS.Controllers
             HttpCookie rememberCookies = new HttpCookie("rememberCookies");
             rememberCookies.Expires = DateTime.Now.AddDays(-1d);
             Response.Cookies.Add(rememberCookies);
-            System.Web.HttpContext.Current.Application.Remove("usr_" + Session["SS-USERID"]);
             Session.Abandon();
             return RedirectToAction("Login", "Account");
         }

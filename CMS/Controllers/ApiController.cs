@@ -12,6 +12,7 @@ using CMS.Helper;
 using System.Net;
 using System.IO;
 using CMS.ViewModel;
+using static CMS.Common.Common;
 
 namespace CMS.Controllers
 {
@@ -23,11 +24,11 @@ namespace CMS.Controllers
         #endregion
 
         [HttpPost]
-        public JsonResult Login(string username, string password, string sign)
+        public JsonResult Login(string username, string password, string infologin, string sign)
         {
             try
             {
-                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(sign))
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(infologin))
                 {
                     return Json(new
                     {
@@ -42,6 +43,7 @@ namespace CMS.Controllers
                     var param = new NameValueCollection();
                     param.Add("username", username);
                     param.Add("password", password);
+                    param.Add("infologin", infologin);
                     var str = Common.Common.Sort(param);
                     var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
 
@@ -58,16 +60,8 @@ namespace CMS.Controllers
                     else
                     {
                         var userId = _accountbussiness.GetIdByAccount(username);
-                        if (!CheckUserLogin(userId))
-                        {
-                            return Json(new
-                            {
-                                status = "200",
-                                errorcode = "2200",
-                                message = "Tài khoản đang sử dụng phần mềm ở một nơi khác. vui lòng thoát tài khoản đang sử dụng hoặc thử lại sau 10 phút.",
-                                data = 0
-                            });
-                        }
+                        // add thông tin khi login
+                        AddInfoUserLogin(userId, infologin);
 
                         var userItem = _accountbussiness.Login(username, password);
                         if (userItem == null)
@@ -86,6 +80,76 @@ namespace CMS.Controllers
                             errorcode = "0",
                             message = "success",
                             data = userItem
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CheckOtherLogin(int userid, string infologin, string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userid.ToString()) || string.IsNullOrEmpty(infologin) || string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("userid", userid.ToString());
+                    param.Add("infologin", infologin);
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
+                        var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == userid).PrivateKey;
+                        if (!tokenLogin.Equals(md5(infologin)))
+                        {
+                            return Json(new
+                            {
+                                status = "200",
+                                errorcode = "0",
+                                message = "Tài khoản đã được đăng nhập ở 1 nơi khác. Vui lòng kiểm tra lại",
+                                data = 1
+                            });
+                        }
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = 1
                         });
                     }
                 }
@@ -1803,11 +1867,11 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult Recharge(string telco, string pin, string serial, string sign)
+        public JsonResult Recharge(int userId, string telco, string pin, string serial, string sign)
         {
             try
             {
-                if (string.IsNullOrEmpty(telco) || string.IsNullOrEmpty(serial) || string.IsNullOrEmpty(pin) || string.IsNullOrEmpty(sign))
+                if (string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(telco) || string.IsNullOrEmpty(serial) || string.IsNullOrEmpty(pin) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
                     {
@@ -1820,6 +1884,7 @@ namespace CMS.Controllers
                 else
                 {
                     var param = new NameValueCollection();
+                    param.Add("userId", userId.ToString());
                     param.Add("telco", telco);
                     param.Add("pin", pin);
                     param.Add("serial", serial);
@@ -1881,7 +1946,7 @@ namespace CMS.Controllers
                                 int amount = Int32.Parse(code);
                                 var paymentHistory = new PaymentHistory
                                 {
-                                    UserId = Convert.ToInt32(Session["SS-USERID"]),
+                                    UserId = userId,
                                     PaymentMethodId = 6,
                                     CreatedDate = DateTime.Now,
                                     Notes = "Nạp thẻ điện thoại",
@@ -1893,7 +1958,7 @@ namespace CMS.Controllers
 
                                 //insert payment accepted
                                 string message = "";
-                                var rs = new PaymentBussiness().UpdatePaymentAccepted(amount, Convert.ToInt32(Session["SS-USERID"]));
+                                var rs = new PaymentBussiness().UpdatePaymentAccepted(amount, userId);
                                 if (rs == 1) message = "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền.";
                                 else if (rs == 2) message = "Tài khoản của quý khách không đủ tiền.";
                                 else message = "Bạn đã nạp thành công " + string.Format("{0:n0}", amount) + "vnđ !Cảm ơn bạn đã sử dụng phần mềm.";
@@ -1915,7 +1980,7 @@ namespace CMS.Controllers
                             return Json(new
                             {
                                 status = "200",
-                                errorcode = "3100",
+                                errorcode = resultObj.isError + "|" + code,
                                 message = "Nạp thẻ thất bại",
                                 data = ""
                             });
@@ -2285,27 +2350,55 @@ namespace CMS.Controllers
             return rs;
         }
 
-        private Boolean CheckUserLogin(int userId)
+        private void AddInfoUserLogin(int userId, string Infologin)
         {
-            var currentApp = System.Web.HttpContext.Current.Application["usr_" + userId];
-
+            // gán vào session hiện tại
+            Session["TokenInfoLogin"] = md5(Infologin);
+            var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
             if (currentApp != null)
             {
-                if (System.Web.HttpContext.Current.Application["usr_" + userId].Equals("true"))
+                // update lại private key khi đăng nhập tại 1 nơi khác
+                var check = currentApp.FirstOrDefault(x => x.UserId == userId);
+                if (check != null) check.PrivateKey = md5(Infologin);
+                else
                 {
-                    return false;
+                    currentApp.Add(new LoginInfomation
+                    {
+                        UserId = userId,
+                        PrivateKey = md5(Infologin)
+                    });
                 }
             }
-            //storing session to login at sametime
-            System.Web.HttpContext.Current.Application["usr_" + userId] = "true";
-
-            return true;
+            else
+            {
+                List<LoginInfomation> login = new List<LoginInfomation>();
+                login.Add(new LoginInfomation
+                {
+                    UserId = userId,
+                    PrivateKey = md5(Infologin)
+                });
+                System.Web.HttpContext.Current.Application["LoginInfomation"] = login;
+            }
         }
 
         private class Payment
         {
             public string DayPackage { get; set; }
             public string MonthPackage { get; set; }
+        }
+
+        private static string md5(string data)
+        {
+            return BitConverter.ToString(encryptData(data)).Replace("-", "").ToLower();
+        }
+
+        public static byte[] encryptData(string data)
+        {
+            System.Security.Cryptography.MD5CryptoServiceProvider md5Hasher = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            byte[] hashedBytes;
+            System.Text.UTF8Encoding encoder = new System.Text.UTF8Encoding();
+            hashedBytes = md5Hasher.ComputeHash(encoder.GetBytes(data));
+            return hashedBytes;
         }
     }
 }
