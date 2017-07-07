@@ -17,10 +17,10 @@ namespace CMS
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
 
-        void Session_End(object sender, EventArgs e)
+        void Session_OnEnd(object sender, EventArgs e)
         {
             //Application.Remove("usr_" + GetSession()["SS-USERID"]);
-            var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
+            var currentApp = (List<LoginInfomation>)Application["LoginInfomation"];
             var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == int.Parse(GetSession()["SS-USERID"].ToString()));
             if (tokenLogin != null) tokenLogin.PrivateKey = "";
         }

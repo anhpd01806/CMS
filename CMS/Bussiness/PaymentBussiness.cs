@@ -96,7 +96,9 @@ namespace CMS.Bussiness
                 return "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền";
             else
             {
-                if (paymentAccepted.AmountTotal < model.Payment) return "Tài khoản của quý khách không đủ tiền";
+                if (paymentAccepted.AmountTotal < model.Payment 
+                    || (ConfigWeb.MonthPackage != model.Payment.ToString() && ConfigWeb.DayPackage != model.Payment.ToString()))
+                    return "Tài khoản của quý khách không đủ tiền";
                 else
                 {
                     paymentAccepted.AmountTotal = paymentAccepted.AmountTotal - model.Payment;
