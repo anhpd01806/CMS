@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebBackendPlus.Controllers;
+using static CMS.Common.Common;
 
 namespace CMS.Controllers
 {
@@ -286,7 +287,7 @@ namespace CMS.Controllers
             {
                 int totalpage = 0;
                 UserViewModel model = new UserViewModel();
-                model.UserList = GetAdminList(ref totalpage, int.Parse(pageIndex), 20, search);
+                model.UserList = GetAdminList(ref totalpage, int.Parse(pageIndex), 50, search);
                 var content = RenderPartialViewToString("~/Views/User/AdminDetail.cshtml", model.UserList);
                 model.ActionDetailUser = GetCustomerDetail(int.Parse(Session["SS-USERID"].ToString()), DateTime.Now, DateTime.Now);
                 var actionDetailUser = RenderPartialViewToString("~/Views/User/ReportStatistic.cshtml", model.ActionDetailUser);
@@ -364,7 +365,7 @@ namespace CMS.Controllers
                         IsMember = a.IsMember ?? false,
                         ManagerBy = a.ManagerBy != null ? allUser.Where(x => x.Id == a.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "",
                         RoleName = GetNameRole(allRoles, allRolesUser, a.Id)
-                    }).OrderBy(x => x.IsMember).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                    }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.IsMember).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
 
         //get Action user by datetime 
@@ -375,11 +376,17 @@ namespace CMS.Controllers
 
         private Boolean checkUserOnline(int userId)
         {
-            var currentApp = System.Web.HttpContext.Current.Application["usr_" + userId];
+            // kiểm tra xem tài khoản có đăng nhập ở thiết bị khác hay không
+            var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
+            var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == userId);
 
-            if (currentApp != null)
+            if (tokenLogin != null)
             {
-                return true;
+                if (!string.IsNullOrEmpty(tokenLogin.PrivateKey))
+                {
+                    return true;
+                }
+                return false;
             }
             return false;
         }

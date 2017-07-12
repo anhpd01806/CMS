@@ -51,6 +51,7 @@ namespace CMS.Bussiness
         {
             var listsite = (from c in Instance.Sites
                             where !c.Deleted && c.Published
+                            orderby c.DisplayOrder
                             select new SiteModel
                             {
                                 ID = c.ID,

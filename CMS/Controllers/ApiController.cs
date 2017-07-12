@@ -97,81 +97,37 @@ namespace CMS.Controllers
             }
         }
 
-        [HttpPost]
-        public JsonResult CheckOtherLogin(int userid, string infologin, string sign)
+        public Boolean CheckOtherLogin(int userid, string infologin)
         {
             try
             {
-                if (string.IsNullOrEmpty(userid.ToString()) || string.IsNullOrEmpty(infologin) || string.IsNullOrEmpty(sign))
+                var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
+                var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == userid).PrivateKey;
+                if (tokenLogin.Equals(md5(infologin)))
                 {
-                    return Json(new
-                    {
-                        status = "200",
-                        errorcode = "1100",
-                        message = "one or more parameter is empty",
-                        data = ""
-                    });
+                    return true;
                 }
-                else
-                {
-                    var param = new NameValueCollection();
-                    param.Add("userid", userid.ToString());
-                    param.Add("infologin", infologin);
-                    var str = Common.Common.Sort(param);
-                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
-
-                    if (!sign.Equals(gen_sign))
-                    {
-                        return Json(new
-                        {
-                            status = "200",
-                            errorcode = "1200",
-                            message = "invalid signature",
-                            data = ""
-                        });
-                    }
-                    else
-                    {
-                        var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
-                        var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == userid).PrivateKey;
-                        if (!tokenLogin.Equals(md5(infologin)))
-                        {
-                            return Json(new
-                            {
-                                status = "200",
-                                errorcode = "0",
-                                message = "Tài khoản đã được đăng nhập ở 1 nơi khác. Vui lòng kiểm tra lại",
-                                data = 1
-                            });
-                        }
-                        return Json(new
-                        {
-                            status = "200",
-                            errorcode = "0",
-                            message = "success",
-                            data = 0
-                        });
-                    }
-                }
+                return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
-                return Json(new
-                {
-                    status = "200",
-                    errorcode = "5000",
-                    message = "system error",
-                    data = ""
-                });
+                return false;
             }
         }
 
         [HttpPost]
-        public JsonResult GetAmountCustomer(int userid, string sign)
+        public JsonResult GetAmountCustomer(int userid, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
                 if (string.IsNullOrEmpty(userid.ToString()) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -258,7 +214,10 @@ namespace CMS.Controllers
                     }
                     else
                     {
-                        System.Web.HttpContext.Current.Application.Remove("usr_" + userid);
+                        //System.Web.HttpContext.Current.Application.Remove("usr_" + userid);
+                        var currentApp = (List<LoginInfomation>)System.Web.HttpContext.Current.Application["LoginInfomation"];
+                        var tokenLogin = currentApp.FirstOrDefault(x => x.UserId == userid);
+                        if (tokenLogin != null) tokenLogin.PrivateKey = "";
                         return Json(new
                         {
                             status = "200",
@@ -283,10 +242,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetListDistric(string sign)
+        public JsonResult GetListDistric(string sign, int userid, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -338,10 +306,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetListCategory(string sign)
+        public JsonResult GetListCategory(string sign, int userid, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -393,10 +370,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetListSite(string sign)
+        public JsonResult GetListSite(string sign, int userid, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -448,10 +434,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetlistStatus(string sign)
+        public JsonResult GetlistStatus(string sign, int userid, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -504,10 +499,19 @@ namespace CMS.Controllers
 
         [HttpPost]
         public JsonResult GetListNewsInHome(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
-            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, string sign)
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -584,10 +588,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetNewsDetail(int Id, int UserId, string sign)
+        public JsonResult GetNewsDetail(int Id, int UserId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(Id.ToString()) || string.IsNullOrEmpty(UserId.ToString()))
                 {
                     return Json(new
@@ -668,10 +681,20 @@ namespace CMS.Controllers
         /// <returns></returns>
         [HttpPost]
         public JsonResult GetListNewStatus(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
-            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, int newsStatus, bool IsRepeat, string key, string NameOrder, bool descending, string sign)
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize
+            , int newsStatus, bool IsRepeat, string key, string NameOrder, bool descending, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(newsStatus.ToString()))
                 {
                     return Json(new
@@ -771,10 +794,20 @@ namespace CMS.Controllers
         /// <returns></returns>
         [HttpPost]
         public JsonResult GetListNewsDelete(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
-            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, string sign)
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize
+            , bool IsRepeat, string key, string NameOrder, bool descending, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -858,10 +891,19 @@ namespace CMS.Controllers
         /// <param name="sign"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UserSaveNews(int[] listNewsId, int userId, string sign)
+        public JsonResult UserSaveNews(int[] listNewsId, int userId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
@@ -949,10 +991,19 @@ namespace CMS.Controllers
         /// <param name="sign"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UserRemoveNewsSave(int[] listNewsId, int userId, string sign)
+        public JsonResult UserRemoveNewsSave(int[] listNewsId, int userId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
@@ -1033,10 +1084,19 @@ namespace CMS.Controllers
         /// <param name="sign"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UserHideNews(int[] listNewsId, int userId, string sign)
+        public JsonResult UserHideNews(int[] listNewsId, int userId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
@@ -1124,10 +1184,19 @@ namespace CMS.Controllers
         /// <param name="sign"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UserRemoveNewsHide(int[] listNewsId, int userId, string sign)
+        public JsonResult UserRemoveNewsHide(int[] listNewsId, int userId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
@@ -1207,10 +1276,19 @@ namespace CMS.Controllers
         /// <param name="userId"></param>
         /// <param name="sign"></param>
         /// <returns></returns>
-        public JsonResult DeleteNews(int[] listNewsId, int userId, string sign)
+        public JsonResult DeleteNews(int[] listNewsId, int userId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
@@ -1283,10 +1361,19 @@ namespace CMS.Controllers
         /// <param name="sign"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult NewsForUser(int[] listNewsId, int userId, string sign)
+        public JsonResult NewsForUser(int[] listNewsId, int userId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
@@ -1359,10 +1446,19 @@ namespace CMS.Controllers
         /// <param name="sign"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult RemoveNewsforUser(int[] listNewsId, int userId, string sign)
+        public JsonResult RemoveNewsforUser(int[] listNewsId, int userId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
@@ -1435,10 +1531,19 @@ namespace CMS.Controllers
         /// <param name="sign"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult NewsSpam(int[] listNewsId, int userId, string sign)
+        public JsonResult NewsSpam(int[] listNewsId, int userId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
@@ -1517,10 +1622,19 @@ namespace CMS.Controllers
         /// <param name="sign"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult ReportNews(int[] listNewsId, int userId, string sign)
+        public JsonResult ReportNews(int[] listNewsId, int userId, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (listNewsId == null || string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(sign.ToString()))
                 {
                     return Json(new
@@ -1608,10 +1722,19 @@ namespace CMS.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateInput(false)]
-        public JsonResult CreateNews(string Title, int CateId, int DistrictId, string Phone, double Price, string Content, int UserId, bool IsUser, string sign)
+        public JsonResult CreateNews(string Title, int CateId, int DistrictId, string Phone, double Price, string Content, int UserId, bool IsUser, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(Title.ToString()) || string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(DistrictId.ToString()) || string.IsNullOrEmpty(Phone) || string.IsNullOrEmpty(Price.ToString()) || string.IsNullOrEmpty(Content) || string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(IsUser.ToString()) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -1804,10 +1927,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult RegisterPackage(int userId, long payment, string sign)
+        public JsonResult RegisterPackage(int userId, long payment, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(payment.ToString()) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -1867,10 +1999,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult Recharge(int userId, string telco, string pin, string serial, string sign)
+        public JsonResult Recharge(int userId, string telco, string pin, string serial, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(telco) || string.IsNullOrEmpty(serial) || string.IsNullOrEmpty(pin) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
@@ -2051,10 +2192,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetListCustomer(string search, int managerId, int statusId, int pageIndex, int pageSize, string sign)
+        public JsonResult GetListCustomer(string search, int managerId, int statusId, int pageIndex, int pageSize, string sign, int UserId, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(managerId.ToString()) || string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(statusId.ToString()))
                 {
                     return Json(new
@@ -2139,10 +2289,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult CustomerDetail(int id, string sign)
+        public JsonResult CustomerDetail(int id, string sign, int UserId, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(id.ToString()))
                 {
                     return Json(new
@@ -2224,10 +2383,19 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult NoticeList(int userId, int page, Boolean isUser, string sign)
+        public JsonResult NoticeList(int userId, int page, Boolean isUser, string sign, string infologin)
         {
             try
             {
+                if (!CheckOtherLogin(userId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
                 if (string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(page.ToString()))
                 {
                     return Json(new
