@@ -15,7 +15,7 @@ namespace CMS.Bussiness
             int id = 0;
             using (var db = new CmsDataDataContext())
             {
-                id = db.Users.FirstOrDefault(x => userName.Equals(userName)).Id;
+                id = db.Users.FirstOrDefault(x => x.UserName.Equals(userName)).Id;
             }
             return id;
         }
