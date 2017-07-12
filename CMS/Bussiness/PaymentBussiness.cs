@@ -54,8 +54,40 @@ namespace CMS.Bussiness
             db.SubmitChanges();
         }
 
+        public void PaymentAcceptedApi(int userid, long amount)
+        {
+            var paymentAccepted = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userid);
+            if (paymentAccepted == null)
+            {
+                var payment = new PaymentAccepted
+                {
+                    UserId = userid,
+                    AmountTotal = amount,
+                    StartDate = DateTime.Now.AddDays(-1),
+                    EndDate = DateTime.Now.AddDays(-1)
+                };
+
+                //insert to table payment accepted
+                db.PaymentAccepteds.InsertOnSubmit(payment);
+            }
+            else
+            {
+                paymentAccepted.AmountTotal = paymentAccepted.AmountTotal + amount;
+            }
+            db.SubmitChanges();
+        }
+
         public List<PaymentHistory> GetPaymentHistoryByUserId(int userId, int page)
         {
+            if (page == 0)
+                return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Take(20).ToList();
+            else
+                return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Skip(page * 20).Take(20).ToList();
+        }
+
+        public List<PaymentHistory> GetPaymentHistoryApi(int userId, int page,ref int totalPage)
+        {
+            totalPage = db.PaymentHistories.Where(x => x.UserId == userId).Count()/20;
             if (page == 0)
                 return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Take(20).ToList();
             else

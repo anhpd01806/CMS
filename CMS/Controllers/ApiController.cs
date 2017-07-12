@@ -306,6 +306,237 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetPaymentMethod(string sign, int userid, string infologin)
+        {
+            try
+            {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
+                if (string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var gen_sign = Common.Common.GenSign(string.Empty, Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var data = new PaymentBussiness().GetPaymentMethod();
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = data
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult InsertPayment(int userid, int paymentMethodId, string note, long amount, string sign, string infologin)
+        {
+            try
+            {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
+                if (string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("userid", userid.ToString());
+                    param.Add("paymentMethodId", paymentMethodId.ToString());
+                    param.Add("note", note);
+                    param.Add("amount", amount.ToString());
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var paymentHistory = new PaymentHistory
+                        {
+                            UserId = userid,
+                            PaymentMethodId = paymentMethodId,
+                            CreatedDate = DateTime.Now,
+                            Notes = note,
+                            Amount = amount
+                        };
+
+                        //insert payment history
+                        new PaymentBussiness().Insert(paymentHistory);
+
+                        //insert payment accepted
+                        new PaymentBussiness().PaymentAcceptedApi(userid, amount);
+
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = ""
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetListHistory(int userid, int Page, string sign, string infologin)
+        {
+            try
+            {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
+                if (string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("userid", userid.ToString());
+                    param.Add("Page", Page.ToString());
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        int total = 0;
+                        var itemList = (from a in new PaymentBussiness().GetPaymentHistoryApi(userid, Page,ref total)
+                                        select new PaymentHistoryModel
+                                        {
+                                            Id = a.Id,
+                                            PaymentMethod = new PaymentBussiness().GetPaymentMethodById(a.PaymentMethodId),
+                                            DateString = a.CreatedDate.ToString("dd/MM/yyyy"),
+                                            Amount = string.Format("{0:n0}", a.Amount),
+                                            Notes = a.Notes
+                                        }).ToList();
+
+                        var model = new PaymentHisApi();
+                        model.TotalPage = total;
+                        model.PaymentHisList = itemList;
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = model
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
         public JsonResult GetListCategory(string sign, int userid, string infologin)
         {
             try

@@ -30,6 +30,11 @@ namespace CMS.ViewModel
         public long Payment { get; set; }
     }
 
+    public class PaymentHisApi
+    {
+        public int TotalPage { get; set; }
+        public List<PaymentHistoryModel> PaymentHisList { get; set; }
+    }
     public class PaymentHistoryModel
     {
         public int Id { get; set; }
