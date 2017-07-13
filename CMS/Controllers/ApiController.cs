@@ -370,7 +370,7 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult InsertPayment(int userid, int paymentMethodId, string note, long amount, string sign, string infologin)
+        public JsonResult InsertPayment(int cusId, int paymentMethodId, string note, long amount, string sign, int userid, string infologin)
         {
             try
             {
@@ -396,7 +396,7 @@ namespace CMS.Controllers
                 else
                 {
                     var param = new NameValueCollection();
-                    param.Add("userid", userid.ToString());
+                    param.Add("cusId", cusId.ToString());
                     param.Add("paymentMethodId", paymentMethodId.ToString());
                     param.Add("note", note);
                     param.Add("amount", amount.ToString());
@@ -418,7 +418,7 @@ namespace CMS.Controllers
                     {
                         var paymentHistory = new PaymentHistory
                         {
-                            UserId = userid,
+                            UserId = cusId,
                             PaymentMethodId = paymentMethodId,
                             CreatedDate = DateTime.Now,
                             Notes = note,
@@ -429,7 +429,7 @@ namespace CMS.Controllers
                         new PaymentBussiness().Insert(paymentHistory);
 
                         //insert payment accepted
-                        new PaymentBussiness().PaymentAcceptedApi(userid, amount);
+                        new PaymentBussiness().PaymentAcceptedApi(cusId, amount);
 
                         return Json(new
                         {
@@ -455,18 +455,18 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetListHistory(int userid, int Page, string sign, string infologin)
+        public JsonResult GetListHistory(int cusId, int Page, string sign, int userid, string infologin)
         {
             try
             {
-                if (!CheckOtherLogin(userid, infologin))
-                    return Json(new
-                    {
-                        status = "1",
-                        errorcode = "1",
-                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
-                        data = ""
-                    });
+                //if (!CheckOtherLogin(userid, infologin))
+                //    return Json(new
+                //    {
+                //        status = "1",
+                //        errorcode = "1",
+                //        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                //        data = ""
+                //    });
 
                 if (string.IsNullOrEmpty(sign))
                 {
@@ -481,7 +481,7 @@ namespace CMS.Controllers
                 else
                 {
                     var param = new NameValueCollection();
-                    param.Add("userid", userid.ToString());
+                    param.Add("cusId", cusId.ToString());
                     param.Add("Page", Page.ToString());
                     var str = Common.Common.Sort(param);
                     var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
@@ -500,7 +500,7 @@ namespace CMS.Controllers
                     else
                     {
                         int total = 0;
-                        var itemList = (from a in new PaymentBussiness().GetPaymentHistoryApi(userid, Page,ref total)
+                        var itemList = (from a in new PaymentBussiness().GetPaymentHistoryApi(cusId, Page,ref total)
                                         select new PaymentHistoryModel
                                         {
                                             Id = a.Id,
