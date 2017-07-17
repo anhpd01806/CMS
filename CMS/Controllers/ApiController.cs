@@ -2487,7 +2487,7 @@ namespace CMS.Controllers
                                       Email = a.Email,
                                       IsDelete = a.IsDelete,
                                       IsMember = a.IsMember,
-                                      ManagerBy = a.ManagerId != 0 ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "",
+                                      ManagerBy = a.ManagerId != 0 ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "Chưa có người quản lý",
                                       RoleName = getNameRole(allRoles, allRolesUser, a.Id),
                                       EndTimePayment = getPaymentStatus(a.Id)
                                   }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.EndTimePayment).ToList();
@@ -2737,7 +2737,7 @@ namespace CMS.Controllers
             rs.FullName = cusDetail.FullName;
             rs.LastLogin = cusDetail.LastActivityDate ?? DateTime.Now;
             rs.CreateDate = cusDetail.CreatedOn ?? DateTime.Now;
-            rs.ManagerBy = cusDetail.ManagerBy != null ? allAdmin.Where(x => x.Id == cusDetail.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "";
+            rs.ManagerBy = cusDetail.ManagerBy != null ? allAdmin.Where(x => x.Id == cusDetail.ManagerBy).Select(x => x.FullName).FirstOrDefault() : "Chưa có người quản lý";
             rs.Notes = cusDetail.Notes;
             //get paymen by Id
             rs.Amount = new PaymentBussiness().GetCashPaymentByUserId(cusDetail.Id);

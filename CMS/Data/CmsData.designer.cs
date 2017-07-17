@@ -791,6 +791,13 @@ namespace CMS.Data
 			total = ((System.Nullable<int>)(result.GetParameterValue(16)));
 			return ((ISingleResult<PROC_GetListNewsDeleteResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetReportTotal")]
+		public ISingleResult<GetReportTotalResult> GetReportTotal([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CreatedDate", DbType="DateTime")] System.Nullable<System.DateTime> createdDate)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), createdDate);
+			return ((ISingleResult<GetReportTotalResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ActivityLog")]
@@ -15469,6 +15476,158 @@ namespace CMS.Data
 				if ((this._SiteName != value))
 				{
 					this._SiteName = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetReportTotalResult
+	{
+		
+		private System.Nullable<System.DateTime> _CreateDate;
+		
+		private int _PaymentMethodId;
+		
+		private System.Nullable<long> _AmountTotal;
+		
+		private int _Id;
+		
+		private string _Name;
+		
+		private string _SystemName;
+		
+		private int _DisplayOrder;
+		
+		private bool _Active;
+		
+		public GetReportTotalResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreateDate", DbType="Date")]
+		public System.Nullable<System.DateTime> CreateDate
+		{
+			get
+			{
+				return this._CreateDate;
+			}
+			set
+			{
+				if ((this._CreateDate != value))
+				{
+					this._CreateDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMethodId", DbType="Int NOT NULL")]
+		public int PaymentMethodId
+		{
+			get
+			{
+				return this._PaymentMethodId;
+			}
+			set
+			{
+				if ((this._PaymentMethodId != value))
+				{
+					this._PaymentMethodId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AmountTotal", DbType="BigInt")]
+		public System.Nullable<long> AmountTotal
+		{
+			get
+			{
+				return this._AmountTotal;
+			}
+			set
+			{
+				if ((this._AmountTotal != value))
+				{
+					this._AmountTotal = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL")]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this._Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this._Name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SystemName", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
+		public string SystemName
+		{
+			get
+			{
+				return this._SystemName;
+			}
+			set
+			{
+				if ((this._SystemName != value))
+				{
+					this._SystemName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int NOT NULL")]
+		public int DisplayOrder
+		{
+			get
+			{
+				return this._DisplayOrder;
+			}
+			set
+			{
+				if ((this._DisplayOrder != value))
+				{
+					this._DisplayOrder = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this._Active = value;
 				}
 			}
 		}

@@ -239,7 +239,8 @@ namespace CMS.Controllers
                             Phone = model.UserName,
                             Email = "",
                             IsDeleted = false,
-                            IsMember = false,
+                            IsMember = true,
+                            ManagerBy = 1,
                             IsFree = false
                         };
                         var userId = new UserBussiness().Insert(u);
@@ -270,7 +271,7 @@ namespace CMS.Controllers
                         try
                         {
                             new RoleUserBussiness().Insert(roleUser);
-                            TempData["Success"] = "Tài khoản đã được khởi tạo. Quản trị viên sẽ liên lạc với bạn ngay khi duyệt tài khoản.";
+                            TempData["Success"] = "Tài khoản đã được khởi tạo. Vui lòng nạp tài khoản để được sử dụng đầy đủ chức năng. Xin cảm ơn!";
                         }
                         catch (Exception)
                         {

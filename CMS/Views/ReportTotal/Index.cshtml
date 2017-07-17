@@ -1,0 +1,96 @@
+﻿@model CMS.ViewModel.ReportTotalViewModel
+@{
+    ViewBag.Title = "Báo cáo thu tiền khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header{
+}
+
+@section featured{
+    <div class="page-content">
+        <div class="page-content-area">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="widget-box">
+                                <div class="widget-header">
+                                    <h4 class="widget-title">Thông tin tìm kiếm</h4>
+                                </div>
+                                <div class="widget-body widget-main">
+                                    @using (Html.BeginForm("Index", "ReportTotal", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="col-sm-6">
+                                                    <label>Chọn tháng, năm</label>
+                                                    <div class='input-group form-group'>
+                                                        @Html.TextBoxFor(s => s.DatePick, new { @class = "form-control datepicker", @placeholder = "Chọn tháng năm", @id = "datepicker" })
+                                                        <span class="input-group-addon">
+                                                            <i class="ace-icon fa fa-calendar"></i>
+                                                        </span>
+                                                        @Html.ValidationMessageFor(m => m.DatePick, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="col-xs-3">
+                                                        <button type="submit" class="btn btn-flat btn-sm btn-primary ink-reaction">Tìm kiếm</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr hr-18 dotted hr-double"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="datatable1" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-1 text-center">Ngày, tháng</th>
+                                        @foreach (var item in Model.PaymentMethodList)
+                                        {
+                                            <th>@item.Name</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.DateTime)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href="/ReportTotal/Detail?DateInput=@item.ToString("dd/MM/yyyy")">@item.ToString("dd/MM/yyyy")</a>
+                                            </td>
+                                            @foreach (var itemChild in Model.PaymentMethodList)
+                                            {
+                                                var total = Model.ReportTotal.Where(x => x.PaymentMethodId == itemChild.Id && x.CreateDate.Date == item.Date).FirstOrDefault();
+                                                <td>@((total != null ? total.Amount : 0).ToString("#,#"))</td>
+                                            }
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td>
+                                            Tổng cộng
+                                        </td>
+                                        @foreach (var itemChild in Model.PaymentMethodList)
+                                        {
+                                            var total = Model.ReportTotal.Where(x => x.PaymentMethodId == itemChild.Id).Select(x => x.Amount).Sum();
+                                            <td>@(total.ToString("#,#"))</td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

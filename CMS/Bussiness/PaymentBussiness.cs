@@ -25,6 +25,11 @@ namespace CMS.Bussiness
             return paymentMethod;
         }
 
+        public List<PaymentMethod> GetPaymentList()
+        {
+           return db.PaymentMethods.OrderBy(x=>x.DisplayOrder).ToList();
+        }
+
         public void Insert(PaymentHistory model)
         {
             db.PaymentHistories.InsertOnSubmit(model);
