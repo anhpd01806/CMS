@@ -500,7 +500,7 @@ namespace CMS.Controllers
                     else
                     {
                         int total = 0;
-                        var itemList = (from a in new PaymentBussiness().GetPaymentHistoryApi(cusId, Page,ref total)
+                        var itemList = (from a in new PaymentBussiness().GetPaymentHistoryApi(cusId, Page, ref total)
                                         select new PaymentHistoryModel
                                         {
                                             Id = a.Id,
@@ -2158,7 +2158,7 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult RegisterPackage(int userId, long payment, string sign, string infologin)
+        public JsonResult RegisterPackage(int userId, int paymentId, string sign, string infologin)
         {
             try
             {
@@ -2171,7 +2171,7 @@ namespace CMS.Controllers
                         data = ""
                     });
 
-                if (string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(payment.ToString()) || string.IsNullOrEmpty(sign))
+                if (string.IsNullOrEmpty(userId.ToString()) || string.IsNullOrEmpty(paymentId.ToString()) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
                     {
@@ -2185,7 +2185,7 @@ namespace CMS.Controllers
                 {
                     var param = new NameValueCollection();
                     param.Add("userId", userId.ToString());
-                    param.Add("payment", payment.ToString());
+                    param.Add("paymentId", paymentId.ToString());
                     var str = Common.Common.Sort(param);
                     var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
 
@@ -2202,10 +2202,13 @@ namespace CMS.Controllers
                     else
                     {
                         string message = "";
+                        long payment = 15000;
+                        if (paymentId == 1) payment = long.Parse(ConfigWeb.DayPackage);
+                        else payment = long.Parse(ConfigWeb.MonthPackage);
                         var rs = new PaymentBussiness().UpdatePaymentAccepted(payment, userId);
                         if (rs == 1) message = "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền.";
                         else if (rs == 2) message = "Tài khoản của quý khách không đủ tiền.";
-                        else message = "Nạp tiền thành công.";
+                        else message = "Đăng ký gói cước thành công.";
                         return Json(new
                         {
                             status = "200",
@@ -2409,16 +2412,32 @@ namespace CMS.Controllers
         [HttpPost]
         public JsonResult GetPayment()
         {
-            Payment rs = new Payment();
-            rs.DayPackage = ConfigWeb.DayPackage;
-            rs.MonthPackage = ConfigWeb.MonthPackage;
+            List<PaymentModel> data = new List<PaymentModel>();
+
+            data.Add(new PaymentModel
+            {
+                Id = 1,
+                Name = "Gói ngày",
+                Amount = ConfigWeb.DayPackage
+            });
+
+            data.Add(new PaymentModel
+            {
+                Id = 2,
+                Name = "Gói tháng",
+                Amount = ConfigWeb.MonthPackage
+            });
+
+            //Payment rs = new Payment();
+            //rs.DayPackage = ConfigWeb.DayPackage;
+            //rs.MonthPackage = ConfigWeb.MonthPackage;
 
             return Json(new
             {
                 status = "200",
                 errorcode = "0",
                 message = "success",
-                data = rs
+                data = data
             });
         }
 
@@ -2798,6 +2817,13 @@ namespace CMS.Controllers
             System.Text.UTF8Encoding encoder = new System.Text.UTF8Encoding();
             hashedBytes = md5Hasher.ComputeHash(encoder.GetBytes(data));
             return hashedBytes;
+        }
+
+        private class PaymentModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Amount { get; set; }
         }
     }
 }

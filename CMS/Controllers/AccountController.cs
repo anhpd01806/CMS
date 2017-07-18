@@ -271,7 +271,7 @@ namespace CMS.Controllers
                         try
                         {
                             new RoleUserBussiness().Insert(roleUser);
-                            TempData["Success"] = "Tài khoản đã được khởi tạo. Vui lòng nạp tài khoản để được sử dụng đầy đủ chức năng. Xin cảm ơn!";
+                            TempData["Success"] = "Tài khoản của bạn đã được đăng ký thành công vui lòng liên hệ 0982667700 để được hướng dẫn xem tin chính chủ";
                         }
                         catch (Exception)
                         {
