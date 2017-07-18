@@ -2072,7 +2072,7 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult CreateCustomer(string username, string password, string fullname, string sign)
+        public JsonResult CreateCustomer(string username, string password, string fullname, string sign, string infologin)
         {
             try
             {
@@ -2134,6 +2134,7 @@ namespace CMS.Controllers
                         }
 
                         var userItem = _accountbussiness.GetUserDetail(u.Id);
+                        AddInfoUserLogin(u.Id, infologin);
                         return Json(new
                         {
                             status = "200",
