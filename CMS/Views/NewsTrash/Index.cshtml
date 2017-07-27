@@ -73,7 +73,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-md-4">
+                                <div class="col-xs-12 col-md-4" style="display: none;">
                                     <div class="control-group">
                                         <div class="col-xs-5">
                                             <label class="control-label" for="form-field-1">Loại tin</label>
@@ -100,6 +100,7 @@
                                             <select class="form-control col-xs-10 ddlbackdate" @(Convert.ToBoolean(ViewBag.Accept) ? string.Empty : "disabled = 'disabled'")>
                                                 <option value="-1">Theo ngày</option>
                                                 <option value="0">Hôm nay</option>
+                                                <option value="1">Hôm qua</option>
                                                 <option value="2">2 Ngày trước</option>
                                                 <option value="3">3 Ngày trước</option>
                                                 <option value="5">5 Ngày trước</option>
@@ -233,7 +234,7 @@
                         <th style="min-width: 105px;" data-name="CreatedOn">Ngày đăng</th>
                         <th style="min-width: 105px;" data-name="Price">Giá</th>
                         <th style="text-align: center">Điện thoại</th>
-                        <th style="text-align: center" data-name="StatusId">Loại tin</th>
+                        @*<th style="text-align: center" data-name="StatusId">Loại tin</th>*@
                         @*<th>Nguồn tin</th>*@
                         <th class="tdcc" data-name="Iscc">C.Chủ</th>
                         <th>Sửa</th>
@@ -289,7 +290,7 @@
                                         <span class="error">Vui lòng nạp tiền</span>
                                     }
                                 </td>
-                                <td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>
+                                @*<td class="td-medium" style="max-width: 95px;">@Html.Raw(item.StatusName)</td>*@
                                 @*<td>
                                     @if (Convert.ToBoolean(ViewBag.Accept))
                                     {

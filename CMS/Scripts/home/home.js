@@ -62,7 +62,7 @@ $(function () {
                 bInfo: false,
                 searching: false,
                 paging: false,
-                aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, null, { "bSortable": false }]
+                aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, { "bSortable": false }]
             });
             $('#check-all').parent().removeClass("sorting_asc");
         }
@@ -137,7 +137,7 @@ $(function () {
                                         bInfo: false,
                                         searching: false,
                                         paging: false,
-                                        aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, null, { "bSortable": false }]
+                                        aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, { "bSortable": false }]
                                     });
                                     $('#check-all').parent().removeClass("sorting_asc");
                                 }
@@ -196,7 +196,7 @@ $(function () {
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, null, { "bSortable": false }]
+                            aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, { "bSortable": false }]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -994,7 +994,7 @@ $(function () {
                             bInfo: false,
                             searching: false,
                             paging: false,
-                            aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, null, { "bSortable": false }]
+                            aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, { "bSortable": false }]
                         });
                         $('#check-all').parent().removeClass("sorting_asc");
                     }
@@ -1077,7 +1077,7 @@ $(function () {
                                     bInfo: false,
                                     searching: false,
                                     paging: false,
-                                    aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, null, { "bSortable": false }]
+                                    aoColumns: [{ "bSortable": false }, null, null, null, null, null, null, { "bSortable": false }]
                                 });
                                 $('#check-all').parent().removeClass("sorting_asc");
                             }
