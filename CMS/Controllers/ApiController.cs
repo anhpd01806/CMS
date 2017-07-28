@@ -109,8 +109,9 @@ namespace CMS.Controllers
                 }
                 return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
                 return false;
             }
         }
@@ -734,14 +735,14 @@ namespace CMS.Controllers
         {
             try
             {
-                if (!CheckOtherLogin(UserId, infologin))
-                    return Json(new
-                    {
-                        status = "1",
-                        errorcode = "1",
-                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
-                        data = ""
-                    });
+                //if (!CheckOtherLogin(UserId, infologin))
+                //    return Json(new
+                //    {
+                //        status = "1",
+                //        errorcode = "1",
+                //        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                //        data = ""
+                //    });
 
                 if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign))
                 {
@@ -762,15 +763,15 @@ namespace CMS.Controllers
                     param.Add("StatusId", StatusId.ToString());
                     param.Add("SiteId", SiteId.ToString());
                     param.Add("BackDate", BackDate.ToString());
-                    param.Add("From", From.ToString());
-                    param.Add("To", To.ToString());
+                    param.Add("From", (From ?? string.Empty).ToString());
+                    param.Add("To", (To ?? string.Empty).ToString());
                     param.Add("MinPrice", MinPrice.ToString());
                     param.Add("MaxPrice", MaxPrice.ToString());
                     param.Add("pageIndex", pageIndex.ToString());
                     param.Add("pageSize", pageSize.ToString());
                     param.Add("IsRepeat", IsRepeat.ToString());
-                    param.Add("key", key.ToString());
-                    param.Add("NameOrder", NameOrder.ToString());
+                    param.Add("key", (key ?? string.Empty).ToString());
+                    param.Add("NameOrder", (NameOrder ?? string.Empty).ToString());
                     param.Add("descending", descending.ToString());
                     var str = Common.Common.Sort(param).ToLower();
                     var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
@@ -945,16 +946,16 @@ namespace CMS.Controllers
                     param.Add("StatusId", StatusId.ToString());
                     param.Add("SiteId", SiteId.ToString());
                     param.Add("BackDate", BackDate.ToString());
-                    param.Add("From", From.ToString());
-                    param.Add("To", To.ToString());
+                    param.Add("From", (From ?? string.Empty).ToString());
+                    param.Add("To", (To ?? string.Empty).ToString());
                     param.Add("MinPrice", MinPrice.ToString());
                     param.Add("MaxPrice", MaxPrice.ToString());
                     param.Add("pageIndex", pageIndex.ToString());
                     param.Add("pageSize", pageSize.ToString());
                     param.Add("newsStatus", newsStatus.ToString());
                     param.Add("IsRepeat", IsRepeat.ToString());
-                    param.Add("key", key.ToString());
-                    param.Add("NameOrder", NameOrder.ToString());
+                    param.Add("key", (key ?? string.Empty).ToString());
+                    param.Add("NameOrder", (NameOrder ?? string.Empty).ToString());
                     param.Add("descending", descending.ToString());
                     var str = Common.Common.Sort(param).ToLower();
                     var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
@@ -1058,15 +1059,15 @@ namespace CMS.Controllers
                     param.Add("StatusId", StatusId.ToString());
                     param.Add("SiteId", SiteId.ToString());
                     param.Add("BackDate", BackDate.ToString());
-                    param.Add("From", From.ToString());
-                    param.Add("To", To.ToString());
+                    param.Add("From", (From ?? string.Empty).ToString());
+                    param.Add("To", (To ?? string.Empty).ToString());
                     param.Add("MinPrice", MinPrice.ToString());
                     param.Add("MaxPrice", MaxPrice.ToString());
                     param.Add("pageIndex", pageIndex.ToString());
                     param.Add("pageSize", pageSize.ToString());
                     param.Add("IsRepeat", IsRepeat.ToString());
-                    param.Add("key", key.ToString());
-                    param.Add("NameOrder", NameOrder.ToString());
+                   param.Add("key", (key ?? string.Empty).ToString());
+                    param.Add("NameOrder", (NameOrder ?? string.Empty).ToString());
                     param.Add("descending", descending.ToString());
                     var str = Common.Common.Sort(param).ToLower();
                     var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);

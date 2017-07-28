@@ -17453,18 +17453,18 @@ img.editable-click:hover {
     padding: 0;
 }
 
-    .ui-datepicker td > a, .ui-datepicker td > span {
-        display: inline-block;
-        height: 22px;
-        min-width: 24px;
-        max-width: 24px;
-        text-align: center;
-        color: #393939;
-        font-size: 13px;
-        -webkit-box-sizing: content-box;
-        -moz-box-sizing: content-box;
-        box-sizing: content-box;
-    }
+.ui-datepicker td > a, .ui-datepicker td > span {
+    display: inline-block;
+    height: 22px;
+    min-width: 24px;
+    max-width: 24px;
+    text-align: center;
+    color: #393939;
+    font-size: 13px;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
 
         .ui-datepicker td > a:hover {
             background-color: #EEE;

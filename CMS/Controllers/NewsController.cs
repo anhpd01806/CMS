@@ -281,6 +281,7 @@ namespace CMS.Controllers
                     DistrictId = districtId,
                     Phone = phone,
                     Price = Convert.ToDecimal(!string.IsNullOrEmpty(price) ? price : "0"),
+                    PriceText = ConvertPrice(Convert.ToDecimal(!string.IsNullOrEmpty(price) ? price : "0").ToString()),
                     Contents = content
                 };
 

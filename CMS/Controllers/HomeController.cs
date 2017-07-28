@@ -87,7 +87,7 @@ namespace CMS.Controllers
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 ViewBag.User = checkuser;
-                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 1, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, string.Empty, false, ref total);
+                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, string.Empty, false, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);

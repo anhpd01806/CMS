@@ -251,6 +251,7 @@ namespace CMS.Bussiness
                         news.DistrictId = newsItem.DistrictId;
                         news.CategoryId = newsItem.CategoryId;
                         news.Price = newsItem.Price;
+                        news.PriceText = newsItem.PriceText;
                         news.Contents = newsItem.Contents;
                         news.Phone = newsItem.Phone;
                         db2.SubmitChanges();
