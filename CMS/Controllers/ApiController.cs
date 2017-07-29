@@ -1066,7 +1066,7 @@ namespace CMS.Controllers
                     param.Add("pageIndex", pageIndex.ToString());
                     param.Add("pageSize", pageSize.ToString());
                     param.Add("IsRepeat", IsRepeat.ToString());
-                   param.Add("key", (key ?? string.Empty).ToString());
+                    param.Add("key", (key ?? string.Empty).ToString());
                     param.Add("NameOrder", (NameOrder ?? string.Empty).ToString());
                     param.Add("descending", descending.ToString());
                     var str = Common.Common.Sort(param).ToLower();
@@ -1920,6 +1920,230 @@ namespace CMS.Controllers
                             errorcode = "0",
                             message = "success",
                             data = "2"
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        /// <summary>
+        /// Báo cáo tin - Khách hàng
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="NewsID"></param>
+        /// <param name="reason"></param>
+        /// <param name="sign"></param>
+        /// <param name="infologin"></param>
+        /// <returns></returns>
+        public JsonResult NewsWarning(int UserId, int NewsID, string reason, string sign, string infologin)
+        {
+            try
+            {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+                if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(NewsID.ToString()) || string.IsNullOrEmpty(reason) || string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("UserId", UserId.ToString());
+                    param.Add("NewsID", NewsID.ToString());
+                    param.Add("reason", reason);
+
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var item = new ReasonReportNew();
+                        item.NewsId = NewsID;
+                        item.Note = reason;
+                        item.UserId = UserId;
+                        item.DateCreate = DateTime.Now;
+                        var result = _newsbussiness.InsertReasonReportNews(item);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = result
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        /// <summary>
+        /// Hủy báo cáo - Khách hàng
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="NewsID"></param>
+        /// <param name="sign"></param>
+        /// <param name="infologin"></param>
+        /// <returns></returns>
+        public JsonResult CancelNewsWarning(int UserId, int NewsID, string sign, string infologin)
+        {
+            try
+            {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+                if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(NewsID.ToString()) || string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("UserId", UserId.ToString());
+                    param.Add("NewsID", NewsID.ToString());
+
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var result = _newsbussiness.DeleteReasonReportNews(NewsID, UserId);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = result
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        public JsonResult CancelReportNews(int UserId, int NewsID, string sign, string infologin)
+        {
+            try
+            {
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+                if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(NewsID.ToString()) || string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("UserId", UserId.ToString());
+                    param.Add("NewsID", NewsID.ToString());
+
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var result = _newsbussiness.DeleteReportNews(NewsID);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = result
                         });
                     }
                 }

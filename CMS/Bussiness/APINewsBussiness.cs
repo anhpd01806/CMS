@@ -698,6 +698,79 @@ namespace CMS.Bussiness
                 }
             }
         }
+
+        /// <summary>
+        /// Báo cáo tin - Khách hàng
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public int InsertReasonReportNews(ReasonReportNew model)
+        {
+            try
+            {
+                using (var db = new CmsDataDataContext())
+                {
+                    db.ReasonReportNews.InsertOnSubmit(model);
+                    db.SubmitChanges();
+                    return 1;
+                }
+            }
+            catch 
+            {
+                return 0;
+            }
+            
+        }
+
+        /// <summary>
+        /// Hủy báo cáo tin - Khách hàng
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int DeleteReasonReportNews(int newsId, int userId)
+        {
+            try
+            {
+                using (var db = new CmsDataDataContext())
+                {
+                    var check = db.ReasonReportNews.FirstOrDefault(x => x.UserId == userId && x.NewsId == newsId);
+                    if (check != null)
+                    {
+                        db.ReasonReportNews.DeleteOnSubmit(check);
+                        db.SubmitChanges();
+                    }
+                    return 1;
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int DeleteReportNews(int newsId)
+        {
+            try
+            {
+                using (var db = new CmsDataDataContext())
+                {
+                    var reportNews = db.NewsReports.Where(x => x.NewsId == newsId).ToList();
+                    if (reportNews != null)
+                    {
+                        db.NewsReports.DeleteAllOnSubmit(reportNews);
+                        db.SubmitChanges();
+                        return 1;
+                    }
+                    else return 0;
+                }
+            }
+            catch 
+            {
+                return 0;
+            }
+        }
+
         #endregion
 
         #region Help Method

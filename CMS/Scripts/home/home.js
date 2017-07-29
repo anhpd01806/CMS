@@ -937,7 +937,7 @@ $(function () {
         var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
         var from = $(".txtFrom").val();
         var to = $(".txtTo").val();
-        var pageIndex = 1;
+        var pageIndex = parseInt($('#datatable').attr("data-page"));
         var pageSize = 20;
         if (typeof $(".ddlpage").val() != "undefined") {
             pageSize = parseInt($(".ddlpage").val());

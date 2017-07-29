@@ -88,7 +88,7 @@ namespace CMS.Controllers
                 var listGoverment = new List<SelectListItem>();
                 listGoverment.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
                 listGoverment.Add(new SelectListItem { Text = "Tin chính chủ", Value = "1" });
-                listGoverment.Add(new SelectListItem { Text = "Tin đang kiểm duyệt", Value = "2" });
+                listGoverment.Add(new SelectListItem { Text = "Đang xác minh", Value = "2" });
                 model.Goverment = new SelectList(listGoverment, "Value", "Text", model.GovermentID);
                 #endregion
 
