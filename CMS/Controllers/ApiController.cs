@@ -789,7 +789,7 @@ namespace CMS.Controllers
                     else
                     {
                         int total = 0;
-                        var data = _newsbussiness.GetListNewByFilter(UserId, CateId, DistricId, StatusId, SiteId, BackDate, From, To, MinPrice, MaxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
+                        var data = _newsbussiness.GetListNewByFilter(UserId, CateId, DistricId, StatusId, 0, SiteId, BackDate, From, To, MinPrice, MaxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
                         var model = new HomeModel();
                         model.Total = total;
                         model.pageIndex = pageIndex;

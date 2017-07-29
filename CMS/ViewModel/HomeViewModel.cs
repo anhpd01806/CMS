@@ -36,5 +36,7 @@ namespace CMS.ViewModel
         public int RoleId { get; set; }
         public List<NewsModel> ListNew { get; set; }
         public New NewsItem { get; set; }
+        public int GovermentID { get; set; }
+        public SelectList Goverment { get; set; }
     }
 }

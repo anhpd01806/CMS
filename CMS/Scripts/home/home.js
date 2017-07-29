@@ -82,6 +82,7 @@ $(function () {
                         var cateId = parseInt($(".cateId").val());
                         var districtId = parseInt($(".districtId").val());
                         var newTypeId = parseInt($(".newTypeId").val());
+                        var govermentId = parseInt($(".govermentId").val());
                         var siteId = parseInt($(".siteId").val());
                         var backdate = parseInt($(".ddlbackdate").val());
                         var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -109,7 +110,7 @@ $(function () {
                         });
 
                         var data = {
-                            cateId: cateId, districtId: districtId, newTypeId: newTypeId,
+                            cateId: cateId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
                             siteId: siteId, backdate: backdate,
                             minPrice: minPrice, maxPrice: maxPrice,
                             from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
@@ -154,6 +155,7 @@ $(function () {
             var cateId = parseInt($(".cateId").val());
             var districtId = parseInt($(".districtId").val());
             var newTypeId = parseInt($(".newTypeId").val());
+            var govermentId = parseInt($(".govermentId").val());
             var siteId = parseInt($(".siteId").val());
             var backdate = parseInt($(".ddlbackdate").val());
             var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -169,7 +171,7 @@ $(function () {
             var key = $.trim($(".txtsearchkey").val());
 
             var data = {
-                cateId: cateId, districtId: districtId, newTypeId: newTypeId,
+                cateId: cateId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
                 siteId: siteId, backdate: backdate,
                 minPrice: minPrice, maxPrice: maxPrice,
                 from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: "", descending: false
@@ -826,7 +828,7 @@ $(function () {
 
         //Change search filter
 
-        $(".cateId, .districtId, .siteId, .newTypeId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
+        $(".cateId, .districtId, .siteId, .newTypeId, .govermentId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
             LoadData();
         });
 
@@ -928,6 +930,7 @@ $(function () {
         var cateId = parseInt($(".cateId").val());
         var districtId = parseInt($(".districtId").val());
         var newTypeId = parseInt($(".newTypeId").val());
+        var govermentId = parseInt($(".govermentId").val());
         var siteId = parseInt($(".siteId").val());
         var backdate = parseInt($(".ddlbackdate").val());
         var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -961,7 +964,7 @@ $(function () {
         } else {
 
             var data = {
-                cateId: cateId, districtId: districtId, newTypeId: newTypeId,
+                cateId: cateId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
                 siteId: siteId, backdate: backdate,
                 minPrice: minPrice, maxPrice: maxPrice,
                 from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
@@ -1022,6 +1025,7 @@ $(function () {
                     var cateId = parseInt($(".cateId").val());
                     var districtId = parseInt($(".districtId").val());
                     var newTypeId = parseInt($(".newTypeId").val());
+                    var govermentId = parseInt($(".govermentId").val());
                     var siteId = parseInt($(".siteId").val());
                     var backdate = parseInt($(".ddlbackdate").val());
                     var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
@@ -1049,7 +1053,7 @@ $(function () {
                     });
 
                     var data = {
-                        cateId: cateId, districtId: districtId, newTypeId: newTypeId,
+                        cateId: cateId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
                         siteId: siteId, backdate: backdate,
                         minPrice: minPrice, maxPrice: maxPrice,
                         from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
@@ -1124,6 +1128,7 @@ $(function () {
                     var cateId = parseInt($(".cateId").val());
                     var districtId = parseInt($(".districtId").val());
                     var newTypeId = parseInt($(".newTypeId").val());
+                    var govermentId = parseInt($(".govermentId").val());
                     var siteId = parseInt($(".siteId").val());
                     var backdate = parseInt($(".ddlbackdate").val());
                     var minPrice = parseFloat(checkminprice($(".ddlprice").val()));

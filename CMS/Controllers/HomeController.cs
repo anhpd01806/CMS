@@ -31,6 +31,7 @@ namespace CMS.Controllers
                 int total = 0;
                 model.pageIndex = 1;
                 model.NewsType = 1;
+                model.GovermentID = 0;
                 model.pageSize = ConfigWeb.PageSize;
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
 
@@ -83,11 +84,18 @@ namespace CMS.Controllers
                 }
                 model.ListStatus = new SelectList(listStatusItem, "Value", "Text", model.NewsType);
                 #endregion
+                #region Get select list Goverment
+                var listGoverment = new List<SelectListItem>();
+                listGoverment.Add(new SelectListItem { Text = "Tất cả", Value = "0" });
+                listGoverment.Add(new SelectListItem { Text = "Tin chính chủ", Value = "1" });
+                listGoverment.Add(new SelectListItem { Text = "Tin đang kiểm duyệt", Value = "2" });
+                model.Goverment = new SelectList(listGoverment, "Value", "Text", model.GovermentID);
+                #endregion
 
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 ViewBag.User = checkuser;
-                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, string.Empty, false, ref total);
+                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, model.GovermentID, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, string.Empty, false, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);
@@ -100,14 +108,14 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult LoadData(int cateId, int districtId, int newTypeId, int siteId, int backdate, double
+        public JsonResult LoadData(int cateId, int districtId, int newTypeId, int GovermentID, int siteId, int backdate, double
                 minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string NameOrder, bool descending, string key)
         {
             try
             {
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
+                var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, GovermentID, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
@@ -289,7 +297,7 @@ namespace CMS.Controllers
             }
         }
 
-        public ActionResult ExportExcel(int cateId, int districtId, int newTypeId, int siteId, int backdate, decimal
+        public ActionResult ExportExcel(int cateId, int districtId, int newTypeId, int GovermentID, int siteId, int backdate, decimal
                 minPrice, decimal maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string NameOrder, bool descending, string key)
         {
 
@@ -302,7 +310,7 @@ namespace CMS.Controllers
             }
             int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
+            var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, GovermentID, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
             ExportToExcel(filePath, listNews);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);
