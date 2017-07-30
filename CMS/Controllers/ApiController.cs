@@ -59,9 +59,6 @@ namespace CMS.Controllers
                     }
                     else
                     {
-                        var userId = _accountbussiness.GetIdByAccount(username);
-                        // add thông tin khi login
-                        AddInfoUserLogin(userId, infologin);
 
                         var userItem = _accountbussiness.Login(username, password);
                         if (userItem == null)
@@ -74,6 +71,11 @@ namespace CMS.Controllers
                                 data = userItem
                             });
                         }
+
+                        //var userId = _accountbussiness.GetIdByAccount(username);
+                        // add thông tin khi login
+                        AddInfoUserLogin(userItem.Id, infologin);
+
                         return Json(new
                         {
                             status = "200",

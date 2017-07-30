@@ -15,5 +15,6 @@ namespace CMS.Models
         public bool IsUser { get; set; }
         public string ManagerName { get; set; }
         public string Amount { get; set; }
+        public DateTime DateEnd { get; set; }
     }
 }

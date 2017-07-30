@@ -52,6 +52,7 @@ namespace CMS.Bussiness
                     var user = db.Users.FirstOrDefault(x => x.UserName.Equals(username) && x.Password.Equals(genpassword) && x.IsDeleted == false && x.IsMember == true);
                     if (user != null)
                     {
+                        var accepted = CheckAcceptedUser(user.Id, user.IsFree.ToString());
                         UpdateLastLogin(user.Id);
                         var userItem = new UserItem
                         {
@@ -59,11 +60,12 @@ namespace CMS.Bussiness
                             Username = user.UserName,
                             Phone = user.Phone,
                             FullName = user.FullName,
-                            IsPayment = CheckAcceptedUser(user.Id, user.IsFree.ToString()),
+                            IsPayment = accepted.IsAccepted,
                             IsUser = CheckRole(user.Id, user.IsFree.ToString()),
                             ManagerName = allAdmin.Where(x => x.Id == user.ManagerBy).Select(x => x.FullName).FirstOrDefault(),
-                            Amount = new PaymentBussiness().GetCashPaymentByUserId(user.Id)
-                    };
+                            Amount = new PaymentBussiness().GetCashPaymentByUserId(user.Id),
+                            DateEnd = accepted.DateEnd
+                        };
                         return userItem;
                     }
                     return null;
@@ -76,23 +78,31 @@ namespace CMS.Bussiness
             }
         }
 
-        private bool CheckAcceptedUser(int userId, string isFree)
+        private AcceptedModel CheckAcceptedUser(int userId, string isFree)
         {
+            AcceptedModel model = new AcceptedModel();
             try
             {
                 if (isFree.ToLower().Trim() == "true")
                 {
-                    return true;
+                    model.IsAccepted = true;
+                    model.DateEnd = DateTime.MaxValue;
+                    return model;
                 }
                 else
                 {
-                    return Instance.PaymentAccepteds.Any(x => x.UserId == userId && DateTime.Now <= x.EndDate);
+                    var rs = Instance.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId && DateTime.Now <= x.EndDate);
+                    model.IsAccepted = rs != null ? true : false;
+                    model.DateEnd = rs != null ? rs.EndDate : DateTime.MinValue;
+                    return model;
                 }
             }
             catch (Exception ex)
             {
                 ErrorLog.GetDefault(HttpContext.Current).Log(new Error(ex));
-                return false;
+                model.IsAccepted = false;
+                model.DateEnd = DateTime.MinValue;
+                return model;
             }
         }
 
@@ -149,13 +159,14 @@ namespace CMS.Bussiness
                     var user = db.Users.FirstOrDefault(x => x.Id == Id);
                     if (user != null)
                     {
+                        var accepted = CheckAcceptedUser(user.Id, user.IsFree.ToString());
                         var userItem = new UserItem
                         {
                             Id = user.Id,
                             Username = user.UserName,
                             Phone = user.Phone,
                             FullName = user.FullName,
-                            IsPayment = CheckAcceptedUser(user.Id, user.IsFree.ToString()),
+                            IsPayment = accepted.IsAccepted,
                             IsUser = CheckRole(user.Id, user.IsFree.ToString())
                         };
                         return userItem;
@@ -168,6 +179,12 @@ namespace CMS.Bussiness
                 ErrorLog.GetDefault(HttpContext.Current).Log(new Error(ex));
                 return null;
             }
+        }
+
+        public class AcceptedModel
+        {
+            public bool IsAccepted { get; set; }
+            public DateTime DateEnd { get; set; }
         }
     }
 }
