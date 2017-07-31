@@ -737,14 +737,14 @@ namespace CMS.Controllers
         {
             try
             {
-                //if (!CheckOtherLogin(UserId, infologin))
-                //    return Json(new
-                //    {
-                //        status = "1",
-                //        errorcode = "1",
-                //        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
-                //        data = ""
-                //    });
+                if (!CheckOtherLogin(UserId, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
 
                 if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign))
                 {
