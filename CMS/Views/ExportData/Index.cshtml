@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    $(document).on("click", ".btnexport", function () {
+        showboxcomfirm("Thông báo", "Bạn có muốn xuất hết danh sách tin tức đang được hiển thị không?");
+    });
+
+    function showboxcomfirm(title, message) {
+        bootbox.confirm({
+            title: title,
+            message: message,
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Đồng ý',
+                    className: 'btn-sm margin-right-10 btn-primary'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Đóng',
+                    className: 'btn-sm pull-right btn-inverse'
+                },
+            },
+            callback: function (result) {
+                if (result) {
+                    var url = "/ExportData/ExportExcel";
+                    location.href = decodeURIComponent(url);
+                }
+            }
+        });
+    }
+</script>
+
+<div class="page-content">
+    <h5>
+        Lưu ý: <br />
+        Vì dữ liệu rất nhiều việc xuất excel sẽ mất nhiều thời gian
+        <br />
+        Bạn vui lòng đợi tới khi xong hãy chuyển tới mục khác
+        <br />
+        (Thông tin xuất excel bao gồm: Tiêu đề tin, Nội dung tin, Giá, Diện tích)
+    </h5>
+
+    <button class="btnexport">Xuất Excel</button>
+</div>

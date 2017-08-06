@@ -907,5 +907,18 @@ namespace CMS.Bussiness
             }
             return string.Empty;
         }
+
+        public List<NewsModel> ExportDataOzO()
+        {
+            var query = (from c in db.News
+                         select new NewsModel
+                         {
+                             Title = c.Title,
+                             Contents = c.Contents,
+                             Price = c.Price,
+                             Area = c.Area
+                         }).ToList();
+            return query;
+        }
     }
 }

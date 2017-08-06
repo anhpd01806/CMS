@@ -262,11 +262,9 @@ namespace CMS.Controllers
                         "STT",
                         "Tiêu đề",
                         "Nội dung",
-                        "Quận huyện",
-                        "Ngày đăng",
-                        "Giá",
                         "Điện thoại",
-                        "Loại tin"
+                        "Giá",
+                        "Diện tích",
                     };
                 for (var i = 0; i < properties.Length; i++)
                 {
@@ -284,32 +282,23 @@ namespace CMS.Controllers
                     worksheet.Cells[row, col].Value = dem;
                     col++;
 
-                    worksheet.Cells[row, col].Value = item.Title;
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? Utils.RemoveHtml(item.Title).Trim() : "Vui lòng nạp tiền";
+                    worksheet.Cells[row, col].Style.WrapText = true;
                     col++;
 
-                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Contents : "Vui lòng nạp tiền";
-                    col++;
-
-
-                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.DistictName : "Vui lòng nạp tiền";
-                    col++;
-
-                    worksheet.Cells[row, col].Value = Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyy");
-                    col++;
-
-                    worksheet.Cells[row, col].Value = item.PriceText;
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? Utils.RemoveHtml(item.Contents).Trim() : "Vui lòng nạp tiền";
                     col++;
 
                     worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Phone : "Vui lòng nạp tiền";
                     col++;
 
-                    worksheet.Cells[row, col].Value = item.StatusName;
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? (item.Area ?? 0).ToString() : "Vui lòng nạp tiền";
                     col++;
+
                     //next row
                     row++;
                 }
-
-
+                
                 var nameexcel = "Danh sách tin tức" + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff");
                 xlPackage.Workbook.Properties.Title = string.Format("{0}", nameexcel);
                 xlPackage.Workbook.Properties.Author = "Admin-IT";

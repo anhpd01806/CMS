@@ -194,7 +194,7 @@ namespace CMS.Bussiness
                                  ListImage = GetImageByNewsId(c.Id),
                                  SameNews = GetSameNewsByNewsId(Id, c.Title, c.CategoryId.Value, c.DistrictId.Value, c.Phone, UserId),
                                  Iscc = CheckCCByUser(c.Id, UserId),
-                                 PersionalReport = GetNameReasonReport(c.Id),
+                                 PersionalReport = HttpUtility.HtmlDecode(Helper.Utils.RemoveHtml(GetNameReasonReport(c.Id))),
                                  PersonCheck = GetPersonCheckNews(c.Id),
                                  IsReason = CheckReason(UserId, c.Id)
                              }).FirstOrDefault();
