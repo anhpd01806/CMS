@@ -248,13 +248,15 @@ namespace CMS.Controllers
                     worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Phone : "Vui lòng nạp tiền";
                     col++;
 
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? Utils.FormatPrice(item.Price ?? 0) : "Vui lòng nạp tiền";
+                    col++;
+
                     worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? (item.Area ?? 0).ToString() : "Vui lòng nạp tiền";
                     col++;
 
                     //next row
                     row++;
                 }
-
 
                 var nameexcel = "Danh sách tin tức" + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff");
                 xlPackage.Workbook.Properties.Title = string.Format("{0}", nameexcel);
