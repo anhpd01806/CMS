@@ -58,6 +58,7 @@
         });
         // click button tim kiem
         function FindInfomation() {
+            debugger;
             $.LoadingOverlay("show");
             var search = $('#Seach').val();
             var pageIndex = 1;
@@ -66,6 +67,7 @@
                 search: search, pageIndex: pageIndex
             };
             $.post("/BlackList/LoadData", data, function (resp) {
+                debugger;
                 if (resp != null) {
                     $("#TotalNumber").text(resp.totalCount);
                     $("#datatable1 tbody").html("");

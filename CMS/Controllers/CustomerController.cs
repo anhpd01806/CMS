@@ -103,7 +103,7 @@ namespace CMS.Controllers
             {
                 int totalpage = 0;
                 UserViewModel model = new UserViewModel();
-                model.UserList = getCustomerList(ref totalpage, int.Parse(pageIndex), 500, search, managerId, statusId);
+                model.UserList = getCustomerList(ref totalpage, int.Parse(pageIndex), 200, search, managerId, statusId);
                 var content = RenderPartialViewToString("~/Views/Customer/CustomerDetail.cshtml", model.UserList);
                 model.Totalpage = totalpage;
                 var totalPayment = new PaymentBussiness().GetAllCashPaymentByAdmin(managerId);

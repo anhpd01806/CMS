@@ -1,6 +1,7 @@
 ﻿using CMS.Bussiness;
 using CMS.Data;
 using CMS.ViewModel;
+using Elmah;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -162,8 +163,9 @@ namespace CMS.Controllers
                     Content = content
                 }, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
                 return Json(new
                 {
                     TotalPage = 0,

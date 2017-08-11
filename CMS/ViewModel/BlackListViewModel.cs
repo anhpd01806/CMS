@@ -18,7 +18,7 @@ namespace CMS.ViewModel
 
     public class BlacklistModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Words { get; set; }
         public string Description { get; set; }
         public string LinkUrl { get; set; }

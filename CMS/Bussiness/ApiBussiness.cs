@@ -19,6 +19,7 @@ namespace CMS.Bussiness
             }
             return id;
         }
+
         public void UpdateLastLogin(int id)
         {
             using (var db = new CmsDataDataContext())
