@@ -61,6 +61,49 @@ namespace CMS.ViewModel
         public string Notes { get; set; }
     }
 
+    public class UserModelApi
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Không được để trống")]
+        public string FullName { get; set; }
+
+        [Required(ErrorMessage = "Không được để trống")]
+        [Remote("doesUserNameNotExist", "Account", ErrorMessage = "Tài khoản đã được đăng ký. vui lòng chọn tài khoản khác")]
+        [RegularExpression("^[0-9]{10,11}$", ErrorMessage = "Vui lòng nhập số điện thoại (Số điện thoại bao gồm dãy số từ 10 đến 11 số.)")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Không được để trống")]
+        [StringLength(100, ErrorMessage = "Mật khẩu mới có độ dài tối tiểu 6 kí tự", MinimumLength = 6)]
+        public string PassWord { get; set; }
+
+        [Required(ErrorMessage = "Không được để trống")]
+        [System.Web.Mvc.Compare("PassWord", ErrorMessage = "Mật khẩu xác nhận không khớp.")]
+        public string ConfirmPassWord { get; set; }
+
+        public string Phone { get; set; }
+
+        public string Email { get; set; }
+        public Boolean IsMember { get; set; }
+        public Boolean IsRestore { get; set; }
+        public string ManagerBy { get; set; }
+        public List<Role_User> RoleUsers { get; set; }
+        public List<RoleModel> ListRoles { get; set; }
+
+        public Boolean Sex { get; set; }
+
+        public List<SelectListItem> ManagerList { get; set; }
+
+        public string RoleName { get; set; }
+
+        public Boolean IsDelete { get; set; }
+        public Boolean IsOnline { get; set; }
+        public DateTime? EndTimePayment { get; set; }
+        public string EndTimeStr { get; set; }
+        public int ManagerId { get; set; }
+        public string Notes { get; set; }
+    }
+
     public class ChangePasswordViewModel
     {
         [Required(ErrorMessage = "Mật khẩu cũ không được để trống.")]
@@ -111,7 +154,8 @@ namespace CMS.ViewModel
         public string UserName { get; set; }
         public string FullName { get; set; }
         public string ManagerBy { get; set; }
-        public string TimeEnd { get; set; }
+        public DateTime? TimeEnd { get; set; }
+        public string TimeEndStr { get; set; }
         public string Amount { get; set; }
         public DateTime LastLogin { get; set; }
         public string CashPayment { get; set; }

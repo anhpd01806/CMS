@@ -104,6 +104,30 @@ namespace CMS.Bussiness
 
         }
 
+        public List<Notify> GetAllNoticeApi(bool IsUser, int UserId, int page,ref int total)
+        {
+            if (IsUser)
+            {
+                var noti = (from c in db.Notifies
+                            where c.SendFlag == false && c.SendTo.Equals(UserId)
+                            orderby c.ViewFlag ascending, c.DateSend descending
+                            select c);
+                total = noti.Count();
+                return noti.Skip(page * 20).Take(20).ToList();
+            }
+            else
+            {
+                var noti = (from c in db.Notifies
+                            where c.SendFlag == true
+                            orderby c.ViewFlag ascending, c.DateSend descending
+                            select c);
+                total = noti.Count();
+                //if user is admin
+                return noti.Skip(page * 20).Take(20).ToList();
+            }
+
+        }
+
         //update status notify , set view flag = true
         public int UpdateNotifyView(int Id)
         {

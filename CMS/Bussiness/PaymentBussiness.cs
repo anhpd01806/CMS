@@ -27,7 +27,7 @@ namespace CMS.Bussiness
 
         public List<PaymentMethod> GetPaymentList()
         {
-           return db.PaymentMethods.OrderBy(x=>x.DisplayOrder).ToList();
+            return db.PaymentMethods.OrderBy(x => x.DisplayOrder).ToList();
         }
 
         public void Insert(PaymentHistory model)
@@ -90,9 +90,9 @@ namespace CMS.Bussiness
                 return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Skip(page * 20).Take(20).ToList();
         }
 
-        public List<PaymentHistory> GetPaymentHistoryApi(int userId, int page,ref int totalPage)
+        public List<PaymentHistory> GetPaymentHistoryApi(int userId, int page, ref int totalPage)
         {
-            totalPage = db.PaymentHistories.Where(x => x.UserId == userId).Count()/20;
+            totalPage = db.PaymentHistories.Where(x => x.UserId == userId).Count() / 20;
             if (page == 0)
                 return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Take(20).ToList();
             else
@@ -133,7 +133,7 @@ namespace CMS.Bussiness
                 return "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền";
             else
             {
-                if (paymentAccepted.AmountTotal < model.Payment 
+                if (paymentAccepted.AmountTotal < model.Payment
                     || (ConfigWeb.MonthPackage != model.Payment.ToString() && ConfigWeb.DayPackage != model.Payment.ToString()))
                     return "Tài khoản của quý khách không đủ tiền";
                 else
@@ -192,6 +192,20 @@ namespace CMS.Bussiness
             else return "Chưa đăng ký gói cước";
         }
 
+        public DateTime? GetTimePaymentApi(int userId, ref string timeEndStr)
+        {
+            var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            if (cash != null)
+            {
+                timeEndStr = string.Format(cash.EndDate.ToString("dd/MM/yyyy"));
+                return cash.EndDate;
+            }
+            else
+            {
+                timeEndStr = "Chưa đăng ký gói cước";
+                return DateTime.MinValue;
+            }
+        }
         public DateTime GetEndTimeByUserId(int userId)
         {
             var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);

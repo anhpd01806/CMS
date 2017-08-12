@@ -8,6 +8,7 @@ namespace CMS.ViewModel
     public class NoticeViewModel
     {
         public List<NoticeDetailModel> NoticeList { get; set; }
+        public int Totalpage { get; set; }
     }
 
     public class NoticeDetailModel

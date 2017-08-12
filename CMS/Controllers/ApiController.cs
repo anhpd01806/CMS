@@ -2562,13 +2562,11 @@ namespace CMS.Controllers
                                 //insert payment accepted
                                 string message = "";
                                 var rs = new PaymentBussiness().UpdatePaymentAccepted(amount, userId);
-                                if (rs == 1) message = "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền.";
-                                else if (rs == 2) message = "Tài khoản của quý khách không đủ tiền.";
-                                else message = "Bạn đã nạp thành công " + string.Format("{0:n0}", amount) + "vnđ !Cảm ơn bạn đã sử dụng phần mềm.";
+                                var errorlist = errorMap;
                                 return Json(new
                                 {
                                     status = "200",
-                                    errorcode = rs,
+                                    errorcode = errorlist,
                                     message = message,
                                     data = ""
                                 });
@@ -2719,7 +2717,7 @@ namespace CMS.Controllers
                         int pageTotal = 0;
                         double total = 0;
                         var allAdmin = new UserBussiness().GetAdminUser();
-                        var allUser = new UserBussiness().GetCustomerUser(ref total, ref pageTotal, managerId, statusId, pageIndex, pageSize, search);
+                        var allUser = new UserBussiness().GetCustomerUserApi(ref total, ref pageTotal, managerId, statusId, pageIndex, pageSize, search);
                         var allRoles = new RoleBussiness().GetRoles();
                         var allRolesUser = new RoleBussiness().GetAllRoleUser();
                         CustomerModel model = new CustomerModel();
@@ -2905,14 +2903,16 @@ namespace CMS.Controllers
                     }
                     else
                     {
-                        List<NoticeDetailModel> notice = new List<NoticeDetailModel>();
-                        notice = getAllNoticeById(page, userId, isUser);
+                        int total = 0;
+                        NoticeViewModel model = new NoticeViewModel();
+                        model.NoticeList = getAllNoticeById(page, userId, isUser,ref total);
+                        model.Totalpage = total / 20;
                         return Json(new
                         {
                             status = "200",
                             errorcode = "0",
                             message = "success",
-                            data = notice
+                            data = model
                         });
                     }
                 }
@@ -2930,9 +2930,10 @@ namespace CMS.Controllers
             }
         }
 
-        private List<NoticeDetailModel> getAllNoticeById(int page, int userId, Boolean isUser)
+        private List<NoticeDetailModel> getAllNoticeById(int page, int userId, Boolean isUser,ref int total)
         {
-            var listNotice = new NotifyBussiness().GetAllNotice(isUser, userId, page);
+           
+            var listNotice = new NotifyBussiness().GetAllNoticeApi(isUser, userId, page,ref total);
             var rs = (from a in listNotice
                       select new NoticeDetailModel
                       {
@@ -2988,7 +2989,9 @@ namespace CMS.Controllers
             rs.Notes = cusDetail.Notes;
             //get paymen by Id
             rs.Amount = new PaymentBussiness().GetCashPaymentByUserId(cusDetail.Id);
-            rs.TimeEnd = new PaymentBussiness().GetTimePaymentByUserId(cusDetail.Id);
+            string TimeEndStr = "";
+            rs.TimeEnd = new PaymentBussiness().GetTimePaymentApi(cusDetail.Id,ref TimeEndStr);
+            rs.TimeEndStr = TimeEndStr;
             //get payment by Id 
             var payment = new PaymentBussiness().GetPaymentByUserId(cusDetail.Id);
             rs.CashPayment = payment.FirstOrDefault(x => x.PaymentMethodId == 1) != null ? payment.FirstOrDefault(x => x.PaymentMethodId == 1).AmoutPayment : "0";
@@ -3053,5 +3056,38 @@ namespace CMS.Controllers
             public string Name { get; set; }
             public string Amount { get; set; }
         }
+
+        private static readonly Dictionary<String, String> errorMap = new Dictionary<String, String>()
+        {
+            { "1", "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền." },
+            { "2", "Tài khoản của quý khách không đủ tiền." },
+            { "0", "Bạn đã nạp thành công !Cảm ơn bạn đã sử dụng phần mềm" },
+
+            { "-1985", "Invalid parameters request." },
+            { "-1984", "Wrong username." },
+            {"-1983", "Wrong password."},
+            {"-1982", "Invalid IP request."},
+            {"-1981", "System busy."},
+            {"0", "Giao dich that bai."},
+            {"1", "Giao dich thanh cong."},
+            {"-10", "Mã thẻ sai định dạng."},
+            {"4", "Thẻ không sử dụng được."},
+            {"5", "Nhập sai mã thẻ quá 5 lần."},
+            {"9", "Tạm thời khóa kênh nạp thẻ do hệ thống Mobifone quá tải."},
+            {"10", "Hệ thống nhà cung cấp dịch vụ gập lỗi."},
+            {"11", "Kết nối với nhà cung cấp bị gián đoạn."},
+            {"13", "Hệ thống tạm thời bận."},
+            {"-2", "Thẻ đã bị khóa."},
+            {"-3", "Thẻ hết hạn sử dụng."},
+            {"50", "Thẻ đã sử dụng hoặc không tồn tại."},
+            {"51", "Serial thẻ không đúng."},
+            {"52", "Mã thẻ và seerial không khớp."},
+            {"53", "Serial hoặc mã thẻ không đúng."},
+            {"55", "Card tạm thời bị khóa 24h."},
+            {"59", "Mã thẻ chưa được kick hoạt." },
+            {"99", "Giao dịch pending." },
+            {"100", "Không tồn tại access key." },
+            {"102", "Tài khoản tạm thời bị khóa 15 phút vì nạp sai mã thẻ quá 5 lần liên tiếp." },
+        };
     }
 }
