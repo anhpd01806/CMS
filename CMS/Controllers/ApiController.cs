@@ -2239,7 +2239,7 @@ namespace CMS.Controllers
                         if (resp == 1 || !IsUser)
                         {
                             newsItem.CategoryId = CateId;
-                            newsItem.Title = Title;
+                            newsItem.Title = "[ĐỘC QUYỀN TRÊN OZO] " + Title;
                             newsItem.Contents = Content;
                             newsItem.Link = "http://ozo.vn/";
                             newsItem.SiteId = ConfigWeb.OzoId;
