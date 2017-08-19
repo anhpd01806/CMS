@@ -2723,7 +2723,7 @@ namespace CMS.Controllers
                         CustomerModel model = new CustomerModel();
 
                         var rs = (from a in allUser
-                                  select new UserModel
+                                  select new UserModelApi
                                   {
                                       Id = a.Id,
                                       FullName = a.FullName,
@@ -2968,9 +2968,9 @@ namespace CMS.Controllers
             return String.Join(", ", rs);
         }
 
-        private DateTime getPaymentStatus(int userId)
+        private DateTime? getPaymentStatus(int userId)
         {
-            return new PaymentBussiness().GetEndTimeByUserId(userId);
+            return new PaymentBussiness().GetEndTimeApiByUserId(userId);
         }
 
         private CustomerDetailApi getCustomerDetail(int id)

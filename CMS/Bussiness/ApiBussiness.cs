@@ -63,7 +63,7 @@ namespace CMS.Bussiness
                             FullName = user.FullName,
                             IsPayment = accepted.IsAccepted,
                             IsUser = CheckRole(user.Id, user.IsFree.ToString()),
-                            ManagerName = allAdmin.Where(x => x.Id == user.ManagerBy).Select(x => x.FullName).FirstOrDefault(),
+                            ManagerName = allAdmin.Where(x => x.Id == user.ManagerBy) == null ? "Không có người quản lý" : allAdmin.Where(x => x.Id == user.ManagerBy).Select(x => x.FullName).FirstOrDefault(),
                             Amount = new PaymentBussiness().GetCashPaymentByUserId(user.Id),
                             DateEnd = accepted.DateEnd
                         };
@@ -87,14 +87,17 @@ namespace CMS.Bussiness
                 if (isFree.ToLower().Trim() == "true")
                 {
                     model.IsAccepted = true;
-                    model.DateEnd = DateTime.MaxValue;
+                    model.DateEnd = null;
                     return model;
                 }
                 else
                 {
                     var rs = Instance.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId && DateTime.Now <= x.EndDate);
                     model.IsAccepted = rs != null ? true : false;
-                    model.DateEnd = rs != null ? rs.EndDate : DateTime.MinValue;
+                    if (rs != null)
+                    {
+                        model.DateEnd = rs.EndDate;
+                    }
                     return model;
                 }
             }
@@ -102,7 +105,7 @@ namespace CMS.Bussiness
             {
                 ErrorLog.GetDefault(HttpContext.Current).Log(new Error(ex));
                 model.IsAccepted = false;
-                model.DateEnd = DateTime.MinValue;
+                model.DateEnd = null;
                 return model;
             }
         }
@@ -168,7 +171,9 @@ namespace CMS.Bussiness
                             Phone = user.Phone,
                             FullName = user.FullName,
                             IsPayment = accepted.IsAccepted,
-                            IsUser = CheckRole(user.Id, user.IsFree.ToString())
+                            IsUser = CheckRole(user.Id, user.IsFree.ToString()),
+                            DateEnd = null,
+                            ManagerName = "Không có người quản lý"
                         };
                         return userItem;
                     }
@@ -185,7 +190,7 @@ namespace CMS.Bussiness
         public class AcceptedModel
         {
             public bool IsAccepted { get; set; }
-            public DateTime DateEnd { get; set; }
+            public DateTime? DateEnd { get; set; }
         }
     }
 }

@@ -12,6 +12,6 @@ namespace CMS.Models
         public int pageSize { get; set; }
         public int Totalpage { get; set; }
         public double Total { get; set; }
-        public List<UserModel> ListCustomer { get; set; }
+        public List<UserModelApi> ListCustomer { get; set; }
     }
 }

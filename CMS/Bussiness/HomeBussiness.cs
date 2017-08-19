@@ -20,7 +20,33 @@ namespace CMS.Bussiness
         CmsDataDataContext Instance = new CmsDataDataContext();
         #endregion
 
-        #region News in home
+        
+
+        #region Role
+
+        public int GetRoleByUser(int userId)
+        {
+            try
+            {
+                var query = (from c in Instance.Role_Users
+                             where c.UserId.Equals(userId)
+                             select new
+                             {
+                                 RoleId = c.RoleId
+                             }).FirstOrDefault();
+                if (query != null)
+                {
+                    return query.RoleId;
+                }
+                return 0;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+        #endregion
+#region News in home
 
         public List<DistrictModel> GetListDistric()
         {
@@ -736,32 +762,6 @@ namespace CMS.Bussiness
             return false;
         }
         #endregion
-
-        #region Role
-
-        public int GetRoleByUser(int userId)
-        {
-            try
-            {
-                var query = (from c in Instance.Role_Users
-                             where c.UserId.Equals(userId)
-                             select new
-                             {
-                                 RoleId = c.RoleId
-                             }).FirstOrDefault();
-                if (query != null)
-                {
-                    return query.RoleId;
-                }
-                return 0;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-        #endregion
-
         #region ReasonReportNews
         public void InsertReasonReportNews(ReasonReportNew model)
         {

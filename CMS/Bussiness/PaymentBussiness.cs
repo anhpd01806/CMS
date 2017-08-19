@@ -213,6 +213,14 @@ namespace CMS.Bussiness
                 return cash.EndDate;
             else return DateTime.MinValue;
         }
+
+        public DateTime? GetEndTimeApiByUserId(int userId)
+        {
+            var cash = db.PaymentAccepteds.FirstOrDefault(x => x.UserId == userId);
+            if (cash != null)
+                return cash.EndDate;
+            else return null;
+        }
         /// <summary>
         /// Status:  0: "Bạn không có tiền trong tài khoản.";
         ///          1: "Thành công";
