@@ -166,7 +166,7 @@ namespace CMS.Bussiness
 
             int? totalout = 0;
             #endregion
-            Instance.CommandTimeout = 30;
+            Instance.CommandTimeout = 600;
             var listItem =
                 (Instance.PROC_GetListNewsInHome(UserId, CateId, DistricId, StatusId, GovermentID, SiteId, backdate, from, to,
                     minPrice, maxPrice, pageIndex, pageSize, IsRepeat, key, NameOrder, descending, ref totalout)
