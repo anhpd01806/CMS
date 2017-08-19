@@ -292,7 +292,7 @@ namespace CMS.Controllers
                     worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? item.Phone : "Vui lòng nạp tiền";
                     col++;
 
-                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? Utils.FormatPrice(item.Price ?? 0) : "Vui lòng nạp tiền";
+                    worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? (item.Price ?? 0).ToString() : "Vui lòng nạp tiền";
                     col++;
 
                     worksheet.Cells[row, col].Value = Convert.ToBoolean(Session["USER-ACCEPTED"]) ? (item.Area ?? 0).ToString() : "Vui lòng nạp tiền";

@@ -822,6 +822,86 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetListNewsFeedIOS(int CateId, int DistricId, int StatusId, int SiteId,
+            int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, string sign, string infologin)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("CateId", CateId.ToString());
+                    param.Add("DistricId", DistricId.ToString());
+                    param.Add("StatusId", StatusId.ToString());
+                    param.Add("SiteId", SiteId.ToString());
+                    param.Add("BackDate", BackDate.ToString());
+                    param.Add("From", (From ?? string.Empty).ToString());
+                    param.Add("To", (To ?? string.Empty).ToString());
+                    param.Add("MinPrice", MinPrice.ToString());
+                    param.Add("MaxPrice", MaxPrice.ToString());
+                    param.Add("pageIndex", pageIndex.ToString());
+                    param.Add("pageSize", pageSize.ToString());
+                    param.Add("IsRepeat", IsRepeat.ToString());
+                    param.Add("key", (key ?? string.Empty).ToString());
+                    param.Add("NameOrder", (NameOrder ?? string.Empty).ToString());
+                    param.Add("descending", descending.ToString());
+                    var str = Common.Common.Sort(param).ToLower();
+                    var gen_sign = Common.Common.GenSign(str, Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        int total = 0;
+                        var data = _newsbussiness.GetListNewByFilter(1, CateId, DistricId, StatusId, 0, SiteId, BackDate, From, To, MinPrice, MaxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
+                        var model = new HomeModel();
+                        model.Total = total;
+                        model.pageIndex = pageIndex;
+                        model.pageSize = pageSize;
+                        model.ListNew = data;
+                        model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = model
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
         public JsonResult GetNewsDetail(int Id, int UserId, string sign, string infologin)
         {
             try
