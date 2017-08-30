@@ -48,7 +48,8 @@ namespace CMS.Controllers
         public JsonResult Recharge(RechargeModel form)
         {
             var resultObj = new RechargeModel();
-            if (!isValidCode(form)) {
+            if (!isValidCode(form))
+            {
                 resultObj.isError = true;
                 resultObj.message = errorMap["53"];
                 return Json(resultObj, JsonRequestBehavior.AllowGet);
@@ -172,13 +173,14 @@ namespace CMS.Controllers
             {
                 try
                 {
+                    var userInfo = (User)Session["SS-USER"];
                     var userId = new UserBussiness().GetUserByName(model.UserName);
                     var paymentHistory = new PaymentHistory
                     {
                         UserId = userId,
                         PaymentMethodId = model.PaymentMethodId,
                         CreatedDate = DateTime.Now,
-                        Notes = model.Note,
+                        Notes = "Nhân viên nạp: " + userInfo.UserName + "Ghi chú: " + model.Note,
                         Amount = long.Parse(string.Join("", model.Amount.Split(',')))
                     };
 

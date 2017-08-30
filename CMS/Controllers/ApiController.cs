@@ -22,7 +22,7 @@ namespace CMS.Controllers
         private readonly ApiBussiness _accountbussiness = new ApiBussiness();
         private readonly APINewsBussiness _newsbussiness = new APINewsBussiness();
         #endregion
-
+        
         [HttpPost]
         public JsonResult Login(string username, string password, string infologin, string sign)
         {
@@ -2985,7 +2985,7 @@ namespace CMS.Controllers
                     {
                         int total = 0;
                         NoticeViewModel model = new NoticeViewModel();
-                        model.NoticeList = getAllNoticeById(page, userId, isUser,ref total);
+                        model.NoticeList = getAllNoticeById(page, userId, isUser, ref total);
                         model.Totalpage = total / 20;
                         return Json(new
                         {
@@ -3010,10 +3010,10 @@ namespace CMS.Controllers
             }
         }
 
-        private List<NoticeDetailModel> getAllNoticeById(int page, int userId, Boolean isUser,ref int total)
+        private List<NoticeDetailModel> getAllNoticeById(int page, int userId, Boolean isUser, ref int total)
         {
-           
-            var listNotice = new NotifyBussiness().GetAllNoticeApi(isUser, userId, page,ref total);
+
+            var listNotice = new NotifyBussiness().GetAllNoticeApi(isUser, userId, page, ref total);
             var rs = (from a in listNotice
                       select new NoticeDetailModel
                       {
@@ -3070,7 +3070,7 @@ namespace CMS.Controllers
             //get paymen by Id
             rs.Amount = new PaymentBussiness().GetCashPaymentByUserId(cusDetail.Id);
             string TimeEndStr = "";
-            rs.TimeEnd = new PaymentBussiness().GetTimePaymentApi(cusDetail.Id,ref TimeEndStr);
+            rs.TimeEnd = new PaymentBussiness().GetTimePaymentApi(cusDetail.Id, ref TimeEndStr);
             rs.TimeEndStr = TimeEndStr;
             //get payment by Id 
             var payment = new PaymentBussiness().GetPaymentByUserId(cusDetail.Id);
