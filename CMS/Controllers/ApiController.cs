@@ -22,7 +22,7 @@ namespace CMS.Controllers
         private readonly ApiBussiness _accountbussiness = new ApiBussiness();
         private readonly APINewsBussiness _newsbussiness = new APINewsBussiness();
         #endregion
-        
+
         [HttpPost]
         public JsonResult Login(string username, string password, string infologin, string sign)
         {
@@ -2642,11 +2642,13 @@ namespace CMS.Controllers
                                 //insert payment accepted
                                 string message = "";
                                 var rs = new PaymentBussiness().UpdatePaymentAccepted(amount, userId);
-                                var errorlist = errorMap;
+                                if (rs == 1) message = "Tài khoản của quý khách không đủ tiền.";
+                                else if (rs == 2) message = "Tài khoản của quý khách không đủ tiền.";
+                                else message = "Nạp tiền thành công.";
                                 return Json(new
                                 {
                                     status = "200",
-                                    errorcode = errorlist,
+                                    errorcode = rs,
                                     message = message,
                                     data = ""
                                 });
@@ -2662,7 +2664,7 @@ namespace CMS.Controllers
                             {
                                 status = "200",
                                 errorcode = resultObj.isError + "|" + code,
-                                message = "Nạp thẻ thất bại",
+                                message = "Nạp thẻ thất bại.Vui lòng nạp thẻ bằng chrome để biết thêm chi tiết.",
                                 data = ""
                             });
 
@@ -3136,38 +3138,5 @@ namespace CMS.Controllers
             public string Name { get; set; }
             public string Amount { get; set; }
         }
-
-        private static readonly Dictionary<String, String> errorMap = new Dictionary<String, String>()
-        {
-            { "1", "Bạn chưa nạp tiền. Vui lòng liên hệ admin để nạp tiền." },
-            { "2", "Tài khoản của quý khách không đủ tiền." },
-            { "0", "Bạn đã nạp thành công !Cảm ơn bạn đã sử dụng phần mềm" },
-
-            { "-1985", "Invalid parameters request." },
-            { "-1984", "Wrong username." },
-            {"-1983", "Wrong password."},
-            {"-1982", "Invalid IP request."},
-            {"-1981", "System busy."},
-            {"0", "Giao dich that bai."},
-            {"1", "Giao dich thanh cong."},
-            {"-10", "Mã thẻ sai định dạng."},
-            {"4", "Thẻ không sử dụng được."},
-            {"5", "Nhập sai mã thẻ quá 5 lần."},
-            {"9", "Tạm thời khóa kênh nạp thẻ do hệ thống Mobifone quá tải."},
-            {"10", "Hệ thống nhà cung cấp dịch vụ gập lỗi."},
-            {"11", "Kết nối với nhà cung cấp bị gián đoạn."},
-            {"13", "Hệ thống tạm thời bận."},
-            {"-2", "Thẻ đã bị khóa."},
-            {"-3", "Thẻ hết hạn sử dụng."},
-            {"50", "Thẻ đã sử dụng hoặc không tồn tại."},
-            {"51", "Serial thẻ không đúng."},
-            {"52", "Mã thẻ và seerial không khớp."},
-            {"53", "Serial hoặc mã thẻ không đúng."},
-            {"55", "Card tạm thời bị khóa 24h."},
-            {"59", "Mã thẻ chưa được kick hoạt." },
-            {"99", "Giao dịch pending." },
-            {"100", "Không tồn tại access key." },
-            {"102", "Tài khoản tạm thời bị khóa 15 phút vì nạp sai mã thẻ quá 5 lần liên tiếp." },
-        };
     }
 }

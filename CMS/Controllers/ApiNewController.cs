@@ -19,13 +19,13 @@ namespace CMS.Controllers
         #region DucAnh
         [HttpPost]
         public JsonResult InsertNews(int categoryId, string title, string contents, string link, int siteId, int districtId, int provinceId,
-                                     int createdBy, DateTime createdOn, int modifiedBy, string phone, string priceText, decimal area, decimal price)
+                                    DateTime createdOn, string phone, string priceText, decimal area, decimal price)
         {
             try
             {
                 var Query = "INSERT INTO News (CategoryId,Title,Contents,Summary,Link,SiteId,DistrictId,ProvinceId,CreatedBy,CreatedOn,ModifiedBy,ModifiedOn,StatusId,Phone,IsUpdated,DateOld,IsDeleted,IsPhone,PriceText,IsRepeat,Area,Price,IsSpam,TotalRepeat)" +
                               "VALUES(" + categoryId + ", N'" + title.Replace("'", "") + "', N'" + contents.Replace("'", "") + "', N'" + contents.Replace("'", "") + "', '" + link + "', " + siteId + ", " + districtId +
-                              "," + provinceId + "," + createdBy + ",'" + createdOn + "'," + modifiedBy + ",'" + (DateTime.Now) + "' ," + 1 + ",'" + phone + "',0,'" + createdOn +
+                              "," + provinceId + "," + 1 + ",'" + createdOn + "'," + 1 + ",'" + (DateTime.Now) + "' ," + 1 + ",'" + phone + "',0,'" + createdOn +
                               "',0," + 1 + ",N'" + priceText + "',0," + area + "," + price + ",0,1);SELECT Convert(Int, @@IDENTITY)";
                 int newID = 0;
                 using (var dbContext = new CmsDataDataContext())

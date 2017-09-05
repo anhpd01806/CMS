@@ -44,7 +44,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elmah">
-      <HintPath>E:\Dll\Elmah.dll</HintPath>
+      <HintPath>..\..\..\XNK\XNK\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
@@ -3009,6 +3009,7 @@
     <Compile Include="Common\InMemoryCache.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApiController.cs" />
+    <Compile Include="Controllers\ApiNewController.cs" />
     <Compile Include="Controllers\BaseAuthedController.cs" />
     <Compile Include="Controllers\BlackListController.cs" />
     <Compile Include="Controllers\BrokersInformationController.cs" />
