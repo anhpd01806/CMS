@@ -969,6 +969,64 @@ namespace CMS.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult GetDetailInNewFeed(int Id, string sign)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(sign) || string.IsNullOrEmpty(Id.ToString()))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var param = new NameValueCollection();
+                    param.Add("Id", Id.ToString());
+                    var str = Common.Common.Sort(param);
+                    var gen_sign = Common.Common.GenSign(str.ToLower(), Common.APIConfig.PrivateKey);
+
+                    if (!sign.Equals(gen_sign))
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var data = _newsbussiness.GetNewsDetail(Id, 1);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = data
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
         /// <summary>
         /// Lấy tin theo status id
         /// 1. Tin đã lưu,
