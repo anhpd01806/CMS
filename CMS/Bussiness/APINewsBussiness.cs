@@ -26,6 +26,18 @@ namespace CMS.Bussiness
             return listdistric;
         }
 
+        public List<ProvinceModel> GetListProvince()
+        {
+            var ListProvince = (from c in Instance.Provinces
+                               where c.Published
+                               select new ProvinceModel
+                               {
+                                   Id = c.Id,
+                                   Name = c.Name
+                               }).ToList();
+            return ListProvince;
+        }
+
         public List<CategoryModel> GetListCategory()
         {
             var listcategory = (from c in Instance.Categories

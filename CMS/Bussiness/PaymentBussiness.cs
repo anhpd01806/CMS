@@ -203,7 +203,7 @@ namespace CMS.Bussiness
             else
             {
                 timeEndStr = "Chưa đăng ký gói cước";
-                return DateTime.MinValue;
+                return null;
             }
         }
         public DateTime GetEndTimeByUserId(int userId)

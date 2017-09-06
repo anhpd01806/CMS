@@ -70,12 +70,12 @@ namespace CMS.Bussiness
                           join b in db.PaymentAccepteds
                           on a.Id equals b.UserId into ps
                           from b in ps.DefaultIfEmpty()
-                          where (a.ManagerBy == managerId || a.ManagerBy == null || managerId == 0)
+                          where (a.ManagerBy == managerId || a.ManagerBy == null || managerId == 0 || managerId == 1)
                           && (statusId == 0 || (statusId == 1 && b.EndDate.AddDays(-2) > DateTime.Now && b.EndDate != null)
                            || (statusId == 2 && b.EndDate.AddDays(-2) <= DateTime.Now && b.EndDate > DateTime.Now && b.EndDate != null)
                            || (statusId == 3 && b.EndDate <= DateTime.Now && b.EndDate != null)
                            || (statusId == 4 && b.EndDate == null))
-                           && (a.UserName.Contains(search) || a.FullName.Contains(search))
+                           && (a.UserName.Contains(search) || a.FullName.Contains(search) || string.IsNullOrEmpty(search))
                            && a.IsFree == false
                           select new UserModelApi
                           {
@@ -88,7 +88,7 @@ namespace CMS.Bussiness
                               IsDelete = a.IsDeleted ?? false,
                               IsMember = a.IsMember ?? false,
                               EndTimePayment = b.EndDate,
-                              EndTimeStr = b.EndDate != null ? string.Format(b.EndDate.ToString("dd/MM/yyyy")) : "Chưa đăng ký gói cước"
+                              //EndTimeStr = b.EndDate != null ? string.Format(b.EndDate.ToString("dd/MM/yyyy")) : "Chưa đăng ký gói cước"
                           });
                 total = (double)rs.ToList().Count;
                 pageTotal = (int)Math.Ceiling(total / (double)pageSize);
@@ -129,8 +129,8 @@ namespace CMS.Bussiness
         public int GetUserByName(string name)
         {
             var user = db.Users.FirstOrDefault(x => x.UserName == name);
-            if(user!= null)
-            return user.Id;
+            if (user != null)
+                return user.Id;
             else return 0;
         }
 
@@ -197,7 +197,7 @@ namespace CMS.Bussiness
             }
             catch (Exception)
             {
-               
+
             }
         }
 

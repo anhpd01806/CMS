@@ -2776,7 +2776,7 @@ namespace CMS.Controllers
                 else
                 {
                     var param = new NameValueCollection();
-                    param.Add("search", search);
+                    param.Add("search", (search ?? string.Empty).ToString());
                     param.Add("managerId", managerId.ToString());
                     param.Add("statusId", statusId.ToString());
                     param.Add("pageIndex", pageIndex.ToString());
@@ -2803,26 +2803,28 @@ namespace CMS.Controllers
                         var allRoles = new RoleBussiness().GetRoles();
                         var allRolesUser = new RoleBussiness().GetAllRoleUser();
                         CustomerModel model = new CustomerModel();
-
-                        var rs = (from a in allUser
-                                  select new UserModelApi
-                                  {
-                                      Id = a.Id,
-                                      FullName = a.FullName,
-                                      UserName = a.UserName,
-                                      Phone = a.Phone,
-                                      Email = a.Email,
-                                      IsDelete = a.IsDelete,
-                                      IsMember = a.IsMember,
-                                      ManagerBy = a.ManagerId != 0 ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "Chưa có người quản lý",
-                                      RoleName = getNameRole(allRoles, allRolesUser, a.Id),
-                                      EndTimePayment = getPaymentStatus(a.Id)
-                                  }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.EndTimePayment).ToList();
-                        model.Total = total;
-                        model.pageIndex = pageIndex;
-                        model.pageSize = pageSize;
-                        model.ListCustomer = rs;
-                        model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
+                        if (allUser != null)
+                        {
+                            var rs = (from a in allUser
+                                      select new UserModelApi
+                                      {
+                                          Id = a.Id,
+                                          FullName = a.FullName,
+                                          UserName = a.UserName,
+                                          Phone = a.Phone,
+                                          Email = a.Email,
+                                          IsDelete = a.IsDelete,
+                                          IsMember = a.IsMember,
+                                          ManagerBy = a.ManagerId != 0 ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "Chưa có người quản lý",
+                                          RoleName = getNameRole(allRoles, allRolesUser, a.Id),
+                                          EndTimePayment = getPaymentStatus(a.Id)
+                                      }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.EndTimePayment).ToList();
+                            model.Total = total;
+                            model.pageIndex = pageIndex;
+                            model.pageSize = pageSize;
+                            model.ListCustomer = rs;
+                            model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
+                        }
                         return Json(new
                         {
                             status = "200",

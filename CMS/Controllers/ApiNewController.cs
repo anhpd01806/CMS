@@ -1,4 +1,6 @@
-﻿using CMS.Data;
+﻿using CMS.Bussiness;
+using CMS.Data;
+using CMS.Models;
 using Elmah;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,10 @@ namespace CMS.Controllers
 {
     public class ApiNewController : Controller
     {
+        #region Member
+        private readonly ApiBussiness _accountbussiness = new ApiBussiness();
+        private readonly APINewsBussiness _newsbussiness = new APINewsBussiness();
+        #endregion
         // GET: ApiNew
         public ActionResult Index()
         {
@@ -88,6 +94,45 @@ namespace CMS.Controllers
                     data = ""
                 });
             }
+        }
+
+        [HttpPost]
+        public JsonResult GetInfomation()
+        {
+            try
+            {
+                var model = new ApiInfo();
+                model.ListProvince = _newsbussiness.GetListProvince();
+                model.ListDictrict = _newsbussiness.GetListDistric();
+                model.ListSite = _newsbussiness.GetListSite();
+                model.ListCategory = _newsbussiness.GetListCategory();
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "0",
+                    message = "success",
+                    data = model
+                });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        public class ApiInfo
+        {
+           public List<DistrictModel> ListDictrict { get; set; }
+           public List<CategoryModel> ListCategory { get; set; }
+           public List<SiteModel> ListSite { get; set; }
+           public List<ProvinceModel> ListProvince { get; set; }
         }
         #endregion
     }
