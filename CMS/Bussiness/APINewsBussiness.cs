@@ -29,12 +29,12 @@ namespace CMS.Bussiness
         public List<ProvinceModel> GetListProvince()
         {
             var ListProvince = (from c in Instance.Provinces
-                               where c.Published
-                               select new ProvinceModel
-                               {
-                                   Id = c.Id,
-                                   Name = c.Name
-                               }).ToList();
+                                where c.Published
+                                select new ProvinceModel
+                                {
+                                    Id = c.Id,
+                                    Name = c.Name
+                                }).ToList();
             return ListProvince;
         }
 
@@ -58,7 +58,7 @@ namespace CMS.Bussiness
                             select new SiteModel
                             {
                                 ID = c.ID,
-                                Name = c.Name
+                                Name = c.Url
                             }).ToList();
             return listsite;
         }
@@ -727,11 +727,11 @@ namespace CMS.Bussiness
                     return 1;
                 }
             }
-            catch 
+            catch
             {
                 return 0;
             }
-            
+
         }
 
         /// <summary>
@@ -777,7 +777,7 @@ namespace CMS.Bussiness
                     else return 0;
                 }
             }
-            catch 
+            catch
             {
                 return 0;
             }
@@ -799,42 +799,42 @@ namespace CMS.Bussiness
             try
             {
 
-            var query = (from c in Instance.News
-                         join d in Instance.Districts on c.DistrictId equals d.Id
-                         join t in Instance.NewsStatus on c.StatusId equals t.Id
-                         join st in Instance.Sites on c.SiteId equals st.ID
-                         where
-                         //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
-                         //&& !d.IsDeleted && d.Published
-                         //&& !news_new.Contains(c.Id)
-                         //&& c.CategoryId.Equals(CateId)
-                         //&& c.DistrictId.Equals(DistricId)
-                         c.Phone.Contains(phone) && c.Phone != "" && c.Title != Title && !c.IsRepeat
-                         && !c.Id.Equals(Id)
-                         group new { c, st } by new { c.Title, c.Link, st.Name } into g
-                         //orderby c.StatusId ascending, c.Price descending
-                         select new NewsModel
-                         {
-                             Title = g.Key.Title,
-                             Link = g.Key.Link,
-                             SiteName = g.Key.Name
-                         }).Skip(0).Take(3).ToList();
-           
-            foreach (var item in query)
-            {
-                var newsItem = (from c in Instance.News
-                                join t in Instance.NewsStatus on c.StatusId equals t.Id
-                                join st in Instance.Sites on c.SiteId equals st.ID
-                                where c.Title.Equals(item.Title)
-                                select new NewsModel
-                                {
-                                    Id = c.Id,
-                                    Title = c.Title,
-                                    Link = c.Link,
-                                    SiteName = st.Name
-                                }).FirstOrDefault();
-                listItem.Add(newsItem);
-            }
+                var query = (from c in Instance.News
+                             join d in Instance.Districts on c.DistrictId equals d.Id
+                             join t in Instance.NewsStatus on c.StatusId equals t.Id
+                             join st in Instance.Sites on c.SiteId equals st.ID
+                             where
+                             //c.CreatedOn.HasValue && !c.IsDeleted //&& c.Published.HasValue
+                             //&& !d.IsDeleted && d.Published
+                             //&& !news_new.Contains(c.Id)
+                             //&& c.CategoryId.Equals(CateId)
+                             //&& c.DistrictId.Equals(DistricId)
+                             c.Phone.Contains(phone) && c.Phone != "" && c.Title != Title && !c.IsRepeat
+                             && !c.Id.Equals(Id)
+                             group new { c, st } by new { c.Title, c.Link, st.Name } into g
+                             //orderby c.StatusId ascending, c.Price descending
+                             select new NewsModel
+                             {
+                                 Title = g.Key.Title,
+                                 Link = g.Key.Link,
+                                 SiteName = g.Key.Name
+                             }).Skip(0).Take(3).ToList();
+
+                foreach (var item in query)
+                {
+                    var newsItem = (from c in Instance.News
+                                    join t in Instance.NewsStatus on c.StatusId equals t.Id
+                                    join st in Instance.Sites on c.SiteId equals st.ID
+                                    where c.Title.Equals(item.Title)
+                                    select new NewsModel
+                                    {
+                                        Id = c.Id,
+                                        Title = c.Title,
+                                        Link = c.Link,
+                                        SiteName = st.Name
+                                    }).FirstOrDefault();
+                    listItem.Add(newsItem);
+                }
 
             }
             catch (Exception ẽ)
