@@ -87,7 +87,7 @@ namespace CMS.Bussiness
                               Email = a.Email,
                               IsDelete = a.IsDeleted ?? false,
                               IsMember = a.IsMember ?? false,
-                              EndTimePayment = b.EndDate,
+                              TimeEnd = b.EndDate,
                               //EndTimeStr = b.EndDate != null ? string.Format(b.EndDate.ToString("dd/MM/yyyy")) : "Chưa đăng ký gói cước"
                           });
                 total = (double)rs.ToList().Count;

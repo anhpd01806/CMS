@@ -92,11 +92,8 @@ namespace CMS.Bussiness
 
         public List<PaymentHistory> GetPaymentHistoryApi(int userId, int page, ref int totalPage)
         {
-            totalPage = db.PaymentHistories.Where(x => x.UserId == userId).Count() / 20;
-            if (page == 0)
-                return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Take(20).ToList();
-            else
-                return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Skip(page * 20).Take(20).ToList();
+            totalPage = (int)Math.Ceiling((double)db.PaymentHistories.Where(x => x.UserId == userId).Count() / (double)20);
+            return db.PaymentHistories.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Skip((page - 1) * 20).Take(20).ToList();
         }
 
         public List<PaymentTotal> GetPaymentByUserId(int id)

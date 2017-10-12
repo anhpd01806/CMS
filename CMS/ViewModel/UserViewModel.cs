@@ -98,8 +98,8 @@ namespace CMS.ViewModel
 
         public Boolean IsDelete { get; set; }
         public Boolean IsOnline { get; set; }
-        public DateTime? EndTimePayment { get; set; }
-        public string EndTimeStr { get; set; }
+        public DateTime? TimeEnd { get; set; }
+        public string TimeEndStr { get; set; }
         public int ManagerId { get; set; }
         public string Notes { get; set; }
     }

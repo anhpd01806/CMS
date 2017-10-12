@@ -240,7 +240,7 @@ namespace CMS.Controllers
                             Email = "",
                             IsDeleted = false,
                             IsMember = true,
-                            ManagerBy = 66,// tk 0972622621
+                            ManagerBy = 1086,// tk 0982667700
                             IsFree = false
                         };
                         var userId = new UserBussiness().Insert(u);

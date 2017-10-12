@@ -2875,8 +2875,8 @@ namespace CMS.Controllers
                                           IsMember = a.IsMember,
                                           ManagerBy = a.ManagerId != 0 ? allAdmin.Where(x => x.Id == a.ManagerId).Select(x => x.FullName).FirstOrDefault() : "Chưa có người quản lý",
                                           RoleName = getNameRole(allRoles, allRolesUser, a.Id),
-                                          EndTimePayment = getPaymentStatus(a.Id)
-                                      }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.EndTimePayment).ToList();
+                                          TimeEnd = getPaymentStatus(a.Id)
+                                      }).OrderBy(x => x.IsOnline ? false : true).ThenBy(x => x.TimeEnd).ToList();
                             model.Total = total;
                             model.pageIndex = pageIndex;
                             model.pageSize = pageSize;
