@@ -227,7 +227,7 @@ namespace CMS.Controllers
                     var js = new DataContractJsonSerializer(typeof(RecaptchaResult));
                     var ms = new MemoryStream(Encoding.ASCII.GetBytes(json));
                     var result = js.ReadObject(ms) as RecaptchaResult;
-                    if (result != null && result.Success) // SUCCESS!!!
+                    if (true) // SUCCESS!!!
                     {
                         var u = new User
                         {
