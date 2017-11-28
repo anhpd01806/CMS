@@ -1,0 +1,7 @@
+﻿@model List<CMS.Models.DistrictModel>
+
+<option value="0">Chọn quận huyện</option>
+@foreach (var item in Model)
+{
+    <option value="@item.Id">@item.Name</option>
+}

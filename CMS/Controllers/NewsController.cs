@@ -56,7 +56,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _cacheNewsBussiness.GetListDistric();
+                var listDistrict = _cacheNewsBussiness.GetListDistric(ConfigWeb.DefaultProvince);
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)
@@ -153,7 +153,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _cacheNewsBussiness.GetListDistric();
+                var listDistrict = _cacheNewsBussiness.GetListDistric(ConfigWeb.DefaultProvince);
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)
@@ -327,7 +327,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _cacheNewsBussiness.GetListDistric();
+                var listDistrict = _cacheNewsBussiness.GetListDistric(ConfigWeb.DefaultProvince);
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)
@@ -370,6 +370,15 @@ namespace CMS.Controllers
         {
             try
             {
+                if (!Request.Url.Host.Contains(ConfigWeb.Domain))
+                {
+                    return Json(new
+                    {
+                        TotalPage = 0,
+                        Content = string.Empty,
+                        TotalRecord = 0
+                    }, JsonRequestBehavior.AllowGet);
+                }
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
                 var listNews = _newsbussiness.GetListNewNotActiveByFilter(0, 0, 0, 0, -1, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, false, key, ref total);

@@ -53,7 +53,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _bussiness.GetListDistric();
+                var listDistrict = _bussiness.GetListDistric(ConfigWeb.DefaultProvince);
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)

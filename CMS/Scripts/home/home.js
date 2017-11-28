@@ -80,13 +80,14 @@ $(function () {
                     if (curentpage != page) {
                         $.LoadingOverlay("show");
                         var cateId = parseInt($(".cateId").val());
+                        var provinceId = parseInt($(".ddlprovince").val());
                         var districtId = parseInt($(".districtId").val());
-                        var newTypeId = parseInt($(".newTypeId").val());
+                        var newTypeId = 0;
                         var govermentId = parseInt($(".govermentId").val());
                         var siteId = parseInt($(".siteId").val());
                         var backdate = parseInt($(".ddlbackdate").val());
-                        var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-                        var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                        var minPrice = -1;
+                        var maxPrice = -1;
                         var from = $(".txtFrom").val();
                         var to = $(".txtTo").val();
                         var pageIndex = page;
@@ -110,7 +111,7 @@ $(function () {
                         });
 
                         var data = {
-                            cateId: cateId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
+                            cateId: cateId, provinceId: provinceId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
                             siteId: siteId, backdate: backdate,
                             minPrice: minPrice, maxPrice: maxPrice,
                             from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
@@ -153,13 +154,14 @@ $(function () {
         $(document).on("change", ".ddlpage", function () {
             $.LoadingOverlay("show");
             var cateId = parseInt($(".cateId").val());
+            var provinceId = parseInt($(".ddlprovince").val());
             var districtId = parseInt($(".districtId").val());
-            var newTypeId = parseInt($(".newTypeId").val());
+            var newTypeId = 0;
             var govermentId = parseInt($(".govermentId").val());
             var siteId = parseInt($(".siteId").val());
             var backdate = parseInt($(".ddlbackdate").val());
-            var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-            var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+            var minPrice = -1;
+            var maxPrice = -1;
             var from = $(".txtFrom").val();
             var to = $(".txtTo").val();
             var pageIndex = 1;
@@ -171,7 +173,7 @@ $(function () {
             var key = $.trim($(".txtsearchkey").val());
 
             var data = {
-                cateId: cateId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
+                cateId: cateId, provinceId: provinceId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
                 siteId: siteId, backdate: backdate,
                 minPrice: minPrice, maxPrice: maxPrice,
                 from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: "", descending: false
@@ -828,8 +830,25 @@ $(function () {
 
         //Change search filter
 
-        $(".cateId, .districtId, .siteId, .newTypeId, .govermentId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
+        $(".cateId, .districtId, .siteId, .govermentId, .ddlbackdate, .ddlprice, .txtFrom, .txtTo, #chkIsrepeatNews").change(function () {
             LoadData();
+        });
+
+        //change province
+        $(".ddlprovince").change(function () {
+            var _this = $(this);
+            if (_this.val() != "0") {
+                $.LoadingOverlay("show");
+                $.post("/home/getdistricbyprovinceid", { provinceId: _this.val() }, function (resp) {
+                    $.LoadingOverlay("hide");
+                    debugger;
+                    if (resp.Error == false) {
+                        $(".districtId").html(resp.Content);
+                    } else {
+                        location.reload();
+                    }
+                });
+            }
         });
 
         $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
@@ -928,13 +947,14 @@ $(function () {
 
     function LoadData() {
         var cateId = parseInt($(".cateId").val());
+        var provinceId = parseInt($(".ddlprovince").val());
         var districtId = parseInt($(".districtId").val());
-        var newTypeId = parseInt($(".newTypeId").val());
+        var newTypeId = 0;
         var govermentId = parseInt($(".govermentId").val());
         var siteId = parseInt($(".siteId").val());
         var backdate = parseInt($(".ddlbackdate").val());
-        var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-        var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+        var minPrice = -1;
+        var maxPrice = -1;
         var from = $(".txtFrom").val();
         var to = $(".txtTo").val();
         var pageIndex = parseInt($('#datatable').attr("data-page"));
@@ -964,7 +984,7 @@ $(function () {
         } else {
 
             var data = {
-                cateId: cateId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
+                cateId: cateId, provinceId: provinceId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
                 siteId: siteId, backdate: backdate,
                 minPrice: minPrice, maxPrice: maxPrice,
                 from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
@@ -1023,13 +1043,14 @@ $(function () {
                 if (curentpage != page) {
                     $.LoadingOverlay("show");
                     var cateId = parseInt($(".cateId").val());
+                    var provinceId = parseInt($(".ddlprovince").val());
                     var districtId = parseInt($(".districtId").val());
-                    var newTypeId = parseInt($(".newTypeId").val());
+                    var newTypeId = 0;
                     var govermentId = parseInt($(".govermentId").val());
                     var siteId = parseInt($(".siteId").val());
                     var backdate = parseInt($(".ddlbackdate").val());
-                    var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-                    var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                    var minPrice = -1;
+                    var maxPrice = -1;
                     var from = $(".txtFrom").val();
                     var to = $(".txtTo").val();
                     var pageIndex = page;
@@ -1053,7 +1074,7 @@ $(function () {
                     });
 
                     var data = {
-                        cateId: cateId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
+                        cateId: cateId, provinceId: provinceId, districtId: districtId, newTypeId: newTypeId, GovermentID: govermentId,
                         siteId: siteId, backdate: backdate,
                         minPrice: minPrice, maxPrice: maxPrice,
                         from: from, to: to, pageIndex: pageIndex, pageSize: pageSize, IsRepeat: isrepeat, key: key, NameOrder: NameOrder, descending: descending
@@ -1126,13 +1147,14 @@ $(function () {
             callback: function (result) {
                 if (result) {
                     var cateId = parseInt($(".cateId").val());
+                    var provinceId = parseInt($(".ddlprovince").val());
                     var districtId = parseInt($(".districtId").val());
-                    var newTypeId = parseInt($(".newTypeId").val());
+                    var newTypeId = 0;
                     var govermentId = parseInt($(".govermentId").val());
                     var siteId = parseInt($(".siteId").val());
                     var backdate = parseInt($(".ddlbackdate").val());
-                    var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-                    var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                    var minPrice = -1;
+                    var maxPrice = -1;
                     var from = $(".txtFrom").val();
                     var to = $(".txtTo").val();
                     var pageIndex = parseInt($('#datatable').attr("data-page"));
@@ -1153,7 +1175,7 @@ $(function () {
                     });
 
                     var url = "/home/exportexcel";
-                    location.href = decodeURIComponent(url + "?cateId=" + cateId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&GovermentID=" + govermentId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat + "&key=" + key + "&NameOrder=" + NameOrder + "&descending=" + descending);
+                    location.href = decodeURIComponent(url + "?cateId=" + cateId + "&provinceId=" + provinceId + "&districtId=" + districtId + "&newTypeId=" + newTypeId + "&GovermentID=" + govermentId + "&siteId=" + siteId + "&backdate=" + backdate + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&from=" + from + "&to=" + to + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&IsRepeat=" + isrepeat + "&key=" + key + "&NameOrder=" + NameOrder + "&descending=" + descending);
                     $('#check-all').prop('checked', false);
                     $(".checkboxItem").prop('checked', false);
                 }

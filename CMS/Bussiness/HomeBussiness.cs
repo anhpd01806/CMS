@@ -20,8 +20,6 @@ namespace CMS.Bussiness
         CmsDataDataContext Instance = new CmsDataDataContext();
         #endregion
 
-        
-
         #region Role
 
         public int GetRoleByUser(int userId)
@@ -46,18 +44,33 @@ namespace CMS.Bussiness
             }
         }
         #endregion
-#region News in home
 
-        public List<DistrictModel> GetListDistric()
+        #region News in home
+
+        public List<DistrictModel> GetListDistric(int provinId)
         {
             var listdistric = (from c in Instance.Districts
+                               join p in Instance.Provinces on c.ProvinceId equals p.Id
                                where !c.IsDeleted && c.Published
+                               && c.ProvinceId == provinId
                                select new DistrictModel
                                {
                                    Id = c.Id,
                                    Name = c.Name
                                }).ToList();
             return listdistric;
+        }
+
+        public List<ProvinceModel> GetListProvince()
+        {
+            var lstprovince = (from c in Instance.Provinces
+                               where c.Published
+                               select new ProvinceModel
+                               {
+                                   Id = c.Id,
+                                   Name = c.Name
+                               }).ToList();
+            return lstprovince;
         }
 
         public List<CategoryModel> GetListCategory()
@@ -111,7 +124,7 @@ namespace CMS.Bussiness
             return liststatus;
         }
 
-        public List<NewsModel> GetListNewByFilter(int UserId, int CateId, int DistricId, int StatusId,int GovermentID, int SiteId,
+        public List<NewsModel> GetListNewByFilter(int UserId, int CateId, int provinceId, int DistricId, int StatusId,int GovermentID, int SiteId,
             int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
         {
             #region Orther
@@ -168,7 +181,7 @@ namespace CMS.Bussiness
             #endregion
             Instance.CommandTimeout = 600;
             var listItem =
-                (Instance.PROC_GetListNewsInHome(UserId, CateId, DistricId, StatusId, GovermentID, SiteId, backdate, from, to,
+                (Instance.PROC_GetListNewsInHomeV2(UserId, CateId, provinceId, DistricId, StatusId, GovermentID, SiteId, backdate, from, to,
                     minPrice, maxPrice, pageIndex, pageSize, IsRepeat, key, NameOrder, descending, ref totalout)
                     .Select(c => new NewsModel
                     {
@@ -762,6 +775,7 @@ namespace CMS.Bussiness
             return false;
         }
         #endregion
+
         #region ReasonReportNews
         public void InsertReasonReportNews(ReasonReportNew model)
         {

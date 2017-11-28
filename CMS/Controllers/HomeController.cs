@@ -55,7 +55,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _cacheNewsBussiness.GetListDistric();
+                var listDistrict = _cacheNewsBussiness.GetListDistric(ConfigWeb.DefaultProvince);
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)
@@ -63,6 +63,16 @@ namespace CMS.Controllers
                     listdictrictItem.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
                 }
                 model.ListDistric = new SelectList(listdictrictItem, "Value", "Text");
+                #endregion
+                #region Get select list province
+                var lstprovince = _cacheNewsBussiness.GetListProvince();
+                var listProvinceItem = new List<SelectListItem>();
+                listProvinceItem.Add(new SelectListItem { Text = "Chọn tỉnh thành", Value = "0" });
+                foreach (var item in lstprovince)
+                {
+                    listProvinceItem.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                }
+                model.LstProvince = new SelectList(listProvinceItem, "Value", "Text");
                 #endregion
                 #region Get select list site
                 var listSite = _cacheNewsBussiness.GetListSite();
@@ -95,7 +105,7 @@ namespace CMS.Controllers
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 var checkuser = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 ViewBag.User = checkuser;
-                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, 0, 0, model.GovermentID, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, string.Empty, false, ref total);
+                model.ListNew = _bussiness.GetListNewByFilter(userId, 0, ConfigWeb.DefaultProvince, 0, 0, model.GovermentID, 0, -1, string.Empty, string.Empty, 0, -1, model.pageIndex, model.pageSize, false, string.Empty, string.Empty, false, ref total);
                 model.Total = total;
                 model.Totalpage = (int)Math.Ceiling((double)model.Total / (double)model.pageSize);
                 return View(model);
@@ -108,14 +118,23 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult LoadData(int cateId, int districtId, int newTypeId, int GovermentID, int siteId, int backdate, double
+        public JsonResult LoadData(int cateId, int provinceId, int districtId, int newTypeId, int GovermentID, int siteId, int backdate, double
                 minPrice, double maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string NameOrder, bool descending, string key)
         {
             try
             {
+                if (!Request.Url.Host.Contains(ConfigWeb.Domain))
+                {
+                    return Json(new
+                    {
+                        TotalPage = 0,
+                        Content = string.Empty,
+                        TotalRecord = 0
+                    }, JsonRequestBehavior.AllowGet);
+                }
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
-                var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, 0, GovermentID, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
+                var listNews = _bussiness.GetListNewByFilter(userId, cateId,provinceId, districtId, 0, GovermentID, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
                 ViewBag.Accept = Convert.ToBoolean(Session["USER-ACCEPTED"]);
                 ViewBag.User = Convert.ToBoolean(string.IsNullOrEmpty(Session["IS-USERS"].ToString()) ? "false" : Session["IS-USERS"]);
                 var content = RenderPartialViewToString("~/Views/Home/Paging.cshtml", listNews);
@@ -297,7 +316,7 @@ namespace CMS.Controllers
             }
         }
 
-        public ActionResult ExportExcel(int cateId, int districtId, int newTypeId, int GovermentID, int siteId, int backdate, decimal
+        public ActionResult ExportExcel(int cateId, int provinceId, int districtId, int newTypeId, int GovermentID, int siteId, int backdate, decimal
                 minPrice, decimal maxPrice, string from, string to, int pageIndex, int pageSize, int IsRepeat, string NameOrder, bool descending, string key)
         {
 
@@ -310,7 +329,7 @@ namespace CMS.Controllers
             }
             int total = 0;
             int userId = Convert.ToInt32(Session["SS-USERID"]);
-            var listNews = _bussiness.GetListNewByFilter(userId, cateId, districtId, newTypeId, GovermentID, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
+            var listNews = _bussiness.GetListNewByFilter(userId, cateId,provinceId, districtId, newTypeId, GovermentID, siteId, backdate, string.Empty, string.Empty, 0, -1, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
             ExportToExcel(filePath, listNews);
 
             var bytes = System.IO.File.ReadAllBytes(filePath);
@@ -536,6 +555,30 @@ namespace CMS.Controllers
             {
                 ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
                 return Json(new { Status = 0 });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetDistricByProvinceId(int provinceId)
+        {
+            try
+            {
+                var data = _cacheNewsBussiness.GetListDistric(provinceId);
+                var content = RenderPartialViewToString("~/Views/Home/ProvincePartial.cshtml", data);
+                return Json(new
+                {
+                    Content = content,
+                    Error = false
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    Content = string.Empty,
+                    Error = true
+                }, JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -31,6 +31,10 @@ namespace CMS.Helper
         public static string Api_Charging = ConfigurationManager.AppSettings["Api_Charging"];
 
         public static string Access_Key = ConfigurationManager.AppSettings["Access_Key"];
+
+        public static string Domain = ConfigurationManager.AppSettings["Domain"];
+
+        public static int DefaultProvince = Convert.ToInt32(ConfigurationManager.AppSettings["DefaultProvince"]);
     }
 
     public enum NewsStatus

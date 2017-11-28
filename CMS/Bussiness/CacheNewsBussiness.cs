@@ -21,18 +21,18 @@ namespace CMS.Bussiness
         {
             this.cache = ConfigWeb.EnableCache == 1 ? CacheController.GetInstance() : null;
         }
-        public List<DistrictModel> GetListDistric()
+        public List<DistrictModel> GetListDistric(int provinId)
         {
             if (ConfigWeb.EnableCache == 1)
             {
-                var param = String.Format("GetListDistric");
+                var param = String.Format("GetListDistric-" + provinId);
                 if (cache.KeyExistsCache(param))
                 {
                     var lst = (List<DistrictModel>)cache.GetCache(param);
                     if (lst == null)
                     {
                         cache.DeleteCache(param);
-                        var retval = _homeBussiness.GetListDistric();
+                        var retval = _homeBussiness.GetListDistric(provinId);
                         cache.Set(param, retval, ConfigWeb.TimeExpire);
                         return retval;
                     }
@@ -40,12 +40,39 @@ namespace CMS.Bussiness
                 }
                 else
                 {
-                    var lst = _homeBussiness.GetListDistric();
+                    var lst = _homeBussiness.GetListDistric(provinId);
                     cache.Set(param, lst, ConfigWeb.TimeExpire);
                     return lst;
                 }
             }
-            return _homeBussiness.GetListDistric();
+            return _homeBussiness.GetListDistric(provinId);
+        }
+
+        public List<ProvinceModel> GetListProvince()
+        {
+            if (ConfigWeb.EnableCache == 1)
+            {
+                var param = String.Format("GetListProvince");
+                if (cache.KeyExistsCache(param))
+                {
+                    var lst = (List<ProvinceModel>)cache.GetCache(param);
+                    if (lst == null)
+                    {
+                        cache.DeleteCache(param);
+                        var retval = _homeBussiness.GetListProvince();
+                        cache.Set(param, retval, ConfigWeb.TimeExpire);
+                        return retval;
+                    }
+                    return lst;
+                }
+                else
+                {
+                    var lst = _homeBussiness.GetListProvince();
+                    cache.Set(param, lst, ConfigWeb.TimeExpire);
+                    return lst;
+                }
+            }
+            return _homeBussiness.GetListProvince();
         }
 
         public List<CategoryModel> GetListCategory()

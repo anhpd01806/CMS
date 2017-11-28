@@ -17,6 +17,8 @@ namespace CMS.ViewModel
         }
         public int CategoryId { get; set; }
         public SelectList ListCategory { get; set; }
+        public int ProvinId { get; set; }
+        public SelectList LstProvince { get; set; }
         public int DistricId { get; set; }
         public SelectList ListDistric { get; set; }
         public int NewsType { get; set; }

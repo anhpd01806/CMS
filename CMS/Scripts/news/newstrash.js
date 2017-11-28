@@ -32,11 +32,11 @@ $(function () {
                         $.LoadingOverlay("show");
                         var cateId = parseInt($(".cateId").val());
                         var districtId = parseInt($(".districtId").val());
-                        var newTypeId = parseInt($(".newTypeId").val());
+                        var newTypeId = 0;
                         var siteId = parseInt($(".siteId").val());
                         var backdate = parseInt($(".ddlbackdate").val());
-                        var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-                        var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                        var minPrice = -1;
+                        var maxPrice = -1;
                         var from = $(".txtFrom").val();
                         var to = $(".txtTo").val();
                         var pageIndex = page;
@@ -144,11 +144,11 @@ $(function () {
             $.LoadingOverlay("show");
             var cateId = parseInt($(".cateId").val());
             var districtId = parseInt($(".districtId").val());
-            var newTypeId = parseInt($(".newTypeId").val());
+            var newTypeId = 0;
             var siteId = parseInt($(".siteId").val());
             var backdate = parseInt($(".ddlbackdate").val());
-            var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-            var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+            var minPrice = -1;
+            var maxPrice = -1;
             var from = $(".txtFrom").val();
             var to = $(".txtTo").val();
             var pageIndex = 1;
@@ -458,11 +458,11 @@ $(function () {
     function LoadData() {
         var cateId = parseInt($(".cateId").val());
         var districtId = parseInt($(".districtId").val());
-        var newTypeId = parseInt($(".newTypeId").val());
+        var newTypeId = 0;
         var siteId = parseInt($(".siteId").val());
         var backdate = parseInt($(".ddlbackdate").val());
-        var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-        var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+        var minPrice = -1;
+        var maxPrice = -1;
         var from = $(".txtFrom").val();
         var to = $(".txtTo").val();
         var pageIndex = 1;
@@ -553,11 +553,11 @@ $(function () {
                     $.LoadingOverlay("show");
                     var cateId = parseInt($(".cateId").val());
                     var districtId = parseInt($(".districtId").val());
-                    var newTypeId = parseInt($(".newTypeId").val());
+                    var newTypeId = 0;
                     var siteId = parseInt($(".siteId").val());
                     var backdate = parseInt($(".ddlbackdate").val());
-                    var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-                    var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                    var minPrice = -1;
+                    var maxPrice = -1;
                     var from = $(".txtFrom").val();
                     var to = $(".txtTo").val();
                     var pageIndex = page;
@@ -653,11 +653,11 @@ $(function () {
                 if (result) {
                     var cateId = parseInt($(".cateId").val());
                     var districtId = parseInt($(".districtId").val());
-                    var newTypeId = parseInt($(".newTypeId").val());
+                    var newTypeId = 0;
                     var siteId = parseInt($(".siteId").val());
                     var backdate = parseInt($(".ddlbackdate").val());
-                    var minPrice = parseFloat(checkminprice($(".ddlprice").val()));
-                    var maxPrice = parseFloat(checkmaxprice($(".ddlprice").val()));
+                    var minPrice = -1;
+                    var maxPrice = -1;
                     var from = $(".txtFrom").val();
                     var to = $(".txtTo").val();
                     var pageIndex = parseInt($('#datatable').attr("data-page"));

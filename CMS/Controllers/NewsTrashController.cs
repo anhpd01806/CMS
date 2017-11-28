@@ -57,7 +57,7 @@ namespace CMS.Controllers
                 #endregion
                 #region Get select list district
 
-                var listDistrict = _cacheNewsBussiness.GetListDistric();
+                var listDistrict = _cacheNewsBussiness.GetListDistric(ConfigWeb.DefaultProvince);
                 var listdictrictItem = new List<SelectListItem>();
                 listdictrictItem.Add(new SelectListItem { Text = "Chọn quận huyện", Value = "0" });
                 foreach (var item in listDistrict)
@@ -107,6 +107,15 @@ namespace CMS.Controllers
         {
             try
             {
+                if (!Request.Url.Host.Contains(ConfigWeb.Domain))
+                {
+                    return Json(new
+                    {
+                        TotalPage = 0,
+                        Content = string.Empty,
+                        TotalRecord = 0
+                    }, JsonRequestBehavior.AllowGet);
+                }
                 int userId = Convert.ToInt32(Session["SS-USERID"]);
                 int total = 0;
                 var listNews = _newsbussiness.GetListNewDeleteByFilter(userId, cateId, districtId, newTypeId, siteId, backdate, from, to, minPrice, maxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
