@@ -99,7 +99,6 @@ namespace CMS.Controllers
                     PaymentViewModel payment = new PaymentViewModel();
                     payment.Amount = amount.ToString();
                     new PaymentBussiness().PaymentAcceptedUpdate(payment, Convert.ToInt32(Session["SS-USERID"]));
-
                     resultObj.message = "Bạn đã nạp thành công " + string.Format("{0:n0}", amount) + "vnđ !Cảm ơn bạn đã sử dụng phần mềm.";
                 }
 

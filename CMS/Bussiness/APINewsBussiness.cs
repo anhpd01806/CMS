@@ -26,6 +26,19 @@ namespace CMS.Bussiness
             return listdistric;
         }
 
+        public List<DistrictModel> GetListDistrictByProId(int proId)
+        {
+            var listdistric = (from c in Instance.Districts
+                               where !c.IsDeleted && c.Published
+                               && c.ProvinceId == proId
+                               select new DistrictModel
+                               {
+                                   Id = c.Id,
+                                   Name = c.Name
+                               }).ToList();
+            return listdistric;
+        }
+
         public List<ProvinceModel> GetListProvince()
         {
             var ListProvince = (from c in Instance.Provinces
@@ -88,7 +101,7 @@ namespace CMS.Bussiness
             return liststatus;
         }
 
-        public List<NewsModel> GetListNewByFilter(int UserId, int CateId, int DistricId, int StatusId, int GovermentId, int SiteId,
+        public List<NewsModel> GetListNewByFilter(int UserId, int CateId, int? provinceId, int DistricId, int StatusId, int GovermentId, int SiteId,
             int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, ref int total)
         {
             #region Orther
@@ -143,9 +156,9 @@ namespace CMS.Bussiness
 
             int? totalout = 0;
             #endregion
-
+            Instance.CommandTimeout = 600;
             var listItem =
-                (Instance.PROC_GetListNewsInHome(UserId, CateId, DistricId, StatusId, GovermentId, SiteId, backdate, from, to,
+                (Instance.PROC_GetListNewsInHomeV2(UserId, CateId, provinceId, DistricId, StatusId, GovermentId, SiteId, backdate, from, to,
                     minPrice, maxPrice, pageIndex, pageSize, IsRepeat, key, NameOrder, descending, ref totalout)
                     .Select(c => new NewsModel
                     {

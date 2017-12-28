@@ -22,7 +22,7 @@ namespace CMS.Data
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="CMS.API")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="OZO")]
 	public partial class CmsDataDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -150,6 +150,9 @@ namespace CMS.Data
     partial void InsertReasonReportNew(ReasonReportNew instance);
     partial void UpdateReasonReportNew(ReasonReportNew instance);
     partial void DeleteReasonReportNew(ReasonReportNew instance);
+    partial void InsertReportTotal(ReportTotal instance);
+    partial void UpdateReportTotal(ReportTotal instance);
+    partial void DeleteReportTotal(ReportTotal instance);
     partial void InsertRole(Role instance);
     partial void UpdateRole(Role instance);
     partial void DeleteRole(Role instance);
@@ -207,7 +210,7 @@ namespace CMS.Data
     #endregion
 		
 		public CmsDataDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["CMSConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["OZOConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -556,6 +559,14 @@ namespace CMS.Data
 			}
 		}
 		
+		public System.Data.Linq.Table<ReportTotal> ReportTotals
+		{
+			get
+			{
+				return this.GetTable<ReportTotal>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Role_Access> Role_Accesses
 		{
 			get
@@ -716,6 +727,68 @@ namespace CMS.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteGuests")]
+		public void DeleteGuests([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CreatedFrom", DbType="DateTime")] System.Nullable<System.DateTime> createdFrom, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CreatedTo", DbType="DateTime")] System.Nullable<System.DateTime> createdTo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TotalRecordsDeleted", DbType="Int")] ref System.Nullable<int> totalRecordsDeleted)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), createdFrom, createdTo, totalRecordsDeleted);
+			totalRecordsDeleted = ((System.Nullable<int>)(result.GetParameterValue(2)));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_SearchRepeatNewsByCategoryAndPhone")]
+		public ISingleResult<sp_SearchRepeatNewsByCategoryAndPhoneResult> sp_SearchRepeatNewsByCategoryAndPhone([global::System.Data.Linq.Mapping.ParameterAttribute(Name="NewsId", DbType="Int")] System.Nullable<int> newsId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoryId", DbType="Int")] System.Nullable<int> categoryId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Phone", DbType="NVarChar(200)")] string phone)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), newsId, categoryId, phone);
+			return ((ISingleResult<sp_SearchRepeatNewsByCategoryAndPhoneResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.FullText_Disable")]
+		public int FullText_Disable()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.FullText_Enable")]
+		public void FullText_Enable()
+		{
+			this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.FullText_IsSupported")]
+		public ISingleResult<FullText_IsSupportedResult> FullText_IsSupported()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<FullText_IsSupportedResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetAllLinkSiteBySite")]
+		public ISingleResult<GetAllLinkSiteBySiteResult> GetAllLinkSiteBySite([global::System.Data.Linq.Mapping.ParameterAttribute(Name="InSiteId", DbType="Int")] System.Nullable<int> inSiteId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), inSiteId);
+			return ((ISingleResult<GetAllLinkSiteBySiteResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetReportTotal")]
+		public ISingleResult<GetReportTotalResult> GetReportTotal([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CreatedDate", DbType="DateTime")] System.Nullable<System.DateTime> createdDate)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), createdDate);
+			return ((ISingleResult<GetReportTotalResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.NewsLoadAllPaged")]
+		public void NewsLoadAllPaged([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Keywords", DbType="NVarChar(4000)")] string keywords, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchDescriptions", DbType="Bit")] System.Nullable<bool> searchDescriptions, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchContent", DbType="Bit")] System.Nullable<bool> searchContent, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchPriceText", DbType="Bit")] System.Nullable<bool> searchPriceText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchPhone", DbType="Bit")] System.Nullable<bool> searchPhone, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UseFullTextSearch", DbType="Bit")] System.Nullable<bool> useFullTextSearch, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FullTextMode", DbType="Int")] System.Nullable<int> fullTextMode, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PageIndex", DbType="Int")] System.Nullable<int> pageIndex, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PageSize", DbType="Int")] System.Nullable<int> pageSize, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TotalRecords", DbType="Int")] ref System.Nullable<int> totalRecords)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), keywords, searchDescriptions, searchContent, searchPriceText, searchPhone, useFullTextSearch, fullTextMode, pageIndex, pageSize, totalRecords);
+			totalRecords = ((System.Nullable<int>)(result.GetParameterValue(9)));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.PROC_DELETENEWS")]
+		public int PROC_DELETENEWS()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.PROC_GetListNewsByStatus")]
 		public ISingleResult<PROC_GetListNewsByStatusResult> PROC_GetListNewsByStatus(
 					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="UserId", DbType="Int")] System.Nullable<int> userId, 
@@ -767,13 +840,6 @@ namespace CMS.Data
 			return ((ISingleResult<PROC_GetListNewsDeleteResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetReportTotal")]
-		public ISingleResult<GetReportTotalResult> GetReportTotal([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CreatedDate", DbType="DateTime")] System.Nullable<System.DateTime> createdDate)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), createdDate);
-			return ((ISingleResult<GetReportTotalResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.PROC_GetListNewsInHome")]
 		public ISingleResult<PROC_GetListNewsInHomeResult> PROC_GetListNewsInHome(
 					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="UserId", DbType="Int")] System.Nullable<int> userId, 
@@ -798,6 +864,67 @@ namespace CMS.Data
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, cateId, districId, statusId, govermentID, siteId, backDate, from, to, minPrice, maxPrice, pageIndex, pageSize, isRepeat, key, nameOrder, descending, total);
 			total = ((System.Nullable<int>)(result.GetParameterValue(17)));
 			return ((ISingleResult<PROC_GetListNewsInHomeResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.PROC_GetListNewsInHomeV2")]
+		public ISingleResult<PROC_GetListNewsInHomeV2Result> PROC_GetListNewsInHomeV2(
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="UserId", DbType="Int")] System.Nullable<int> userId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CateId", DbType="Int")] System.Nullable<int> cateId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProvinceId", DbType="Int")] System.Nullable<int> provinceId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="DistricId", DbType="Int")] System.Nullable<int> districId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="StatusId", DbType="Int")] System.Nullable<int> statusId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="GovermentID", DbType="Int")] System.Nullable<int> govermentID, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="SiteId", DbType="Int")] System.Nullable<int> siteId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="BackDate", DbType="Int")] System.Nullable<int> backDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="DateTime")] System.Nullable<System.DateTime> from, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="DateTime")] System.Nullable<System.DateTime> to, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="MinPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> minPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="MaxPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> maxPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pageIndex, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pageSize, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsRepeat", DbType="Bit")] System.Nullable<bool> isRepeat, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(255)")] string key, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="NameOrder", DbType="NVarChar(200)")] string nameOrder, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> descending, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> total)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, cateId, provinceId, districId, statusId, govermentID, siteId, backDate, from, to, minPrice, maxPrice, pageIndex, pageSize, isRepeat, key, nameOrder, descending, total);
+			total = ((System.Nullable<int>)(result.GetParameterValue(18)));
+			return ((ISingleResult<PROC_GetListNewsInHomeV2Result>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_SearchNewsItem")]
+		public void sp_SearchNewsItem(
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TotalRecordCount", DbType="Int")] ref System.Nullable<int> totalRecordCount, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchRecordCount", DbType="Int")] ref System.Nullable<int> searchRecordCount, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(300)")] string categoryIds, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> siteId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> provinceId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> districtId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> isUpdate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(20)")] string startDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(20)")] string endDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> hasPhoneNumber, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,0)")] System.Nullable<decimal> minPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,0)")] System.Nullable<decimal> maxPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> isChecked, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> checkerId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> authorId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> isSaved, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> isRecycle, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> isReaded, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> isRepeat, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> statusId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> currentCustomerId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> orderBy, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> excludedIsSave, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> excludedIsRecycle, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pageIndex, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pageSize)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), totalRecordCount, searchRecordCount, categoryIds, siteId, provinceId, districtId, isUpdate, startDate, endDate, hasPhoneNumber, minPrice, maxPrice, isChecked, checkerId, authorId, isSaved, isRecycle, isReaded, isRepeat, statusId, currentCustomerId, orderBy, excludedIsSave, excludedIsRecycle, pageIndex, pageSize);
+			totalRecordCount = ((System.Nullable<int>)(result.GetParameterValue(0)));
+			searchRecordCount = ((System.Nullable<int>)(result.GetParameterValue(1)));
 		}
 	}
 	
@@ -4909,6 +5036,8 @@ namespace CMS.Data
 		
 		private int _DisplayOrder;
 		
+		private string _Cookie;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -4933,6 +5062,8 @@ namespace CMS.Data
     partial void OnDeletedChanged();
     partial void OnDisplayOrderChanging(int value);
     partial void OnDisplayOrderChanged();
+    partial void OnCookieChanging(string value);
+    partial void OnCookieChanged();
     #endregion
 		
 		public LinkSite()
@@ -5136,6 +5267,26 @@ namespace CMS.Data
 					this._DisplayOrder = value;
 					this.SendPropertyChanged("DisplayOrder");
 					this.OnDisplayOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cookie", DbType="NVarChar(500)")]
+		public string Cookie
+		{
+			get
+			{
+				return this._Cookie;
+			}
+			set
+			{
+				if ((this._Cookie != value))
+				{
+					this.OnCookieChanging(value);
+					this.SendPropertyChanging();
+					this._Cookie = value;
+					this.SendPropertyChanged("Cookie");
+					this.OnCookieChanged();
 				}
 			}
 		}
@@ -10876,6 +11027,164 @@ namespace CMS.Data
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ReportTotal")]
+	public partial class ReportTotal : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _TotalAmount;
+		
+		private System.DateTime _DateCreate;
+		
+		private int _PaymentMethodId;
+		
+		private string _PaymentMethodName;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnTotalAmountChanging(int value);
+    partial void OnTotalAmountChanged();
+    partial void OnDateCreateChanging(System.DateTime value);
+    partial void OnDateCreateChanged();
+    partial void OnPaymentMethodIdChanging(int value);
+    partial void OnPaymentMethodIdChanged();
+    partial void OnPaymentMethodNameChanging(string value);
+    partial void OnPaymentMethodNameChanged();
+    #endregion
+		
+		public ReportTotal()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalAmount", DbType="Int NOT NULL")]
+		public int TotalAmount
+		{
+			get
+			{
+				return this._TotalAmount;
+			}
+			set
+			{
+				if ((this._TotalAmount != value))
+				{
+					this.OnTotalAmountChanging(value);
+					this.SendPropertyChanging();
+					this._TotalAmount = value;
+					this.SendPropertyChanged("TotalAmount");
+					this.OnTotalAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreate", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreate
+		{
+			get
+			{
+				return this._DateCreate;
+			}
+			set
+			{
+				if ((this._DateCreate != value))
+				{
+					this.OnDateCreateChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreate = value;
+					this.SendPropertyChanged("DateCreate");
+					this.OnDateCreateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMethodId", DbType="Int NOT NULL")]
+		public int PaymentMethodId
+		{
+			get
+			{
+				return this._PaymentMethodId;
+			}
+			set
+			{
+				if ((this._PaymentMethodId != value))
+				{
+					this.OnPaymentMethodIdChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentMethodId = value;
+					this.SendPropertyChanged("PaymentMethodId");
+					this.OnPaymentMethodIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMethodName", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
+		public string PaymentMethodName
+		{
+			get
+			{
+				return this._PaymentMethodName;
+			}
+			set
+			{
+				if ((this._PaymentMethodName != value))
+				{
+					this.OnPaymentMethodNameChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentMethodName = value;
+					this.SendPropertyChanged("PaymentMethodName");
+					this.OnPaymentMethodNameChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Role_Access")]
 	public partial class Role_Access
 	{
@@ -14432,6 +14741,938 @@ namespace CMS.Data
 		}
 	}
 	
+	public partial class sp_SearchRepeatNewsByCategoryAndPhoneResult
+	{
+		
+		private int _Id;
+		
+		private System.Nullable<int> _CategoryId;
+		
+		private string _Title;
+		
+		private string _Contents;
+		
+		private string _Summary;
+		
+		private string _Link;
+		
+		private int _SiteId;
+		
+		private System.Nullable<int> _DistrictId;
+		
+		private System.Nullable<int> _ProvinceId;
+		
+		private string _Phone;
+		
+		private string _PriceText;
+		
+		private System.Nullable<bool> _IsUpdated;
+		
+		private System.Nullable<System.DateTime> _DateOld;
+		
+		private bool _IsSpam;
+		
+		private bool _IsDeleted;
+		
+		private System.Nullable<int> _CreatedBy;
+		
+		private System.Nullable<System.DateTime> _CreatedOn;
+		
+		private System.Nullable<int> _ModifiedBy;
+		
+		private System.Nullable<System.DateTime> _ModifiedOn;
+		
+		private bool _IsPhone;
+		
+		private bool _IsRepeat;
+		
+		private System.Nullable<decimal> _Price;
+		
+		private System.Nullable<decimal> _Area;
+		
+		private System.Nullable<bool> _Published;
+		
+		private System.Nullable<System.DateTime> _PublishedOn;
+		
+		private System.Nullable<int> _StatusId;
+		
+		private bool _IsOwner;
+		
+		private string _AdminComment;
+		
+		private int _PageView;
+		
+		private System.Nullable<int> _TotalRepeat;
+		
+		public sp_SearchRepeatNewsByCategoryAndPhoneResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL")]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this._Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryId", DbType="Int")]
+		public System.Nullable<int> CategoryId
+		{
+			get
+			{
+				return this._CategoryId;
+			}
+			set
+			{
+				if ((this._CategoryId != value))
+				{
+					this._CategoryId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this._Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contents", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Contents
+		{
+			get
+			{
+				return this._Contents;
+			}
+			set
+			{
+				if ((this._Contents != value))
+				{
+					this._Contents = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Summary", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Summary
+		{
+			get
+			{
+				return this._Summary;
+			}
+			set
+			{
+				if ((this._Summary != value))
+				{
+					this._Summary = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Link
+		{
+			get
+			{
+				return this._Link;
+			}
+			set
+			{
+				if ((this._Link != value))
+				{
+					this._Link = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteId", DbType="Int NOT NULL")]
+		public int SiteId
+		{
+			get
+			{
+				return this._SiteId;
+			}
+			set
+			{
+				if ((this._SiteId != value))
+				{
+					this._SiteId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistrictId", DbType="Int")]
+		public System.Nullable<int> DistrictId
+		{
+			get
+			{
+				return this._DistrictId;
+			}
+			set
+			{
+				if ((this._DistrictId != value))
+				{
+					this._DistrictId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProvinceId", DbType="Int")]
+		public System.Nullable<int> ProvinceId
+		{
+			get
+			{
+				return this._ProvinceId;
+			}
+			set
+			{
+				if ((this._ProvinceId != value))
+				{
+					this._ProvinceId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(250)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this._Phone = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceText", DbType="NVarChar(150)")]
+		public string PriceText
+		{
+			get
+			{
+				return this._PriceText;
+			}
+			set
+			{
+				if ((this._PriceText != value))
+				{
+					this._PriceText = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsUpdated", DbType="Bit")]
+		public System.Nullable<bool> IsUpdated
+		{
+			get
+			{
+				return this._IsUpdated;
+			}
+			set
+			{
+				if ((this._IsUpdated != value))
+				{
+					this._IsUpdated = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateOld", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DateOld
+		{
+			get
+			{
+				return this._DateOld;
+			}
+			set
+			{
+				if ((this._DateOld != value))
+				{
+					this._DateOld = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSpam", DbType="Bit NOT NULL")]
+		public bool IsSpam
+		{
+			get
+			{
+				return this._IsSpam;
+			}
+			set
+			{
+				if ((this._IsSpam != value))
+				{
+					this._IsSpam = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Bit NOT NULL")]
+		public bool IsDeleted
+		{
+			get
+			{
+				return this._IsDeleted;
+			}
+			set
+			{
+				if ((this._IsDeleted != value))
+				{
+					this._IsDeleted = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int")]
+		public System.Nullable<int> CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this._CreatedBy = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this._CreatedOn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedBy", DbType="Int")]
+		public System.Nullable<int> ModifiedBy
+		{
+			get
+			{
+				return this._ModifiedBy;
+			}
+			set
+			{
+				if ((this._ModifiedBy != value))
+				{
+					this._ModifiedBy = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			get
+			{
+				return this._ModifiedOn;
+			}
+			set
+			{
+				if ((this._ModifiedOn != value))
+				{
+					this._ModifiedOn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPhone", DbType="Bit NOT NULL")]
+		public bool IsPhone
+		{
+			get
+			{
+				return this._IsPhone;
+			}
+			set
+			{
+				if ((this._IsPhone != value))
+				{
+					this._IsPhone = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRepeat", DbType="Bit NOT NULL")]
+		public bool IsRepeat
+		{
+			get
+			{
+				return this._IsRepeat;
+			}
+			set
+			{
+				if ((this._IsRepeat != value))
+				{
+					this._IsRepeat = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this._Price = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Area", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> Area
+		{
+			get
+			{
+				return this._Area;
+			}
+			set
+			{
+				if ((this._Area != value))
+				{
+					this._Area = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Published", DbType="Bit")]
+		public System.Nullable<bool> Published
+		{
+			get
+			{
+				return this._Published;
+			}
+			set
+			{
+				if ((this._Published != value))
+				{
+					this._Published = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublishedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> PublishedOn
+		{
+			get
+			{
+				return this._PublishedOn;
+			}
+			set
+			{
+				if ((this._PublishedOn != value))
+				{
+					this._PublishedOn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusId", DbType="Int")]
+		public System.Nullable<int> StatusId
+		{
+			get
+			{
+				return this._StatusId;
+			}
+			set
+			{
+				if ((this._StatusId != value))
+				{
+					this._StatusId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOwner", DbType="Bit NOT NULL")]
+		public bool IsOwner
+		{
+			get
+			{
+				return this._IsOwner;
+			}
+			set
+			{
+				if ((this._IsOwner != value))
+				{
+					this._IsOwner = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdminComment", DbType="NVarChar(250)")]
+		public string AdminComment
+		{
+			get
+			{
+				return this._AdminComment;
+			}
+			set
+			{
+				if ((this._AdminComment != value))
+				{
+					this._AdminComment = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PageView", DbType="Int NOT NULL")]
+		public int PageView
+		{
+			get
+			{
+				return this._PageView;
+			}
+			set
+			{
+				if ((this._PageView != value))
+				{
+					this._PageView = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalRepeat", DbType="Int")]
+		public System.Nullable<int> TotalRepeat
+		{
+			get
+			{
+				return this._TotalRepeat;
+			}
+			set
+			{
+				if ((this._TotalRepeat != value))
+				{
+					this._TotalRepeat = value;
+				}
+			}
+		}
+	}
+	
+	public partial class FullText_IsSupportedResult
+	{
+		
+		private int _Column1;
+		
+		public FullText_IsSupportedResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="", Storage="_Column1", DbType="Int NOT NULL")]
+		public int Column1
+		{
+			get
+			{
+				return this._Column1;
+			}
+			set
+			{
+				if ((this._Column1 != value))
+				{
+					this._Column1 = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetAllLinkSiteBySiteResult
+	{
+		
+		private int _ID;
+		
+		private string _Url;
+		
+		private int _SiteID;
+		
+		private int _CateSiteID;
+		
+		private int _DistrictID;
+		
+		private int _ProvinceID;
+		
+		private string _Description;
+		
+		private System.Nullable<int> _CateID;
+		
+		private string _XpathList;
+		
+		private string _XpathDetails;
+		
+		private string _SiteUrl;
+		
+		public GetAllLinkSiteBySiteResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL")]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this._ID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Url", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
+		public string Url
+		{
+			get
+			{
+				return this._Url;
+			}
+			set
+			{
+				if ((this._Url != value))
+				{
+					this._Url = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteID", DbType="Int NOT NULL")]
+		public int SiteID
+		{
+			get
+			{
+				return this._SiteID;
+			}
+			set
+			{
+				if ((this._SiteID != value))
+				{
+					this._SiteID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CateSiteID", DbType="Int NOT NULL")]
+		public int CateSiteID
+		{
+			get
+			{
+				return this._CateSiteID;
+			}
+			set
+			{
+				if ((this._CateSiteID != value))
+				{
+					this._CateSiteID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistrictID", DbType="Int NOT NULL")]
+		public int DistrictID
+		{
+			get
+			{
+				return this._DistrictID;
+			}
+			set
+			{
+				if ((this._DistrictID != value))
+				{
+					this._DistrictID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProvinceID", DbType="Int NOT NULL")]
+		public int ProvinceID
+		{
+			get
+			{
+				return this._ProvinceID;
+			}
+			set
+			{
+				if ((this._ProvinceID != value))
+				{
+					this._ProvinceID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(250)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this._Description = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CateID", DbType="Int")]
+		public System.Nullable<int> CateID
+		{
+			get
+			{
+				return this._CateID;
+			}
+			set
+			{
+				if ((this._CateID != value))
+				{
+					this._CateID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_XpathList", DbType="NVarChar(150)")]
+		public string XpathList
+		{
+			get
+			{
+				return this._XpathList;
+			}
+			set
+			{
+				if ((this._XpathList != value))
+				{
+					this._XpathList = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_XpathDetails", DbType="NVarChar(150)")]
+		public string XpathDetails
+		{
+			get
+			{
+				return this._XpathDetails;
+			}
+			set
+			{
+				if ((this._XpathDetails != value))
+				{
+					this._XpathDetails = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteUrl", DbType="NVarChar(150) NOT NULL", CanBeNull=false)]
+		public string SiteUrl
+		{
+			get
+			{
+				return this._SiteUrl;
+			}
+			set
+			{
+				if ((this._SiteUrl != value))
+				{
+					this._SiteUrl = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetReportTotalResult
+	{
+		
+		private System.Nullable<System.DateTime> _CreateDate;
+		
+		private int _PaymentMethodId;
+		
+		private System.Nullable<long> _AmountTotal;
+		
+		private int _Id;
+		
+		private string _Name;
+		
+		private string _SystemName;
+		
+		private int _DisplayOrder;
+		
+		private bool _Active;
+		
+		public GetReportTotalResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreateDate", DbType="Date")]
+		public System.Nullable<System.DateTime> CreateDate
+		{
+			get
+			{
+				return this._CreateDate;
+			}
+			set
+			{
+				if ((this._CreateDate != value))
+				{
+					this._CreateDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMethodId", DbType="Int NOT NULL")]
+		public int PaymentMethodId
+		{
+			get
+			{
+				return this._PaymentMethodId;
+			}
+			set
+			{
+				if ((this._PaymentMethodId != value))
+				{
+					this._PaymentMethodId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AmountTotal", DbType="BigInt")]
+		public System.Nullable<long> AmountTotal
+		{
+			get
+			{
+				return this._AmountTotal;
+			}
+			set
+			{
+				if ((this._AmountTotal != value))
+				{
+					this._AmountTotal = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL")]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this._Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this._Name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SystemName", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
+		public string SystemName
+		{
+			get
+			{
+				return this._SystemName;
+			}
+			set
+			{
+				if ((this._SystemName != value))
+				{
+					this._SystemName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int NOT NULL")]
+		public int DisplayOrder
+		{
+			get
+			{
+				return this._DisplayOrder;
+			}
+			set
+			{
+				if ((this._DisplayOrder != value))
+				{
+					this._DisplayOrder = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this._Active = value;
+				}
+			}
+		}
+	}
+	
 	public partial class PROC_GetListNewsByStatusResult
 	{
 		
@@ -14493,7 +15734,7 @@ namespace CMS.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(300)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(1000)")]
 		public string Title
 		{
 			get
@@ -14541,7 +15782,7 @@ namespace CMS.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(300)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(500)")]
 		public string Link
 		{
 			get
@@ -14557,7 +15798,7 @@ namespace CMS.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(500)")]
 		public string Phone
 		{
 			get
@@ -15132,158 +16373,6 @@ namespace CMS.Data
 		}
 	}
 	
-	public partial class GetReportTotalResult
-	{
-		
-		private System.Nullable<System.DateTime> _CreateDate;
-		
-		private int _PaymentMethodId;
-		
-		private System.Nullable<long> _AmountTotal;
-		
-		private int _Id;
-		
-		private string _Name;
-		
-		private string _SystemName;
-		
-		private int _DisplayOrder;
-		
-		private bool _Active;
-		
-		public GetReportTotalResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreateDate", DbType="Date")]
-		public System.Nullable<System.DateTime> CreateDate
-		{
-			get
-			{
-				return this._CreateDate;
-			}
-			set
-			{
-				if ((this._CreateDate != value))
-				{
-					this._CreateDate = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMethodId", DbType="Int NOT NULL")]
-		public int PaymentMethodId
-		{
-			get
-			{
-				return this._PaymentMethodId;
-			}
-			set
-			{
-				if ((this._PaymentMethodId != value))
-				{
-					this._PaymentMethodId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AmountTotal", DbType="BigInt")]
-		public System.Nullable<long> AmountTotal
-		{
-			get
-			{
-				return this._AmountTotal;
-			}
-			set
-			{
-				if ((this._AmountTotal != value))
-				{
-					this._AmountTotal = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL")]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this._Id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this._Name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SystemName", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
-		public string SystemName
-		{
-			get
-			{
-				return this._SystemName;
-			}
-			set
-			{
-				if ((this._SystemName != value))
-				{
-					this._SystemName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int NOT NULL")]
-		public int DisplayOrder
-		{
-			get
-			{
-				return this._DisplayOrder;
-			}
-			set
-			{
-				if ((this._DisplayOrder != value))
-				{
-					this._DisplayOrder = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this._Active = value;
-				}
-			}
-		}
-	}
-	
 	public partial class PROC_GetListNewsInHomeResult
 	{
 		
@@ -15326,6 +16415,356 @@ namespace CMS.Data
 		private string _SiteName;
 		
 		public PROC_GetListNewsInHomeResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int")]
+		public System.Nullable<int> Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this._Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(1000)")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this._Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryId", DbType="Int")]
+		public System.Nullable<int> CategoryId
+		{
+			get
+			{
+				return this._CategoryId;
+			}
+			set
+			{
+				if ((this._CategoryId != value))
+				{
+					this._CategoryId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteId", DbType="Int")]
+		public System.Nullable<int> SiteId
+		{
+			get
+			{
+				return this._SiteId;
+			}
+			set
+			{
+				if ((this._SiteId != value))
+				{
+					this._SiteId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(500)")]
+		public string Link
+		{
+			get
+			{
+				return this._Link;
+			}
+			set
+			{
+				if ((this._Link != value))
+				{
+					this._Link = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(500)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this._Phone = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Contents", DbType="NVarChar(MAX)")]
+		public string Contents
+		{
+			get
+			{
+				return this._Contents;
+			}
+			set
+			{
+				if ((this._Contents != value))
+				{
+					this._Contents = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this._Price = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceText", DbType="NVarChar(100)")]
+		public string PriceText
+		{
+			get
+			{
+				return this._PriceText;
+			}
+			set
+			{
+				if ((this._PriceText != value))
+				{
+					this._PriceText = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistrictId", DbType="Int")]
+		public System.Nullable<int> DistrictId
+		{
+			get
+			{
+				return this._DistrictId;
+			}
+			set
+			{
+				if ((this._DistrictId != value))
+				{
+					this._DistrictId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DistictName", DbType="NVarChar(200)")]
+		public string DistictName
+		{
+			get
+			{
+				return this._DistictName;
+			}
+			set
+			{
+				if ((this._DistictName != value))
+				{
+					this._DistictName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusId", DbType="Int")]
+		public System.Nullable<int> StatusId
+		{
+			get
+			{
+				return this._StatusId;
+			}
+			set
+			{
+				if ((this._StatusId != value))
+				{
+					this._StatusId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusName", DbType="NVarChar(200)")]
+		public string StatusName
+		{
+			get
+			{
+				return this._StatusName;
+			}
+			set
+			{
+				if ((this._StatusName != value))
+				{
+					this._StatusName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this._CreatedOn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CusIsReaded", DbType="Bit")]
+		public System.Nullable<bool> CusIsReaded
+		{
+			get
+			{
+				return this._CusIsReaded;
+			}
+			set
+			{
+				if ((this._CusIsReaded != value))
+				{
+					this._CusIsReaded = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRepeat", DbType="Bit")]
+		public System.Nullable<bool> IsRepeat
+		{
+			get
+			{
+				return this._IsRepeat;
+			}
+			set
+			{
+				if ((this._IsRepeat != value))
+				{
+					this._IsRepeat = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatTotal", DbType="Int")]
+		public System.Nullable<int> RepeatTotal
+		{
+			get
+			{
+				return this._RepeatTotal;
+			}
+			set
+			{
+				if ((this._RepeatTotal != value))
+				{
+					this._RepeatTotal = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Iscc", DbType="Bit")]
+		public System.Nullable<bool> Iscc
+		{
+			get
+			{
+				return this._Iscc;
+			}
+			set
+			{
+				if ((this._Iscc != value))
+				{
+					this._Iscc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteName", DbType="NVarChar(100)")]
+		public string SiteName
+		{
+			get
+			{
+				return this._SiteName;
+			}
+			set
+			{
+				if ((this._SiteName != value))
+				{
+					this._SiteName = value;
+				}
+			}
+		}
+	}
+	
+	public partial class PROC_GetListNewsInHomeV2Result
+	{
+		
+		private System.Nullable<int> _Id;
+		
+		private string _Title;
+		
+		private System.Nullable<int> _CategoryId;
+		
+		private System.Nullable<int> _SiteId;
+		
+		private string _Link;
+		
+		private string _Phone;
+		
+		private string _Contents;
+		
+		private System.Nullable<decimal> _Price;
+		
+		private string _PriceText;
+		
+		private System.Nullable<int> _DistrictId;
+		
+		private string _DistictName;
+		
+		private System.Nullable<int> _StatusId;
+		
+		private string _StatusName;
+		
+		private System.Nullable<System.DateTime> _CreatedOn;
+		
+		private System.Nullable<bool> _CusIsReaded;
+		
+		private System.Nullable<bool> _IsRepeat;
+		
+		private System.Nullable<int> _RepeatTotal;
+		
+		private System.Nullable<bool> _Iscc;
+		
+		private string _SiteName;
+		
+		public PROC_GetListNewsInHomeV2Result()
 		{
 		}
 		

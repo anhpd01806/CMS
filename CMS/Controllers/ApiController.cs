@@ -245,6 +245,134 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetListProvince(string sign, int userid, string infologin)
+        {
+            try
+            {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
+                if (string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var gen_sign = Common.Common.GenSign(string.Empty, Common.APIConfig.PrivateKey);
+
+                    if (false)
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var data = _newsbussiness.GetListProvince();
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = data
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetListDistrictV2(string sign, int userid, int proId, string infologin)
+        {
+            try
+            {
+                if (!CheckOtherLogin(userid, infologin))
+                    return Json(new
+                    {
+                        status = "1",
+                        errorcode = "1",
+                        message = "Tài khoản được đăng nhập tại 1 nơi khác. Vui lòng kiểm tra lại.",
+                        data = ""
+                    });
+
+                if (string.IsNullOrEmpty(sign))
+                {
+                    return Json(new
+                    {
+                        status = "200",
+                        errorcode = "1100",
+                        message = "one or more parameter is empty",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    var gen_sign = Common.Common.GenSign(string.Empty, Common.APIConfig.PrivateKey);
+
+                    if (false)
+                    {
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "1200",
+                            message = "invalid signature",
+                            data = ""
+                        });
+                    }
+                    else
+                    {
+                        var data = _newsbussiness.GetListDistrictByProId(proId);
+                        return Json(new
+                        {
+                            status = "200",
+                            errorcode = "0",
+                            message = "success",
+                            data = data
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.GetDefault(System.Web.HttpContext.Current).Log(new Error(ex));
+                return Json(new
+                {
+                    status = "200",
+                    errorcode = "5000",
+                    message = "system error",
+                    data = ""
+                });
+            }
+        }
+
+        [HttpPost]
         public JsonResult GetListDistric(string sign, int userid, string infologin)
         {
             try
@@ -732,7 +860,7 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetListNewsInHome(int UserId, int CateId, int DistricId, int StatusId, int SiteId,
+        public JsonResult GetListNewsInHome(int UserId, int CateId, int provinceId, int DistricId, int StatusId, int SiteId,
             int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, string sign, string infologin)
         {
             try
@@ -746,7 +874,7 @@ namespace CMS.Controllers
                         data = ""
                     });
 
-                if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign))
+                if (string.IsNullOrEmpty(UserId.ToString()) || string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(provinceId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
                     {
@@ -761,6 +889,7 @@ namespace CMS.Controllers
                     var param = new NameValueCollection();
                     param.Add("UserId", UserId.ToString());
                     param.Add("CateId", CateId.ToString());
+                    param.Add("provinceId", provinceId.ToString());
                     param.Add("DistricId", DistricId.ToString());
                     param.Add("StatusId", StatusId.ToString());
                     param.Add("SiteId", SiteId.ToString());
@@ -791,7 +920,7 @@ namespace CMS.Controllers
                     else
                     {
                         int total = 0;
-                        var data = _newsbussiness.GetListNewByFilter(UserId, CateId, DistricId, StatusId, 0, SiteId, BackDate, From, To, MinPrice, MaxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
+                        var data = _newsbussiness.GetListNewByFilter(UserId, CateId, provinceId, DistricId, StatusId, 0, SiteId, BackDate, From, To, MinPrice, MaxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
                         var model = new HomeModel();
                         model.Total = total;
                         model.pageIndex = pageIndex;
@@ -822,12 +951,12 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetListNewsFeedIOS(int CateId, int DistricId, int StatusId, int SiteId,
+        public JsonResult GetListNewsFeedIOS(int CateId, int provinceId, int DistricId, int StatusId, int SiteId,
             int BackDate, string From, string To, double MinPrice, double MaxPrice, int pageIndex, int pageSize, bool IsRepeat, string key, string NameOrder, bool descending, string sign, string infologin)
         {
             try
             {
-                if (string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign))
+                if (string.IsNullOrEmpty(CateId.ToString()) || string.IsNullOrEmpty(provinceId.ToString()) || string.IsNullOrEmpty(DistricId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(StatusId.ToString()) || string.IsNullOrEmpty(SiteId.ToString()) || string.IsNullOrEmpty(BackDate.ToString()) || string.IsNullOrEmpty(MinPrice.ToString()) || string.IsNullOrEmpty(MaxPrice.ToString()) || string.IsNullOrEmpty(pageIndex.ToString()) || string.IsNullOrEmpty(pageSize.ToString()) || string.IsNullOrEmpty(IsRepeat.ToString()) || string.IsNullOrEmpty(descending.ToString()) || string.IsNullOrEmpty(sign))
                 {
                     return Json(new
                     {
@@ -841,6 +970,7 @@ namespace CMS.Controllers
                 {
                     var param = new NameValueCollection();
                     param.Add("CateId", CateId.ToString());
+                    param.Add("provinceId", provinceId.ToString());
                     param.Add("DistricId", DistricId.ToString());
                     param.Add("StatusId", StatusId.ToString());
                     param.Add("SiteId", SiteId.ToString());
@@ -871,7 +1001,7 @@ namespace CMS.Controllers
                     else
                     {
                         int total = 0;
-                        var data = _newsbussiness.GetListNewByFilter(1, CateId, DistricId, StatusId, 0, SiteId, BackDate, From, To, MinPrice, MaxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
+                        var data = _newsbussiness.GetListNewByFilter(1, CateId, provinceId, DistricId, StatusId, 0, SiteId, BackDate, From, To, MinPrice, MaxPrice, pageIndex, pageSize, Convert.ToBoolean(IsRepeat), key, NameOrder, descending, ref total);
                         var model = new HomeModel();
                         model.Total = total;
                         model.pageIndex = pageIndex;

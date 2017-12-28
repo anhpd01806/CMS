@@ -212,78 +212,57 @@ namespace CMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                //check captcha
-                const string verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
-                string secret = ConfigWeb.Captcha_SecretUser_Key;
-                var response = Request["g-recaptcha-response"];
-                var remoteIp = Request.ServerVariables["REMOTE_ADDR"];
-
-                var myParameters = String.Format("secret={0}&response={1}&remoteip={2}", secret, response, remoteIp);
-
-                using (var wc = new WebClient())
+                var u = new User
                 {
-                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                    var json = wc.UploadString(verifyUrl, myParameters);
-                    var js = new DataContractJsonSerializer(typeof(RecaptchaResult));
-                    var ms = new MemoryStream(Encoding.ASCII.GetBytes(json));
-                    var result = js.ReadObject(ms) as RecaptchaResult;
-                    if (true) // SUCCESS!!!
-                    {
-                        var u = new User
-                        {
-                            UserName = model.UserName,
-                            FullName = model.FullName,
-                            CreatedOn = DateTime.Now,
-                            Password = Helpers.md5(model.UserName.Trim() + "ozo" + model.PassWord.Trim()),
-                            Sex = true,
-                            Phone = model.UserName,
-                            Email = "",
-                            IsDeleted = false,
-                            IsMember = true,
-                            ManagerBy = 1086,// tk 0982667700
-                            IsFree = false
-                        };
-                        var userId = new UserBussiness().Insert(u);
-                        //Insert to tbl notify
-                        var notify = new Notify
-                        {
-                            UserName = "Khách hàng ",
-                            Userid = userId,
-                            SendFlag = true,
-                            DateSend = DateTime.Now,
-                            Title = "Đăng ký mới",
-                            Accepted = false,
-                            ViewFlag = false,
-                            Type = 1
-                        };
-                        var notifyId = new NotifyBussiness().Insert(notify);
-                        //set iduser vừa insert vào
-                        notify.Id = notifyId;
-                        //gan notify vao viewbag
-                        TempData["Notify"] = notify;
+                    UserName = model.UserName,
+                    FullName = model.FullName,
+                    CreatedOn = DateTime.Now,
+                    Password = Helpers.md5(model.UserName.Trim() + "ozo" + model.PassWord.Trim()),
+                    Sex = true,
+                    Phone = model.UserName,
+                    Email = "",
+                    IsDeleted = false,
+                    IsMember = true,
+                    ManagerBy = 1086,// tk 0982667700
+                    IsFree = false
+                };
+                var userId = new UserBussiness().Insert(u);
+                //Insert to tbl notify
+                var notify = new Notify
+                {
+                    UserName = "Khách hàng ",
+                    Userid = userId,
+                    SendFlag = true,
+                    DateSend = DateTime.Now,
+                    Title = "Đăng ký mới",
+                    Accepted = false,
+                    ViewFlag = false,
+                    Type = 1
+                };
+                var notifyId = new NotifyBussiness().Insert(notify);
+                //set iduser vừa insert vào
+                notify.Id = notifyId;
+                //gan notify vao viewbag
+                TempData["Notify"] = notify;
 
-                        var roleUser = new Role_User
-                        {
-                            UserId = userId,
-                            RoleId = 2 // roleId = 2: tài khoản khách hàng
-                        };
-                        // Insert User to Roles
-                        try
-                        {
-                            new RoleUserBussiness().Insert(roleUser);
-                            TempData["Success"] = "Tài khoản của bạn đã được đăng ký thành công vui lòng liên hệ 0982667700 để được hướng dẫn xem tin chính chủ";
-                        }
-                        catch (Exception)
-                        {
-                            TempData["Error"] = Messages_Contants.ERROR_COMMON;
-
-                        }
-                    }
-                    else TempData["Error"] = "Vui lòng xác nhận captcha";
+                var roleUser = new Role_User
+                {
+                    UserId = userId,
+                    RoleId = 2 // roleId = 2: tài khoản khách hàng
+                };
+                // Insert User to Roles
+                try
+                {
+                    new RoleUserBussiness().Insert(roleUser);
+                    TempData["Success"] = "Tài khoản của bạn đã được đăng ký thành công vui lòng liên hệ 0982667700 để được hướng dẫn xem tin chính chủ";
                 }
-                return RedirectToAction("Login", "Account");
+                catch (Exception)
+                {
+                    TempData["Error"] = Messages_Contants.ERROR_COMMON;
+
+                }
             }
-            return View(model);
+            return RedirectToAction("Login", "Account");
         }
         #region json
         [AllowAnonymous]

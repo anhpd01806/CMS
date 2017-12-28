@@ -841,7 +841,6 @@ $(function () {
                 $.LoadingOverlay("show");
                 $.post("/home/getdistricbyprovinceid", { provinceId: _this.val() }, function (resp) {
                     $.LoadingOverlay("hide");
-                    debugger;
                     if (resp.Error == false) {
                         $(".districtId").html(resp.Content);
                     } else {
