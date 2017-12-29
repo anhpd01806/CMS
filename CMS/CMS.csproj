@@ -43,6 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="1Pay">
+      <HintPath>C:\Users\Pham Duc Anh\Desktop\1Pay.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\..\..\XNK\XNK\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -59,6 +62,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Caching" />
@@ -3159,6 +3166,7 @@
     <Content Include="Views\Help\Index.cshtml" />
     <Content Include="Views\ReportTotal\Index.cshtml" />
     <Content Include="Views\ReportTotal\Detail.cshtml" />
+    <Content Include="Views\Payment\ChargeByPhoneCard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

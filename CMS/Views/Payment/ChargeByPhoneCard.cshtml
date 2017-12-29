@@ -1,5 +1,4 @@
-﻿@model CMS.ViewModel.PaymentViewModel
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src="~/scripts/jquery.validate.min.js" type="text/javascript"></script>
@@ -89,14 +88,10 @@
 }
 @section featured
 {
-    @using (Html.BeginForm("RegisterPackage", "Payment", FormMethod.Post))
-    {
-        @Html.ValidationSummary(true)
         <div class="page-content">
             <div class="page-content-area">
-                <div class="row">
+                <div class="">
                     <div class="col-xs-12">
-
                         <div id="msg-recharge">
 
                         </div>
@@ -113,25 +108,37 @@
                             </div>
                         }
                         <input id="hdUserName" type="hidden" value="@Session["SS-USERNAME"].ToString()" />
-                        @*<h3 class="header smaller lighter blue">@ViewBag.TitleForm</h3>*@
 
                         <div class="col-md-7 col-xs-12">
-                            <div class="col-md-12 col-xs-12 notice-box ">
-                                <h3><span style="color:red;">Lưu ý :</span> <span style="color:#478FCA">Bạn phải chọn gói cước thì mới xem được tin, khi cần trợ giúp xin vui lòng liên hệ:0982.66.77.00</span></h3>
-                            </div>
-                            <div class="col-md-6 col-xs-12 col-md-offset-3" style="padding-top:15px">
-                                <fieldset>
-                                    <legend class="lighter blue">Chọn gói cước</legend>
-                                    <div class="form col-md-11" role="form">
-                                        <div class="form-group">
-                                            @Html.DropDownListFor(m => m.Payment, Model.PackageList, new { @class = "form-control" })
-                                        </div>
+                            <fieldset>
+                                <legend class="lighter blue">Nạp tiền bằng thẻ điện thoại</legend>
+
+                                <div class="form-group">
+                                    <div class="col-md-11 col-xs-12">
+                                        <input type="text" class="form-control" id="card-serial" placeholder="Nhập Serial">
                                     </div>
-                                    <div class="col-md-12 footer-button">
-                                        <button type="submit" class="btn btn-primary btn-sm">Chọn gói cước</button>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-11 col-xs-12">
+                                        <input type="text" class="form-control" id="card-code" placeholder="Nhập mã thẻ">
                                     </div>
-                                </fieldset>
-                            </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-11 col-xs-12">
+                                        <select id="card-option">
+                                            <option value="" disabled selected>Chọn nhà mạng</option>
+                                            <option value="viettel">Viettel </option>
+                                            <option value="vinaphone">Vinaphone</option>
+                                            <option value="mobifone">MobiFone</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-3 col-xs-12">
+                                        <input type="button" class="btn btn-primary btn-sm" id="recharge" value="Nạp tiền" />
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
                 </div>
@@ -159,7 +166,6 @@
                 </div>
             </div>
         </div>
-    }
 }
 
 
